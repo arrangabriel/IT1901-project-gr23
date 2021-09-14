@@ -8,13 +8,13 @@ Som en person som er glad i trening ønsker jeg å føre en treningsdagbok, sån
 Brukeren har behov for å kunne lagre kommentarer om treningsøktene. Dette vil gi brukeren bedre innsikt i tidligere treningsøkter og brukeren kan velge å oppgi mer informasjon om treningsøkten enn det appen tilbyr.
 
 ### Viktig å kunne se
-Tidligere økter
-Kommentarer 
-Varighet
+- Tidligere økter
+- Kommentarer 
+- Varighet
 
 ### Viktig å kunne gjøre
-Lagre økter
-Skrive kommentarer til økten 
+- Lagre økter
+- Skrive kommentarer til økten 
 
 ## Varighet og antall (us-2)
 Som student ønsker jeg å registrere antall økter jeg har, og hvor lenge øktene varte, så jeg klarer å opprettholde treningsnivået mitt i en hektisk studie-hverdag.
@@ -22,13 +22,13 @@ Som student ønsker jeg å registrere antall økter jeg har, og hvor lenge økte
 Brukeren har behov for å registrere treninger de gjennomfører. Når en prøver å opprettholde helse er det viktig å skaffe seg oversikt. Dette for å bevisstgjøre seg om hvorvidt de klarer å nå de målene de har for seg.
 
 ### Viktig å kunne se
-Tidligere økter
-Antall tidligere økter
-Varighet på øktene
+- Tidligere økter
+- Antall tidligere økter
+- Varighet på øktene
 
 ### Viktig å kunne gjøre 
-Lagre økter
-Dato
-Varighet
+- Lagre økter
+- Dato
+- Varighet
 
 
