@@ -4,10 +4,10 @@
     <artifactId>modules-ui</artifactId>
 
     <parent>
-        <groupId>it1901</groupId>
+        <groupId>gr2123</groupId>
         <artifactId>modules-template</artifactId>
         <version>0.0.1-SNAPSHOT</version>
-        <relativePath>..</relativePath>
+        <relativePath>../pom.xml</relativePath>
     </parent>
 
     <dependencies>
