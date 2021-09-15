@@ -62,6 +62,6 @@
     <modules>
         <module>core</module>
         <module>ui</module>
-        <module>local-persistency</module>
+        <module>local-persistence</module>
     </modules>
 </project>

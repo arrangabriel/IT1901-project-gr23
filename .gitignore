@@ -5,6 +5,7 @@ target
 modules-template.iml
 modules-core.iml
 modules-ui.iml
+modules-local-persistency.iml
 
 # vs-code
 .vscode
