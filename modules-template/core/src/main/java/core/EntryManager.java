@@ -38,4 +38,8 @@ public class EntryManager {
     public void removeEntry() {
         removeEntry(0);
     }
+
+    public int length() {
+        return this.entryList.size();
+    }
 }
