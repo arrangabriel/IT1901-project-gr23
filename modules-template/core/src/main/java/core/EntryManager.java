@@ -3,8 +3,9 @@ package core;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Iterator;
 
-public class EntryManager {
+public class EntryManager implements Iterable<Entry> {
     
     private ArrayList<Entry> entryList = new ArrayList<Entry>();
 
@@ -41,5 +42,10 @@ public class EntryManager {
 
     public int length() {
         return this.entryList.size();
+    }
+
+    @Override
+    public Iterator<Entry> iterator() {
+        return this.entryList.iterator();
     }
 }
