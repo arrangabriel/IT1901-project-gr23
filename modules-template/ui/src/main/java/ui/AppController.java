@@ -1,6 +1,6 @@
 package ui;
 
-import core.Calc;
+import core.Entry;
 
 import java.util.List;
 import java.util.function.BinaryOperator;
@@ -14,17 +14,17 @@ import javafx.scene.control.ListView;
 
 public class AppController {
 
-    private Calc calc;
+    private Entry calc;
 
     public AppController() {
-        calc = new Calc(0.0, 0.0, 0.0);
+        calc = new Entry(0.0, 0.0, 0.0);
     }
 
-    public Calc getCalc() {
+    public Entry getCalc() {
         return calc;
     }
 
-    public void setCalc(Calc calc) {
+    public void setCalc(Entry calc) {
         this.calc = calc;
         updateOperandsView();
     }
