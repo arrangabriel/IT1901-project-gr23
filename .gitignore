@@ -10,3 +10,6 @@ modules-ui.iml
 .vscode
 .classpath
 .project
+
+# mac
+.DS_Store
