@@ -1,3 +1,15 @@
-/.idea
-/target
-/.vscode
+target
+
+# intelliJ
+.idea
+modules-template.iml
+modules-core.iml
+modules-ui.iml
+
+# vs-code
+.vscode
+.classpath
+.project
+
+# mac
+.DS_Store

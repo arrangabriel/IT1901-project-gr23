@@ -37,7 +37,7 @@ public class Calc {
      * @throws IllegalArgumentException if n is larger than the operand count
      */
     public double peekOperand(int n) {
-        if (n > getOperandCount()) {
+        if (n >= getOperandCount()) {
             throw new IllegalArgumentException("Cannot peek at position " + n + " when the operand count is " + getOperandCount());
         }
         return operandStack.get(getOperandCount() - n - 1);
@@ -85,8 +85,8 @@ public class Calc {
         if (getOperandCount() < 2) {
             throw new IllegalStateException("Too few operands (" + getOperandCount() + ") on the stack");
         }
-        var op1 = popOperand();
         var op2 = popOperand();
+        var op1 = popOperand();
         var result = op.apply(op1, op2);
         pushOperand(result);
         return result;
@@ -94,6 +94,8 @@ public class Calc {
 
     /**
      * Swaps the two topmost operands.
+     *
+     * @throws IllegalStateException if the operand count is less than two
      */
     public void swap() {
         // TODO
@@ -101,6 +103,8 @@ public class Calc {
 
     /**
      * Duplicates the top operand.
+     *
+     * @throws IllegalStateException if the operand stack is empty
      */
     public void dup() {
         // TODO
