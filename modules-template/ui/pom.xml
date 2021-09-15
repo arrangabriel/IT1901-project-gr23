@@ -1,7 +1,6 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>it1901</groupId>
     <artifactId>modules-ui</artifactId>
 
     <parent>
@@ -76,22 +75,23 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
         		<artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <argLine>
+                    --add-opens calc.ui/ui=ALL-UNNAMED --add-exports javafx.graphics/com.sun.javafx.application=ALL-UNNAMED
+                    </argLine>
+                </configuration>
 	        </plugin>
 
             <plugin>
                 <groupId>org.openjfx</groupId>
                 <artifactId>javafx-maven-plugin</artifactId>
                 <version>0.0.6</version>
-                <executions>
-                    <execution>
-                        <!-- Default configuration for running -->
-                        <!-- Usage: mvn clean javafx:run -->
-                        <id>default-cli</id>
-                        <configuration>
-                            <mainClass>ui.App</mainClass>
-                        </configuration>
-                    </execution>
-                </executions>
+                <!-- Default configuration for running -->
+                <!-- Usage: mvn javafx:run -->
+                <configuration>
+                    <!-- syntax: module-name/full-app-class-name -->
+                    <mainClass>calc.ui/ui.App</mainClass>
+                </configuration>
             </plugin>
         </plugins>
     </build>
