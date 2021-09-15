@@ -48,4 +48,8 @@ public class EntryManager implements Iterable<Entry> {
     public Iterator<Entry> iterator() {
         return this.entryList.iterator();
     }
+
+    public ArrayList<Entry> getEntryList() {
+        return new ArrayList<Entry>(this.entryList);
+    }
 }
