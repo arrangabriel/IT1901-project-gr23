@@ -2,6 +2,7 @@ package localpersistance;
 
 import java.util.HashMap;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.io.File;
 
 import core.LogEntry;
@@ -13,7 +14,7 @@ import org.json.simple.parser.ParseException;
 public class EntrySaverJson {
 
     
-    private void save(HashMap<String, LogEntry> logEntry){
+    private void save(HashMap<String, LogEntry> logEntry) throws IOException {
 
         JSONObject json = new JSONObject();
         
@@ -23,7 +24,7 @@ public class EntrySaverJson {
             innerMap.put("title", logEntry.get(key).getTitle());
             innerMap.put("comment", logEntry.get(key).getComment());
             innerMap.put("date", logEntry.get(key).getDate().toString());
-            innerMap.put("duration", logEntry.get(key).getDuartion().getSeconds());
+            innerMap.put("duration", String.valueOf(logEntry.get(key).getDuartion().getSeconds()));
 
             json.put(key, innerMap);
         }
