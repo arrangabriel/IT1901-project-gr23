@@ -5,12 +5,13 @@ import java.time.LocalDate;
 
 public class LogEntry {
 
+    private String id;
     private String title;
     private String comment;
     private LocalDate date;
     private Duration duartion;
 
-    public LogEntry(String title, String comment, LocalDate date, Duration duration) {
+    public LogEntry(String id, String title, String comment, LocalDate date, Duration duration) {
         
         if (duration.isNegative() || duration.isZero()) {
             throw new IllegalArgumentException("Entry duration must be positive");
@@ -20,6 +21,7 @@ public class LogEntry {
             throw new IllegalArgumentException("Entry cannot be set to be after current time");
         }
 
+        this.id = id;
         this.title = title;
         this.comment = comment;
         this.date = date;
@@ -40,6 +42,10 @@ public class LogEntry {
 
     public Duration getDuartion() {
         return duartion;
+    }
+
+    public String getId() {
+        return id;
     }
 
     public void setTitle(String title) {
