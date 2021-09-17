@@ -15,8 +15,10 @@ public class EntryManager implements Iterable<String> {
 
     }
 
-    public void addEntry(String id, String title, String comment, LocalDate date, Duration duration) {
+    public String addEntry(String title, String comment, LocalDate date, Duration duration) {
+        String id = String.valueOf(entryMap.size());
         entryMap.put(id, new LogEntry(id, title, comment, date, duration));
+        return id;
     }
 
     public LogEntry getEntry(String id) {
