@@ -3,14 +3,14 @@ package core;
 import java.time.Duration;
 import java.time.LocalDate;
 
-public class Entry {
+public class LogEntry {
 
     private String title;
     private String comment;
     private LocalDate date;
     private Duration duartion;
 
-    public Entry(String title, String comment, LocalDate date, Duration duration) {
+    public LogEntry(String title, String comment, LocalDate date, Duration duration) {
         
         if (duration.isNegative() || duration.isZero()) {
             throw new IllegalArgumentException("Entry duration must be positive");

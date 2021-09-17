@@ -2,54 +2,49 @@ package core;
 
 import java.time.Duration;
 import java.time.LocalDate;
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Set;
+import java.util.Map.Entry;
 
-public class EntryManager implements Iterable<Entry> {
+public class EntryManager implements Iterable<String> {
     
-    private ArrayList<Entry> entryList = new ArrayList<Entry>();
+    private HashMap<String, LogEntry> entryMap = new HashMap<String, LogEntry>();
 
     public EntryManager() {
 
     }
 
-    public void addEntry(String title, String comment, LocalDate date, Duration duration) {
-        entryList.add(new Entry(title, comment, date, duration));
+    public void addEntry(String id, String title, String comment, LocalDate date, Duration duration) {
+        entryMap.put(id, new LogEntry(title, comment, date, duration));
     }
 
-    public Entry getEntry(int index) {
-        if (index + 1 > this.entryList.size()) {
-            throw new IllegalArgumentException("Index out of bound");
+    public LogEntry getEntry(String id) {
+        if (entryMap.containsKey(id)) {
+            return entryMap.get(id);
+        } else {
+            throw new IllegalArgumentException("Entry does not exits");
         }
-
-        return this.entryList.get(index);
     }
 
-    public Entry getEntriey() {
-        return getEntry(0);
-    }
-
-    public void removeEntry(int index) {
-        if (index + 1 > this.entryList.size()) {
-            throw new IllegalArgumentException("Index out of bounds");
+    public void removeEntry(String id) {
+        if (entryMap.containsKey(id)) {
+            entryMap.remove(id);
+        } else {
+            throw new IllegalArgumentException("Entry does not exits");
         }
-        this.entryList.remove(index);
-    }
-
-    public void removeEntry() {
-        removeEntry(0);
     }
 
     public int length() {
-        return this.entryList.size();
+        return this.entryMap.size();
     }
 
     @Override
-    public Iterator<Entry> iterator() {
-        return this.entryList.iterator();
+    public Iterator<String> iterator() {
+        return this.entryMap.keySet().iterator();
     }
 
-    public ArrayList<Entry> getEntryList() {
-        return new ArrayList<Entry>(this.entryList);
+    public Set<Entry<String, LogEntry>> getEntryList() {
+        return this.entryMap.entrySet();
     }
 }
