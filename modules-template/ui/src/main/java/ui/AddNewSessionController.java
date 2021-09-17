@@ -4,6 +4,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 
 public class AddNewSessionController {
@@ -18,7 +19,7 @@ public class AddNewSessionController {
     @FXML private TextField nameOfSessionField;
     @FXML private TextField timeField;
     @FXML private TextField distanceField;
-    @FXML private TextField commentField;
+    @FXML private TextArea commentField;
 
     @FXML private DatePicker sessionDatePicker;
 
