@@ -18,16 +18,16 @@
       </Label>
       <Pane layoutX="24.0" layoutY="83.0" prefHeight="293.0" prefWidth="553.0">
          <children>
-            <Label layoutX="20.0" layoutY="5.0" prefHeight="24.0" prefWidth="105.0" text="Name of session" />
+            <Label fx:id="header" layoutX="20.0" layoutY="5.0" prefHeight="24.0" prefWidth="105.0" text="Name of session" />
             <Label layoutX="20.0" layoutY="127.0" prefHeight="17.0" prefWidth="88.0" text="Duration" />
-            <Label layoutX="20.0" layoutY="71.0" text="Date: dd:mm:yyyy" />
+            <Label fx:id="dateLabel" layoutX="20.0" layoutY="71.0" text="Date: dd:mm:yyyy" />
             <Label layoutX="24.0" layoutY="232.0" text="Distance (km)" />
-            <TextField layoutX="19.0" layoutY="29.0" prefHeight="27.0" prefWidth="169.0" />
+            <TextField fx:id="nameOfSessionField" layoutX="19.0" layoutY="29.0" prefHeight="27.0" prefWidth="169.0" />
             <TextField layoutX="22.0" layoutY="249.0" prefHeight="27.0" prefWidth="126.0" />
-            <DatePicker layoutX="19.0" layoutY="90.0" prefHeight="27.0" prefWidth="169.0" />
-            <Label layoutX="290.0" layoutY="23.0" prefHeight="24.0" prefWidth="105.0" text="Comment:" />
+            <DatePicker fx:id="sessionDatePicker" layoutX="19.0" layoutY="90.0" prefHeight="27.0" prefWidth="169.0" />
+            <Label fx:id="commentLabel" layoutX="290.0" layoutY="23.0" prefHeight="24.0" prefWidth="105.0" text="Comment:" />
             <Button fx:id="createSession" layoutX="424.0" layoutY="241.0" mnemonicParsing="false" onAction="#createSessionButtonPushed" text="Create session" />
-            <TextArea layoutX="293.0" layoutY="46.0" prefHeight="180.0" prefWidth="232.0" />
+            <TextArea fx:id="commentField" layoutX="293.0" layoutY="46.0" prefHeight="180.0" prefWidth="232.0" />
             <Label layoutX="25.0" layoutY="147.0" />
             <TextField fx:id="hour" layoutX="20.0" layoutY="142.0" prefHeight="22.0" prefWidth="38.0" text="hh" />
             <TextField fx:id="min" layoutX="69.0" layoutY="142.0" prefHeight="22.0" prefWidth="38.0" text="mm" />
