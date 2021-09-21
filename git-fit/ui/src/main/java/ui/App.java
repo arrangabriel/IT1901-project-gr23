@@ -7,12 +7,14 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import core.EntryManager;
 
 /**
  * JavaFX App
  */
 public class App extends Application {
     private static Scene scene;
+    protected static EntryManager entryManager = new EntryManager();
 
     @Override
     public void start(Stage stage) throws IOException {
