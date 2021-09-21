@@ -11,7 +11,6 @@ import java.util.Scanner;
 import java.time.Duration;
 
 import core.EntryManager;
-import core.LogEntry;
 
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -20,17 +19,17 @@ import org.json.simple.parser.ParseException;
 public class EntrySaverJson {
 
     
-    public void save(HashMap<String, LogEntry> entryManager) throws IOException {
+    public void save(EntryManager entryManager) throws IOException {
 
         JSONObject json = new JSONObject();
         
 
-        for (String key : entryManager.keySet()){
+        for (String key : entryManager){
             HashMap<String, String> innerMap = new HashMap<String, String>();
-            innerMap.put("title", entryManager.get(key).getTitle());
-            innerMap.put("comment", entryManager.get(key).getComment());
-            innerMap.put("date", entryManager.get(key).getDate().toString());
-            innerMap.put("duration", String.valueOf(entryManager.get(key).getDuartion().getSeconds()));
+            innerMap.put("title", entryManager.getEntry(key).getTitle());
+            innerMap.put("comment", entryManager.getEntry(key).getComment());
+            innerMap.put("date", entryManager.getEntry(key).getDate().toString());
+            innerMap.put("duration", String.valueOf(entryManager.getEntry(key).getDuartion().getSeconds()));
 
             json.put(key, innerMap);
         }
@@ -68,9 +67,9 @@ public class EntrySaverJson {
                 entryManager.addEntry(
                     id, 
                     innerMap.get("title"),
-                     innerMap.get("comment"),
-                      LocalDate.parse(innerMap.get("date")),
-                       Duration.ofSeconds(Long.parseLong(innerMap.get("duration"))));
+                    innerMap.get("comment"),
+                    LocalDate.parse(innerMap.get("date")),
+                    Duration.ofSeconds(Long.parseLong(innerMap.get("duration"))));
                 }
 
         }
