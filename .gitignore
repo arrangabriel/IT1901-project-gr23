@@ -1,4 +1,5 @@
 target
+*.json
 
 # intelliJ
 .idea
@@ -15,3 +16,5 @@ git-fit.iml
 
 # mac
 .DS_Store
+/git-fit/local-persistence/modules-local-persistence.iml
+/git-fit/localpersistence/modules-local-persistence.iml

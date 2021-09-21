@@ -7,7 +7,7 @@ import java.util.Iterator;
 import java.util.Set;
 import java.util.Map.Entry;
 
-public class EntryManager implements Iterable<String> {
+public class EntryManager implements Iterable<LogEntry> {
     
     private HashMap<String, LogEntry> entryMap = new HashMap<String, LogEntry>();
 
@@ -17,8 +17,15 @@ public class EntryManager implements Iterable<String> {
 
     public String addEntry(String title, String comment, LocalDate date, Duration duration) {
         String id = String.valueOf(entryMap.size());
-        entryMap.put(id, new LogEntry(id, title, comment, date, duration));
+        addEntry(id, title, comment, date, duration);
         return id;
+    }
+
+    public void addEntry(String id, String title, String comment, LocalDate date, Duration duration) {
+        if (entryMap.containsKey(id)) {
+            throw new IllegalArgumentException("Entry allready exists");
+        }
+        entryMap.put(id, new LogEntry(id, title, comment, date, duration));
     }
 
     public LogEntry getEntry(String id) {
@@ -42,8 +49,10 @@ public class EntryManager implements Iterable<String> {
     }
 
     @Override
-    public Iterator<String> iterator() {
-        return this.entryMap.keySet().iterator();
+    public Iterator<LogEntry> iterator() {
+        // TODO: refactor codef in EntrySaver to use new implementation
+        //return this.entryMap.keySet().iterator();
+        return this.entryMap.values().iterator();
     }
 
     public Set<Entry<String, LogEntry>> getEntryList() {
