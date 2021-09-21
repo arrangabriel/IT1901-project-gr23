@@ -15,4 +15,6 @@ git-fit.iml
 .project
 
 # mac
-.DS_Store*.json
+.DS_Store
+/git-fit/local-persistence/modules-local-persistence.iml
+/git-fit/localpersistence/modules-local-persistence.iml

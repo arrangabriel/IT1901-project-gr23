@@ -12,7 +12,11 @@ public class LogEntry {
     private Duration duartion;
 
     public LogEntry(String id, String title, String comment, LocalDate date, Duration duration) {
-        
+
+        if (id == null || title == null || comment == null || date == null || duration == null){
+            throw new IllegalArgumentException("Arguments cannot be null");
+        }
+
         if (duration.isNegative() || duration.isZero()) {
             throw new IllegalArgumentException("Entry duration must be positive");
         }
