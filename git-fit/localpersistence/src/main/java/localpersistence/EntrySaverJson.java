@@ -43,7 +43,7 @@ public class EntrySaverJson {
         writer.close();
         }
     
-    public String load() throws FileNotFoundException{
+    public void load(EntryManager entryManager) throws FileNotFoundException{
         
         JSONParser jsonParser = new JSONParser();
         File file = new File("SavedData.json");
@@ -57,7 +57,6 @@ public class EntrySaverJson {
 
         try{
             JSONObject jsonObject = (JSONObject) jsonParser.parse(dataString);
-            EntryManager entryManager = new EntryManager(); 
 
             for (Object key : jsonObject.keySet()){
                 String id = (String) key;
@@ -66,38 +65,17 @@ public class EntrySaverJson {
                 @SuppressWarnings("unchecked")
                 HashMap<String, String> innerMap = (HashMap<String, String>) jsonObject.get(key);
                 
-                String title;
-                String comment;
-                LocalDate date;
-                Duration duration;
-
-                for(String innerKey : innerMap.keySet()){
-                    if (innerKey.equals("title")){
-                        title = innerKey;
-                    }
-                    if (innerKey.equals("comment")){
-                        title = innerKey;
-                    }
-                    if (innerKey.equals("date")){
-                        title = innerKey;
-                    }
-                    if (innerKey.equals("duration")){
-                        title = innerKey;
-                    }
+                entryManager.addEntry(
+                    id, 
+                    innerMap.get("title"),
+                     innerMap.get("comment"),
+                      LocalDate.parse(innerMap.get("date")),
+                       Duration.ofSeconds(Long.parseLong(innerMap.get("duration"))));
                 }
-            
-
-            }
 
         }
         catch (ParseException pException){
-            return null;
+            throw new IllegalStateException("Could not load data from file");
         }
-
-        return null;
-
     }
-    
-
-    
 }
