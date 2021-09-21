@@ -25,6 +25,10 @@ public class LogEntry {
             throw new IllegalArgumentException("Entry cannot be set to be after current time");
         }
 
+        if (title.length() < 1) {
+            throw new IllegalArgumentException("Title should not be empty");
+        }
+
         this.id = id;
         this.title = title;
         this.comment = comment;
@@ -53,6 +57,11 @@ public class LogEntry {
     }
 
     public void setTitle(String title) {
+        
+        if (title.length() < 1) {
+            throw new IllegalArgumentException("Title should not be empty");
+        }
+
         this.title = title;
     }
 
@@ -61,10 +70,20 @@ public class LogEntry {
     }
 
     public void setDate(LocalDate date) {
+
+        if (date.isAfter(LocalDate.now())) {
+            throw new IllegalArgumentException("Entry cannot be set to be after current time");
+        }
+
         this.date = date;
     }
 
-    public void setDuartion(Duration duartion) {
-        this.duartion = duartion;
+    public void setDuartion(Duration duration) {
+
+        if (duration.isNegative() || duration.isZero()) {
+            throw new IllegalArgumentException("Entry duration must be positive");
+        }
+
+        this.duartion = duration;
     }
 }

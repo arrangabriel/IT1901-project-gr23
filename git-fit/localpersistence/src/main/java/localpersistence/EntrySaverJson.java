@@ -19,22 +19,25 @@ import org.json.simple.parser.ParseException;
 
 public class EntrySaverJson {
 
+    public void save(EntryManager entryManager) throws IOException {
+        save(entryManager, "SavedData.json");
+    }
     
-    public void save(HashMap<String, LogEntry> entryManager) throws IOException {
+    public void save(EntryManager entryManager, String saveFile) throws IOException {
 
         JSONObject json = new JSONObject();
         
 
-        for (String key : entryManager.keySet()){
+        for (LogEntry entry : entryManager){
             HashMap<String, String> innerMap = new HashMap<String, String>();
-            innerMap.put("title", entryManager.get(key).getTitle());
-            innerMap.put("comment", entryManager.get(key).getComment());
-            innerMap.put("date", entryManager.get(key).getDate().toString());
-            innerMap.put("duration", String.valueOf(entryManager.get(key).getDuartion().getSeconds()));
+            innerMap.put("title", entry.getTitle());
+            innerMap.put("comment", entry.getComment());
+            innerMap.put("date", entry.getDate().toString());
+            innerMap.put("duration", String.valueOf(entry.getDuartion().getSeconds()));
 
-            json.put(key, innerMap);
+            json.put(entry.getId(), innerMap);
         }
-        File file = new File("SavedData.json");
+        File file = new File(saveFile);
         file.createNewFile();
         FileWriter writer = new FileWriter(file);
         writer.write(json.toJSONString());
@@ -43,15 +46,19 @@ public class EntrySaverJson {
         writer.close();
         }
     
-    public void load(EntryManager entryManager) throws FileNotFoundException{
+    public void load(EntryManager entryManager) throws FileNotFoundException {
+        load(entryManager, "SavedData.json");
+    }
+
+    public void load(EntryManager entryManager, String saveFile) throws FileNotFoundException {
         
         JSONParser jsonParser = new JSONParser();
-        File file = new File("SavedData.json");
+        File file = new File(saveFile);
         Scanner reader = new Scanner(file);
         String dataString = "";
 
         while (reader.hasNextLine()){
-            dataString += reader.hasNextLine();
+            dataString += reader.nextLine();
         }
         reader.close();
 
@@ -68,9 +75,9 @@ public class EntrySaverJson {
                 entryManager.addEntry(
                     id, 
                     innerMap.get("title"),
-                     innerMap.get("comment"),
-                      LocalDate.parse(innerMap.get("date")),
-                       Duration.ofSeconds(Long.parseLong(innerMap.get("duration"))));
+                    innerMap.get("comment"),
+                    LocalDate.parse(innerMap.get("date")),
+                    Duration.ofSeconds(Long.parseLong(innerMap.get("duration"))));
                 }
 
         }
