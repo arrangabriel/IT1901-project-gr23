@@ -7,7 +7,7 @@ import java.util.Iterator;
 import java.util.Set;
 import java.util.Map.Entry;
 
-public class EntryManager implements Iterable<String> {
+public class EntryManager implements Iterable<LogEntry> {
     
     private HashMap<String, LogEntry> entryMap = new HashMap<String, LogEntry>();
 
@@ -46,9 +46,10 @@ public class EntryManager implements Iterable<String> {
     }
 
     @Override
-    public Iterator<String> iterator() {
-        // TODO: change this to iterate over the set of entries, not id's
-        return this.entryMap.keySet().iterator();
+    public Iterator<LogEntry> iterator() {
+        // TODO: refactor codef in EntrySaver to use new implementation
+        //return this.entryMap.keySet().iterator();
+        return this.entryMap.values().iterator();
     }
 
     public Set<Entry<String, LogEntry>> getEntryList() {
