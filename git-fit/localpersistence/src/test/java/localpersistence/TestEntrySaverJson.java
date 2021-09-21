@@ -29,7 +29,7 @@ public class TestEntrySaverJson {
     }
 
     @BeforeEach
-    private void deleteFile() {
+    public void deleteFile() {
         File f = new File(saveFile);
         f.delete();
     }
