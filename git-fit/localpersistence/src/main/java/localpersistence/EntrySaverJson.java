@@ -57,7 +57,7 @@ public class EntrySaverJson {
         String dataString = "";
 
         while (reader.hasNextLine()){
-            dataString += reader.hasNextLine();
+            dataString += reader.nextLine();
         }
         reader.close();
 
