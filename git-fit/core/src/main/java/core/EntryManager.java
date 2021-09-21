@@ -22,6 +22,9 @@ public class EntryManager implements Iterable<String> {
     }
 
     public void addEntry(String id, String title, String comment, LocalDate date, Duration duration) {
+        if (entryMap.containsKey(id)) {
+            throw new IllegalArgumentException("Entry allready exists");
+        }
         entryMap.put(id, new LogEntry(id, title, comment, date, duration));
     }
 
