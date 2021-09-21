@@ -13,13 +13,17 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import core.LogEntry;
+import core.EntryManager;
 
 import javafx.stage.Stage;
 
 
 public class StartPageController {
     @FXML Button addSession;
-    @FXML ListView listOfSession;
+    @FXML ListView<LogEntry> listOfEntries;
+
+
 
     
 
@@ -27,8 +31,13 @@ public class StartPageController {
     public void addSessionButtonPushed(ActionEvent event) throws IOException{
         App.setRoot("AddNewSession");
 
-      
+    }
 
+    public void addToList(EntryManager entryManager){
+        listOfEntries = new ListView();
+        for (LogEntry entry : entryManager){
+            listOfEntries.getItems().add(entry.getTitle());
+        }
     }
 
 

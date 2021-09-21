@@ -16,6 +16,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import core.EntryManager;
+import java.time.Duration;
 
 
 
@@ -59,14 +60,15 @@ public class AddNewSessionController {
 
     @FXML 
     public void createSessionButtonPushed(ActionEvent event) throws IOException{
-        //entryManager = new EntryManager();
-        //entryManager.addEntry(nameOfSessionField.getText(),commentField.getText(),sessionDatePicker.getValue(), Duration.ofSeconds(1));
+        entryManager = new EntryManager();
 
-        //logEntry.setTitle(nameOfSessionField.getText());
-        //logEntry.setComment(commentField.getText());
-        //logEntry.setDate(sessionDatePicker.GetValue());
-        //Integer.parseInt(start_h.getText)*60
-        //logEntry.setDuration()
+        entryManager.addEntry(nameOfSessionField.getText(),commentField.getText(),sessionDatePicker.getValue(), Duration.ofSeconds(1));
+
+        FXMLLoader Loader = new FXMLLoader();
+		Loader.setLocation(getClass().getResource("StartPage.fxml"));
+
+        StartPageController display = Loader.getController();
+        display.addToList(entryManager);
         App.setRoot("StartPage");
 
     }
