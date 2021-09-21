@@ -13,6 +13,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
 
 import core.EntryManager;
+import core.LogEntry;
 
 public class TestEntrySaverJson {
 
@@ -50,11 +51,11 @@ public class TestEntrySaverJson {
             Assertions.fail();
         }
         assertEquals(manager.length(), newManager.length());
-        for (String key : manager) {
-            assertEquals(manager.getEntry(key).getTitle(), newManager.getEntry(key).getTitle());
-            assertEquals(manager.getEntry(key).getComment(), newManager.getEntry(key).getComment());
-            assertEquals(manager.getEntry(key).getDate(), newManager.getEntry(key).getDate());
-            assertEquals(manager.getEntry(key).getDuartion(), newManager.getEntry(key).getDuartion());
+        for (LogEntry entry : manager) {
+            assertEquals(entry.getTitle(), entry.getTitle());
+            assertEquals(entry.getComment(), entry.getComment());
+            assertEquals(entry.getDate(), entry.getDate());
+            assertEquals(entry.getDuartion(), entry.getDuartion());
 
         }
     }

@@ -11,6 +11,7 @@ import java.util.Scanner;
 import java.time.Duration;
 
 import core.EntryManager;
+import core.LogEntry;
 
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -27,14 +28,14 @@ public class EntrySaverJson {
         JSONObject json = new JSONObject();
         
 
-        for (String key : entryManager){
+        for (LogEntry entry : entryManager){
             HashMap<String, String> innerMap = new HashMap<String, String>();
-            innerMap.put("title", entryManager.getEntry(key).getTitle());
-            innerMap.put("comment", entryManager.getEntry(key).getComment());
-            innerMap.put("date", entryManager.getEntry(key).getDate().toString());
-            innerMap.put("duration", String.valueOf(entryManager.getEntry(key).getDuartion().getSeconds()));
+            innerMap.put("title", entry.getTitle());
+            innerMap.put("comment", entry.getComment());
+            innerMap.put("date", entry.getDate().toString());
+            innerMap.put("duration", String.valueOf(entry.getDuartion().getSeconds()));
 
-            json.put(key, innerMap);
+            json.put(entry.getId(), innerMap);
         }
         File file = new File(saveFile);
         file.createNewFile();
