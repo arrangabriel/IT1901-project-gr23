@@ -57,10 +57,20 @@ public class LogEntry {
     }
 
     public void setDate(LocalDate date) {
+
+        if (date.isAfter(LocalDate.now())) {
+            throw new IllegalArgumentException("Entry cannot be set to be after current time");
+        }
+
         this.date = date;
     }
 
-    public void setDuartion(Duration duartion) {
-        this.duartion = duartion;
+    public void setDuartion(Duration duration) {
+
+        if (duration.isNegative() || duration.isZero()) {
+            throw new IllegalArgumentException("Entry duration must be positive");
+        }
+
+        this.duartion = duration;
     }
 }
