@@ -21,7 +21,7 @@ import java.time.Duration;
 
 
 public class AddNewSessionController {
-    private EntryManager entryManager;
+    
 
     //fxml component attributes
     @FXML private Label header;
@@ -60,15 +60,7 @@ public class AddNewSessionController {
 
     @FXML 
     public void createSessionButtonPushed(ActionEvent event) throws IOException{
-        entryManager = new EntryManager();
-
-        entryManager.addEntry(nameOfSessionField.getText(),commentField.getText(),sessionDatePicker.getValue(), Duration.ofSeconds(1));
-
-        FXMLLoader Loader = new FXMLLoader();
-		Loader.setLocation(getClass().getResource("StartPage.fxml"));
-
-        StartPageController display = Loader.getController();
-        display.addToList(entryManager);
+        App.entryManager.addEntry(nameOfSessionField.getText(),commentField.getText(),sessionDatePicker.getValue(), Duration.ofSeconds(1));
         App.setRoot("StartPage");
 
     }
