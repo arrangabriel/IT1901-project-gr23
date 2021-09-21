@@ -1,4 +1,5 @@
 target
+*.json
 
 # intelliJ
 .idea
@@ -14,4 +15,4 @@ git-fit.iml
 .project
 
 # mac
-.DS_Store
+.DS_Store*.json
