@@ -21,9 +21,7 @@ import javafx.stage.Stage;
 
 public class StartPageController {
     @FXML Button addSession;
-    @FXML ListView<LogEntry> listOfEntries;
-
-
+    @FXML ListView<String> listOfEntries;
 
     
 
@@ -33,9 +31,10 @@ public class StartPageController {
 
     }
 
-    public void addToList(EntryManager entryManager){
-        listOfEntries = new ListView();
-        for (LogEntry entry : entryManager){
+    public void addToList(){
+        //istOfEntries = new ListView();
+
+        for (LogEntry entry : App.entryManager){
             listOfEntries.getItems().add(entry.getTitle());
         }
     }
@@ -44,7 +43,8 @@ public class StartPageController {
     
     @FXML
     private void initialize(){
-
+        this.addToList();
+        
     }
 
 
