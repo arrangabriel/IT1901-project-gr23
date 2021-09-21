@@ -39,6 +39,13 @@ public class TestLogEntry {
     }
 
     @Test
+    public void illegalTitle() {
+        Assertions.assertThrows(IllegalArgumentException.class, () -> new LogEntry("0", "", "comment", LocalDate.now().minusDays(1), Duration.ofSeconds(hour)));
+        LogEntry entry = genValid();
+        Assertions.assertThrows(IllegalArgumentException.class, () -> entry.setTitle(""));
+    }
+
+    @Test
     public void illegalDate() {
         Assertions.assertThrows(IllegalArgumentException.class, () -> new LogEntry("0", "Test", "comment", LocalDate.now().plusDays(1), Duration.ofSeconds(hour)));
         LogEntry entry = genValid();
