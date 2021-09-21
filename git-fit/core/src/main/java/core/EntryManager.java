@@ -47,6 +47,7 @@ public class EntryManager implements Iterable<String> {
 
     @Override
     public Iterator<String> iterator() {
+        // TODO: change this to iterate over the set of entries, not id's
         return this.entryMap.keySet().iterator();
     }
 
