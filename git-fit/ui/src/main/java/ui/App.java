@@ -1,4 +1,4 @@
-package main.java.ui;
+package ui;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -12,14 +12,27 @@ import java.io.IOException;
  * JavaFX App
  */
 public class App extends Application {
+    private static Scene scene;
 
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(this.getClass().getResource("StartPage.fxml"));
-        Parent parent = fxmlLoader.load();
-        stage.setScene(new Scene(parent));
+        scene = new Scene(loadFXML("StartPage"));
+        stage.setScene(scene);
         stage.show();
     }
+
+    static void setRoot(String file) throws IOException{
+        scene.setRoot(loadFXML(file));
+
+    }
+    
+    private static Parent loadFXML (String file) throws IOException{
+        return new FXMLLoader(App.class.getResource(file + ".fxml").load());
+       
+
+    }
+
+
 
     public static void main(String[] args) {
         launch();
