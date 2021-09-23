@@ -5,7 +5,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-
 import java.io.IOException;
 import core.EntryManager;
 
@@ -25,13 +24,10 @@ public class App extends Application {
 
     static void setRoot(String file) throws IOException{
         scene.setRoot(loadFXML(file));
-
     }
     
     private static Parent loadFXML (String file) throws IOException{
         return new FXMLLoader(App.class.getResource(file + ".fxml")).load();
-       
-
     }
 
 
