@@ -16,12 +16,21 @@ public class EntryManager implements Iterable<LogEntry> {
     }
 
     public String addEntry(String title, String comment, LocalDate date, Duration duration) {
+
+        if (title == null || comment == null || date == null || duration == null) {
+            throw new IllegalArgumentException("Arguments cannot be null");
+        }
         String id = String.valueOf(entryMap.size());
         addEntry(id, title, comment, date, duration);
         return id;
     }
 
     public void addEntry(String id, String title, String comment, LocalDate date, Duration duration) {
+
+        if (id == null || title == null || comment == null || date == null || duration == null) {
+            throw new IllegalArgumentException("Arguments cannot be null");
+        }
+
         if (entryMap.containsKey(id)) {
             throw new IllegalArgumentException("Entry allready exists");
         }
@@ -29,6 +38,11 @@ public class EntryManager implements Iterable<LogEntry> {
     }
 
     public LogEntry getEntry(String id) {
+
+        if (id == null) {
+            throw new IllegalArgumentException("Arguments cannot be null");
+        }
+
         if (entryMap.containsKey(id)) {
             return entryMap.get(id);
         } else {
@@ -37,6 +51,12 @@ public class EntryManager implements Iterable<LogEntry> {
     }
 
     public void removeEntry(String id) {
+
+        if (id == null) {
+            throw new IllegalArgumentException("Arguments cannot be null");
+        }
+
+        
         if (entryMap.containsKey(id)) {
             entryMap.remove(id);
         } else {

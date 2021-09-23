@@ -13,7 +13,7 @@ public class LogEntry {
 
     public LogEntry(String id, String title, String comment, LocalDate date, Duration duration) {
 
-        if (id == null || title == null || comment == null || date == null || duration == null){
+        if (id == null || title == null || comment == null || date == null || duration == null) {
             throw new IllegalArgumentException("Arguments cannot be null");
         }
 
@@ -57,6 +57,10 @@ public class LogEntry {
     }
 
     public void setTitle(String title) {
+
+        if (title == null) {
+            throw new IllegalArgumentException("Title cannot be null");
+        }
         
         if (title.length() < 1) {
             throw new IllegalArgumentException("Title should not be empty");
@@ -66,10 +70,19 @@ public class LogEntry {
     }
 
     public void setComment(String comment) {
+
+        if (title == null) {
+            throw new IllegalArgumentException("Comment cannot be null");
+        }
+
         this.comment = comment;
     }
 
     public void setDate(LocalDate date) {
+
+        if (date == null) {
+            throw new IllegalArgumentException("Date cannot be null");
+        }
 
         if (date.isAfter(LocalDate.now())) {
             throw new IllegalArgumentException("Entry cannot be set to be after current time");
@@ -79,6 +92,10 @@ public class LogEntry {
     }
 
     public void setDuartion(Duration duration) {
+
+        if (duration == null) {
+            throw new IllegalArgumentException("Duration cannot be null");
+        }
 
         if (duration.isNegative() || duration.isZero()) {
             throw new IllegalArgumentException("Entry duration must be positive");
