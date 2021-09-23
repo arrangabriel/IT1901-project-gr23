@@ -19,11 +19,11 @@ import org.json.simple.parser.ParseException;
 
 public class EntrySaverJson {
 
-    public void save(EntryManager entryManager) throws IOException {
+    public static void save(EntryManager entryManager) throws IOException {
         save(entryManager, "SavedData.json");
     }
     
-    public void save(EntryManager entryManager, String saveFile) throws IOException {
+    public static void save(EntryManager entryManager, String saveFile) throws IOException {
 
         JSONObject json = new JSONObject();
         
@@ -46,11 +46,11 @@ public class EntrySaverJson {
         writer.close();
         }
     
-    public void load(EntryManager entryManager) throws FileNotFoundException {
+    public static void load(EntryManager entryManager) throws FileNotFoundException {
         load(entryManager, "SavedData.json");
     }
 
-    public void load(EntryManager entryManager, String saveFile) throws FileNotFoundException {
+    public static void load(EntryManager entryManager, String saveFile) throws FileNotFoundException {
         
         JSONParser jsonParser = new JSONParser();
         File file = new File(saveFile);
