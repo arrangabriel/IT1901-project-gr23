@@ -12,44 +12,34 @@ import javafx.stage.Stage;
 import core.LogEntry;
 import core.EntryManager;
 
-
 public class StartPageController {
     @FXML Button addSession;
     @FXML ListView<String> listOfEntries;
 
-    
-
-    @FXML
     /**
-     * Switches the view to AddNewSession
-     * @param event
-     * @throws IOException
+     * Switches the view to AddNewSession.
+     * @param event event data from pushed button.
+     * @throws IOException if .FXML file could not be found.
      */
+    @FXML
     public void addSessionButtonPushed(ActionEvent event) throws IOException{
         App.setRoot("AddNewSession");
-
     }
 
     /**
-     * Iterates over the EntryManager of the app and adds the titles to listOfEntries
+     * Iterates over the EntryManager of the app and adds the titles to listOfEntries.
      */
     public void addToList(){
-
         for (LogEntry entry : App.entryManager){
             listOfEntries.getItems().add(entry.getTitle());
         }
     }
 
-
-    
-    @FXML
     /**
      * Initializes the controller
      */
+    @FXML
     private void initialize(){
         this.addToList();
-        
     }
-
-
 }
