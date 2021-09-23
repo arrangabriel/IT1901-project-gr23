@@ -1,0 +1,21 @@
+target
+*.json
+
+# intelliJ
+.idea
+modules-template.iml
+modules-core.iml
+modules-ui.iml
+modules-local-persistence.iml
+get-fit.iml
+
+# vs-code
+.vscode
+.classpath
+.project
+org.eclipse.*
+
+# mac
+.DS_Store
+/git-fit/local-persistence/modules-local-persistence.iml
+/git-fit/localpersistence/modules-local-persistence.iml
