@@ -35,6 +35,11 @@ public class AddNewSessionController {
     @FXML private Button createSession;
 
     @FXML 
+    /**
+     * Adds an entry to the app EntryManager and switches the view to StartPage
+     * @param event
+     * @throws IOException
+     */
     public void createSessionButtonPushed(ActionEvent event) throws IOException{
         App.entryManager.addEntry(nameOfSessionField.getText(),commentField.getText(),sessionDatePicker.getValue(), Duration.ofSeconds(1));
         App.setRoot("StartPage");
@@ -43,6 +48,9 @@ public class AddNewSessionController {
 
 
     @FXML
+    /**
+     * Initializes the controller
+     */
     private void initialize(){
 
         // this code is quite duplicate, but ObservableValue makes it necessary
