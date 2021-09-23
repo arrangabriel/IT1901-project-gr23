@@ -12,6 +12,8 @@ import javafx.fxml.FXML;
 import javafx.scene.input.KeyCode;
 
 import java.time.Duration;
+
+import localpersistence.EntrySaverJson;
 import java.time.LocalDate;
 
 
@@ -33,14 +35,25 @@ public class AddNewSessionController {
 
     @FXML private Button createSession;
 
-    @FXML 
+    /**
+     * Adds an entry to the app EntryManager and switches the view to StartPage
+     * @param event the event data from pushed button.
+     * @throws IOException if .FXML file could not be found.
+     */
+    @FXML
     public void createSessionButtonPushed(ActionEvent event) throws IOException{
         App.entryManager.addEntry(nameOfSessionField.getText(),commentField.getText(),sessionDatePicker.getValue(), Duration.ofSeconds(1));
         App.setRoot("StartPage");
+
     }
 
+
+    /**
+     * Initializes the controller.
+     * @throws NumberFormatException if the input is too large
+     */
     @FXML
-    private void initialize(){
+    private void initialize() throws NumberFormatException {
         // this code is quite duplicate, but ObservableValue makes it necessary
         hour.textProperty().addListener((obs, oldValue, newValue) -> {
             if(!newValue.isEmpty()) {
@@ -89,4 +102,6 @@ public class AddNewSessionController {
 //            }
 //        });
     }
+
+    
 }
