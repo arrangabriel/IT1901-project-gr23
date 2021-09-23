@@ -48,9 +48,10 @@ public class AddNewSessionController {
 
     /**
      * Initializes the controller.
+     * @throws NumberFormatException if the input is too large
      */
     @FXML
-    private void initialize(){
+    private void initialize() throws NumberFormatException {
 
         // this code is quite duplicate, but ObservableValue makes it necessary
         hour.textProperty().addListener((obs, oldValue, newValue) -> {
@@ -59,7 +60,7 @@ public class AddNewSessionController {
                     // throws exception if newvalue is not numeric
                     int value = Integer.parseInt(newValue);
 
-                    // this 999 value is slightly arbitrary, to fit the input to the textField
+                    // this 99 value is slightly arbitrary, to fit the input to the textField
                     if(value < 0 || value > 99){
                         throw new NumberFormatException("Input out of allowed range.");
                     }

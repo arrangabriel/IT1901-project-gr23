@@ -23,9 +23,10 @@ public class EntryManager implements Iterable<LogEntry> {
      * @param comment the comment field for the new LogEntry as a string.
      * @param date the date field for the new LogEntry as a time.LocalDate instance.
      * @param duration the duration field for the new LogEntry as a time.Duration instance.
+     * @throws IllegalArgumentException if any of the arguments are null.
      * @return the generated id for the new LogEntry as a string.
      */
-    public String addEntry(String title, String comment, LocalDate date, Duration duration) {
+    public String addEntry(String title, String comment, LocalDate date, Duration duration) throws IllegalArgumentException {
 
         if (title == null || comment == null || date == null || duration == null) {
             throw new IllegalArgumentException("Arguments cannot be null");
@@ -42,8 +43,9 @@ public class EntryManager implements Iterable<LogEntry> {
      * @param comment the comment field for the new LogEntry as a string.
      * @param date the date field for the new LogEntry as a time.LocalDate instance.
      * @param duration the duration field for the new LogEntry as a time.Duration instance.
+     * @throws IllegalArgumentException if any of the arguments are null or the entry allready exists.
      */
-    public void addEntry(String id, String title, String comment, LocalDate date, Duration duration) {
+    public void addEntry(String id, String title, String comment, LocalDate date, Duration duration) throws IllegalArgumentException {
 
         if (id == null || title == null || comment == null || date == null || duration == null) {
             throw new IllegalArgumentException("Arguments cannot be null");
@@ -58,9 +60,10 @@ public class EntryManager implements Iterable<LogEntry> {
     /**
      * Gets a LogEntry instance by its id, if such a LogEntry exists.
      * @param id the id to be searched for.
+     * @throws IllegalArgumentException if id is null or the entry doesn't exist
      * @return the LogEntry instance with the associated id.
      */
-    public LogEntry getEntry(String id) {
+    public LogEntry getEntry(String id) throws IllegalArgumentException {
 
         if (id == null) {
             throw new IllegalArgumentException("Arguments cannot be null");
@@ -76,8 +79,9 @@ public class EntryManager implements Iterable<LogEntry> {
     /**
      * Removes a LogEntry by its id, if such a LogEntry exists.
      * @param id the id to be removed.
+     * @throws IllegalArgumentException if id is null or the entry doesn't exist
      */
-    public void removeEntry(String id) {
+    public void removeEntry(String id) throws IllegalArgumentException {
 
         if (id == null) {
             throw new IllegalArgumentException("Arguments cannot be null");
@@ -104,13 +108,6 @@ public class EntryManager implements Iterable<LogEntry> {
      */
     @Override
     public Iterator<LogEntry> iterator() {
-        // TODO: refactor codef in EntrySaver to use new implementation
-        //return this.entryMap.keySet().iterator();
         return this.entryMap.values().iterator();
-    }
-
-
-    public Set<Entry<String, LogEntry>> getEntryList() {
-        return this.entryMap.entrySet();
     }
 }

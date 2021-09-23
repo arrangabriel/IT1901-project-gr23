@@ -5,7 +5,7 @@ import java.time.LocalDate;
 
 public class LogEntry {
 
-    private String id;
+    private final String id;
     private String title;
     private String comment;
     private LocalDate date;
@@ -19,8 +19,9 @@ public class LogEntry {
      * @param comment entry text-body.
      * @param date entry date.
      * @param duration entry duration.
+     * @throws IllegalArgumentException if any of the arguments are null, duration is zero or negative, the date is ahead of now, or the title is empty.
      */
-    public LogEntry(String id, String title, String comment, LocalDate date, Duration duration) {
+    public LogEntry(String id, String title, String comment, LocalDate date, Duration duration) throws IllegalArgumentException {
 
         if (id == null || title == null || comment == null || date == null || duration == null) {
             throw new IllegalArgumentException("Arguments cannot be null");
@@ -88,9 +89,9 @@ public class LogEntry {
     /**
      * Sets the title of this logEntry if the title parameter is valid.
      * @param title a string to be set as title.
-     * @throws IllegalArgumentException if title is blank.
+     * @throws IllegalArgumentException if title is blank or null.
      */
-    public void setTitle(String title) {
+    public void setTitle(String title) throws IllegalArgumentException {
         if (title == null) {
             throw new IllegalArgumentException("Title cannot be null");
         }
@@ -105,8 +106,9 @@ public class LogEntry {
     /**
      * Sets the text body of this logEntry.
      * @param comment a string to be set as the comment field.
+     * @throws IllegalArgumentException if comment is null
      */
-    public void setComment(String comment) {
+    public void setComment(String comment) throws IllegalArgumentException{
 
         if (title == null) {
             throw new IllegalArgumentException("Comment cannot be null");
@@ -118,9 +120,9 @@ public class LogEntry {
     /**
      * Sets the date of this logEntry if date parameter is valid.
      * @param date a time.LocalDate instance to be set as the date field.
-     * @throws IllegalArgumentException if date is after the current system date.
+     * @throws IllegalArgumentException if date is after the current system date or is null.
      */
-    public void setDate(LocalDate date) {
+    public void setDate(LocalDate date) throws IllegalArgumentException{
         if (date == null) {
             throw new IllegalArgumentException("Date cannot be null");
         }
@@ -137,7 +139,7 @@ public class LogEntry {
      * @param duration a time.Duration instance to be set as the duration field.
      * @throws IllegalArgumentException if duration is zero or negative.
      */
-    public void setDuration(Duration duration) {
+    public void setDuration(Duration duration) throws IllegalArgumentException {
         // TODO - possibly add maximum time restriction to reflect input possibilities
         if (duration == null) {
             throw new IllegalArgumentException("Duration cannot be null");

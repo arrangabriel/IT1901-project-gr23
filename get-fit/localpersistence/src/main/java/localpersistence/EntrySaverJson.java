@@ -23,12 +23,20 @@ public class EntrySaverJson {
      * Saves the hashmap to SavedData.json.
      * @param entryManager the EntryManager instance to be saved.
      * @throws IOException if there was an issue during write.
+     * @throws IllegalArgumentException if entryManager is null.
      */
-    public static void save(EntryManager entryManager) throws IOException {
+    public static void save(EntryManager entryManager) throws IOException, IllegalArgumentException{
         save(entryManager, "SavedData.json");
     }
-    
-    public static void save(EntryManager entryManager, String saveFile) throws IOException {
+
+    /**
+     * Iterates over every entry in the provided EntryManager and adds their data as a string to a hashmap.
+     * Saves the hashmap to the specified JSON file.
+     * @param entryManager the EntryManager instance to be saved.
+     * @throws IOException if there was an issue during write.
+     * @throws IllegalArgumentException if entryManager or saveFile is null.
+     */
+    public static void save(EntryManager entryManager, String saveFile) throws IOException, IllegalArgumentException{
 
         if (entryManager == null || saveFile == null) {
             throw new IllegalArgumentException("Arguments cannot be null");
@@ -37,7 +45,7 @@ public class EntrySaverJson {
         JSONObject json = new JSONObject();
 
         for (LogEntry entry : entryManager){
-            HashMap<String, String> innerMap = new HashMap<String, String>();
+            HashMap<String, String> innerMap = new HashMap<>();
             innerMap.put("title", entry.getTitle());
             innerMap.put("comment", entry.getComment());
             innerMap.put("date", entry.getDate().toString());
@@ -58,8 +66,9 @@ public class EntrySaverJson {
      * Loads SavedData.json and constructs LogEntries which it appends to the provided EntryManager.
      * @param entryManager the EntryManager to load data into.
      * @throws FileNotFoundException if SavedData.JSON could not be found.
+     * @throws IllegalArgumentException if entryManager is null.
      */
-    public static void load(EntryManager entryManager) throws FileNotFoundException {
+    public static void load(EntryManager entryManager) throws FileNotFoundException, IllegalArgumentException {
         load(entryManager, "SavedData.json");
     }
 
@@ -68,8 +77,9 @@ public class EntrySaverJson {
      * @param entryManager the EntryManager to load data into.
      * @param saveFile the path of the JSON file to load from.
      * @throws FileNotFoundException if the specified path could not be found.
+     * @throws IllegalArgumentException if the entryManager or saveFile is null.
      */
-    public static void load(EntryManager entryManager, String saveFile) throws FileNotFoundException {
+    public static void load(EntryManager entryManager, String saveFile) throws FileNotFoundException, IllegalArgumentException {
 
         if (entryManager == null || saveFile == null) {
             throw new IllegalArgumentException("Arguments cannot be null");
