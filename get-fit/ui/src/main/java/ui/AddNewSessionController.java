@@ -13,10 +13,7 @@ import java.time.Duration;
 
 import core.EntryManager;
 
-
-
 public class AddNewSessionController {
-    
 
     //fxml component attributes
     @FXML private Label header;
@@ -35,23 +32,22 @@ public class AddNewSessionController {
 
     @FXML private Button createSession;
 
-    @FXML 
     /**
      * Adds an entry to the app EntryManager and switches the view to StartPage
-     * @param event
-     * @throws IOException
+     * @param event the event data from pushed button.
+     * @throws IOException if .FXML file could not be found.
      */
+    @FXML
     public void createSessionButtonPushed(ActionEvent event) throws IOException{
         App.entryManager.addEntry(nameOfSessionField.getText(),commentField.getText(),sessionDatePicker.getValue(), Duration.ofSeconds(1));
         App.setRoot("StartPage");
-
     }
 
 
-    @FXML
     /**
-     * Initializes the controller
+     * Initializes the controller.
      */
+    @FXML
     private void initialize(){
 
         // this code is quite duplicate, but ObservableValue makes it necessary
