@@ -9,8 +9,9 @@ import javafx.scene.control.TextField;
 import java.io.IOException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import core.EntryManager;
 import java.time.Duration;
+
+import core.EntryManager;
 
 
 
