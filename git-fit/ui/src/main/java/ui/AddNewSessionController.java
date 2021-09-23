@@ -34,21 +34,6 @@ public class AddNewSessionController {
 
     @FXML private Button createSession;
 
-    /*private void timeValueValidation() implements ChangeListener<String> {
-        @Override
-        public void changed(ObservebleValue<? extends String>) observeble, String OldValue, String newValue){
-            try {
-                 Integer.parseInt(observeble.GetValue()))
-            }
-            catch (NumberFormatException e){
-
-            }
-            }
-            
-        }
-
-    }*/
-
     @FXML 
     public void createSessionButtonPushed(ActionEvent event) throws IOException{
         App.entryManager.addEntry(nameOfSessionField.getText(),commentField.getText(),sessionDatePicker.getValue(), Duration.ofSeconds(1));
@@ -59,7 +44,37 @@ public class AddNewSessionController {
 
     @FXML
     private void initialize(){
+        hour.textProperty().addListener((obs, oldValue, newValue) -> {
+            if(!newValue.isEmpty()) {
+                try {
+                    // throws exception if newvalue is not numeric
+                    int value = Integer.parseInt(newValue);
 
+                    // this 999 value is slightly arbitrary, to fit the input to the textField
+                    if(value < 0 || value > 999){
+                        throw new NumberFormatException("Input out of allowed range.");
+                    }
+                } catch (NumberFormatException e) {
+                    // reset to previous value
+                    hour.setText(oldValue);
+                }
+            }
+        });
+
+        min.textProperty().addListener((obs, oldValue, newValue) -> {
+            if(!newValue.isEmpty()) {
+                try {
+                    // throws exception if newvalue is not numeric
+                    int value = Integer.parseInt(newValue);
+                    if(value < 0 || value > 59){
+                        throw new NumberFormatException("Input out of allowed range.");
+                    }
+                } catch (NumberFormatException e) {
+                    // reset to previous value
+                    min.setText(oldValue);
+                }
+            }
+        });
     }
 
     
