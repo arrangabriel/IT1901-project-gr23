@@ -12,6 +12,7 @@ import javafx.fxml.FXML;
 import java.time.Duration;
 
 import core.EntryManager;
+import localpersistence.EntrySaverJson;
 
 public class AddNewSessionController {
 
@@ -40,7 +41,7 @@ public class AddNewSessionController {
     @FXML
     public void createSessionButtonPushed(ActionEvent event) throws IOException{
         App.entryManager.addEntry(nameOfSessionField.getText(),commentField.getText(),sessionDatePicker.getValue(), Duration.ofSeconds(1));
-        save(App.entryManager);
+        EntrySaverJson.save(App.entryManager);
         App.setRoot("StartPage");
     }
 

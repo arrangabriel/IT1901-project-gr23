@@ -59,7 +59,7 @@ public class EntrySaverJson {
      * @param entryManager the EntryManager to load data into.
      * @throws FileNotFoundException if SavedData.JSON could not be found.
      */
-    public void load(EntryManager entryManager) throws FileNotFoundException {
+    public static void load(EntryManager entryManager) throws FileNotFoundException {
         load(entryManager, "SavedData.json");
     }
 
