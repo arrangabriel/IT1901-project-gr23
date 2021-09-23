@@ -35,7 +35,7 @@ public class TestLogEntry {
         Assertions.assertEquals(title, entry.getTitle());
         Assertions.assertEquals(comment, entry.getComment());
         Assertions.assertEquals(date, entry.getDate());
-        Assertions.assertEquals(duration, entry.getDuartion());
+        Assertions.assertEquals(duration, entry.getDuration());
     }
 
     @Test
@@ -56,7 +56,7 @@ public class TestLogEntry {
     public void illegalDuration() {
         Assertions.assertThrows(IllegalArgumentException.class, () -> new LogEntry("0", "Test", "comment", LocalDate.now().minusDays(1), Duration.ofSeconds(-1*hour)));
         LogEntry entry = genValid();
-        Assertions.assertThrows(IllegalArgumentException.class, () -> entry.setDuartion(Duration.ofSeconds(-1*hour)));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> entry.setDuration(Duration.ofSeconds(-1*hour)));
     }
 
 }

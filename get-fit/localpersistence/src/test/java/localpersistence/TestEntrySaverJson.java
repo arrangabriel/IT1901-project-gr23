@@ -53,7 +53,7 @@ public class TestEntrySaverJson {
             Assertions.assertEquals(entry.getTitle(), entry.getTitle());
             Assertions.assertEquals(entry.getComment(), entry.getComment());
             Assertions.assertEquals(entry.getDate(), entry.getDate());
-            Assertions.assertEquals(entry.getDuartion(), entry.getDuartion());
+            Assertions.assertEquals(entry.getDuration(), entry.getDuration());
 
         }
     }

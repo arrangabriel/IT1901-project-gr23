@@ -33,7 +33,7 @@ public class EntrySaverJson {
             innerMap.put("title", entry.getTitle());
             innerMap.put("comment", entry.getComment());
             innerMap.put("date", entry.getDate().toString());
-            innerMap.put("duration", String.valueOf(entry.getDuartion().getSeconds()));
+            innerMap.put("duration", String.valueOf(entry.getDuration().getSeconds()));
 
             json.put(entry.getId(), innerMap);
         }
