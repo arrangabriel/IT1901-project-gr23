@@ -28,8 +28,9 @@ public class StartPageController {
 
         for (LogEntry entry : App.entryManager){
             listOfEntries.getItems().add(entry.getTitle());
-
+            
         }
+
     }
 
 
