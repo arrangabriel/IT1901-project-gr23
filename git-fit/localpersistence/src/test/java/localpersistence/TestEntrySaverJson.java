@@ -1,7 +1,5 @@
 package localpersistence;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -50,12 +48,12 @@ public class TestEntrySaverJson {
         } catch (FileNotFoundException e) {
             Assertions.fail();
         }
-        assertEquals(manager.length(), newManager.length());
+        Assertions.assertEquals(manager.length(), newManager.length());
         for (LogEntry entry : manager) {
-            assertEquals(entry.getTitle(), entry.getTitle());
-            assertEquals(entry.getComment(), entry.getComment());
-            assertEquals(entry.getDate(), entry.getDate());
-            assertEquals(entry.getDuartion(), entry.getDuartion());
+            Assertions.assertEquals(entry.getTitle(), entry.getTitle());
+            Assertions.assertEquals(entry.getComment(), entry.getComment());
+            Assertions.assertEquals(entry.getDate(), entry.getDate());
+            Assertions.assertEquals(entry.getDuartion(), entry.getDuartion());
 
         }
     }
