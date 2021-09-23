@@ -19,11 +19,19 @@ public class StartPageController {
     
 
     @FXML
+    /**
+     * Switches the view to AddNewSession
+     * @param event
+     * @throws IOException
+     */
     public void addSessionButtonPushed(ActionEvent event) throws IOException{
         App.setRoot("AddNewSession");
 
     }
 
+    /**
+     * Iterates over the EntryManager of the app and adds the titles to listOfEntries
+     */
     public void addToList(){
 
         for (LogEntry entry : App.entryManager){
@@ -34,6 +42,9 @@ public class StartPageController {
 
     
     @FXML
+    /**
+     * Initializes the controller
+     */
     private void initialize(){
         this.addToList();
         
