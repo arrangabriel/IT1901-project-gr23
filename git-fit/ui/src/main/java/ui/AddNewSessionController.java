@@ -54,6 +54,9 @@ public class AddNewSessionController {
                     if(value < 0 || value > 99){
                         throw new NumberFormatException("Input out of allowed range.");
                     }
+                    if(value == 0){
+                        hour.setText("0");
+                    }
                 } catch (NumberFormatException e) {
                     // reset to previous value
                     hour.setText(oldValue);
@@ -68,6 +71,9 @@ public class AddNewSessionController {
                     int value = Integer.parseInt(newValue);
                     if(value < 0 || value > 59){
                         throw new NumberFormatException("Input out of allowed range.");
+                    }
+                    if(value == 0){
+                        min.setText("0");
                     }
                 } catch (NumberFormatException e) {
                     // reset to previous value
