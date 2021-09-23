@@ -18,25 +18,22 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 public class EntrySaverJson {
-
     /**
      * Iterates over every entry in the provided EntryManager and adds their data as a string to a hashmap.
      * Saves the hashmap to SavedData.json.
      * @param entryManager the EntryManager instance to be saved.
      * @throws IOException if there was an issue during write.
      */
-    public void save(EntryManager entryManager) throws IOException {
+    public static void save(EntryManager entryManager) throws IOException {
         save(entryManager, "SavedData.json");
     }
     
-    /**
-     * Iterates over every entry in the provided EntryManager and adds their data as a string to a hashmap.
-     * Saves the hashmap to a specified JSON file.
-     * @param entryManager the EntryManager instance to be saved
-     * @param saveFile the path to the JSON file.
-     * @throws IOException if there was an issue during write.
-     */
-    public void save(EntryManager entryManager, String saveFile) throws IOException {
+    public static void save(EntryManager entryManager, String saveFile) throws IOException {
+
+        if (entryManager == null || saveFile == null) {
+            throw new IllegalArgumentException("Arguments cannot be null");
+        }
+
         JSONObject json = new JSONObject();
 
         for (LogEntry entry : entryManager){
@@ -72,7 +69,12 @@ public class EntrySaverJson {
      * @param saveFile the path of the JSON file to load from.
      * @throws FileNotFoundException if the specified path could not be found.
      */
-    public void load(EntryManager entryManager, String saveFile) throws FileNotFoundException {
+    public static void load(EntryManager entryManager, String saveFile) throws FileNotFoundException {
+
+        if (entryManager == null || saveFile == null) {
+            throw new IllegalArgumentException("Arguments cannot be null");
+        }
+
         JSONParser jsonParser = new JSONParser();
         File file = new File(saveFile);
         Scanner reader = new Scanner(file);

@@ -22,7 +22,7 @@ public class LogEntry {
      */
     public LogEntry(String id, String title, String comment, LocalDate date, Duration duration) {
 
-        if (id == null || title == null || comment == null || date == null || duration == null){
+        if (id == null || title == null || comment == null || date == null || duration == null) {
             throw new IllegalArgumentException("Arguments cannot be null");
         }
 
@@ -91,6 +91,10 @@ public class LogEntry {
      * @throws IllegalArgumentException if title is blank.
      */
     public void setTitle(String title) {
+        if (title == null) {
+            throw new IllegalArgumentException("Title cannot be null");
+        }
+        
         if (title.isEmpty()) {
             throw new IllegalArgumentException("Title should not be empty");
         }
@@ -103,6 +107,11 @@ public class LogEntry {
      * @param comment a string to be set as the comment field.
      */
     public void setComment(String comment) {
+
+        if (title == null) {
+            throw new IllegalArgumentException("Comment cannot be null");
+        }
+
         this.comment = comment;
     }
 
@@ -112,6 +121,10 @@ public class LogEntry {
      * @throws IllegalArgumentException if date is after the current system date.
      */
     public void setDate(LocalDate date) {
+        if (date == null) {
+            throw new IllegalArgumentException("Date cannot be null");
+        }
+
         if (date.isAfter(LocalDate.now())) {
             throw new IllegalArgumentException("Entry cannot be set to be after current time");
         }
@@ -126,6 +139,10 @@ public class LogEntry {
      */
     public void setDuration(Duration duration) {
         // TODO - possibly add maximum time restriction to reflect input possibilities
+        if (duration == null) {
+            throw new IllegalArgumentException("Duration cannot be null");
+        }
+
         if (duration.isNegative() || duration.isZero()) {
             throw new IllegalArgumentException("Entry duration must be positive");
         }

@@ -32,7 +32,9 @@ public class StartPageController {
     public void addToList(){
         for (LogEntry entry : App.entryManager){
             listOfEntries.getItems().add(entry.getTitle());
+            
         }
+
     }
 
     /**
