@@ -4,7 +4,7 @@
 
 This is the coding project to group 2123 in the course IT1901. The project is git modified and it will open in gitpod when you push the lable above this README-file 
 
-## Running and building of the project 
+## Running and building the project 
 
 The project is built and run using maven. Use `mvn install` from  the **get-fit**-folder to build the project. The project must be built before you can run the tests.
 
