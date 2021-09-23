@@ -28,6 +28,7 @@ public class StartPageController {
 
         for (LogEntry entry : App.entryManager){
             listOfEntries.getItems().add(entry.getTitle());
+
         }
     }
 
@@ -36,6 +37,7 @@ public class StartPageController {
     @FXML
     private void initialize(){
         this.addToList();
+        load(App.entryManager);
         
     }
 

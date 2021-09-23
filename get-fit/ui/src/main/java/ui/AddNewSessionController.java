@@ -38,6 +38,8 @@ public class AddNewSessionController {
     public void createSessionButtonPushed(ActionEvent event) throws IOException{
         App.entryManager.addEntry(nameOfSessionField.getText(),commentField.getText(),sessionDatePicker.getValue(), Duration.ofSeconds(1));
         App.setRoot("StartPage");
+        save(App.entryManager);
+
 
     }
 
