@@ -25,9 +25,9 @@ public class TestEntryManager {
     @Test
     public void testAddEntry() {
         EntryManager manager = genValidManager();
-        Assertions.assertEquals(0, manager.length());
+        Assertions.assertEquals(0, manager.entryCount());
         manager.addEntry("0", "title", "comment", LocalDate.now().minusDays(1), Duration.ofSeconds(hour));
-        Assertions.assertEquals(1, manager.length());
+        Assertions.assertEquals(1, manager.entryCount());
         Assertions.assertThrows(IllegalArgumentException.class, () -> manager.addEntry("0", "title", "comment", LocalDate.now().minusDays(1), Duration.ofSeconds(hour)));
     }
 
@@ -35,9 +35,9 @@ public class TestEntryManager {
     public void testRemoveEntry() {
         EntryManager manager = genValidManager();
         manager.addEntry("0", "title", "comment", LocalDate.now().minusDays(1), Duration.ofSeconds(hour));
-        Assertions.assertEquals(1, manager.length());
+        Assertions.assertEquals(1, manager.entryCount());
         manager.removeEntry("0");
-        Assertions.assertEquals(0, manager.length());
+        Assertions.assertEquals(0, manager.entryCount());
         Assertions.assertThrows(IllegalArgumentException.class, () -> manager.removeEntry("0"));
     }
 

@@ -9,13 +9,12 @@ import javafx.scene.control.TextField;
 import java.io.IOException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import core.EntryManager;
 import java.time.Duration;
 
-
+import core.EntryManager;
+import localpersistence.EntrySaverJson;
 
 public class AddNewSessionController {
-    
 
     //fxml component attributes
     @FXML private Label header;
@@ -34,14 +33,22 @@ public class AddNewSessionController {
 
     @FXML private Button createSession;
 
-    @FXML 
+    /**
+     * Adds an entry to the app EntryManager and switches the view to StartPage
+     * @param event the event data from pushed button.
+     * @throws IOException if .FXML file could not be found.
+     */
+    @FXML
     public void createSessionButtonPushed(ActionEvent event) throws IOException{
         App.entryManager.addEntry(nameOfSessionField.getText(),commentField.getText(),sessionDatePicker.getValue(), Duration.ofSeconds(1));
-        save(App.entryManager);
+        EntrySaverJson.save(App.entryManager);
         App.setRoot("StartPage");
     }
 
 
+    /**
+     * Initializes the controller.
+     */
     @FXML
     private void initialize(){
 
