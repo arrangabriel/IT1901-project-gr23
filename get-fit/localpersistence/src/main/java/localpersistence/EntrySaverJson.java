@@ -25,6 +25,10 @@ public class EntrySaverJson {
     
     public void save(EntryManager entryManager, String saveFile) throws IOException {
 
+        if (entryManager == null || saveFile == null) {
+            throw new IllegalArgumentException("Arguments cannot be null");
+        }
+
         JSONObject json = new JSONObject();
         
 
@@ -51,6 +55,11 @@ public class EntrySaverJson {
     }
 
     public void load(EntryManager entryManager, String saveFile) throws FileNotFoundException {
+
+        if (entryManager == null || saveFile == null) {
+            throw new IllegalArgumentException("Arguments cannot be null");
+        }
+
         
         JSONParser jsonParser = new JSONParser();
         File file = new File(saveFile);
