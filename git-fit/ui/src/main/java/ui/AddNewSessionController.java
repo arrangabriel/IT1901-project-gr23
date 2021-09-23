@@ -6,15 +6,9 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.stage.Stage;
 import core.EntryManager;
 import java.time.Duration;
 
@@ -49,14 +43,11 @@ public class AddNewSessionController {
             catch (NumberFormatException e){
 
             }
-
             }
             
         }
 
     }*/
-
-
 
     @FXML 
     public void createSessionButtonPushed(ActionEvent event) throws IOException{
@@ -64,8 +55,6 @@ public class AddNewSessionController {
         App.setRoot("StartPage");
 
     }
-
-  
 
 
     @FXML
