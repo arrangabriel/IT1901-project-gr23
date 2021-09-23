@@ -9,13 +9,12 @@ import javafx.scene.control.TextField;
 import java.io.IOException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import core.EntryManager;
 import java.time.Duration;
 
-
+import core.EntryManager;
+import localpersistence.EntrySaverJson;
 
 public class AddNewSessionController {
-    
 
     //fxml component attributes
     @FXML private Label header;
@@ -34,14 +33,23 @@ public class AddNewSessionController {
 
     @FXML private Button createSession;
 
-    @FXML 
-    public void createSessionButtonPushed(ActionEvent event) throws IOException {
+    /**
+     * Adds an entry to the app EntryManager and switches the view to StartPage
+     * @param event the event data from pushed button.
+     * @throws IOException if .FXML file could not be found.
+     */
+    @FXML
+    public void createSessionButtonPushed(ActionEvent event) throws IOException{
         App.entryManager.addEntry(nameOfSessionField.getText(),commentField.getText(),sessionDatePicker.getValue(), Duration.ofSeconds(1));
+        EntrySaverJson.save(App.entryManager);
         App.setRoot("StartPage");
-
     }
 
 
+    /**
+     * Initializes the controller.
+     * @throws NumberFormatException if the input is too large
+     */
     @FXML
     private void initialize() throws NumberFormatException {
 
@@ -52,7 +60,7 @@ public class AddNewSessionController {
                     // throws exception if newvalue is not numeric
                     int value = Integer.parseInt(newValue);
 
-                    // this 999 value is slightly arbitrary, to fit the input to the textField
+                    // this 99 value is slightly arbitrary, to fit the input to the textField
                     if(value < 0 || value > 99){
                         throw new NumberFormatException("Input out of allowed range.");
                     }

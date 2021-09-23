@@ -18,11 +18,24 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 public class EntrySaverJson {
-
-    public static void save(EntryManager entryManager) throws IOException, IllegalArgumentException {
+    /**
+     * Iterates over every entry in the provided EntryManager and adds their data as a string to a hashmap.
+     * Saves the hashmap to SavedData.json.
+     * @param entryManager the EntryManager instance to be saved.
+     * @throws IOException if there was an issue during write.
+     * @throws IllegalArgumentException if entryManager is null.
+     */
+    public static void save(EntryManager entryManager) throws IOException, IllegalArgumentException{
         save(entryManager, "SavedData.json");
     }
-    
+
+    /**
+     * Iterates over every entry in the provided EntryManager and adds their data as a string to a hashmap.
+     * Saves the hashmap to the specified JSON file.
+     * @param entryManager the EntryManager instance to be saved.
+     * @throws IOException if there was an issue during write.
+     * @throws IllegalArgumentException if entryManager or saveFile is null.
+     */
     public static void save(EntryManager entryManager, String saveFile) throws IOException, IllegalArgumentException{
 
         if (entryManager == null || saveFile == null) {
@@ -30,14 +43,13 @@ public class EntrySaverJson {
         }
 
         JSONObject json = new JSONObject();
-        
 
         for (LogEntry entry : entryManager){
             HashMap<String, String> innerMap = new HashMap<>();
             innerMap.put("title", entry.getTitle());
             innerMap.put("comment", entry.getComment());
             innerMap.put("date", entry.getDate().toString());
-            innerMap.put("duration", String.valueOf(entry.getDuartion().getSeconds()));
+            innerMap.put("duration", String.valueOf(entry.getDuration().getSeconds()));
 
             json.put(entry.getId(), innerMap);
         }
@@ -50,17 +62,29 @@ public class EntrySaverJson {
         writer.close();
         }
     
+    /**
+     * Loads SavedData.json and constructs LogEntries which it appends to the provided EntryManager.
+     * @param entryManager the EntryManager to load data into.
+     * @throws FileNotFoundException if SavedData.JSON could not be found.
+     * @throws IllegalArgumentException if entryManager is null.
+     */
     public static void load(EntryManager entryManager) throws FileNotFoundException, IllegalArgumentException {
         load(entryManager, "SavedData.json");
     }
 
+    /**
+     * Loads a specified JSON file and constructs LogEntries which it appends to the provided EntryManager.
+     * @param entryManager the EntryManager to load data into.
+     * @param saveFile the path of the JSON file to load from.
+     * @throws FileNotFoundException if the specified path could not be found.
+     * @throws IllegalArgumentException if the entryManager or saveFile is null.
+     */
     public static void load(EntryManager entryManager, String saveFile) throws FileNotFoundException, IllegalArgumentException {
 
         if (entryManager == null || saveFile == null) {
             throw new IllegalArgumentException("Arguments cannot be null");
         }
 
-        
         JSONParser jsonParser = new JSONParser();
         File file = new File(saveFile);
         Scanner reader = new Scanner(file);

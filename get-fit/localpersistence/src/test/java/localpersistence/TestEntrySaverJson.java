@@ -42,18 +42,18 @@ public class TestEntrySaverJson {
             Assertions.fail();
         }
         EntryManager newManager = new EntryManager();
-        Assertions.assertEquals(0, newManager.length());
+        Assertions.assertEquals(0, newManager.entryCount());
         try {
             saver.load(newManager, saveFile);
         } catch (FileNotFoundException e) {
             Assertions.fail();
         }
-        Assertions.assertEquals(manager.length(), newManager.length());
+        Assertions.assertEquals(manager.entryCount(), newManager.entryCount());
         for (LogEntry entry : manager) {
             Assertions.assertEquals(entry.getTitle(), entry.getTitle());
             Assertions.assertEquals(entry.getComment(), entry.getComment());
             Assertions.assertEquals(entry.getDate(), entry.getDate());
-            Assertions.assertEquals(entry.getDuartion(), entry.getDuartion());
+            Assertions.assertEquals(entry.getDuration(), entry.getDuration());
 
         }
     }
