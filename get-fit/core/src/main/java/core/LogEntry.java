@@ -5,7 +5,7 @@ import java.time.LocalDate;
 
 public class LogEntry {
 
-    private String id;
+    private final String id;
     private String title;
     private String comment;
     private LocalDate date;
