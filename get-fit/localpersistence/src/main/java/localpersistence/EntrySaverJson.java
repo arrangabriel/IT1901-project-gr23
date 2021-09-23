@@ -22,8 +22,8 @@ public class EntrySaverJson {
     /**
      * Iterates over every entry in the provided EntryManager and adds their data as a string to a hashmap.
      * Saves the hashmap to SavedData.json.
-     * @param entryManager
-     * @throws IOException
+     * @param entryManager the EntryManager instance to be saved.
+     * @throws IOException if there was an issue during write.
      */
     public void save(EntryManager entryManager) throws IOException {
         save(entryManager, "SavedData.json");
@@ -32,14 +32,12 @@ public class EntrySaverJson {
     /**
      * Iterates over every entry in the provided EntryManager and adds their data as a string to a hashmap.
      * Saves the hashmap to a specified JSON file.
-     * @param entryManager
-     * @param saveFile
-     * @throws IOException
+     * @param entryManager the EntryManager instance to be saved
+     * @param saveFile the path to the JSON file.
+     * @throws IOException if there was an issue during write.
      */
     public void save(EntryManager entryManager, String saveFile) throws IOException {
-
         JSONObject json = new JSONObject();
-        
 
         for (LogEntry entry : entryManager){
             HashMap<String, String> innerMap = new HashMap<String, String>();
@@ -61,8 +59,8 @@ public class EntrySaverJson {
     
     /**
      * Loads SavedData.json and constructs LogEntries which it appends to the provided EntryManager.
-     * @param entryManager
-     * @throws FileNotFoundException
+     * @param entryManager the EntryManager to load data into.
+     * @throws FileNotFoundException if SavedData.JSON could not be found.
      */
     public void load(EntryManager entryManager) throws FileNotFoundException {
         load(entryManager, "SavedData.json");
@@ -70,12 +68,11 @@ public class EntrySaverJson {
 
     /**
      * Loads a specified JSON file and constructs LogEntries which it appends to the provided EntryManager.
-     * @param entryManager
-     * @param saveFile
-     * @throws FileNotFoundException
+     * @param entryManager the EntryManager to load data into.
+     * @param saveFile the path of the JSON file to load from.
+     * @throws FileNotFoundException if the specified path could not be found.
      */
     public void load(EntryManager entryManager, String saveFile) throws FileNotFoundException {
-        
         JSONParser jsonParser = new JSONParser();
         File file = new File(saveFile);
         Scanner reader = new Scanner(file);
