@@ -72,8 +72,4 @@ public class EntryManager implements Iterable<LogEntry> {
     public Iterator<LogEntry> iterator() {
         return this.entryMap.values().iterator();
     }
-
-    public Set<Entry<String, LogEntry>> getEntryList() {
-        return this.entryMap.entrySet();
-    }
 }
