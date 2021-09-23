@@ -51,7 +51,7 @@ public class AddNewSessionController {
                     int value = Integer.parseInt(newValue);
 
                     // this 999 value is slightly arbitrary, to fit the input to the textField
-                    if(value < 0 || value > 999){
+                    if(value < 0 || value > 99){
                         throw new NumberFormatException("Input out of allowed range.");
                     }
                 } catch (NumberFormatException e) {
