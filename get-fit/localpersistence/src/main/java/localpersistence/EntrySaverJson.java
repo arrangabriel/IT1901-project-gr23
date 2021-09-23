@@ -29,7 +29,7 @@ public class EntrySaverJson {
         
 
         for (LogEntry entry : entryManager){
-            HashMap<String, String> innerMap = new HashMap<String, String>();
+            HashMap<String, String> innerMap = new HashMap<>();
             innerMap.put("title", entry.getTitle());
             innerMap.put("comment", entry.getComment());
             innerMap.put("date", entry.getDate().toString());

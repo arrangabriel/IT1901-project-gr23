@@ -9,7 +9,7 @@ import java.util.Map.Entry;
 
 public class EntryManager implements Iterable<LogEntry> {
     
-    private HashMap<String, LogEntry> entryMap = new HashMap<String, LogEntry>();
+    private final HashMap<String, LogEntry> entryMap = new HashMap<>();
 
     public EntryManager() {
 
@@ -50,8 +50,6 @@ public class EntryManager implements Iterable<LogEntry> {
 
     @Override
     public Iterator<LogEntry> iterator() {
-        // TODO: refactor codef in EntrySaver to use new implementation
-        //return this.entryMap.keySet().iterator();
         return this.entryMap.values().iterator();
     }
 
