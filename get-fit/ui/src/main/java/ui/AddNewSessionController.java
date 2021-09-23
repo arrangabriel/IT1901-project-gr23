@@ -9,14 +9,13 @@ import javafx.scene.control.TextField;
 import java.io.IOException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import core.EntryManager;
-import java.time.Duration;
+import javafx.scene.input.KeyCode;
 
+import java.time.Duration;
+import java.time.LocalDate;
 
 
 public class AddNewSessionController {
-    
-
     //fxml component attributes
     @FXML private Label header;
     @FXML private Label timeLabel;
@@ -38,13 +37,10 @@ public class AddNewSessionController {
     public void createSessionButtonPushed(ActionEvent event) throws IOException{
         App.entryManager.addEntry(nameOfSessionField.getText(),commentField.getText(),sessionDatePicker.getValue(), Duration.ofSeconds(1));
         App.setRoot("StartPage");
-
     }
-
 
     @FXML
     private void initialize(){
-
         // this code is quite duplicate, but ObservableValue makes it necessary
         hour.textProperty().addListener((obs, oldValue, newValue) -> {
             if(!newValue.isEmpty()) {
@@ -84,7 +80,13 @@ public class AddNewSessionController {
                 }
             }
         });
+        // set current date on startup
+        sessionDatePicker.setValue(LocalDate.now());
+        // TODO - implement this properly
+//        sessionDatePicker.setOnKeyPressed(event -> {
+//            if(event.getCode() == KeyCode.ENTER) {
+//                sessionDatePicker.show();
+//            }
+//        });
     }
-
-    
 }
