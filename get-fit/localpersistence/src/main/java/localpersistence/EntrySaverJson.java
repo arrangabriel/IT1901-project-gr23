@@ -19,10 +19,23 @@ import org.json.simple.parser.ParseException;
 
 public class EntrySaverJson {
 
+    /**
+     * Iterates over every entry in the provided EntryManager and adds their data as a string to a hashmap.
+     * Saves the hashmap to SavedData.json.
+     * @param entryManager
+     * @throws IOException
+     */
     public void save(EntryManager entryManager) throws IOException {
         save(entryManager, "SavedData.json");
     }
     
+    /**
+     * Iterates over every entry in the provided EntryManager and adds their data as a string to a hashmap.
+     * Saves the hashmap to a specified JSON file.
+     * @param entryManager
+     * @param saveFile
+     * @throws IOException
+     */
     public void save(EntryManager entryManager, String saveFile) throws IOException {
 
         JSONObject json = new JSONObject();
@@ -46,10 +59,21 @@ public class EntrySaverJson {
         writer.close();
         }
     
+    /**
+     * Loads SavedData.json and constructs LogEntries which it appends to the provided EntryManager.
+     * @param entryManager
+     * @throws FileNotFoundException
+     */
     public void load(EntryManager entryManager) throws FileNotFoundException {
         load(entryManager, "SavedData.json");
     }
 
+    /**
+     * Loads a specified JSON file and constructs LogEntries which it appends to the provided EntryManager.
+     * @param entryManager
+     * @param saveFile
+     * @throws FileNotFoundException
+     */
     public void load(EntryManager entryManager, String saveFile) throws FileNotFoundException {
         
         JSONParser jsonParser = new JSONParser();
