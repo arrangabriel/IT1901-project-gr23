@@ -6,7 +6,7 @@
     <artifactId>modules-local-persistence</artifactId>
 
     <parent>
-        <artifactId>git-fit</artifactId>
+        <artifactId>get-fit</artifactId>
         <groupId>gr2123</groupId>
         <version>0.0.1-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
