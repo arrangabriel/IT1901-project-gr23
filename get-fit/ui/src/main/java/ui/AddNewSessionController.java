@@ -9,13 +9,15 @@ import javafx.scene.control.TextField;
 import java.io.IOException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.input.KeyCode;
+
 import java.time.Duration;
 
-import core.EntryManager;
 import localpersistence.EntrySaverJson;
+import java.time.LocalDate;
+
 
 public class AddNewSessionController {
-
     //fxml component attributes
     @FXML private Label header;
     @FXML private Label timeLabel;
@@ -40,6 +42,7 @@ public class AddNewSessionController {
      */
     @FXML
     public void createSessionButtonPushed(ActionEvent event) throws IOException{
+        // TODO - handle exception when entry could not be created
         App.entryManager.addEntry(nameOfSessionField.getText(),commentField.getText(),sessionDatePicker.getValue(), Duration.ofSeconds(1));
         EntrySaverJson.save(App.entryManager);
         App.setRoot("StartPage");
@@ -52,7 +55,6 @@ public class AddNewSessionController {
      */
     @FXML
     private void initialize() throws NumberFormatException {
-
         // this code is quite duplicate, but ObservableValue makes it necessary
         hour.textProperty().addListener((obs, oldValue, newValue) -> {
             if(!newValue.isEmpty()) {
@@ -60,7 +62,7 @@ public class AddNewSessionController {
                     // throws exception if newvalue is not numeric
                     int value = Integer.parseInt(newValue);
 
-                    // this 99 value is slightly arbitrary, to fit the input to the textField
+                    // this 999 value is slightly arbitrary, to fit the input to the textField
                     if(value < 0 || value > 99){
                         throw new NumberFormatException("Input out of allowed range.");
                     }
@@ -92,6 +94,14 @@ public class AddNewSessionController {
                 }
             }
         });
+        // set current date on startup
+        sessionDatePicker.setValue(LocalDate.now());
+        // TODO - implement this properly
+//        sessionDatePicker.setOnKeyPressed(event -> {
+//            if(event.getCode() == KeyCode.ENTER) {
+//                sessionDatePicker.show();
+//            }
+//        });
     }
 
     
