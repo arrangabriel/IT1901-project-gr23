@@ -11,7 +11,7 @@ public class LogEntry {
     private LocalDate date;
     private Duration duartion;
 
-    public LogEntry(String id, String title, String comment, LocalDate date, Duration duration) {
+    public LogEntry(String id, String title, String comment, LocalDate date, Duration duration) throws IllegalArgumentException {
 
         if (id == null || title == null || comment == null || date == null || duration == null) {
             throw new IllegalArgumentException("Arguments cannot be null");
@@ -56,7 +56,7 @@ public class LogEntry {
         return id;
     }
 
-    public void setTitle(String title) {
+    public void setTitle(String title) throws IllegalArgumentException {
 
         if (title == null) {
             throw new IllegalArgumentException("Title cannot be null");
@@ -69,7 +69,7 @@ public class LogEntry {
         this.title = title;
     }
 
-    public void setComment(String comment) {
+    public void setComment(String comment) throws IllegalArgumentException {
 
         if (title == null) {
             throw new IllegalArgumentException("Comment cannot be null");
@@ -78,7 +78,7 @@ public class LogEntry {
         this.comment = comment;
     }
 
-    public void setDate(LocalDate date) {
+    public void setDate(LocalDate date) throws IllegalArgumentException {
 
         if (date == null) {
             throw new IllegalArgumentException("Date cannot be null");
@@ -91,7 +91,7 @@ public class LogEntry {
         this.date = date;
     }
 
-    public void setDuartion(Duration duration) {
+    public void setDuartion(Duration duration) throws IllegalArgumentException {
 
         if (duration == null) {
             throw new IllegalArgumentException("Duration cannot be null");

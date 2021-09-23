@@ -15,7 +15,7 @@ public class EntryManager implements Iterable<LogEntry> {
 
     }
 
-    public String addEntry(String title, String comment, LocalDate date, Duration duration) {
+    public String addEntry(String title, String comment, LocalDate date, Duration duration) throws IllegalArgumentException {
 
         if (title == null || comment == null || date == null || duration == null) {
             throw new IllegalArgumentException("Arguments cannot be null");
@@ -25,7 +25,7 @@ public class EntryManager implements Iterable<LogEntry> {
         return id;
     }
 
-    public void addEntry(String id, String title, String comment, LocalDate date, Duration duration) {
+    public void addEntry(String id, String title, String comment, LocalDate date, Duration duration) throws IllegalArgumentException {
 
         if (id == null || title == null || comment == null || date == null || duration == null) {
             throw new IllegalArgumentException("Arguments cannot be null");
@@ -37,7 +37,7 @@ public class EntryManager implements Iterable<LogEntry> {
         entryMap.put(id, new LogEntry(id, title, comment, date, duration));
     }
 
-    public LogEntry getEntry(String id) {
+    public LogEntry getEntry(String id) throws IllegalArgumentException {
 
         if (id == null) {
             throw new IllegalArgumentException("Arguments cannot be null");
@@ -50,7 +50,7 @@ public class EntryManager implements Iterable<LogEntry> {
         }
     }
 
-    public void removeEntry(String id) {
+    public void removeEntry(String id) throws IllegalArgumentException {
 
         if (id == null) {
             throw new IllegalArgumentException("Arguments cannot be null");

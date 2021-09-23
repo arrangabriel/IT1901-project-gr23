@@ -35,7 +35,7 @@ public class AddNewSessionController {
     @FXML private Button createSession;
 
     @FXML 
-    public void createSessionButtonPushed(ActionEvent event) throws IOException{
+    public void createSessionButtonPushed(ActionEvent event) throws IOException {
         App.entryManager.addEntry(nameOfSessionField.getText(),commentField.getText(),sessionDatePicker.getValue(), Duration.ofSeconds(1));
         App.setRoot("StartPage");
 
@@ -43,7 +43,7 @@ public class AddNewSessionController {
 
 
     @FXML
-    private void initialize(){
+    private void initialize() throws NumberFormatException {
 
         // this code is quite duplicate, but ObservableValue makes it necessary
         hour.textProperty().addListener((obs, oldValue, newValue) -> {
