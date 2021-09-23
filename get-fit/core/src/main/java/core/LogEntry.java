@@ -80,7 +80,7 @@ public class LogEntry {
 
     public void setDate(LocalDate date) {
 
-        if (LocalDate == null) {
+        if (date == null) {
             throw new IllegalArgumentException("Date cannot be null");
         }
 
