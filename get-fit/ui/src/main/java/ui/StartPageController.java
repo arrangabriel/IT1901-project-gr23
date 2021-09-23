@@ -38,7 +38,6 @@ public class StartPageController {
     @FXML
     private void initialize(){
         this.addToList();
-        load(App.entryManager);
         
     }
 
