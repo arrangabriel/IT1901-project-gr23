@@ -13,6 +13,7 @@ get-fit.iml
 .vscode
 .classpath
 .project
+org.eclipse.*
 
 # mac
 .DS_Store
