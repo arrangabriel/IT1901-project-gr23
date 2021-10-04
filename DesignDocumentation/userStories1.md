@@ -42,6 +42,8 @@ As the normal user I want to be able to edit or delete the sessions that I saved
 
 The user needs to be able to delete and edit sessions in case they input the wrong data. This will give the user the opportunity to correct possible mistakes, which is important for the user experience.
 
+![Scenario-us3](/DesignDocumentation/Scenario-us3.png)
+
 ### Important to be able to see
 - Edit button
 - Delete button
@@ -57,6 +59,8 @@ As an athlete I want to be able to see the progress that I have made through sta
 
 The user need to be able to see statistics from earlier sessions combined. This will make the application able to give important data like total duration, add data like heartrate, how you feel and so on. The application can then do calculations to give feedback that will give the user important information like average speed and feedback based on the data that is given as an input. 
 
+![Scenario-us4](/DesignDocumentation/Scenario-us4.png)
+
 ### Important to be able to see
 - Statistics page button
 - Field for choosing time period
@@ -65,5 +69,6 @@ The user need to be able to see statistics from earlier sessions combined. This 
 ### Important to do
 - Choose time period
 - Be able to choose how the statistics should be presented (different graphs)
+- Sort sessions by different criterias
 
 
