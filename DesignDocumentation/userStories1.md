@@ -1,38 +1,39 @@
-# Brukerhistorier
+# User stories
 
-I denne filen ligger en samling av brukerhistorier. Hensikten med brukerhistoriene er å gi utviklerne innblikk i hvilke krav systemet må tilfredstille.
+In this file there is a collection og user stories. The purpose of the user stories is to give the developer insight in to which criterias the system must fulfill.
 
-## Treningskommentarer (us-1)
-Som en person som er glad i trening ønsker jeg å føre en treningsdagbok, sånn at jeg kan gå tilbake for å se hva jeg mente om tidligere treningsøkter.
+## Exercise comments (us-1)
+As a person who loves exercise i want to register my exercise, so that I can see how I felt during earlier sessions.
 
-Brukeren har behov for å kunne lagre kommentarer om treningsøktene. Dette vil gi brukeren bedre innsikt i tidligere treningsøkter og brukeren kan velge å oppgi mer informasjon om treningsøkten enn det appen tilbyr.
+The user need to be able to save comments about sessions. This will give the user better insight in earlier exercise sessions, and he/she can choose to save more information to a session than the application provide. 
 
-![Kult bilde](/DesignDocumentation/Scenario-us1.png)
+![Scenario-us1](/DesignDocumentation/Scenario-us1.png)
 
-### Viktig å kunne se
-- Tidligere økter
-- Kommentarer 
-- Varighet
+### Important to be able to see
+- Earlier sessions
+- Comments
+- Duration
 
-### Viktig å kunne gjøre
-- Lagre økter
-- Skrive kommentarer til økten 
+### Important to be able to do
+- Save sessions
+- Write comments 
 
-## Varighet og antall (us-2)
-Som student ønsker jeg å registrere antall økter jeg har, og hvor lenge øktene varte, så jeg klarer å opprettholde treningsnivået mitt i en hektisk studie-hverdag.
+## Number of sessions and duration (us-2)
 
-Brukeren har behov for å registrere treninger de gjennomfører. Når en prøver å opprettholde helse er det viktig å skaffe seg oversikt. Dette for å bevisstgjøre seg om hvorvidt de klarer å nå de målene de har for seg.
+As a student I want to be able to register the number of sessions that I complete, so that I can keep a steady exercise routine in my busy everyday life. 
 
-![Kult bilde](/DesignDocumentation/Scenario-us2.png)
+The user needs to be able to register the number of sessions they complete. When they try to keep a healthy lifestyle it is important to have a good system where all the sessions are organized to keep control. This will give the user data to easily track if they have reached their exercise goals. 
 
-### Viktig å kunne se
-- Tidligere økter
-- Antall tidligere økter
-- Varighet på øktene
+![Scenario-us2](/DesignDocumentation/Scenario-us2.png)
 
-### Viktig å kunne gjøre 
-- Lagre økter
-- Dato
-- Varighet
+### Important to be able to see
+- Earlier sessions
+- The number of earlier sessions
+- The duration of the sessions
+
+### Important to be able to do
+- Save sessions
+- Date
+- Duration
 
 
