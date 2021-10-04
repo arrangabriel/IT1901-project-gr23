@@ -36,4 +36,34 @@ The user needs to be able to register the number of sessions they complete. When
 - Date
 - Duration
 
+## Edit and delete (us-3)
+
+As the normal user I want to be able to edit or delete the sessions that I saved, so that I can correct any mistakes that I have made. 
+
+The user needs to be able to delete and edit sessions in case they input the wrong data. This will give the user the opportunity to correct possible mistakes, which is important for the user experience.
+
+### Important to be able to see
+- Edit button
+- Delete button
+- Edit page/add session
+
+### Important to be able to do
+- Change duration, comment and other data
+- Delete session
+
+## Statistics (us-4)
+
+As an athlete I want to be able to see the progress that I have made through statistics, so that my future sessions can give me the fastet progression possible. 
+
+The user need to be able to see statistics from earlier sessions combined. This will make the application able to give important data like total duration, add data like heartrate, how you feel and so on. The application can then do calculations to give feedback that will give the user important information like average speed and feedback based on the data that is given as an input. 
+
+### Important to be able to see
+- Statistics page button
+- Field for choosing time period
+- Easily visible statistics
+
+### Important to do
+- Choose time period
+- Be able to choose how the statistics should be presented (different graphs)
+
 
