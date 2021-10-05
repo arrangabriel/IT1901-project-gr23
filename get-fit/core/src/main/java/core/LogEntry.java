@@ -11,6 +11,12 @@ public class LogEntry {
     private LocalDate date;
     private Duration duration;
 
+    public enum SORT_CONFIGURATIONS {
+        DATE,
+        DURATION,
+        TITLE
+    }
+
     /**
      * A logEntry instance represents a single workout-entry internally.
      * Has fields for the elements of a workout-entry, getters for them, and setters for those that should be mutable.
