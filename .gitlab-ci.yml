@@ -1,0 +1,9 @@
+default:
+  image: maven
+
+test:
+  stage: test
+  script: ./test.sh
+  only:
+    - master
+    - merge_requests
