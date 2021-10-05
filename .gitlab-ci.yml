@@ -8,3 +8,11 @@ test:
     - if: '$CI_COMMIT_REF_NAME == "master"'
       when: always
     - when: never
+
+test-coverage:
+  stage: test
+  script: cd get-fit && mvn verify
+  rules:
+    - if: '$CI_COMMIT_REF_NAME == "master"'
+      when: always
+    - when: never
