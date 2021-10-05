@@ -35,16 +35,15 @@ public class TestEntrySaverJson {
     @Test
     public void testSaveAndLoad() {
         EntryManager manager = genValidManager();
-        EntrySaverJson saver = new EntrySaverJson();
         try {
-            saver.save(manager, saveFile);
+            EntrySaverJson.save(manager, saveFile);
         } catch (IOException e) {
             Assertions.fail();
         }
         EntryManager newManager = new EntryManager();
         Assertions.assertEquals(0, newManager.entryCount());
         try {
-            saver.load(newManager, saveFile);
+            EntrySaverJson.load(newManager, saveFile);
         } catch (FileNotFoundException e) {
             Assertions.fail();
         }
