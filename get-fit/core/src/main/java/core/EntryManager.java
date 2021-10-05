@@ -2,10 +2,10 @@ package core;
 
 import java.time.Duration;
 import java.time.LocalDate;
-import java.util.HashMap;
-import java.util.Iterator;
+import java.util.*;
 import java.util.Map.Entry;
-import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class EntryManager implements Iterable<LogEntry> {
 
@@ -109,5 +109,38 @@ public class EntryManager implements Iterable<LogEntry> {
     @Override
     public Iterator<LogEntry> iterator() {
         return this.entryMap.values().iterator();
+    }
+
+    /**
+     * Using the
+     * @param sortConfig one of the supported
+     * @param reverse reverses output if set to true.
+     * @param tags filter by tags.
+     * @return an iterator of LogEntry instances, sorted by the parameter criteria.
+     */
+    public Iterator<LogEntry> sortedIterator(LogEntry.SORT_CONFIGURATIONS sortConfig, Boolean reverse, Object... tags) {
+        if (sortConfig == null){
+            throw new IllegalArgumentException("Sorting configuration cannot be null.");
+        }
+
+        Stream<LogEntry> entryStream = entryMap.values().stream();
+
+        // TODO - filter out by tag when tag-enum exists
+        //for (Object tag : tags) {
+        //    entryStream.filter((entry) -> {
+        //
+        //    });
+        //}
+
+        switch (sortConfig){
+            case DATE -> entryStream = entryStream.sorted(Comparator.comparing(LogEntry::getDate));
+            case DURATION -> entryStream = entryStream.sorted(Comparator.comparing(LogEntry::getDuration));
+            case TITLE -> entryStream = entryStream.sorted(Comparator.comparing(LogEntry::getTitle));
+        }
+
+        List<LogEntry> entryList = entryStream.collect(Collectors.toList());
+        if (reverse){ Collections.reverse(entryList); }
+
+        return entryList.iterator();
     }
 }

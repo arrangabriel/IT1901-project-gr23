@@ -11,6 +11,8 @@ public class LogEntry {
     private LocalDate date;
     private Duration duration;
 
+    // it is paramount that all sorting configurations are supported by all possible LogEntries.
+    // Keep in mind when some LogEntry fields become optional.
     public enum SORT_CONFIGURATIONS {
         DATE,
         DURATION,
