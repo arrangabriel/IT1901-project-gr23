@@ -9,7 +9,7 @@ import java.util.stream.Stream;
 
 public class EntryManager implements Iterable<LogEntry> {
 
-    private HashMap<String, LogEntry> entryMap = new HashMap<String, LogEntry>();
+    private HashMap<String, LogEntry> entryMap = new HashMap<>();
 
     /**
      * An entry manager instance is a wrapper for a list of logEntries.
@@ -112,8 +112,8 @@ public class EntryManager implements Iterable<LogEntry> {
     }
 
     /**
-     * Using the
-     * @param sortConfig one of the supported
+     * Returns an iterator sorted by parameters.
+     * @param sortConfig one of the supported sorting configurations.
      * @param reverse reverses output if set to true.
      * @param tags filter by tags.
      * @return an iterator of LogEntry instances, sorted by the parameter criteria.
@@ -142,5 +142,14 @@ public class EntryManager implements Iterable<LogEntry> {
         if (reverse){ Collections.reverse(entryList); }
 
         return entryList.iterator();
+    }
+
+    /**
+     * Returns an iterator sorted by parameters.
+     * @param sortConfig one of the supported sorting configurations.
+     * @return an iterator of LogEntry instances, sorted by the parameter criteria.
+     */
+    public Iterator<LogEntry> sortedIterator(LogEntry.SORT_CONFIGURATIONS sortConfig){
+        return sortedIterator(sortConfig, false);
     }
 }
