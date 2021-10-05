@@ -4,6 +4,5 @@ default:
 test:
   stage: test
   script: cd get-fit && mvn test
-  only:
-    - master
-    - merge_requests
+  rules:
+    - if: '$CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "master"'
