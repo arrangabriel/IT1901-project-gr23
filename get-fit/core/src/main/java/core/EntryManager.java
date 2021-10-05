@@ -9,7 +9,7 @@ import java.util.stream.Stream;
 
 public class EntryManager implements Iterable<LogEntry> {
 
-    private HashMap<String, LogEntry> entryMap = new HashMap<>();
+    private final HashMap<String, LogEntry> entryMap = new HashMap<>();
 
     /**
      * An entry manager instance is a wrapper for a list of logEntries.
