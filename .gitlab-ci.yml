@@ -1,6 +1,7 @@
 default:
   image: maven
 
+
 test:
   stage: test
   script: cd get-fit && mvn test
@@ -8,6 +9,7 @@ test:
     - if: '$CI_COMMIT_REF_NAME == "master"'
       when: always
     - when: never
+
 
 test-coverage:
   stage: test
