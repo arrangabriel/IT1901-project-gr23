@@ -3,7 +3,6 @@ package core;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.util.*;
-import java.util.Map.Entry;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -37,13 +36,13 @@ public class EntryManager implements Iterable<LogEntry> {
     }
 
     /**
-     * Adds an already existing LogEntry (ie. one that has an id) to this EntryManager
+     * Adds an already existing LogEntry (i.e. one that has an id) to this EntryManager
      * @param id the id for the new LogEntry
      * @param title the title field for the new LogEntry as a string.
      * @param comment the comment field for the new LogEntry as a string.
      * @param date the date field for the new LogEntry as a time.LocalDate instance.
      * @param duration the duration field for the new LogEntry as a time.Duration instance.
-     * @throws IllegalArgumentException if any of the arguments are null or the entry allready exists.
+     * @throws IllegalArgumentException if any of the arguments are null or the entry already exists.
      */
     public void addEntry(String id, String title, String comment, LocalDate date, Duration duration) throws IllegalArgumentException {
 
@@ -52,7 +51,7 @@ public class EntryManager implements Iterable<LogEntry> {
         }
 
         if (entryMap.containsKey(id)) {
-            throw new IllegalArgumentException("Entry allready exists");
+            throw new IllegalArgumentException("Entry already exists");
         }
         entryMap.put(id, new LogEntry(id, title, comment, date, duration));
     }
@@ -103,7 +102,7 @@ public class EntryManager implements Iterable<LogEntry> {
     }
 
     /**
-     * Gives an iterator for the LogEntries in this Entrymanager in an arbitrary order.
+     * Gives an iterator for the LogEntries in this EntryManager in an arbitrary order.
      * @return an iterator of LogEntry instances.
      */
     @Override
