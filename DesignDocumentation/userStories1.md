@@ -1,11 +1,11 @@
 # User stories
 
-In this file there is a collection og user stories. The purpose of the user stories is to give the developer insight in to which criterias the system must fulfill.
+In this file there is a collection og user stories. The purpose of the user stories is to give the developer insight in to which criteria the system must fulfill.
 
 ## Exercise comments (us-1)
-As a person who loves exercise i want to register my exercise, so that I can see how I felt during earlier sessions.
+As a person who loves to exercise i want to register my workouts, so that I can see how I felt during my earlier workouts.
 
-The user need to be able to save comments about sessions. This will give the user better insight in earlier exercise sessions, and he/she can choose to save more information to a session than the application provide. 
+The user needs to be able to save comments about workouts. This will give the user better insight in earlier exercise sessions, and they can choose to save more information to a session than the application provide.
 
 ![Scenario-us1](/DesignDocumentation/Scenario-us1.png)
 
@@ -20,7 +20,7 @@ The user need to be able to save comments about sessions. This will give the use
 
 ## Number of sessions and duration (us-2)
 
-As a student I want to be able to register the number of sessions that I complete, so that I can keep a steady exercise routine in my busy everyday life. 
+As a student I want to be able to register the number of workouts I do, so that I can keep a steady exercise routine in my busy everyday life. 
 
 The user needs to be able to register the number of sessions they complete. When they try to keep a healthy lifestyle it is important to have a good system where all the sessions are organized to keep control. This will give the user data to easily track if they have reached their exercise goals. 
 
@@ -38,7 +38,7 @@ The user needs to be able to register the number of sessions they complete. When
 
 ## Edit and delete (us-3)
 
-As the normal user I want to be able to edit or delete the sessions that I saved, so that I can correct any mistakes that I have made. 
+As the average user I want to be able to edit or delete the sessions that I save, so that I can correct any mistakes that I have made. 
 
 The user needs to be able to delete and edit sessions in case they input the wrong data. This will give the user the opportunity to correct possible mistakes, which is important for the user experience.
 
@@ -57,7 +57,7 @@ The user needs to be able to delete and edit sessions in case they input the wro
 
 As an athlete I want to be able to see the progress that I have made through statistics, so that my future sessions can give me the fastet progression possible. 
 
-The user need to be able to see statistics from earlier sessions combined. This will make the application able to give important data like total duration, add data like heartrate, how you feel and so on. The application can then do calculations to give feedback that will give the user important information like average speed and feedback based on the data that is given as an input. 
+The user need to be able to see statistics derived from earlier sessions. This will le the application give important data like total duration, heartrate, how you feel etc. The application can then do calculations to give feedback that will give the user important information like average speed and feedback based on the data that is given as an input. 
 
 ![Scenario-us4](/DesignDocumentation/Scenario-us4.png)
 
