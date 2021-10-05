@@ -114,22 +114,20 @@ public class EntryManager implements Iterable<LogEntry> {
      * Returns an iterator sorted by parameters.
      * @param sortConfig one of the supported sorting configurations.
      * @param reverse reverses output if set to true.
-     * @param tags filter by tags.
+     * @param excerciseCategory the main excercise category to sort by.
+     * @param excerciseSubCategory the exercise sub-category to sort by.
      * @return an iterator of LogEntry instances, sorted by the parameter criteria.
      */
-    public Iterator<LogEntry> sortedIterator(LogEntry.SORT_CONFIGURATIONS sortConfig, Boolean reverse, Object... tags) {
+    public Iterator<LogEntry> sortedIterator(LogEntry.SORT_CONFIGURATIONS sortConfig, Boolean reverse,
+                                             Object excerciseCategory /*this will be an enum from the LogEntry class*/,
+                                             Object excerciseSubCategory /*this will be an enum from the LogEntry class*/) {
         if (sortConfig == null){
             throw new IllegalArgumentException("Sorting configuration cannot be null.");
         }
 
         Stream<LogEntry> entryStream = entryMap.values().stream();
 
-        // TODO - filter out by tag when tag-enum exists
-        //for (Object tag : tags) {
-        //    entryStream.filter((entry) -> {
-        //
-        //    });
-        //}
+        // TODO - filter out when category-enums exist
 
         switch (sortConfig){
             case DATE -> entryStream = entryStream.sorted(Comparator.comparing(LogEntry::getDate));
@@ -149,6 +147,32 @@ public class EntryManager implements Iterable<LogEntry> {
      * @return an iterator of LogEntry instances, sorted by the parameter criteria.
      */
     public Iterator<LogEntry> sortedIterator(LogEntry.SORT_CONFIGURATIONS sortConfig){
-        return sortedIterator(sortConfig, false);
+        // TODO when exerciseCategory and subCategory are enums null cannot be passed
+        return sortedIterator(sortConfig, false, null, null);
+    }
+
+    /**
+     * Returns an iterator sorted by parameters.
+     * @param sortConfig one of the supported sorting configurations.
+     * @param exerciseCategory one of the supported exercise categories.
+     * @return an iterator of LogEntry instances, sorted by the parameter criteria.
+     */
+    public Iterator<LogEntry> sortedIterator(LogEntry.SORT_CONFIGURATIONS sortConfig,
+                                             Object exerciseCategory /*this will be an enum from the LogEntry class*/){
+        // TODO when exerciseCategory and subCategory are enums null cannot be passed
+        return sortedIterator(sortConfig, false, exerciseCategory, null);
+    }
+
+    /**
+     * Returns an iterator sorted by parameters.
+     * @param sortConfig one of the supported sorting configurations.
+     * @param exerciseCategory one of the supported exercise categories.
+     * @param exerciseSubCategory one of the supported exercise subCategories.
+     * @return an iterator of LogEntry instances, sorted by the parameter criteria.
+     */
+    public Iterator<LogEntry> sortedIterator(LogEntry.SORT_CONFIGURATIONS sortConfig,
+                                             Object exerciseCategory /*this will be an enum from the LogEntry class*/,
+                                             Object exerciseSubCategory /*this will be an enum from the LogEntry class*/){
+        return sortedIterator(sortConfig, false, exerciseCategory, exerciseSubCategory);
     }
 }
