@@ -7,7 +7,7 @@ As a person who loves to exercise i want to register my workouts, so that I can 
 
 The user needs to be able to save comments about workouts. This will give the user better insight in earlier exercise sessions, and they can choose to save more information to a session than the application provide.
 
-![Scenario-us1](/DesignDocumentation/Scenario-us1.png)
+![Scenario-us1](/DesignDocumentation/Scenarios/Scenario-us1.png)
 
 ### Important to be able to see
 - Earlier sessions
@@ -24,7 +24,7 @@ As a student I want to be able to register the number of workouts I do, so that 
 
 The user needs to be able to register the number of sessions they complete. When they try to keep a healthy lifestyle it is important to have a good system where all the sessions are organized to keep control. This will give the user data to easily track if they have reached their exercise goals. 
 
-![Scenario-us2](/DesignDocumentation/Scenario-us2.png)
+![Scenario-us2](/DesignDocumentation/Scenarios/Scenario-us2.png)
 
 ### Important to be able to see
 - Earlier sessions
@@ -42,7 +42,7 @@ As the average user I want to be able to edit or delete the sessions that I save
 
 The user needs to be able to delete and edit sessions in case they input the wrong data. This will give the user the opportunity to correct possible mistakes, which is important for the user experience.
 
-![Scenario-us3](/DesignDocumentation/Scenario-us3.png)
+![Scenario-us3](/DesignDocumentation/Scenarios/Scenario-us3.png)
 
 ### Important to be able to see
 - Edit button
@@ -59,7 +59,7 @@ As an athlete I want to be able to see the progress that I have made through sta
 
 The user need to be able to see statistics derived from earlier sessions. This will le the application give important data like total duration, heartrate, how you feel etc. The application can then do calculations to give feedback that will give the user important information like average speed and feedback based on the data that is given as an input. 
 
-![Scenario-us4](/DesignDocumentation/Scenario-us4.png)
+![Scenario-us4](/DesignDocumentation/Scenarios/Scenario-us4.png)
 
 ### Important to be able to see
 - Statistics page button
