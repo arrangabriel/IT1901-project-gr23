@@ -114,20 +114,27 @@ public class EntryManager implements Iterable<LogEntry> {
      * Returns an iterator sorted by parameters.
      * @param sortConfig one of the supported sorting configurations.
      * @param reverse reverses output if set to true.
-     * @param excerciseCategory the main excercise category to sort by.
-     * @param excerciseSubCategory the exercise sub-category to sort by.
+     * @param exerciseCategory the main excercise category to sort by.
+     * @param exerciseSubCategory the exercise sub-category to sort by.
      * @return an iterator of LogEntry instances, sorted by the parameter criteria.
+     * @throws IllegalArgumentException if any arguments are null.
      */
-    public Iterator<LogEntry> sortedIterator(LogEntry.SORT_CONFIGURATIONS sortConfig, Boolean reverse,
-                                             Object excerciseCategory /*this will be an enum from the LogEntry class*/,
-                                             Object excerciseSubCategory /*this will be an enum from the LogEntry class*/) {
-        if (sortConfig == null){
-            throw new IllegalArgumentException("Sorting configuration cannot be null.");
+    public Iterator<LogEntry> sortedIterator(LogEntry.SORT_CONFIGURATIONS sortConfig, boolean reverse, LogEntry.EXCERCISE_CATEGORIES exerciseCategory,
+                                             LogEntry.Subcategories exerciseSubCategory) throws IllegalArgumentException{
+        if (sortConfig == null || exerciseCategory == null){
+            throw new IllegalArgumentException("Arguments cannot be null.");
         }
 
         Stream<LogEntry> entryStream = entryMap.values().stream();
 
-        // TODO - filter out when category-enums exist
+        if(!exerciseCategory.equals(LogEntry.EXCERCISE_CATEGORIES.ANY)) {
+            entryStream = entryStream.filter((entry) -> entry.getExcerciseCategory().equals(exerciseCategory));
+            // If null, don't perform subcategory filtering.
+            // This being a general ANY enum would be nice, but can't be done with current structure.
+            if(exerciseSubCategory != null) {
+                entryStream = entryStream.filter((entry) -> entry.getExcerciseSubCategory().equals(exerciseSubCategory));
+            }
+        }
 
         switch (sortConfig){
             case DATE -> entryStream = entryStream.sorted(Comparator.comparing(LogEntry::getDate));
@@ -147,8 +154,17 @@ public class EntryManager implements Iterable<LogEntry> {
      * @return an iterator of LogEntry instances, sorted by the parameter criteria.
      */
     public Iterator<LogEntry> sortedIterator(LogEntry.SORT_CONFIGURATIONS sortConfig){
-        // TODO when exerciseCategory and subCategory are enums null cannot be passed
-        return sortedIterator(sortConfig, false, null, null);
+        return sortedIterator(sortConfig, false, LogEntry.EXCERCISE_CATEGORIES.ANY, null);
+    }
+
+    /**
+     * Returns an iterator sorted by parameters.
+     * @param sortConfig one of the supported sorting configurations.
+     * @param reverse reverses output if set to true.
+     * @return an iterator of LogEntry instances, sorted by the parameter criteria.
+     */
+    public Iterator<LogEntry> sortedIterator(LogEntry.SORT_CONFIGURATIONS sortConfig, boolean reverse){
+        return sortedIterator(sortConfig, reverse, LogEntry.EXCERCISE_CATEGORIES.ANY, null);
     }
 
     /**
@@ -158,9 +174,20 @@ public class EntryManager implements Iterable<LogEntry> {
      * @return an iterator of LogEntry instances, sorted by the parameter criteria.
      */
     public Iterator<LogEntry> sortedIterator(LogEntry.SORT_CONFIGURATIONS sortConfig,
-                                             Object exerciseCategory /*this will be an enum from the LogEntry class*/){
-        // TODO when exerciseCategory and subCategory are enums null cannot be passed
+                                             LogEntry.EXCERCISE_CATEGORIES exerciseCategory){
         return sortedIterator(sortConfig, false, exerciseCategory, null);
+    }
+
+    /**
+     * Returns an iterator sorted by parameters.
+     * @param sortConfig one of the supported sorting configurations.
+     * @param reverse reverses output if set to true.
+     * @param exerciseCategory one of the supported exercise categories.
+     * @return an iterator of LogEntry instances, sorted by the parameter criteria.
+     */
+    public Iterator<LogEntry> sortedIterator(LogEntry.SORT_CONFIGURATIONS sortConfig, boolean reverse,
+                                             LogEntry.EXCERCISE_CATEGORIES exerciseCategory){
+        return sortedIterator(sortConfig, reverse, exerciseCategory, null);
     }
 
     /**
@@ -171,8 +198,8 @@ public class EntryManager implements Iterable<LogEntry> {
      * @return an iterator of LogEntry instances, sorted by the parameter criteria.
      */
     public Iterator<LogEntry> sortedIterator(LogEntry.SORT_CONFIGURATIONS sortConfig,
-                                             Object exerciseCategory /*this will be an enum from the LogEntry class*/,
-                                             Object exerciseSubCategory /*this will be an enum from the LogEntry class*/){
+                                             LogEntry.EXCERCISE_CATEGORIES exerciseCategory,
+                                             LogEntry.Subcategories exerciseSubCategory){
         return sortedIterator(sortConfig, false, exerciseCategory, exerciseSubCategory);
     }
 }

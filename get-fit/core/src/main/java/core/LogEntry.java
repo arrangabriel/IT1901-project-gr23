@@ -27,7 +27,7 @@ public class LogEntry {
 
     // expand these in the future
     public enum EXCERCISE_CATEGORIES {
-        ALL,
+        ANY,
         STRENGTH(STRENGTH_SUBCATEGORIES.values()),
         RUNNING(CARDIO_SUBCATEGORIES.values()),
         CYCLING(CARDIO_SUBCATEGORIES.values()),
@@ -49,7 +49,6 @@ public class LogEntry {
     }
 
     enum STRENGTH_SUBCATEGORIES implements Subcategories {
-        ANY,
         PUSH,
         PULL,
         LEGS,
@@ -57,7 +56,6 @@ public class LogEntry {
     }
 
     enum CARDIO_SUBCATEGORIES implements Subcategories {
-        ANY,
         SHORT,
         LONG,
         HIGH_INTENSITY,
@@ -151,8 +149,8 @@ public class LogEntry {
      * Returns the subcategories for the logEntry's main category
      * @return an array of Subcategories
      */
-    public Subcategories[] getExcerciseSubCategories() {
-        return excerciseCategory.getSubcategories();
+    public Subcategories getExcerciseSubCategory() {
+        return exerciseSubCategory;
     }
 
     /**
