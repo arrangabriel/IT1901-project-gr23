@@ -10,6 +10,57 @@ public class LogEntry {
     private String comment;
     private LocalDate date;
     private Duration duration;
+    private EXCERCISE_CATEGORIES excerciseCategory;
+    private Subcategories exerciseSubCategory;
+
+    // it is paramount that all sorting configurations are supported by all possible LogEntries.
+    // Keep in mind when some LogEntry fields become optional.
+    public enum SORT_CONFIGURATIONS {
+        DATE,
+        DURATION,
+        TITLE
+    }
+
+    // It will become evident if this is needed later
+    // public interface Category {}
+    public interface Subcategories /* extends Category */ {}
+
+    // expand these in the future
+    public enum EXCERCISE_CATEGORIES {
+        ANY,
+        STRENGTH(STRENGTH_SUBCATEGORIES.values()),
+        RUNNING(CARDIO_SUBCATEGORIES.values()),
+        CYCLING(CARDIO_SUBCATEGORIES.values()),
+        SWIMMING(CARDIO_SUBCATEGORIES.values());
+
+        private final Subcategories[] subcategories;
+
+        EXCERCISE_CATEGORIES(Subcategories[] subcategories) {
+            this.subcategories = subcategories;
+        }
+
+        EXCERCISE_CATEGORIES() {
+            this.subcategories = new Subcategories[]{};
+        }
+
+        Subcategories[] getSubcategories() {
+            return this.subcategories;
+        }
+    }
+
+    enum STRENGTH_SUBCATEGORIES implements Subcategories {
+        PUSH,
+        PULL,
+        LEGS,
+        FULL_BODY
+    }
+
+    enum CARDIO_SUBCATEGORIES implements Subcategories {
+        SHORT,
+        LONG,
+        HIGH_INTENSITY,
+        LOW_INTENSITY
+    }
 
     /**
      * A logEntry instance represents a single workout-entry internally.
@@ -84,6 +135,22 @@ public class LogEntry {
      */
     public String getId() {
         return id;
+    }
+
+    /**
+     * Returns the main exercise category of this logEntry.
+     * @return the EXERCISE_CATEGORIES for the category.
+     */
+    public EXCERCISE_CATEGORIES getExcerciseCategory() {
+        return excerciseCategory;
+    }
+
+    /**
+     * Returns the subcategories for the logEntry's main category
+     * @return an array of Subcategories
+     */
+    public Subcategories getExcerciseSubCategory() {
+        return exerciseSubCategory;
     }
 
     /**
