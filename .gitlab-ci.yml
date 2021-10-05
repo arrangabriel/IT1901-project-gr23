@@ -3,7 +3,7 @@ default:
 
 test:
   stage: test
-  script: ./test.sh
+  script: cd get-fit && mvn test
   only:
     - master
     - merge_requests
