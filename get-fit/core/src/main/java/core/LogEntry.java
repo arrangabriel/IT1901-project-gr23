@@ -2,6 +2,8 @@ package core;
 
 import java.time.Duration;
 import java.time.LocalDate;
+import java.util.Arrays;
+import java.util.List;
 
 public class LogEntry {
 
@@ -10,6 +12,8 @@ public class LogEntry {
     private String comment;
     private LocalDate date;
     private Duration duration;
+    private EXCERCISE_CATEGORIES excerciseCategory;
+    private Subcategories exerciseSubCategory;
 
     // it is paramount that all sorting configurations are supported by all possible LogEntries.
     // Keep in mind when some LogEntry fields become optional.
@@ -17,6 +21,46 @@ public class LogEntry {
         DATE,
         DURATION,
         TITLE
+    }
+
+    // It will become evident if this is needed later
+    // public interface Category {}
+    public interface Subcategories /* extends Category */ {}
+
+    // expand these in the future
+    public enum EXCERCISE_CATEGORIES {
+        STRENGTH(STRENGTH_SUBCATEGORIES.values()),
+        RUNNING(CARDIO_SUBCATEGORIES.values()),
+        CYCLING(CARDIO_SUBCATEGORIES.values()),
+        SWIMMING(CARDIO_SUBCATEGORIES.values());
+
+        Subcategories[] subcategories;
+
+        EXCERCISE_CATEGORIES(Subcategories[] subcategories) {
+            this.subcategories = subcategories;
+        }
+
+        EXCERCISE_CATEGORIES() {
+            this.subcategories = new Subcategories[]{};
+        }
+
+        Subcategories[] getSubcategories() {
+            return this.subcategories;
+        }
+    }
+
+    enum STRENGTH_SUBCATEGORIES implements Subcategories {
+        PUSH,
+        PULL,
+        LEGS,
+        FULL_BODY
+    }
+
+    enum CARDIO_SUBCATEGORIES implements Subcategories {
+        SHORT,
+        LONG,
+        HIGH_INTENSITY,
+        LOW_INTENSITY
     }
 
     /**
