@@ -50,6 +50,12 @@ public class EntrySaverJson {
             innerMap.put("comment", entry.getComment());
             innerMap.put("date", entry.getDate().toString());
             innerMap.put("duration", String.valueOf(entry.getDuration().getSeconds()));
+            innerMap.put("feeling", entry.getFeeling().toString());
+            innerMap.put("distance", entry.getDistance().toString());
+            innerMap.put("maxHeartRate", entry.getMaxHeartRate().toString());
+            innerMap.put("exerciseCategory", entry.getExerciseCategory().toString());
+            innerMap.put("exerciseSubCategory", entry.getExerciseSubCategories().toString());
+
 
             json.put(entry.getId(), innerMap);
         }
@@ -110,8 +116,15 @@ public class EntrySaverJson {
                     innerMap.get("title"),
                     innerMap.get("comment"),
                     LocalDate.parse(innerMap.get("date")),
-                    Duration.ofSeconds(Long.parseLong(innerMap.get("duration"))));
-                }
+                    Duration.ofSeconds(Long.parseLong(innerMap.get("duration"))),
+                    Double.parseDouble(innerMap.get("feeling")),
+                    Double.parseDouble(innerMap.get("distance")),
+                    Double.parseDouble(innerMap.get("maxHeartRate")),
+                    LogEntry.EXERCISE_CATEGORIES.valueOf(innerMap.get("exerciseCategory"))
+                    // TODO: Get sub-category values dynamically: LogEntry.Subcategories.valueOf(innerMap.get("exerciseSubCategory")),
+                    
+                );
+            }
 
         }
         catch (ParseException pException){
