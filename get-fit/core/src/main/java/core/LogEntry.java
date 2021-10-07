@@ -12,7 +12,7 @@ public class LogEntry {
     private Duration duration;
     private EXCERCISE_CATEGORIES excerciseCategory;
     private Subcategories exerciseSubCategory;
-    private Double fealing;
+    private Double feeling;
 
     //Parameters for endurance exercise:
     private Double distance;
@@ -77,12 +77,12 @@ public class LogEntry {
      * @param comment entry text-body.
      * @param date entry date.
      * @param duration entry duration.
-     * @param fealing a double entry fealing from 1-10.
+     * @param feeling a double entry feeling from 1-10.
      * @param distance a double entry distance in kilometers.
      * @param maxHeartRate a double entry for max heart rate.
      * @throws IllegalArgumentException if any of the arguments are null, duration is zero or negative, the date is ahead of now, or the title is empty.
      */
-    public LogEntry(String id, String title, String comment, LocalDate date, Duration duration, double fealing, double distance, double maxHeartRate) throws IllegalArgumentException {
+    public LogEntry(String id, String title, String comment, LocalDate date, Duration duration, double feeling, Double distance, double maxHeartRate) throws IllegalArgumentException {
 
         if (id == null || title == null || comment == null || date == null || duration == null) {
             throw new IllegalArgumentException("Arguments cannot be null");
@@ -92,8 +92,8 @@ public class LogEntry {
             throw new IllegalArgumentException("Entry duration must be positive");
         }
 
-        if (fealing > 10 || fealing < 1) {
-            throw new IllegalArgumentException("Fealing must be between 1 and 10");
+        if (feeling > 10 || feeling < 1) {
+            throw new IllegalArgumentException("Feeling must be between 1 and 10");
         }
 
         if (distance < 0){
@@ -159,11 +159,11 @@ public class LogEntry {
         return id;
     }
     /**
-     * Returns the fealing field.
-     * @return the fealing field of this logEntry as a Double.
+     * Returns the feeling field.
+     * @return the feeling field of this logEntry as a Double.
      */
-    public Double getFealing(){
-        return fealing;
+    public Double getFeeling(){
+        return feeling;
     }
 
     /**
@@ -266,15 +266,15 @@ public class LogEntry {
     }
 
     /**
-     * Sets the fealing of this logEntry if the fealing parameter is valid.
-     * @param fealing a double intance to be set as the fealing field.
-     * @throws IllegalArgumentException if the fealing is not between 1 and 10.
+     * Sets the feeling of this logEntry if the feeling parameter is valid.
+     * @param feeling a double intance to be set as the feeling field.
+     * @throws IllegalArgumentException if the feeling is not between 1 and 10.
      */
-    public void setFealing(double fealing){
-        if (fealing > 10 || fealing < 1) {
-            throw new IllegalArgumentException("Fealing must be between 1 and 10");
+    public void setFeeling(double feeling){
+        if (feeling > 10 || feeling < 1) {
+            throw new IllegalArgumentException("Feeling must be between 1 and 10");
         }
-        this.fealing = fealing;
+        this.feeling = feeling;
     }
     
     /**
