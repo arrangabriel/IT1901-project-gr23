@@ -29,13 +29,13 @@ public class EntryManager implements Iterable<LogEntry> {
      * @throws IllegalArgumentException if any of the arguments are null.
      * @return the generated id for the new LogEntry as a string.
      */
-    public String addEntry(String title, String comment, LocalDate date, Duration duration) throws IllegalArgumentException {
+    public String addEntry(String title, String comment, LocalDate date, Duration duration, double feeling, Double distance, double maxHeartRate, LogEntry.EXERCISE_CATEGORIES exerciseCategory, LogEntry.Subcategories exerciseSubCategory) throws IllegalArgumentException {
 
         if (title == null || comment == null || date == null || duration == null) {
             throw new IllegalArgumentException("Arguments cannot be null");
         }
         String id = String.valueOf(entryMap.size());
-        addEntry(id, title, comment, date, duration);
+        addEntry(id, title, comment, date, duration, feeling, distance, maxHeartRate, exerciseCategory, exerciseSubCategory);
         return id;
     }
 
@@ -48,7 +48,7 @@ public class EntryManager implements Iterable<LogEntry> {
      * @param duration the duration field for the new LogEntry as a time.Duration instance.
      * @throws IllegalArgumentException if any of the arguments are null or the entry already exists.
      */
-    public void addEntry(String id, String title, String comment, LocalDate date, Duration duration) throws IllegalArgumentException {
+    public void addEntry(String id, String title, String comment, LocalDate date, Duration duration, double feeling, Double distance, double maxHeartRate, LogEntry.EXERCISE_CATEGORIES exerciseCategory, LogEntry.Subcategories exerciseSubCategory) throws IllegalArgumentException {
 
         if (id == null || title == null || comment == null || date == null || duration == null) {
             throw new IllegalArgumentException("Arguments cannot be null");
@@ -57,7 +57,7 @@ public class EntryManager implements Iterable<LogEntry> {
         if (entryMap.containsKey(id)) {
             throw new IllegalArgumentException("Entry already exists");
         }
-        entryMap.put(id, new LogEntry(id, title, comment, date, duration));
+        entryMap.put(id, new LogEntry(id, title, comment, date, duration, feeling, distance, maxHeartRate, exerciseCategory, exerciseSubCategory));
     }
 
     /**
