@@ -32,7 +32,7 @@ public class LogEntry {
 
     // expand these in the future
     public enum EXCERCISE_CATEGORIES {
-        ALL,
+        ANY,
         STRENGTH(STRENGTH_SUBCATEGORIES.values()),
         RUNNING(CARDIO_SUBCATEGORIES.values()),
         CYCLING(CARDIO_SUBCATEGORIES.values()),
@@ -53,16 +53,14 @@ public class LogEntry {
         }
     }
 
-    enum STRENGTH_SUBCATEGORIES implements Subcategories {
-        ANY,
+    public enum STRENGTH_SUBCATEGORIES implements Subcategories {
         PUSH,
         PULL,
         LEGS,
         FULL_BODY
     }
 
-    enum CARDIO_SUBCATEGORIES implements Subcategories {
-        ANY,
+    public enum CARDIO_SUBCATEGORIES implements Subcategories {
         SHORT,
         LONG,
         HIGH_INTENSITY,
@@ -82,10 +80,14 @@ public class LogEntry {
      * @param maxHeartRate a double entry for max heart rate.
      * @throws IllegalArgumentException if any of the arguments are null, duration is zero or negative, the date is ahead of now, or the title is empty.
      */
-    public LogEntry(String id, String title, String comment, LocalDate date, Duration duration, double feeling, Double distance, double maxHeartRate) throws IllegalArgumentException {
+    public LogEntry(String id, String title, String comment, LocalDate date, Duration duration, double feeling, Double distance, double maxHeartRate, EXERCISE_CATEGORIES CATEGORY, STRENGTH_SUBCATEGORIES STRENGTH, CARDIO_SUBCATEGORIES CARDIO) throws IllegalArgumentException {
 
         if (id == null || title == null || comment == null || date == null || duration == null) {
             throw new IllegalArgumentException("Arguments cannot be null");
+        }
+
+        if (CATEGORY.ANY()){
+            throw new IllegalArgumentException("The category must be specified");
         }
 
         if (duration.isNegative() || duration.isZero()) {
