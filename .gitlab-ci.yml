@@ -9,7 +9,7 @@ test:
     - merge_requests
   except:
     variables:
-      - $CI_MERGE_REQUEST_TARGET_BRANCH_NAME != "master" && CI_MERGE_REQUEST_TARGET_BRANCH_NAME != "dev"
+      - $CI_MERGE_REQUEST_TARGET_BRANCH_NAME != "master" && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME != "dev"
 
 
 test-coverage:
@@ -19,4 +19,4 @@ test-coverage:
     - merge_requests
   except:
     variables:
-      - $CI_MERGE_REQUEST_TARGET_BRANCH_NAME != "master" && CI_MERGE_REQUEST_TARGET_BRANCH_NAME != "dev"
+      - $CI_MERGE_REQUEST_TARGET_BRANCH_NAME != "master" && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME != "dev"
