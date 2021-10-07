@@ -10,7 +10,7 @@ public class LogEntry {
     private String comment;
     private LocalDate date;
     private Duration duration;
-    private EXCERCISE_CATEGORIES excerciseCategory;
+    private EXERCISE_CATEGORIES exerciseCategory;
     private Subcategories exerciseSubCategory;
     private Double feeling;
 
@@ -31,7 +31,7 @@ public class LogEntry {
     public interface Subcategories /* extends Category */ {}
 
     // expand these in the future
-    public enum EXCERCISE_CATEGORIES {
+    public enum EXERCISE_CATEGORIES {
         ANY,
         STRENGTH(STRENGTH_SUBCATEGORIES.values()),
         RUNNING(CARDIO_SUBCATEGORIES.values()),
@@ -40,11 +40,11 @@ public class LogEntry {
 
         private final Subcategories[] subcategories;
 
-        EXCERCISE_CATEGORIES(Subcategories[] subcategories) {
+        EXERCISE_CATEGORIES(Subcategories[] subcategories) {
             this.subcategories = subcategories;
         }
 
-        EXCERCISE_CATEGORIES() {
+        EXERCISE_CATEGORIES() {
             this.subcategories = new Subcategories[]{};
         }
 
@@ -80,13 +80,13 @@ public class LogEntry {
      * @param maxHeartRate a double entry for max heart rate.
      * @throws IllegalArgumentException if any of the arguments are null, duration is zero or negative, the date is ahead of now, or the title is empty.
      */
-    public LogEntry(String id, String title, String comment, LocalDate date, Duration duration, double feeling, Double distance, double maxHeartRate, EXERCISE_CATEGORIES CATEGORY, STRENGTH_SUBCATEGORIES STRENGTH, CARDIO_SUBCATEGORIES CARDIO) throws IllegalArgumentException {
+    public LogEntry(String id, String title, String comment, LocalDate date, Duration duration, double feeling, Double distance, double maxHeartRate, EXERCISE_CATEGORIES exerciseCategory, Subcategories exerciseSubCategory) throws IllegalArgumentException {
 
         if (id == null || title == null || comment == null || date == null || duration == null) {
             throw new IllegalArgumentException("Arguments cannot be null");
         }
 
-        if (CATEGORY.ANY()){
+        if (exerciseCategory.equals(EXERCISE_CATEGORIES.ANY)){
             throw new IllegalArgumentException("The category must be specified");
         }
 
@@ -189,16 +189,16 @@ public class LogEntry {
      * Returns the main exercise category of this logEntry.
      * @return the EXERCISE_CATEGORIES for the category.
      */
-    public EXCERCISE_CATEGORIES getExcerciseCategory() {
-        return excerciseCategory;
+    public EXERCISE_CATEGORIES getExerciseCategory() {
+        return exerciseCategory;
     }
 
     /**
      * Returns the subcategories for the logEntry's main category
      * @return an array of Subcategories
      */
-    public Subcategories[] getExcerciseSubCategories() {
-        return excerciseCategory.getSubcategories();
+    public Subcategories[] getExerciseSubCategories() {
+        return exerciseCategory.getSubcategories();
     }
 
     /**
@@ -272,7 +272,11 @@ public class LogEntry {
      * @param feeling a double intance to be set as the feeling field.
      * @throws IllegalArgumentException if the feeling is not between 1 and 10.
      */
-    public void setFeeling(double feeling){
+    public void setFeeling(Double feeling) throws IllegalArgumentException{
+        if (this.feeling == null){
+            throw new IllegalArgumentException("This workout does not support feeling.");
+        }
+
         if (feeling > 10 || feeling < 1) {
             throw new IllegalArgumentException("Feeling must be between 1 and 10");
         }
@@ -284,7 +288,10 @@ public class LogEntry {
      * @param distance a double intance to be set as the distance field.
      * @throws IllegalArgumentException if the distance is negative.
      */
-    public void setDistance(double distance){
+    public void setDistance(Double distance) throws IllegalArgumentException {
+        if (this.distance == null) {
+            throw new IllegalArgumentException("This workout does not support distance.");
+        }
         if (distance < 0){
             throw new IllegalArgumentException("Distance can not be negative");
         }
@@ -293,10 +300,13 @@ public class LogEntry {
 
     /**
      * Sets the distance of this logEntry if the distance parameter is valid.
-     * @param distance a double intance to be set as the distance field.
+     * @param maxHeartRate a double intance to be set as the distance field.
      * @throws IllegalArgumentException if the distance is negative.
      */
-    public void setMaxHeartRate(double maxHeartRate){
+    public void setMaxHeartRate(Double maxHeartRate) throws IllegalArgumentException {
+        if (this.maxHeartRate == null) {
+            throw new IllegalArgumentException("This workout does not support maxHeartRate.");
+        }
         if (maxHeartRate < 20 || maxHeartRate > 250){
             throw new IllegalArgumentException("Max heart rate must be between 20 and 250");
         }
