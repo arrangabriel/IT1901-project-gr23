@@ -121,7 +121,7 @@ public class LogEntry {
         this.duration = duration;
         this.distance = distance;
         this.feeling = feeling;
-        this.exerciseCategory = exerciseCategory;
+        this.maxHeartRate = maxHeartRate;
         this.exerciseSubCategory = exerciseSubCategory;
         
     }
