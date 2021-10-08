@@ -1,5 +1,7 @@
 package ui;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
@@ -10,11 +12,11 @@ import java.io.IOException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.input.KeyCode;
-
 import java.time.Duration;
-
 import localpersistence.EntrySaverJson;
 import java.time.LocalDate;
+import javafx.scene.control.Slider;
+import javafx.scene.control.ComboBox;
 
 
 public class AddNewSessionController {
@@ -25,15 +27,12 @@ public class AddNewSessionController {
     @FXML private Label distanceLabel;
     @FXML private Label commentLabel;
 
-    @FXML private TextField nameOfSessionField;
-    @FXML private TextField distanceField;
-    @FXML private TextField hour;
-    @FXML private TextField min;
+    @FXML private TextField nameOfSessionField, distance, hour, min;
     @FXML private TextArea commentField;
-
     @FXML private DatePicker sessionDatePicker;
-
     @FXML private Button createSession;
+    @FXML private Slider feelingSlider;
+    @FXML private ComboBox<String> excerciseType, tags;
 
     /**
      * Adds an entry to the app EntryManager and switches the view to StartPage
@@ -48,6 +47,24 @@ public class AddNewSessionController {
         App.setRoot("StartPage");
     }
 
+    private ObservableList<String> excerciseTypeSelecter = FXCollections.observableArrayList("Running" , "Cycling", "Strength" ,"Svimming");
+    private ObservableList<String> tagsStrengthSelecter = FXCollections.observableArrayList("Push", "Pull", "Legs", "Full body");
+    private ObservableList<String> tagsCardioSelecter = FXCollections.observableArrayList("Short", "Long", "High intensity", "Low intensity");
+    
+    @FXML
+    public void handleTagsSelecter(ActionEvent event) throws IOException{
+        if(excerciseType.getSelectionModel().getSelectedItem().equals("Strength")){
+            tags.setItems(tagsStrengthSelecter);
+            distance.setVisible(false);
+            distanceLabel.setVisible(false);
+        }
+        else{
+            tags.setItems(tagsCardioSelecter);
+            distance.setVisible(true);
+            distanceLabel.setVisible(true);
+        }
+        
+    }
 
     /**
      * Initializes the controller.
@@ -55,6 +72,10 @@ public class AddNewSessionController {
      */
     @FXML
     private void initialize() throws NumberFormatException {
+        excerciseType.setItems(excerciseTypeSelecter);
+        distance.setVisible(false);
+        distanceLabel.setVisible(false);
+        
         // this code is quite duplicate, but ObservableValue makes it necessary
         hour.textProperty().addListener((obs, oldValue, newValue) -> {
             if(!newValue.isEmpty()) {
@@ -103,6 +124,10 @@ public class AddNewSessionController {
 //            }
 //        });
     }
+
+    
+
+
 
     
 }
