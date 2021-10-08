@@ -28,7 +28,9 @@ public class LogEntry {
 
     // It will become evident if this is needed later
     // public interface Category {}
-    public interface Subcategories /* extends Category */ {}
+    public interface Subcategories /* extends Category */ {
+        public Subcategories getValueOf(String name);
+    }
 
     // expand these in the future
     public enum EXERCISE_CATEGORIES {
@@ -48,7 +50,7 @@ public class LogEntry {
             this.subcategories = new Subcategories[]{};
         }
 
-        Subcategories[] getSubcategories() {
+        public Subcategories[] getSubcategories() {
             return this.subcategories;
         }
     }
@@ -57,14 +59,26 @@ public class LogEntry {
         PUSH,
         PULL,
         LEGS,
-        FULL_BODY
+        FULL_BODY;
+
+        @Override
+        public Subcategories getValueOf(String name) {
+            return STRENGTH_SUBCATEGORIES.valueOf(name);
+        }
+
     }
 
     public enum CARDIO_SUBCATEGORIES implements Subcategories {
         SHORT,
         LONG,
         HIGH_INTENSITY,
-        LOW_INTENSITY
+        LOW_INTENSITY;
+    
+        @Override
+        public Subcategories getValueOf(String name) {
+            return STRENGTH_SUBCATEGORIES.valueOf(name);
+        }
+
     }
 
     /**

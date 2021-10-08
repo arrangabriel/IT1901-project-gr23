@@ -12,6 +12,7 @@ import java.time.Duration;
 
 import core.EntryManager;
 import core.LogEntry;
+import core.LogEntry.EXERCISE_CATEGORIES;
 
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -110,7 +111,22 @@ public class EntrySaverJson {
                 //Suppressed unchecked warning. Any better solution Stefan?:
                 @SuppressWarnings("unchecked")
                 HashMap<String, String> innerMap = (HashMap<String, String>) jsonObject.get(key);
-                
+
+                LogEntry.Subcategories subCategory = null;
+                for (EXERCISE_CATEGORIES category : LogEntry.EXERCISE_CATEGORIES.values()) {
+                    for (LogEntry.Subcategories sub : category.getSubcategories()) {
+                       try {
+                           subCategory = sub.getValueOf(innerMap.get("exerciseSubCategory"));
+                       } catch (Exception e) {
+
+                       }
+                    }   
+                }
+
+                if (subCategory == null) {
+                    throw new IllegalStateException("Malformed save file");
+                }
+
                 entryManager.addEntry(
                     id, 
                     innerMap.get("title"),
@@ -120,8 +136,8 @@ public class EntrySaverJson {
                     Double.parseDouble(innerMap.get("feeling")),
                     Double.parseDouble(innerMap.get("distance")),
                     Double.parseDouble(innerMap.get("maxHeartRate")),
-                    LogEntry.EXERCISE_CATEGORIES.valueOf(innerMap.get("exerciseCategory"))
-                    // TODO: Get sub-category values dynamically: LogEntry.Subcategories.valueOf(innerMap.get("exerciseSubCategory")),
+                    LogEntry.EXERCISE_CATEGORIES.valueOf(innerMap.get("exerciseCategory")),
+                    subCategory
                     
                 );
             }
