@@ -32,7 +32,7 @@ public class AddNewSessionController {
     @FXML private DatePicker sessionDatePicker;
     @FXML private Button createSession;
     @FXML private Slider feelingSlider;
-    @FXML private ComboBox<String> excerciseType, tags;
+    @FXML private ComboBox<String> exerciseType, tags;
 
     /**
      * Adds an entry to the app EntryManager and switches the view to StartPage
@@ -47,13 +47,13 @@ public class AddNewSessionController {
         App.setRoot("StartPage");
     }
 
-    private ObservableList<String> excerciseTypeSelecter = FXCollections.observableArrayList("Running" , "Cycling", "Strength" ,"Svimming");
+    private ObservableList<String> exerciseTypeSelecter = FXCollections.observableArrayList("Running" , "Cycling", "Strength" ,"Svimming");
     private ObservableList<String> tagsStrengthSelecter = FXCollections.observableArrayList("Push", "Pull", "Legs", "Full body");
     private ObservableList<String> tagsCardioSelecter = FXCollections.observableArrayList("Short", "Long", "High intensity", "Low intensity");
     
     @FXML
     public void handleTagsSelecter(ActionEvent event) throws IOException{
-        if(excerciseType.getSelectionModel().getSelectedItem().equals("Strength")){
+        if(exerciseType.getSelectionModel().getSelectedItem().equals("Strength")){
             tags.setItems(tagsStrengthSelecter);
             distance.setVisible(false);
             distanceLabel.setVisible(false);
@@ -72,7 +72,7 @@ public class AddNewSessionController {
      */
     @FXML
     private void initialize() throws NumberFormatException {
-        excerciseType.setItems(excerciseTypeSelecter);
+        exerciseType.setItems(exerciseTypeSelecter);
         distance.setVisible(false);
         distanceLabel.setVisible(false);
         
