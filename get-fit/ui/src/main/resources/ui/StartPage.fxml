@@ -9,7 +9,7 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.StartPageController">
    <children>
-      <Label layoutX="33.0" layoutY="17.0" prefHeight="50.0" prefWidth="112.0" text="GitFit">
+      <Label layoutX="33.0" layoutY="17.0" prefHeight="50.0" prefWidth="112.0" text="Get Fit">
          <font>
             <Font size="40.0" />
          </font>
