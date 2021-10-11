@@ -32,8 +32,8 @@
             <Label fx:id="commentLabel" layoutX="307.0" layoutY="182.0" prefHeight="24.0" prefWidth="105.0" text="Comment" />
             <TextArea fx:id="commentField" layoutX="308.0" layoutY="205.0" prefHeight="76.0" prefWidth="232.0" />
             <Button fx:id="createSession" layoutX="440.0" layoutY="296.0" mnemonicParsing="false" onAction="#createSessionButtonPushed" text="Create session" />
-            <ComboBox fx:id="excerciseType" layoutX="19.0" layoutY="194.0" onAction="#handleTagsSelecter" prefWidth="150.0" />
-            <ComboBox fx:id="tags" layoutX="19.0" layoutY="250.0" prefHeight="17.0" prefWidth="150.0" />
+            <ComboBox fx:id="exerciseType" layoutX="19.0" layoutY="194.0" onAction="#handleTagsSelecter" prefWidth="150.0" />
+            <ComboBox fx:id="tags" layoutX="19.0" layoutY="250.0" onAction="#handleTagsSelecter" prefHeight="17.0" prefWidth="150.0" />
             <Label layoutX="19.0" layoutY="177.0" prefHeight="17.0" prefWidth="90.0" text="Excercise Type" />
             <Label layoutX="18.0" layoutY="234.0" prefHeight="17.0" prefWidth="90.0" text="Tags" />
             <TextField fx:id="hour1" alignment="CENTER" layoutX="302.0" layoutY="29.0" prefHeight="27.0" prefWidth="43.0" promptText="hr" />
