@@ -26,6 +26,10 @@ public class StartPageController {
         App.setRoot("AddNewSession");
     }
 
+    public void handleViewStatisticsButton(ActionEvent event) throws IOException{
+        App.setRoot("Statistics");
+    } 
+
     /**
      * Iterates over the EntryManager of the app and adds the titles to listOfEntries.
      */
