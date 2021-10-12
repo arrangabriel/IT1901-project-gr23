@@ -12,6 +12,7 @@ import java.time.Duration;
 
 import core.EntryManager;
 import core.LogEntry;
+import core.LogEntry.EXERCISE_CATEGORIES;
 
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -50,6 +51,12 @@ public class EntrySaverJson {
             innerMap.put("comment", entry.getComment());
             innerMap.put("date", entry.getDate().toString());
             innerMap.put("duration", String.valueOf(entry.getDuration().getSeconds()));
+            innerMap.put("feeling", Integer.toString(entry.getFeeling()));
+            innerMap.put("distance", String.valueOf(entry.getDistance()));
+            innerMap.put("maxHeartRate", String.valueOf(entry.getMaxHeartRate()));
+            innerMap.put("exerciseCategory", entry.getExerciseCategory().toString());
+            innerMap.put("exerciseSubCategory", entry.getExerciseSubCategory().toString());
+
 
             json.put(entry.getId(), innerMap);
         }
@@ -104,14 +111,41 @@ public class EntrySaverJson {
                 //Suppressed unchecked warning. Any better solution Stefan?:
                 @SuppressWarnings("unchecked")
                 HashMap<String, String> innerMap = (HashMap<String, String>) jsonObject.get(key);
-                
+
+                LogEntry.Subcategory subCategory = null;
+                outerloop:
+                for (EXERCISE_CATEGORIES category : LogEntry.EXERCISE_CATEGORIES.values()) {
+                    for (LogEntry.Subcategory sub : category.getSubcategories()) {
+                        System.out.println();
+                       try {
+                           subCategory = sub.getValueOf(innerMap.get("exerciseSubCategory"));
+                           if (subCategory != null) {
+                               break outerloop;
+                           }
+                       } catch (Exception e) {
+                           // NEQ
+                       }
+                    }   
+                }
+
+                if (subCategory == null) {
+                    throw new IllegalStateException("Malformed save file");
+                }
+
                 entryManager.addEntry(
                     id, 
                     innerMap.get("title"),
                     innerMap.get("comment"),
                     LocalDate.parse(innerMap.get("date")),
-                    Duration.ofSeconds(Long.parseLong(innerMap.get("duration"))));
-                }
+                    Duration.ofSeconds(Long.parseLong(innerMap.get("duration"))),
+                    Integer.parseInt(innerMap.get("feeling")),
+                    !innerMap.get("distance").equals("null") ? Double.parseDouble(innerMap.get("distance")) : null,
+                    !innerMap.get("maxHeartRate").equals("null") ? Integer.parseInt(innerMap.get("maxHeartRate")) : null,
+                    LogEntry.EXERCISE_CATEGORIES.valueOf(innerMap.get("exerciseCategory")),
+                    subCategory
+                    
+                );
+            }
 
         }
         catch (ParseException pException){

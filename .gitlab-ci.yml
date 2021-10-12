@@ -1,0 +1,32 @@
+default:
+  image: maven
+
+
+test:
+  stage: test
+  script: cd get-fit && mvn test
+  only:
+    - merge_requests
+  except:
+    variables:
+      - $CI_MERGE_REQUEST_TARGET_BRANCH_NAME != "master" && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME != "dev"
+
+
+test-coverage-minimum:
+  stage: test
+  script: cd get-fit && mvn verify
+  only:
+    - merge_requests
+  except:
+    variables:
+      - $CI_MERGE_REQUEST_TARGET_BRANCH_NAME != "master" && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME != "dev"
+
+test-coverage-80:
+  stage: test
+  script: cd get-fit && mvn verify -Dminimum=0.8
+  allow_failure: true
+  only:
+    - merge_requests
+  except:
+    variables:
+      - $CI_MERGE_REQUEST_TARGET_BRANCH_NAME != "master" && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME != "dev"
