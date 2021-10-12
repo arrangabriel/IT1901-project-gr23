@@ -3,8 +3,8 @@ default:
 
 stages:
   - test
-  - coverage
   - minimum-coverage
+  - coverage
   - quality
 
 test:
