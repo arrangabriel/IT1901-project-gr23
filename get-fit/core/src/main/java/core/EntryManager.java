@@ -123,7 +123,7 @@ public class EntryManager implements Iterable<LogEntry> {
      * @return an iterator of LogEntry instances, sorted by the parameter criteria.
      * @throws IllegalArgumentException if any arguments are null.
      */
-    public Iterator<LogEntry> sortedIterator(LogEntry.SORT_CONFIGURATIONS sortConfig, boolean reverse, LogEntry.EXCERCISE_CATEGORIES exerciseCategory,
+    public Iterator<LogEntry> sortedIterator(LogEntry.SORT_CONFIGURATIONS sortConfig, boolean reverse, LogEntry.EXERCISE_CATEGORIES exerciseCategory,
                                              LogEntry.Subcategory exerciseSubCategory) throws IllegalArgumentException{
         if (sortConfig == null || exerciseCategory == null){
             throw new IllegalArgumentException("Arguments cannot be null.");
@@ -158,7 +158,7 @@ public class EntryManager implements Iterable<LogEntry> {
      * @return an iterator of LogEntry instances, sorted by the parameter criteria.
      */
     public Iterator<LogEntry> sortedIterator(LogEntry.SORT_CONFIGURATIONS sortConfig){
-        return sortedIterator(sortConfig, false, LogEntry.EXCERCISE_CATEGORIES.ANY, null);
+        return sortedIterator(sortConfig, false, LogEntry.EXERCISE_CATEGORIES.ANY, null);
     }
 
     /**
@@ -168,7 +168,7 @@ public class EntryManager implements Iterable<LogEntry> {
      * @return an iterator of LogEntry instances, sorted by the parameter criteria.
      */
     public Iterator<LogEntry> sortedIterator(LogEntry.SORT_CONFIGURATIONS sortConfig, boolean reverse){
-        return sortedIterator(sortConfig, reverse, LogEntry.EXCERCISE_CATEGORIES.ANY, null);
+        return sortedIterator(sortConfig, reverse, LogEntry.EXERCISE_CATEGORIES.ANY, null);
     }
 
     /**
@@ -178,7 +178,7 @@ public class EntryManager implements Iterable<LogEntry> {
      * @return an iterator of LogEntry instances, sorted by the parameter criteria.
      */
     public Iterator<LogEntry> sortedIterator(LogEntry.SORT_CONFIGURATIONS sortConfig,
-                                             LogEntry.EXCERCISE_CATEGORIES exerciseCategory){
+                                             LogEntry.EXERCISE_CATEGORIES exerciseCategory){
         return sortedIterator(sortConfig, false, exerciseCategory, null);
     }
 
@@ -190,7 +190,7 @@ public class EntryManager implements Iterable<LogEntry> {
      * @return an iterator of LogEntry instances, sorted by the parameter criteria.
      */
     public Iterator<LogEntry> sortedIterator(LogEntry.SORT_CONFIGURATIONS sortConfig, boolean reverse,
-                                             LogEntry.EXCERCISE_CATEGORIES exerciseCategory){
+                                             LogEntry.EXERCISE_CATEGORIES exerciseCategory){
         return sortedIterator(sortConfig, reverse, exerciseCategory, null);
     }
 
@@ -202,7 +202,7 @@ public class EntryManager implements Iterable<LogEntry> {
      * @return an iterator of LogEntry instances, sorted by the parameter criteria.
      */
     public Iterator<LogEntry> sortedIterator(LogEntry.SORT_CONFIGURATIONS sortConfig,
-                                             LogEntry.EXCERCISE_CATEGORIES exerciseCategory,
+                                             LogEntry.EXERCISE_CATEGORIES exerciseCategory,
                                              LogEntry.Subcategory exerciseSubCategory){
         return sortedIterator(sortConfig, false, exerciseCategory, exerciseSubCategory);
     }
