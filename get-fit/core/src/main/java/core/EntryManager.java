@@ -129,9 +129,12 @@ public class EntryManager implements Iterable<LogEntry> {
         }
 
         switch (sortConfig){
-            case DATE -> entryStream = entryStream.sorted(Comparator.comparing(LogEntry::getDate));
-            case DURATION -> entryStream = entryStream.sorted(Comparator.comparing(LogEntry::getDuration));
-            case TITLE -> entryStream = entryStream.sorted(Comparator.comparing(LogEntry::getTitle));
+            case DATE:
+                entryStream = entryStream.sorted(Comparator.comparing(LogEntry::getDate));
+            case DURATION:
+                entryStream = entryStream.sorted(Comparator.comparing(LogEntry::getDuration));
+            case TITLE:
+                entryStream = entryStream.sorted(Comparator.comparing(LogEntry::getTitle));
         }
 
         List<LogEntry> entryList = entryStream.collect(Collectors.toList());
