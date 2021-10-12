@@ -67,6 +67,7 @@ public class EntryManager implements Iterable<LogEntry> {
      * @return the LogEntry instance with the associated id.
      */
     public LogEntry getEntry(String id) throws IllegalArgumentException {
+
         if (id == null) {
             throw new IllegalArgumentException("Arguments cannot be null");
         }
@@ -84,11 +85,12 @@ public class EntryManager implements Iterable<LogEntry> {
      * @throws IllegalArgumentException if id is null or the entry doesn't exist
      */
     public boolean removeEntry(String id) throws IllegalArgumentException {
+
         if (id == null) {
             throw new IllegalArgumentException("Arguments cannot be null");
         }
-        
-        return entryMap.remove(id) != null;
+
+       return entryMap.remove(id) != null;
     }
 
     /**
