@@ -1,6 +1,5 @@
 package localpersistence;
 
-import java.util.Arrays;
 import java.util.HashMap;
 
 import java.io.FileWriter;
@@ -9,7 +8,6 @@ import java.time.LocalDate;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
-import java.util.stream.Collectors;
 import java.time.Duration;
 
 import core.EntryManager;

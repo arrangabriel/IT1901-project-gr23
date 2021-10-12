@@ -76,7 +76,7 @@ public class LogEntry {
     
         @Override
         public Subcategories getValueOf(String name) {
-            return STRENGTH_SUBCATEGORIES.valueOf(name);
+            return CARDIO_SUBCATEGORIES.valueOf(name);
         }
 
     }
@@ -211,7 +211,13 @@ public class LogEntry {
         return exerciseCategory;
     }
 
-    public SubCategory getSubCategory
+    /**
+     * Returns the subcategory of this logEntry.
+     * @return the Subcategory for the category.
+     */
+    public Subcategories getExerciseSubCategory() {
+        return exerciseSubCategory;
+    }
 
     /**
      * Returns the subcategories for the logEntry's main category
