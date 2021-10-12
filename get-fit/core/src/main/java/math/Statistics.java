@@ -12,7 +12,7 @@ public class Statistics {
     /**
      * Returns the total duration of all LogEntries in the EntryManager.
      * @param entryManager the entryManager to total.
-     * @return the total.
+     * @return the total duration.
      */
     public static double getTotalDuration(EntryManager entryManager) {
         double sum = 0;
@@ -26,7 +26,7 @@ public class Statistics {
     /**
      * Returns the average duration across all LogEntries in the EntryManager.
      * @param entryManager the entryManager to average.
-     * @return the average.
+     * @return the average duration.
      */
     public static double getAverageDuration(EntryManager entryManager) {
         double sum = getTotalDuration(entryManager);
