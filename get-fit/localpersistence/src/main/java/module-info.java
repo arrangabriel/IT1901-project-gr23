@@ -1,5 +1,5 @@
 module localpersistence{
-    requires core;
+    requires transitive core;
     requires json.simple;
     
     exports localpersistence;
