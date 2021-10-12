@@ -4,8 +4,8 @@ default:
 stages:
   - test
   - minimum-coverage
-  - coverage
-  - quality
+  - extended-coverage
+  - code-quality
 
 test:
   stage: test
@@ -27,7 +27,7 @@ test-coverage-minimum:
       - $CI_MERGE_REQUEST_TARGET_BRANCH_NAME != "master" && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME != "dev"
 
 test-coverage-80:
-  stage: coverage
+  stage: extended-coverage
   script: cd get-fit && mvn verify -Dminimum=0.8
   allow_failure: true
   only:
@@ -38,7 +38,7 @@ test-coverage-80:
 
 
 checkstyle:
-  stage: quality
+  stage: code-quality
   script: cd get-fit && mvn checkstyle:check
   allow_failure: true
   only:
