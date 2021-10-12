@@ -21,12 +21,7 @@ import javafx.scene.control.ComboBox;
 
 public class AddNewSessionController {
     //fxml component attributes
-    @FXML private Label header;
-    @FXML private Label timeLabel;
-    @FXML private Label dateLabel;
-    @FXML private Label distanceLabel;
-    @FXML private Label commentLabel;
-
+    @FXML private Label header, timeLabel, dateLabel, distanceLabel, commentLabel, errorLabel;
     @FXML private TextField nameOfSessionField, distance, hour, min;
     @FXML private TextArea commentField;
     @FXML private DatePicker sessionDatePicker;
@@ -42,10 +37,22 @@ public class AddNewSessionController {
     @FXML
     public void createSessionButtonPushed(ActionEvent event) throws IOException{
         // TODO - handle exception when entry could not be created
-        App.entryManager.addEntry(nameOfSessionField.getText(),commentField.getText(),sessionDatePicker.getValue(), Duration.ofSeconds(1));
-        EntrySaverJson.save(App.entryManager);
+        try{
+            App.entryManager.addEntry(nameOfSessionField.getText(),commentField.getText(),sessionDatePicker.getValue(), Duration.ofSeconds(1));
+            EntrySaverJson.save(App.entryManager);
+            App.setRoot("StartPage");
+        }
+        catch(IllegalArgumentException e){
+            errorLabel.setText(e.getMessage());
+        }
+       
+    }
+    @FXML
+    public void returnButtonPushed(ActionEvent event) throws IOException{
         App.setRoot("StartPage");
     }
+
+   
 
     private ObservableList<String> exerciseTypeSelecter = FXCollections.observableArrayList("Running" , "Cycling", "Strength" ,"Svimming");
     private ObservableList<String> tagsStrengthSelecter = FXCollections.observableArrayList("Push", "Pull", "Legs", "Full body");
@@ -65,6 +72,8 @@ public class AddNewSessionController {
         }
         
     }
+
+   
 
     /**
      * Initializes the controller.
@@ -117,12 +126,6 @@ public class AddNewSessionController {
         });
         // set current date on startup
         sessionDatePicker.setValue(LocalDate.now());
-        // TODO - implement this properly
-//        sessionDatePicker.setOnKeyPressed(event -> {
-//            if(event.getCode() == KeyCode.ENTER) {
-//                sessionDatePicker.show();
-//            }
-//        });
     }
 
     
