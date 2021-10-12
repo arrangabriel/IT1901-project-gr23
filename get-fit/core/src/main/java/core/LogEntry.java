@@ -98,11 +98,11 @@ public class LogEntry {
             throw new IllegalArgumentException("Feeling must be between 1 and 10");
         }
 
-        if (distance < 0){
+        if (distance != null && distance < 0){
             throw new IllegalArgumentException("Duration cannot be set to a negative number");
         }
 
-        if (maxHeartRate < 20 || maxHeartRate > 250){
+        if (maxHeartRate != null && (maxHeartRate < 20 || maxHeartRate > 250)){
             throw new IllegalArgumentException("heart rate must be between 20 and 250");
         }
 
