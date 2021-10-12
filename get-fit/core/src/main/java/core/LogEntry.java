@@ -11,7 +11,7 @@ public class LogEntry {
     private LocalDate date;
     private Duration duration;
     private EXERCISE_CATEGORIES exerciseCategory;
-    private Subcategories exerciseSubCategory;
+    private Subcategory exerciseSubCategory;
     private int feeling;
 
     //Parameters for endurance exercise:
@@ -28,8 +28,8 @@ public class LogEntry {
 
     // It will become evident if this is needed later
     // public interface Category {}
-    public interface Subcategories /* extends Category */ {
-        public Subcategories getValueOf(String name);
+    public interface Subcategory /* extends Category */ {
+        public Subcategory getValueOf(String name);
     }
 
     // expand these in the future
@@ -40,42 +40,42 @@ public class LogEntry {
         CYCLING(CARDIO_SUBCATEGORIES.values()),
         SWIMMING(CARDIO_SUBCATEGORIES.values());
 
-        private final Subcategories[] subcategories;
+        private final Subcategory[] subcategories;
 
-        EXERCISE_CATEGORIES(Subcategories[] subcategories) {
+        EXERCISE_CATEGORIES(Subcategory[] subcategories) {
             this.subcategories = subcategories;
         }
 
         EXERCISE_CATEGORIES() {
-            this.subcategories = new Subcategories[]{};
+            this.subcategories = new Subcategory[]{};
         }
 
-        public Subcategories[] getSubcategories() {
+        public Subcategory[] getSubcategories() {
             return this.subcategories;
         }
     }
 
-    public enum STRENGTH_SUBCATEGORIES implements Subcategories {
+    public enum STRENGTH_SUBCATEGORIES implements Subcategory {
         PUSH,
         PULL,
         LEGS,
         FULL_BODY;
 
         @Override
-        public Subcategories getValueOf(String name) {
+        public Subcategory getValueOf(String name) {
             return STRENGTH_SUBCATEGORIES.valueOf(name);
         }
 
     }
 
-    public enum CARDIO_SUBCATEGORIES implements Subcategories {
+    public enum CARDIO_SUBCATEGORIES implements Subcategory {
         SHORT,
         LONG,
         HIGH_INTENSITY,
         LOW_INTENSITY;
     
         @Override
-        public Subcategories getValueOf(String name) {
+        public Subcategory getValueOf(String name) {
             return CARDIO_SUBCATEGORIES.valueOf(name);
         }
 
@@ -94,7 +94,7 @@ public class LogEntry {
      * @param maxHeartRate an integer entry for max heart rate.
      * @throws IllegalArgumentException if any of the arguments are null, duration is zero or negative, the date is ahead of now, or the title is empty.
      */
-    public LogEntry(String id, String title, String comment, LocalDate date, Duration duration, int feeling, Double distance, Integer maxHeartRate, EXERCISE_CATEGORIES exerciseCategory, Subcategories exerciseSubCategory) throws IllegalArgumentException {
+    public LogEntry(String id, String title, String comment, LocalDate date, Duration duration, int feeling, Double distance, Integer maxHeartRate, EXERCISE_CATEGORIES exerciseCategory, Subcategory exerciseSubCategory) throws IllegalArgumentException {
 
         if (id == null || title == null || comment == null || date == null || duration == null) {
             throw new IllegalArgumentException("Arguments cannot be null");
@@ -215,7 +215,7 @@ public class LogEntry {
      * Returns the subcategory of this logEntry.
      * @return the Subcategory for the category.
      */
-    public Subcategories getExerciseSubCategory() {
+    public Subcategory getExerciseSubCategory() {
         return exerciseSubCategory;
     }
 
@@ -223,7 +223,7 @@ public class LogEntry {
      * Returns the subcategories for the logEntry's main category
      * @return an array of Subcategories
      */
-    public Subcategories[] getExerciseSubCategories() {
+    public Subcategory[] getExerciseSubCategories() {
         return exerciseCategory.getSubcategories();
     }
 

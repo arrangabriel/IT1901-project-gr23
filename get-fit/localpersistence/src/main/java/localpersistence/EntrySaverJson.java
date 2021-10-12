@@ -112,13 +112,13 @@ public class EntrySaverJson {
                 @SuppressWarnings("unchecked")
                 HashMap<String, String> innerMap = (HashMap<String, String>) jsonObject.get(key);
 
-                LogEntry.Subcategories subCategory = null;
+                LogEntry.Subcategory subCategory = null;
                 System.out.println("---------------- New Sub ----------------");
                 System.out.println("ExcersiseSubCategory in file: " + innerMap.get("exerciseSubCategory"));
                 outerloop:
                 for (EXERCISE_CATEGORIES category : LogEntry.EXERCISE_CATEGORIES.values()) {
                     System.out.println(" -- Category: " + category);
-                    for (LogEntry.Subcategories sub : category.getSubcategories()) {
+                    for (LogEntry.Subcategory sub : category.getSubcategories()) {
                         System.out.println();
                        try {
                            System.out.println("Sub to test: " + sub);

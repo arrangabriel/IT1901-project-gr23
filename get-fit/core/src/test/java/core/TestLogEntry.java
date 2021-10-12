@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 import core.LogEntry.CARDIO_SUBCATEGORIES;
 import core.LogEntry.EXERCISE_CATEGORIES;
 import core.LogEntry.STRENGTH_SUBCATEGORIES;
-import core.LogEntry.Subcategories;
+import core.LogEntry.Subcategory;
 
 
 public class TestLogEntry {
@@ -28,7 +28,7 @@ public class TestLogEntry {
         Integer maxHeartRate = 20;
 
         EXERCISE_CATEGORIES exerciseCategory = EXERCISE_CATEGORIES.STRENGTH;
-        Subcategories subcategory = STRENGTH_SUBCATEGORIES.PULL;
+        Subcategory subcategory = STRENGTH_SUBCATEGORIES.PULL;
         LogEntry entry = new LogEntry(id, title, comment, date, duration, feeling, distance, maxHeartRate, exerciseCategory, subcategory);
         return entry;
     }
@@ -47,7 +47,7 @@ public class TestLogEntry {
         Integer maxHeartRate = 183;
 
         EXERCISE_CATEGORIES exerciseCategory = EXERCISE_CATEGORIES.RUNNING;
-        Subcategories subcategory = CARDIO_SUBCATEGORIES.HIGH_INTENSITY;
+        Subcategory subcategory = CARDIO_SUBCATEGORIES.HIGH_INTENSITY;
 
         LogEntry entry = new LogEntry(id, title, comment, date, duration, feeling, distance, maxHeartRate, exerciseCategory, subcategory);
         Assertions.assertEquals(id, entry.getId());

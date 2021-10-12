@@ -29,7 +29,7 @@ public class EntryManager implements Iterable<LogEntry> {
      * @throws IllegalArgumentException if any of the arguments are null.
      * @return the generated id for the new LogEntry as a string.
      */
-    public String addEntry(String title, String comment, LocalDate date, Duration duration, int feeling, Double distance, Integer maxHeartRate, LogEntry.EXERCISE_CATEGORIES exerciseCategory, LogEntry.Subcategories exerciseSubCategory) throws IllegalArgumentException {
+    public String addEntry(String title, String comment, LocalDate date, Duration duration, int feeling, Double distance, Integer maxHeartRate, LogEntry.EXERCISE_CATEGORIES exerciseCategory, LogEntry.Subcategory exerciseSubCategory) throws IllegalArgumentException {
 
         if (title == null || comment == null || date == null || duration == null) {
             throw new IllegalArgumentException("Arguments cannot be null");
@@ -48,7 +48,7 @@ public class EntryManager implements Iterable<LogEntry> {
      * @param duration the duration field for the new LogEntry as a time.Duration instance.
      * @throws IllegalArgumentException if any of the arguments are null or the entry already exists.
      */
-    public void addEntry(String id, String title, String comment, LocalDate date, Duration duration, int feeling, Double distance, Integer maxHeartRate, LogEntry.EXERCISE_CATEGORIES exerciseCategory, LogEntry.Subcategories exerciseSubCategory) throws IllegalArgumentException {
+    public void addEntry(String id, String title, String comment, LocalDate date, Duration duration, int feeling, Double distance, Integer maxHeartRate, LogEntry.EXERCISE_CATEGORIES exerciseCategory, LogEntry.Subcategory exerciseSubCategory) throws IllegalArgumentException {
 
         if (id == null || title == null || comment == null || date == null || duration == null) {
             throw new IllegalArgumentException("Arguments cannot be null");
@@ -124,7 +124,7 @@ public class EntryManager implements Iterable<LogEntry> {
      * @throws IllegalArgumentException if any arguments are null.
      */
     public Iterator<LogEntry> sortedIterator(LogEntry.SORT_CONFIGURATIONS sortConfig, boolean reverse, LogEntry.EXCERCISE_CATEGORIES exerciseCategory,
-                                             LogEntry.Subcategories exerciseSubCategory) throws IllegalArgumentException{
+                                             LogEntry.Subcategory exerciseSubCategory) throws IllegalArgumentException{
         if (sortConfig == null || exerciseCategory == null){
             throw new IllegalArgumentException("Arguments cannot be null.");
         }
@@ -203,7 +203,7 @@ public class EntryManager implements Iterable<LogEntry> {
      */
     public Iterator<LogEntry> sortedIterator(LogEntry.SORT_CONFIGURATIONS sortConfig,
                                              LogEntry.EXCERCISE_CATEGORIES exerciseCategory,
-                                             LogEntry.Subcategories exerciseSubCategory){
+                                             LogEntry.Subcategory exerciseSubCategory){
         return sortedIterator(sortConfig, false, exerciseCategory, exerciseSubCategory);
     }
 }
