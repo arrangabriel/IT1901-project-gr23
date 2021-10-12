@@ -82,20 +82,16 @@ public class EntryManager implements Iterable<LogEntry> {
     /**
      * Removes a LogEntry by its id, if such a LogEntry exists.
      * @param id the id to be removed.
-     * @throws IllegalArgumentException if id is null or the entry doesn't exist
+     * @return True if an entry was removed or false if no entry with the provided id existed
+     * @throws IllegalArgumentException if id is null
      */
-    public void removeEntry(String id) throws IllegalArgumentException {
+    public boolean removeEntry(String id) throws IllegalArgumentException {
 
         if (id == null) {
             throw new IllegalArgumentException("Arguments cannot be null");
         }
 
-        
-        if (entryMap.containsKey(id)) {
-            entryMap.remove(id);
-        } else {
-            throw new IllegalArgumentException("Entry does not exits");
-        }
+       return entryMap.remove(id) != null; 
     }
 
     /**
