@@ -4,6 +4,7 @@ default:
 stages:
   - test
   - coverage
+  - minimum-coverage
   - quality
 
 test:
@@ -17,7 +18,7 @@ test:
 
 
 test-coverage-minimum:
-  stage: coverage
+  stage: minimum-coverage
   script: cd get-fit && mvn verify
   only:
     - merge_requests
