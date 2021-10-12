@@ -250,7 +250,6 @@ public class LogEntry {
      * @throws IllegalArgumentException if comment is null
      */
     public void setComment(String comment) throws IllegalArgumentException{
-
         if (title == null) {
             throw new IllegalArgumentException("Comment cannot be null");
         }
