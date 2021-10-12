@@ -49,4 +49,11 @@ public class TestEntryManager {
         Assertions.assertThrows(IllegalArgumentException.class, () -> manager.getEntry("1"));
     }
 
+    @Test
+    public void testEntryCount(){
+        EntryManager manager = genValidManager();
+        Assertions.assertEquals(0, manager.entryCount());
+        manager.addEntry("0", "title", "comment", LocalDate.now().minusDays(1), Duration.ofSeconds(hour), 1, null, null, LogEntry.EXERCISE_CATEGORIES.STRENGTH, LogEntry.STRENGTH_SUBCATEGORIES.PULL);
+        Assertions.assertEquals(1, manager.entryCount());
+    }
 }
