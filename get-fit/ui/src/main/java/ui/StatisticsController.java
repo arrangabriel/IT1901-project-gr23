@@ -9,7 +9,14 @@ import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.event.ActionEvent;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.Collection;
+
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.CategoryAxis;
+import javafx.scene.chart.StackedBarChart;
+
 
 
 import core.LogEntry;
@@ -29,13 +36,16 @@ public class StatisticsController {
     @FXML private RadioButton weeks;
     @FXML private RadioButton months;
     @FXML private RadioButton years;
+    @FXML private StackedBarChart<String, Number> statisticsChart;
+    @FXML private CategoryAxis xAxis;
+    @FXML private NumberAxis yAxis;
 
 
     private ObservableList<String> exerciseTypeSelecter = FXCollections.observableArrayList("Cardio", "Endurance", "Not selected");
     private final ToggleGroup toggleGroup = new ToggleGroup();
-    
-    //Stacked bar chart
 
+    
+     
 
     @FXML
     private void initialize() {
@@ -53,10 +63,22 @@ public class StatisticsController {
      */
    @FXML
     public void returnToStartPagePushed(ActionEvent event) throws IOException{
-        System.out.println("hei");
         App.setRoot("StartPage");
     }
 
-    
-    
+    //Unfinished function:
+    private void createStackedBarChart(String xLabel, Collection<String> category) {
+
+        xAxis.setCategories(FXCollections.<String>observableArrayList((Arrays.asList("test1", "test2"))));
+        xAxis.setLabel(xLabel);
+
+        yAxis.setLabel("Hours");
+
+        //Create chart when core is finished
+        statisticsChart = new StackedBarChart<>(xAxis, yAxis);
+        //for (LogEntry entry : App.entryManager) {
+        //final XYChart.Series<String, Number> series = new XYChart.Series<>();
+            
+    } 
+
 }
