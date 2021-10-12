@@ -75,7 +75,7 @@ public class EntrySaverJson {
      * @throws FileNotFoundException if SavedData.JSON could not be found.
      * @throws IllegalArgumentException if entryManager is null.
      */
-    public static void load(EntryManager entryManager) throws FileNotFoundException, IllegalArgumentException {
+    public static void load(EntryManager entryManager) throws FileNotFoundException, IllegalArgumentException, IllegalStateException {
         load(entryManager, "SavedData.json");
     }
 
@@ -86,7 +86,7 @@ public class EntrySaverJson {
      * @throws FileNotFoundException if the specified path could not be found.
      * @throws IllegalArgumentException if the entryManager or saveFile is null.
      */
-    public static void load(EntryManager entryManager, String saveFile) throws FileNotFoundException, IllegalArgumentException {
+    public static void load(EntryManager entryManager, String saveFile) throws FileNotFoundException, IllegalArgumentException, IllegalStateException {
 
         if (entryManager == null || saveFile == null) {
             throw new IllegalArgumentException("Arguments cannot be null");
@@ -126,10 +126,6 @@ public class EntrySaverJson {
                            // NEQ
                        }
                     }   
-                }
-
-                if (subCategory == null) {
-                    throw new IllegalStateException("Malformed save file");
                 }
 
                 entryManager.addEntry(
