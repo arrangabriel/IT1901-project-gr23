@@ -34,4 +34,20 @@ public class Statistics {
 
         return average;
     }
+
+    /**
+     * Returns the average feeling across all LogEntries in the EntryManager.
+     * @param entryManager the entryManager across which to average feelings.
+     * @return the average feeling.
+     */
+    public static double getAverageFeeling(EntryManager entryManager) {
+        double sum = 0;
+
+        for (LogEntry logEntry : entryManager) {
+            sum += logEntry.getFeeling();
+        }
+
+        double average = sum/getCount(entryManager);
+        return average;
+    }
 }
