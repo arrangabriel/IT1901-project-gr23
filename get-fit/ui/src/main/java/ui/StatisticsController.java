@@ -79,10 +79,6 @@ public class StatisticsController {
         //for (LogEntry entry : App.entryManager) {
         //final XYChart.Series<String, Number> series = new XYChart.Series<>();
             
-        } 
+    } 
 
-
-
-    }
-    
 }
