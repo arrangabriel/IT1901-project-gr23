@@ -131,12 +131,12 @@ public class EntryManager implements Iterable<LogEntry> {
 
         Stream<LogEntry> entryStream = entryMap.values().stream();
 
-        if(!exerciseCategory.equals(LogEntry.EXCERCISE_CATEGORIES.ANY)) {
-            entryStream = entryStream.filter((entry) -> entry.getExcerciseCategory().equals(exerciseCategory));
+        if(!exerciseCategory.equals(LogEntry.EXERCISE_CATEGORIES.ANY)) {
+            entryStream = entryStream.filter((entry) -> entry.getExerciseCategory().equals(exerciseCategory));
             // If null, don't perform subcategory filtering.
             // This being a general ANY enum would be nice, but can't be done with current structure.
             if(exerciseSubCategory != null) {
-                entryStream = entryStream.filter((entry) -> entry.getExcerciseSubCategory().equals(exerciseSubCategory));
+                entryStream = entryStream.filter((entry) -> entry.getExerciseSubCategory().equals(exerciseSubCategory));
             }
         }
 
