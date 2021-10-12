@@ -37,8 +37,15 @@ public class AddNewSessionController {
     @FXML
     public void createSessionButtonPushed(ActionEvent event) throws IOException{
         // TODO - handle exception when entry could not be created
+        Duration duration = Duration.ofHours(Integer.parseInt(
+            hour.getText())).plusSeconds(Duration.ofMinutes
+            (Integer.parseInt(min.getText())).getSeconds());
         try{
-            App.entryManager.addEntry(nameOfSessionField.getText(),commentField.getText(),sessionDatePicker.getValue(), Duration.ofSeconds(1));
+            App.entryManager.addEntry(
+                nameOfSessionField.getText(),
+                commentField.getText(),
+                sessionDatePicker.getValue(),
+                duration);
             EntrySaverJson.save(App.entryManager);
             App.setRoot("StartPage");
         }
@@ -46,7 +53,7 @@ public class AddNewSessionController {
             errorLabel.setText(e.getMessage());
         }
        
-    }
+    } 
     @FXML
     public void returnButtonPushed(ActionEvent event) throws IOException{
         App.setRoot("StartPage");
