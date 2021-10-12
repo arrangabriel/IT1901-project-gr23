@@ -113,29 +113,23 @@ public class EntrySaverJson {
                 HashMap<String, String> innerMap = (HashMap<String, String>) jsonObject.get(key);
 
                 LogEntry.Subcategory subCategory = null;
-                System.out.println("---------------- New Sub ----------------");
-                System.out.println("ExcersiseSubCategory in file: " + innerMap.get("exerciseSubCategory"));
                 outerloop:
                 for (EXERCISE_CATEGORIES category : LogEntry.EXERCISE_CATEGORIES.values()) {
-                    System.out.println(" -- Category: " + category);
                     for (LogEntry.Subcategory sub : category.getSubcategories()) {
                         System.out.println();
                        try {
-                           System.out.println("Sub to test: " + sub);
                            subCategory = sub.getValueOf(innerMap.get("exerciseSubCategory"));
-                           System.out.println("Result: " + subCategory);
                            if (subCategory != null) {
-                               System.out.println("Breaking");
                                break outerloop;
                            }
                        } catch (Exception e) {
-                            System.out.println("NEQ! " + e);
+                           // NEQ
                        }
                     }   
                 }
 
                 if (subCategory == null) {
-                    throw new IllegalStateException("Malformed save file"+innerMap.get("exerciseSubCategory"));
+                    throw new IllegalStateException("Malformed save file");
                 }
 
                 entryManager.addEntry(
