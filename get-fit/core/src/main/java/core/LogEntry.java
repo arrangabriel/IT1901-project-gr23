@@ -10,8 +10,13 @@ public class LogEntry {
     private String comment;
     private LocalDate date;
     private Duration duration;
-    private EXCERCISE_CATEGORIES excerciseCategory;
-    private Subcategories exerciseSubCategory;
+    private EXERCISE_CATEGORIES exerciseCategory;
+    private Subcategory exerciseSubCategory;
+    private int feeling;
+
+    //Parameters for endurance exercise:
+    private Double distance;
+    private Integer maxHeartRate;
 
     // it is paramount that all sorting configurations are supported by all possible LogEntries.
     // Keep in mind when some LogEntry fields become optional.
@@ -23,43 +28,57 @@ public class LogEntry {
 
     // It will become evident if this is needed later
     // public interface Category {}
-    public interface Subcategories /* extends Category */ {}
+    public interface Subcategory /* extends Category */ {
+        public Subcategory getValueOf(String name);
+    }
 
     // expand these in the future
-    public enum EXCERCISE_CATEGORIES {
+    public enum EXERCISE_CATEGORIES {
         ANY,
         STRENGTH(STRENGTH_SUBCATEGORIES.values()),
         RUNNING(CARDIO_SUBCATEGORIES.values()),
         CYCLING(CARDIO_SUBCATEGORIES.values()),
         SWIMMING(CARDIO_SUBCATEGORIES.values());
 
-        private final Subcategories[] subcategories;
+        private final Subcategory[] subcategories;
 
-        EXCERCISE_CATEGORIES(Subcategories[] subcategories) {
+        EXERCISE_CATEGORIES(Subcategory[] subcategories) {
             this.subcategories = subcategories;
         }
 
-        EXCERCISE_CATEGORIES() {
-            this.subcategories = new Subcategories[]{};
+        EXERCISE_CATEGORIES() {
+            this.subcategories = new Subcategory[]{};
         }
 
-        Subcategories[] getSubcategories() {
+        public Subcategory[] getSubcategories() {
             return this.subcategories;
         }
     }
 
-    enum STRENGTH_SUBCATEGORIES implements Subcategories {
+    public enum STRENGTH_SUBCATEGORIES implements Subcategory {
         PUSH,
         PULL,
         LEGS,
-        FULL_BODY
+        FULL_BODY;
+
+        @Override
+        public Subcategory getValueOf(String name) {
+            return STRENGTH_SUBCATEGORIES.valueOf(name);
+        }
+
     }
 
-    enum CARDIO_SUBCATEGORIES implements Subcategories {
+    public enum CARDIO_SUBCATEGORIES implements Subcategory {
         SHORT,
         LONG,
         HIGH_INTENSITY,
-        LOW_INTENSITY
+        LOW_INTENSITY;
+    
+        @Override
+        public Subcategory getValueOf(String name) {
+            return CARDIO_SUBCATEGORIES.valueOf(name);
+        }
+
     }
 
     /**
@@ -70,16 +89,35 @@ public class LogEntry {
      * @param comment entry text-body.
      * @param date entry date.
      * @param duration entry duration.
+     * @param feeling an int entry feeling from 1-10.
+     * @param distance a double entry distance in kilometers.
+     * @param maxHeartRate an integer entry for max heart rate.
      * @throws IllegalArgumentException if any of the arguments are null, duration is zero or negative, the date is ahead of now, or the title is empty.
      */
-    public LogEntry(String id, String title, String comment, LocalDate date, Duration duration) throws IllegalArgumentException {
+    public LogEntry(String id, String title, String comment, LocalDate date, Duration duration, int feeling, Double distance, Integer maxHeartRate, EXERCISE_CATEGORIES exerciseCategory, Subcategory exerciseSubCategory) throws IllegalArgumentException {
 
         if (id == null || title == null || comment == null || date == null || duration == null) {
             throw new IllegalArgumentException("Arguments cannot be null");
         }
 
+        if (exerciseCategory.equals(EXERCISE_CATEGORIES.ANY)){
+            throw new IllegalArgumentException("The category must be specified");
+        }
+
         if (duration.isNegative() || duration.isZero()) {
             throw new IllegalArgumentException("Entry duration must be positive");
+        }
+
+        if (feeling > 10 || feeling < 1) {
+            throw new IllegalArgumentException("Feeling must be between 1 and 10");
+        }
+
+        if (distance != null && distance < 0){
+            throw new IllegalArgumentException("Duration cannot be set to a negative number");
+        }
+
+        if (maxHeartRate != null && (maxHeartRate < 20 || maxHeartRate > 250)){
+            throw new IllegalArgumentException("heart rate must be between 20 and 250");
         }
 
         if (date.isAfter(LocalDate.now())) {
@@ -95,6 +133,12 @@ public class LogEntry {
         this.comment = comment;
         this.date = date;
         this.duration = duration;
+        this.distance = distance;
+        this.feeling = feeling;
+        this.maxHeartRate = maxHeartRate;
+        this.exerciseCategory = exerciseCategory;
+        this.exerciseSubCategory = exerciseSubCategory;
+        
     }
 
     /**
@@ -136,21 +180,51 @@ public class LogEntry {
     public String getId() {
         return id;
     }
+    /**
+     * Returns the feeling field.
+     * @return the feeling field of this logEntry as an int.
+     */
+    public int getFeeling(){
+        return feeling;
+    }
+
+    /**
+     * Returns the distance field.
+     * @return the distance fiels of this logEntry
+     */
+    public Double getDistance(){
+        return distance;
+    }
+    /**
+     * Returns the maximun heart rate.
+     * @return the maxHeartRate field of this logEntry
+     */
+    public Integer getMaxHeartRate(){
+        return maxHeartRate;
+    }
 
     /**
      * Returns the main exercise category of this logEntry.
      * @return the EXERCISE_CATEGORIES for the category.
      */
-    public EXCERCISE_CATEGORIES getExcerciseCategory() {
-        return excerciseCategory;
+    public EXERCISE_CATEGORIES getExerciseCategory() {
+        return exerciseCategory;
+    }
+
+    /**
+     * Returns the subcategory of this logEntry.
+     * @return the Subcategory for the category.
+     */
+    public Subcategory getExerciseSubCategory() {
+        return exerciseSubCategory;
     }
 
     /**
      * Returns the subcategories for the logEntry's main category
      * @return an array of Subcategories
      */
-    public Subcategories getExcerciseSubCategory() {
-        return exerciseSubCategory;
+    public Subcategory[] getExerciseSubCategories() {
+        return exerciseCategory.getSubcategories();
     }
 
     /**
@@ -176,7 +250,6 @@ public class LogEntry {
      * @throws IllegalArgumentException if comment is null
      */
     public void setComment(String comment) throws IllegalArgumentException{
-
         if (title == null) {
             throw new IllegalArgumentException("Comment cannot be null");
         }
@@ -218,4 +291,48 @@ public class LogEntry {
 
         this.duration = duration;
     }
+
+    /**
+     * Sets the feeling of this logEntry if the feeling parameter is valid.
+     * @param feeling an int intance to be set as the feeling field.
+     * @throws IllegalArgumentException if the feeling is not between 1 and 10.
+     */
+    public void setFeeling(int feeling) throws IllegalArgumentException{
+
+        if (feeling > 10 || feeling < 1) {
+            throw new IllegalArgumentException("Feeling must be between 1 and 10");
+        }
+        this.feeling = feeling;
+    }
+    
+    /**
+     * Sets the distance of this logEntry if the distance parameter is valid.
+     * @param distance a double intance to be set as the distance field.
+     * @throws IllegalArgumentException if the distance is negative.
+     */
+    public void setDistance(Double distance) throws IllegalArgumentException {
+        if (this.distance == null) {
+            throw new IllegalArgumentException("This workout does not support distance.");
+        }
+        if (distance < 0){
+            throw new IllegalArgumentException("Distance can not be negative");
+        }
+        this.distance = distance;
+    }
+
+    /**
+     * Sets the distance of this logEntry if the distance parameter is valid.
+     * @param maxHeartRate an Integer intance to be set as the distance field.
+     * @throws IllegalArgumentException if the distance is negative.
+     */
+    public void setMaxHeartRate(Integer maxHeartRate) throws IllegalArgumentException {
+        if (this.maxHeartRate == null) {
+            throw new IllegalArgumentException("This workout does not support maxHeartRate.");
+        }
+        if (maxHeartRate < 20 || maxHeartRate > 250) {
+            throw new IllegalArgumentException("Max heart rate must be between 20 and 250");
+        }
+        this.maxHeartRate = maxHeartRate;
+    }
+
 }
