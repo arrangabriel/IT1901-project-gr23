@@ -1,5 +1,6 @@
 package localpersistence;
 
+import java.util.Arrays;
 import java.util.HashMap;
 
 import java.io.FileWriter;
@@ -8,6 +9,7 @@ import java.time.LocalDate;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 import java.time.Duration;
 
 import core.EntryManager;
@@ -51,11 +53,11 @@ public class EntrySaverJson {
             innerMap.put("comment", entry.getComment());
             innerMap.put("date", entry.getDate().toString());
             innerMap.put("duration", String.valueOf(entry.getDuration().getSeconds()));
-            innerMap.put("feeling", entry.getFeeling().toString());
-            innerMap.put("distance", entry.getDistance().toString());
-            innerMap.put("maxHeartRate", entry.getMaxHeartRate().toString());
+            innerMap.put("feeling", Integer.toString(entry.getFeeling()));
+            innerMap.put("distance", String.valueOf(entry.getDistance()));
+            innerMap.put("maxHeartRate", String.valueOf(entry.getMaxHeartRate()));
             innerMap.put("exerciseCategory", entry.getExerciseCategory().toString());
-            innerMap.put("exerciseSubCategory", entry.getExerciseSubCategories().toString());
+            innerMap.put("exerciseSubCategory", entry.getExerciseSubCategory().toString());
 
 
             json.put(entry.getId(), innerMap);
@@ -113,18 +115,29 @@ public class EntrySaverJson {
                 HashMap<String, String> innerMap = (HashMap<String, String>) jsonObject.get(key);
 
                 LogEntry.Subcategories subCategory = null;
+                System.out.println("---------------- New Sub ----------------");
+                System.out.println("ExcersiseSubCategory in file: " + innerMap.get("exerciseSubCategory"));
+                outerloop:
                 for (EXERCISE_CATEGORIES category : LogEntry.EXERCISE_CATEGORIES.values()) {
+                    System.out.println(" -- Category: " + category);
                     for (LogEntry.Subcategories sub : category.getSubcategories()) {
+                        System.out.println();
                        try {
+                           System.out.println("Sub to test: " + sub);
                            subCategory = sub.getValueOf(innerMap.get("exerciseSubCategory"));
+                           System.out.println("Result: " + subCategory);
+                           if (subCategory != null) {
+                               System.out.println("Breaking");
+                               break outerloop;
+                           }
                        } catch (Exception e) {
-
+                            System.out.println("NEQ! " + e);
                        }
                     }   
                 }
 
                 if (subCategory == null) {
-                    throw new IllegalStateException("Malformed save file");
+                    throw new IllegalStateException("Malformed save file"+innerMap.get("exerciseSubCategory"));
                 }
 
                 entryManager.addEntry(
@@ -133,9 +146,9 @@ public class EntrySaverJson {
                     innerMap.get("comment"),
                     LocalDate.parse(innerMap.get("date")),
                     Duration.ofSeconds(Long.parseLong(innerMap.get("duration"))),
-                    Double.parseDouble(innerMap.get("feeling")),
-                    Double.parseDouble(innerMap.get("distance")),
-                    Double.parseDouble(innerMap.get("maxHeartRate")),
+                    Integer.parseInt(innerMap.get("feeling")),
+                    !innerMap.get("distance").equals("null") ? Double.parseDouble(innerMap.get("distance")) : null,
+                    !innerMap.get("maxHeartRate").equals("null") ? Integer.parseInt(innerMap.get("maxHeartRate")) : null,
                     LogEntry.EXERCISE_CATEGORIES.valueOf(innerMap.get("exerciseCategory")),
                     subCategory
                     

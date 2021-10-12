@@ -29,7 +29,7 @@ public class EntryManager implements Iterable<LogEntry> {
      * @throws IllegalArgumentException if any of the arguments are null.
      * @return the generated id for the new LogEntry as a string.
      */
-    public String addEntry(String title, String comment, LocalDate date, Duration duration, double feeling, Double distance, double maxHeartRate, LogEntry.EXERCISE_CATEGORIES exerciseCategory, LogEntry.Subcategories exerciseSubCategory) throws IllegalArgumentException {
+    public String addEntry(String title, String comment, LocalDate date, Duration duration, int feeling, Double distance, Integer maxHeartRate, LogEntry.EXERCISE_CATEGORIES exerciseCategory, LogEntry.Subcategories exerciseSubCategory) throws IllegalArgumentException {
 
         if (title == null || comment == null || date == null || duration == null) {
             throw new IllegalArgumentException("Arguments cannot be null");

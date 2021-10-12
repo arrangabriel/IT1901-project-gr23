@@ -136,6 +136,7 @@ public class LogEntry {
         this.distance = distance;
         this.feeling = feeling;
         this.maxHeartRate = maxHeartRate;
+        this.exerciseCategory = exerciseCategory;
         this.exerciseSubCategory = exerciseSubCategory;
         
     }
@@ -209,6 +210,8 @@ public class LogEntry {
     public EXERCISE_CATEGORIES getExerciseCategory() {
         return exerciseCategory;
     }
+
+    public SubCategory getSubCategory
 
     /**
      * Returns the subcategories for the logEntry's main category
