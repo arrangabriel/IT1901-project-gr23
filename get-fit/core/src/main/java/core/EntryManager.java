@@ -48,7 +48,7 @@ public class EntryManager implements Iterable<LogEntry> {
      * @param duration the duration field for the new LogEntry as a time.Duration instance.
      * @throws IllegalArgumentException if any of the arguments are null or the entry already exists.
      */
-    public void addEntry(String id, String title, String comment, LocalDate date, Duration duration, double feeling, Double distance, double maxHeartRate, LogEntry.EXERCISE_CATEGORIES exerciseCategory, LogEntry.Subcategories exerciseSubCategory) throws IllegalArgumentException {
+    public void addEntry(String id, String title, String comment, LocalDate date, Duration duration, int feeling, Double distance, Integer maxHeartRate, LogEntry.EXERCISE_CATEGORIES exerciseCategory, LogEntry.Subcategories exerciseSubCategory) throws IllegalArgumentException {
 
         if (id == null || title == null || comment == null || date == null || duration == null) {
             throw new IllegalArgumentException("Arguments cannot be null");

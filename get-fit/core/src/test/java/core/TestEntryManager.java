@@ -26,15 +26,15 @@ public class TestEntryManager {
     public void testAddEntry() {
         EntryManager manager = genValidManager();
         Assertions.assertEquals(0, manager.entryCount());
-        manager.addEntry("0", "title", "comment", LocalDate.now().minusDays(1), Duration.ofSeconds(hour));
+        manager.addEntry("0", "title", "comment", LocalDate.now().minusDays(1), Duration.ofSeconds(hour), 1, null, null, LogEntry.EXERCISE_CATEGORIES.STRENGTH, LogEntry.STRENGTH_SUBCATEGORIES.PULL);
         Assertions.assertEquals(1, manager.entryCount());
-        Assertions.assertThrows(IllegalArgumentException.class, () -> manager.addEntry("0", "title", "comment", LocalDate.now().minusDays(1), Duration.ofSeconds(hour)));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> manager.addEntry("0", "title", "comment", LocalDate.now().minusDays(1), Duration.ofSeconds(hour), 1, null, null, LogEntry.EXERCISE_CATEGORIES.STRENGTH, LogEntry.STRENGTH_SUBCATEGORIES.PULL));
     }
 
     @Test
     public void testRemoveEntry() {
         EntryManager manager = genValidManager();
-        manager.addEntry("0", "title", "comment", LocalDate.now().minusDays(1), Duration.ofSeconds(hour));
+        manager.addEntry("0", "title", "comment", LocalDate.now().minusDays(1), Duration.ofSeconds(hour), 1, null, null, LogEntry.EXERCISE_CATEGORIES.STRENGTH, LogEntry.STRENGTH_SUBCATEGORIES.PULL);
         Assertions.assertEquals(1, manager.entryCount());
         manager.removeEntry("0");
         Assertions.assertEquals(0, manager.entryCount());
@@ -44,7 +44,7 @@ public class TestEntryManager {
     @Test
     public void testGetEntry() {
         EntryManager manager = genValidManager();
-        manager.addEntry("0", "title", "comment", LocalDate.now().minusDays(1), Duration.ofSeconds(hour));
+        manager.addEntry("0", "title", "comment", LocalDate.now().minusDays(1), Duration.ofSeconds(hour), 1, null, null, LogEntry.EXERCISE_CATEGORIES.STRENGTH, LogEntry.STRENGTH_SUBCATEGORIES.PULL);
         Assertions.assertEquals("0", manager.getEntry("0").getId());
         Assertions.assertThrows(IllegalArgumentException.class, () -> manager.getEntry("1"));
     }
