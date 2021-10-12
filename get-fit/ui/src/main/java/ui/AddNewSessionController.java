@@ -37,8 +37,7 @@ public class AddNewSessionController {
     @FXML
     public void createSessionButtonPushed(ActionEvent event) throws IOException{
         // TODO - handle exception when entry could not be created
-        Duration duration = Duration.ofHours(Integer.parseInt(
-            hour.getText())).plusSeconds(Duration.ofMinutes
+        Duration duration = Duration.ofHours(Integer.parseInt(hour.getText())).plusSeconds(Duration.ofMinutes
             (Integer.parseInt(min.getText())).getSeconds());
         try{
             App.entryManager.addEntry(

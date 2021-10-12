@@ -5,11 +5,10 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import core.EntryManager;
 import localpersistence.EntrySaverJson;
+import java.io.FileNotFoundException;
 
 /**
  * JavaFX App
@@ -22,7 +21,7 @@ public class App extends Application {
     public void start(Stage stage) throws IOException {
         // TODO - fix this
         try{
-            EntrySaverJson.load(entryManager);
+            EntrySaverJson.load(App.entryManager);
         }
         catch (FileNotFoundException e){
             System.out.println("SaveData.json could not be found.");
