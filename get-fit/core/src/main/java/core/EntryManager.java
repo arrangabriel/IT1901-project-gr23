@@ -174,10 +174,14 @@ public class EntryManager implements Iterable<LogEntry> {
                         "Sort configuration cannot be null.");
             }
 
-            Comparator<LogEntry> comparator = switch (sortConfiguration) {
-                case DATE -> Comparator.comparing(LogEntry::getDate);
-                case DURATION -> Comparator.comparing(LogEntry::getDuration);
-                case TITLE -> Comparator.comparing(LogEntry::getTitle);
+            Comparator<LogEntry> comparator = null;
+            switch (sortConfiguration) {
+                case DATE:
+                    Comparator.comparing(LogEntry::getDate);
+                case DURATION:
+                    Comparator.comparing(LogEntry::getDuration);
+                case TITLE:
+                    Comparator.comparing(LogEntry::getTitle);
             };
 
             this.logEntryStream = entryMap
