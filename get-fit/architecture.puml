@@ -1,19 +1,33 @@
 @startuml Get Fit Architecture
-allow_mixing
-    component core {
-        package core
-    }
+allowmixing
+component core {
+    package core.core
+}
 
-    component localpersistancy {
-        package localpersistancy
-    }
+component localpersistence {
+    package localpersistence.localpersistence
+}
 
-    component ui {
-        package ui
-    }
+component ui {
+    package ui.ui
+}
 
-    ui ..> core
-    ui ..> localpersistancy
+component javafx {
+    package javafx.controls
+    package javafx.fxml
+}
+
+component json {
+    package json.simple
+}
+
+ui.ui ..> core.core
+ui.ui ..> localpersistence.localpersistence
+ui.ui ..> javafx.controls
+ui.ui ..> javafx.fxml
+
+localpersistence.localpersistence ..> core.core
+localpersistence.localpersistence ..> json.simple
 
 
 @enduml
