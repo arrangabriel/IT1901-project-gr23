@@ -330,15 +330,6 @@ public class LogEntry {
     }
 
     /**
-     * Returns the individual id of this logEntry.
-     *
-     * @return the id field of this logEntry as a string.
-     */
-    public String getId() {
-        return id;
-    }
-
-    /**
      * Returns the feeling field.
      *
      * @return the feeling field of this logEntry as an int.
