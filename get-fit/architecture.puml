@@ -1,0 +1,19 @@
+@startuml Get Fit Architecture
+allow_mixing
+    component core {
+        package core
+    }
+
+    component localpersistancy {
+        package localpersistancy
+    }
+
+    component ui {
+        package ui
+    }
+
+    ui ..> core
+    ui ..> localpersistancy
+
+
+@enduml
