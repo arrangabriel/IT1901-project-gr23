@@ -4,6 +4,7 @@ import java.time.Duration;
 import java.time.LocalDate;
 
 import core.LogEntry.EXERCISECATEGORY;
+import core.LogEntry.Subcategory;
 
 /** Builder class for EntrLog. */
 public class EntryBuilder {
@@ -26,4 +27,24 @@ public class EntryBuilder {
 
     /** Feeling of the exercise. */
     private final int feeling;
+
+    /**
+     * Optional fields.
+     */
+
+     /** Comment to be built. */
+     private String comment;
+
+     /** Subcategory to be built. */
+     private Subcategory exerciseSubcategory;
+
+     /** Distance to be built. */
+     private Double distance;
+
+     /** Maximum heart rate to be built. */
+     private Integer maxHeartRate;
+
+
+     
+
 }
