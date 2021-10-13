@@ -1,7 +1,6 @@
 package core;
 
 import java.time.LocalDate;
-import java.util.Arrays;
 import java.time.Duration;
 
 import org.junit.jupiter.api.Assertions;
