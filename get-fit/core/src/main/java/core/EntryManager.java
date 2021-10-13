@@ -49,7 +49,7 @@ public class EntryManager implements Iterable<LogEntry> {
         final int feeling,
         final Double distance,
         final Integer maxHeartRate,
-        final LogEntry.EXERCISECATEGORIES exerciseCategory,
+        final LogEntry.EXERCISECATEGORY exerciseCategory,
         final LogEntry.Subcategory exerciseSubCategory)
             throws IllegalArgumentException {
 
@@ -88,7 +88,7 @@ public class EntryManager implements Iterable<LogEntry> {
         final int feeling,
         final Double distance,
         final Integer maxHeartRate,
-        final LogEntry.EXERCISECATEGORIES exerciseCategory,
+        final LogEntry.EXERCISECATEGORY exerciseCategory,
         final LogEntry.Subcategory exerciseSubCategory)
             throws IllegalArgumentException {
 
@@ -175,7 +175,7 @@ public class EntryManager implements Iterable<LogEntry> {
     public Iterator<LogEntry> sortedIterator(
         final LogEntry.SORTCONFIGURATIONS sortConfig,
         final boolean reverse,
-        final LogEntry.EXERCISECATEGORIES exerciseCategory,
+        final LogEntry.EXERCISECATEGORY exerciseCategory,
         final LogEntry.Subcategory exerciseSubCategory)
             throws IllegalArgumentException {
 
@@ -185,7 +185,7 @@ public class EntryManager implements Iterable<LogEntry> {
 
         Stream<LogEntry> entryStream = entryMap.values().stream();
 
-        if (!exerciseCategory.equals(LogEntry.EXERCISECATEGORIES.ANY)) {
+        if (!exerciseCategory.equals(LogEntry.EXERCISECATEGORY.ANY)) {
             entryStream = entryStream
                                     .filter((entry) -> entry
                                     .getExerciseCategory()
@@ -242,7 +242,7 @@ public class EntryManager implements Iterable<LogEntry> {
 
         return sortedIterator(sortConfig,
                                 false,
-                                LogEntry.EXERCISECATEGORIES.ANY,
+                                LogEntry.EXERCISECATEGORY.ANY,
                                 null);
 
     }
@@ -263,7 +263,7 @@ public class EntryManager implements Iterable<LogEntry> {
 
         return sortedIterator(sortConfig,
                                 reverse,
-                                LogEntry.EXERCISECATEGORIES.ANY,
+                                LogEntry.EXERCISECATEGORY.ANY,
                                 null);
 
     }
@@ -279,7 +279,7 @@ public class EntryManager implements Iterable<LogEntry> {
      */
     public Iterator<LogEntry> sortedIterator(
         final LogEntry.SORTCONFIGURATIONS sortConfig,
-        final LogEntry.EXERCISECATEGORIES exerciseCategory)
+        final LogEntry.EXERCISECATEGORY exerciseCategory)
             throws IllegalArgumentException {
 
         return sortedIterator(sortConfig,
@@ -301,7 +301,7 @@ public class EntryManager implements Iterable<LogEntry> {
     public Iterator<LogEntry> sortedIterator(
         final LogEntry.SORTCONFIGURATIONS sortConfig,
         final boolean reverse,
-            final LogEntry.EXERCISECATEGORIES exerciseCategory)
+            final LogEntry.EXERCISECATEGORY exerciseCategory)
             throws IllegalArgumentException {
         return sortedIterator(sortConfig, reverse, exerciseCategory, null);
     }
@@ -318,7 +318,7 @@ public class EntryManager implements Iterable<LogEntry> {
      */
     public Iterator<LogEntry> sortedIterator(
         final LogEntry.SORTCONFIGURATIONS sortConfig,
-        final LogEntry.EXERCISECATEGORIES exerciseCategory,
+        final LogEntry.EXERCISECATEGORY exerciseCategory,
         final LogEntry.Subcategory exerciseSubCategory)
             throws IllegalArgumentException {
 

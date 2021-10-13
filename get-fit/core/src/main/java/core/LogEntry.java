@@ -24,7 +24,7 @@ public class LogEntry {
     private Duration duration;
 
     /** Category of LogEntry. */
-    private EXERCISECATEGORIES exerciseCategory;
+    private EXERCISECATEGORY exerciseCategory;
 
     /** Subcategory of LogEntry. */
     private Subcategory exerciseSubCategory;
@@ -84,7 +84,7 @@ public class LogEntry {
 
     // expand these in the future
     /** The categories an exercise can fall under. */
-    public enum EXERCISECATEGORIES {
+    public enum EXERCISECATEGORY {
         /** Represents any or generic exercise. */
         ANY,
         /** Represents strength exercise. */
@@ -102,12 +102,12 @@ public class LogEntry {
         /** Populates the subcategories array.
          * @param subcategoriesArray The subcategories to populate with.
         */
-        EXERCISECATEGORIES(final Subcategory[] subcategoriesArray) {
+        EXERCISECATEGORY(final Subcategory[] subcategoriesArray) {
             this.subcategories = subcategoriesArray;
         }
 
         /** Empties the subcategories array. */
-        EXERCISECATEGORIES() {
+        EXERCISECATEGORY() {
             this.subcategories = new Subcategory[] {};
         }
 
@@ -188,7 +188,7 @@ public class LogEntry {
         final int ifeeling,
         final Double idistance,
         final Integer imaxHeartRate,
-        final EXERCISECATEGORIES iexerciseCategory,
+        final EXERCISECATEGORY iexerciseCategory,
         final Subcategory iexerciseSubCategory)
             throws IllegalArgumentException {
 
@@ -200,7 +200,7 @@ public class LogEntry {
             throw new IllegalArgumentException("Arguments cannot be null");
         }
 
-        if (iexerciseCategory.equals(EXERCISECATEGORIES.ANY)) {
+        if (iexerciseCategory.equals(EXERCISECATEGORY.ANY)) {
             throw new IllegalArgumentException(
                 "The category must be specified");
         }
@@ -327,7 +327,7 @@ public class LogEntry {
      *
      * @return the EXERCISE_CATEGORIES for the category.
      */
-    public EXERCISECATEGORIES getExerciseCategory() {
+    public EXERCISECATEGORY getExerciseCategory() {
         return exerciseCategory;
     }
 

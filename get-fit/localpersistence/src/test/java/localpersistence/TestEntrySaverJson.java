@@ -19,10 +19,10 @@ public class TestEntrySaverJson {
 
     private EntryManager genValidManager() {
         EntryManager manager = new EntryManager();
-        manager.addEntry("0", "Test0", "comment the first", LocalDate.now().minusDays(2), Duration.ofSeconds(3600), 1, null, null, LogEntry.EXERCISECATEGORIES.STRENGTH, LogEntry.STRENGTHSUBCATEGORIES.PUSH);
-        manager.addEntry("1", "Test1", "comment the second", LocalDate.now().minusDays(1), Duration.ofSeconds(3600*2), 7, Double.valueOf(3000), 170, LogEntry.EXERCISECATEGORIES.RUNNING, LogEntry.CARDIOSUBCATEGORIES.LONG);
-        manager.addEntry("2", "Test2", "comment the third", LocalDate.now().minusDays(3), Duration.ofSeconds(3600/2), 5, null, 180, LogEntry.EXERCISECATEGORIES.STRENGTH, LogEntry.STRENGTHSUBCATEGORIES.LEGS);
-        manager.addEntry("3", "Test3", "comment the fourth", LocalDate.now().minusDays(7), Duration.ofSeconds(3600*4), 9, Double.valueOf(6000), 190, LogEntry.EXERCISECATEGORIES.CYCLING, LogEntry.CARDIOSUBCATEGORIES.HIGHINTENSITY);
+        manager.addEntry("0", "Test0", "comment the first", LocalDate.now().minusDays(2), Duration.ofSeconds(3600), 1, null, null, LogEntry.EXERCISECATEGORY.STRENGTH, LogEntry.STRENGTHSUBCATEGORIES.PUSH);
+        manager.addEntry("1", "Test1", "comment the second", LocalDate.now().minusDays(1), Duration.ofSeconds(3600*2), 7, Double.valueOf(3000), 170, LogEntry.EXERCISECATEGORY.RUNNING, LogEntry.CARDIOSUBCATEGORIES.LONG);
+        manager.addEntry("2", "Test2", "comment the third", LocalDate.now().minusDays(3), Duration.ofSeconds(3600/2), 5, null, 180, LogEntry.EXERCISECATEGORY.STRENGTH, LogEntry.STRENGTHSUBCATEGORIES.LEGS);
+        manager.addEntry("3", "Test3", "comment the fourth", LocalDate.now().minusDays(7), Duration.ofSeconds(3600*4), 9, Double.valueOf(6000), 190, LogEntry.EXERCISECATEGORY.CYCLING, LogEntry.CARDIOSUBCATEGORIES.HIGHINTENSITY);
         return manager;
     }
 

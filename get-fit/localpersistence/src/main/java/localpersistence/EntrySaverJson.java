@@ -12,7 +12,7 @@ import java.time.Duration;
 
 import core.EntryManager;
 import core.LogEntry;
-import core.LogEntry.EXERCISECATEGORIES;
+import core.LogEntry.EXERCISECATEGORY;
 
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -162,8 +162,8 @@ public final class EntrySaverJson {
 
                 LogEntry.Subcategory subCategory = null;
                 outerloop:
-                for (EXERCISECATEGORIES category
-                        : LogEntry.EXERCISECATEGORIES.values()) {
+                for (EXERCISECATEGORY category
+                        : LogEntry.EXERCISECATEGORY.values()) {
                     for (LogEntry.Subcategory sub
                             : category.getSubcategories()) {
                        try {
@@ -198,7 +198,7 @@ public final class EntrySaverJson {
                     !innerMap.get("distance").equals("null") ? Double.parseDouble(innerMap.get("distance")) : null,
                     !innerMap.get("maxHeartRate").equals("null") ? Integer.parseInt(innerMap.get("maxHeartRate")) : null,
 
-                    LogEntry.EXERCISECATEGORIES.valueOf(innerMap.get(
+                    LogEntry.EXERCISECATEGORY.valueOf(innerMap.get(
                         "exerciseCategory")),
 
                     subCategory

@@ -3,7 +3,7 @@ package core;
 import java.time.Duration;
 import java.time.LocalDate;
 
-import core.LogEntry.EXERCISECATEGORIES;
+import core.LogEntry.EXERCISECATEGORY;
 
 /** Builder class for EntrLog. */
 public class EntryBuilder {
@@ -22,7 +22,7 @@ public class EntryBuilder {
     private final Duration duration;
 
     /** Exercise category to be built. */
-    private final EXERCISECATEGORIES exerciseCategory;
+    private final EXERCISECATEGORY exerciseCategory;
 
     /** Feeling of the exercise. */
     private final int feeling;
