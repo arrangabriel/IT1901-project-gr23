@@ -12,17 +12,42 @@ import org.junit.jupiter.api.BeforeEach;
 
 import core.EntryManager;
 import core.LogEntry;
+import core.LogEntry.EntryBuilder;
 
 public class TestEntrySaverJson {
 
+    static int minute = 60;
+    static int hour = minute*60;
+
     private final String saveFile = "SavedTestData.json";
+
+    private EntryBuilder genValidBuilder(String title, String comment) {
+        LocalDate date = LocalDate.now().minusDays(1);
+        Duration duration = Duration.ofSeconds(hour);
+        int feeling = 1;
+        double distance = 1;
+        Integer maxHeartRate = 80;
+
+        LogEntry.EXERCISECATEGORY exerciseCategory = LogEntry.EXERCISECATEGORY.STRENGTH;
+        LogEntry.Subcategory subcategory = LogEntry.STRENGTHSUBCATEGORIES.PULL;
+
+        EntryBuilder builder = new EntryBuilder(
+            title, date, duration, exerciseCategory, feeling)
+            .comment(comment)
+            .exerciseSubcategory(subcategory)
+            .distance(distance)
+            .maxHeartRate(maxHeartRate);
+        return builder;
+    }
+ 
 
     private EntryManager genValidManager() {
         EntryManager manager = new EntryManager();
-        manager.addEntry("0", "Test0", "comment the first", LocalDate.now().minusDays(2), Duration.ofSeconds(3600), 1, null, null, LogEntry.EXERCISECATEGORY.STRENGTH, LogEntry.STRENGTHSUBCATEGORIES.PUSH);
-        manager.addEntry("1", "Test1", "comment the second", LocalDate.now().minusDays(1), Duration.ofSeconds(3600*2), 7, Double.valueOf(3000), 170, LogEntry.EXERCISECATEGORY.RUNNING, LogEntry.CARDIOSUBCATEGORIES.LONG);
-        manager.addEntry("2", "Test2", "comment the third", LocalDate.now().minusDays(3), Duration.ofSeconds(3600/2), 5, null, 180, LogEntry.EXERCISECATEGORY.STRENGTH, LogEntry.STRENGTHSUBCATEGORIES.LEGS);
-        manager.addEntry("3", "Test3", "comment the fourth", LocalDate.now().minusDays(7), Duration.ofSeconds(3600*4), 9, Double.valueOf(6000), 190, LogEntry.EXERCISECATEGORY.CYCLING, LogEntry.CARDIOSUBCATEGORIES.HIGHINTENSITY);
+
+        manager.addEntry("0", genValidBuilder("Test1", "comment"));
+        manager.addEntry("1", genValidBuilder("Test2", "comment2"));
+        manager.addEntry("2", genValidBuilder("Test3", "comment3"));
+        manager.addEntry("3", genValidBuilder("Test4", "comment4"));
         return manager;
     }
 
