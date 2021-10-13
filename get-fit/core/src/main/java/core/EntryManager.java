@@ -137,6 +137,7 @@ public final class EntryManager implements Iterable<LogEntry> {
         return this.entryMap.values().iterator();
     }
 
+    // TODO: Arran write a docstring for this
     public class SortedIteratorBuilder {
 
         /**
