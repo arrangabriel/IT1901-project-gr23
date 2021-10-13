@@ -161,6 +161,73 @@ public class EntryManager implements Iterable<LogEntry> {
         return this.entryMap.values().iterator();
     }
 
+    public class SortedBuilder {
+
+        /**Internally modifiable stream of LogEntries.*/
+        private Stream<LogEntry> logEntryStream;
+        // this might not be neccesary
+        //private boolean filteredByCategory = false;
+
+        public SortedBuilder(
+                final LogEntry.SORTCONFIGURATIONS sortConfiguration)
+                throws IllegalArgumentException {
+
+            if (sortConfiguration == null) {
+                throw new IllegalArgumentException("Sort configuration cannot be null.");
+            }
+
+            private Comparator<LogEntry> comparator = switch (sortConfiguration) {
+                case DATE -> Comparator.comparing(LogEntry::getDate);
+                case DURATION -> Comparator.comparing(LogEntry::getDuration);
+                case TITLE -> Comparator.comparing(LogEntry::getTitle);
+            };
+
+            this.logEntryStream = entryMap
+                    .values()
+                    .stream()
+                    .sorted(comparator);
+        }
+
+        /**
+         * Filters the entries to a single exercise category.
+         *
+         * @param category LogEntry.EXERCISECATEGORY to be filtered by.
+         * @throws IllegalArgumentException if category is null.
+         * @return the modified SortedBuilder.
+         */
+        public SortedBuilder filterExerciseCategory(
+                final LogEntry.EXERCISECATEGORY category)
+                throws IllegalArgumentException {
+
+            if (category == null) {
+                throw new IllegalArgumentException("Category cannot be null.");
+            }
+
+            this.logEntryStream = this.logEntryStream
+                    .filter((entry) -> entry
+                            .getExerciseCategory()
+                            .equals(category));
+            return this;
+            //this.filteredByCategory = true;
+        }
+
+
+        public SortedBuilder filterSubCategory(
+                final LogEntry.Subcategory subcategory)
+                throws IllegalArgumentException {
+
+            if (subcategory == null) {
+                throw new IllegalArgumentException("Subcategory cannot be null.");
+            }
+
+            this.logEntryStream = this.logEntryStream
+                    .filter((entry) -> entry
+                            .getExerciseSubCategory()
+                            .equals(subcategory));
+            return this;
+        }
+    }
+
     /**
      * Returns an iterator sorted by parameters.
      *
