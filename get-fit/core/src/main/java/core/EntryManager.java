@@ -10,6 +10,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import core.LogEntry.EntryBuilder;
+import core.LogEntry.Validity;
+
 /**
  * Provides management for EntryLogs.
  */
@@ -43,23 +46,14 @@ public class EntryManager implements Iterable<LogEntry> {
      * @param exerciseSubCategory the subcategory of the exercise.
      * @return the generated id for the new LogEntry as a string.
      * @throws IllegalArgumentException if any of the input is invalid.
+     * @see #validate
      */
-    public String addEntry(
-            final String title,
-            final String comment,
-            final LocalDate date,
-            final Duration duration,
-            final int feeling,
-            final Double distance,
-            final Integer maxHeartRate,
-            final LogEntry.EXERCISECATEGORY exerciseCategory,
-            final LogEntry.Subcategory exerciseSubCategory)
+    public String addEntry(final EntryBuilder builder)
             throws IllegalArgumentException {
 
         String id = String.valueOf(entryMap.size());
 
-        addEntry(id, title, comment, date, duration, feeling,
-                distance, maxHeartRate, exerciseCategory, exerciseSubCategory);
+        addEntry(id, builder);
 
         return id;
     }
@@ -80,35 +74,25 @@ public class EntryManager implements Iterable<LogEntry> {
      * @param maxHeartRate        the max recorded hear rate during the exercise.
      * @param exerciseCategory    the category of the exercise.
      * @param exerciseSubCategory the subcategory of the exercise.
-     * @throws IllegalArgumentException if any of the input is invalid.
+     * @throws IllegalArgumentException if any of the input is invalid or the id is allready in use.
+     * @see #validate
      */
     public void addEntry(
-            final String id,
-            final String title,
-            final String comment,
-            final LocalDate date,
-            final Duration duration,
-            final int feeling,
-            final Double distance,
-            final Integer maxHeartRate,
-            final LogEntry.EXERCISECATEGORY exerciseCategory,
-            final LogEntry.Subcategory exerciseSubCategory)
+        final String id,
+        final EntryBuilder builder)
             throws IllegalArgumentException {
-
-        if (id == null
-                || title == null
-                || comment == null
-                || date == null
-                || duration == null) {
-            throw new IllegalArgumentException("Arguments cannot be null");
-        }
+        
 
         if (entryMap.containsKey(id)) {
             throw new IllegalArgumentException("Entry already exists");
         }
-        entryMap.put(id, new LogEntry(id, title, comment, date, duration,
-                feeling, distance, maxHeartRate, exerciseCategory,
-                exerciseSubCategory));
+
+        Validity validity = LogEntry.validate(builder);
+        if (!validity.valid()) {
+            throw new IllegalArgumentException(validity.reason());
+        }
+
+        entryMap.put(id, new LogEntry(builder));
     }
 
     /**
