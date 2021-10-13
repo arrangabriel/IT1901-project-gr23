@@ -8,9 +8,6 @@ import java.time.LocalDate;
  */
 public class LogEntry {
 
-    /** Id of LogEntry. */
-    private final String id;
-
     /** Title of LogEntry. */
     private String title;
 
@@ -162,91 +159,25 @@ public class LogEntry {
      * A logEntry instance represents a single workout-entry internally.
      * Has fields for the elements of a workout-entry, getters for them,
      * and setters for those that should be mutable.
-     *
-     * @param iid           a string id, is final and can be used to identify a
-     *                     specific logEntry.
-     * @param ititle        entry title.
-     * @param icomment      entry text-body.
-     * @param idate         entry date.
-     * @param iduration     entry duration.
-     * @param ifeeling      an int entry feeling from 1-10.
-     * @param idistance     a double entry distance in kilometers.
-     * @param imaxHeartRate an integer entry for max heart rate.
-     * @param iexerciseCategory category of exercise.
-     * @param iexerciseSubCategory subcategory for exercise.
+     * @param builder the EntryBuilder used to build this LogEntry.
      * @throws IllegalArgumentException if any of the arguments are null,
      *                                  duration is zero or negative,
      *                                  the date is ahead of now,
      *                                  or the title is empty.
      */
-    public LogEntry(
-        final String iid,
-        final String ititle,
-        final String icomment,
-        final LocalDate idate,
-        final Duration iduration,
-        final int ifeeling,
-        final Double idistance,
-        final Integer imaxHeartRate,
-        final EXERCISECATEGORY iexerciseCategory,
-        final Subcategory iexerciseSubCategory)
+    public LogEntry(final EntryBuilder builder)
             throws IllegalArgumentException {
 
-        if (iid == null
-        || ititle == null
-        || icomment == null
-        || idate == null
-        || iduration == null) {
-            throw new IllegalArgumentException("Arguments cannot be null");
-        }
 
-        if (iexerciseCategory.equals(EXERCISECATEGORY.ANY)) {
-            throw new IllegalArgumentException(
-                "The category must be specified");
-        }
-
-        if (iduration.isNegative() || iduration.isZero()) {
-            throw new IllegalArgumentException(
-                "Entry duration must be positive");
-        }
-
-        if (ifeeling > this.maxFeeling || ifeeling < this.minFeeling) {
-            throw new IllegalArgumentException(
-                "Feeling must be between 1 and 10");
-        }
-
-        if (idistance != null && idistance < 0) {
-            throw new IllegalArgumentException(
-                "Duration cannot be set to a negative number");
-        }
-
-        if (imaxHeartRate != null
-        && (imaxHeartRate < this.minHeartRateHuman
-        || imaxHeartRate > this.maxHeartRateHuman)) {
-            throw new IllegalArgumentException(
-                "Heart rate must be between 20 and 250");
-        }
-
-        if (idate.isAfter(LocalDate.now())) {
-            throw new IllegalArgumentException(
-                "Entry cannot be set to be after current time");
-        }
-
-        if (ititle.length() < 1) {
-            throw new IllegalArgumentException(
-                "Title should not be empty");
-        }
-
-        this.id = iid;
-        this.title = ititle;
-        this.comment = icomment;
-        this.date = idate;
-        this.duration = iduration;
-        this.distance = idistance;
-        this.feeling = ifeeling;
-        this.maxHeartRate = imaxHeartRate;
-        this.exerciseCategory = iexerciseCategory;
-        this.exerciseSubCategory = iexerciseSubCategory;
+        this.title = builder.ctitle;
+        this.comment = builder.ccomment;
+        this.date = builder.cdate;
+        this.duration = builder.cduration;
+        this.distance = builder.cdistance;
+        this.feeling = builder.cfeeling;
+        this.maxHeartRate = builder.cmaxHeartRate;
+        this.exerciseCategory = builder.cexerciseCategory;
+        this.exerciseSubCategory = builder.cexerciseSubcategory;
 
     }
 
@@ -484,5 +415,126 @@ public class LogEntry {
         }
         this.maxHeartRate = imaxHeartRate;
     }
+
+    /** Builder class for EntrLog. */
+    public class EntryBuilder {
+
+        /**
+         * Required fields.
+         */
+
+        /** Title to be built. */
+        private final String ctitle;
+
+        /** Date to be built. */
+        private final LocalDate cdate;
+
+        /** Duration to be built. */
+        private final Duration cduration;
+
+        /** Exercise category to be built. */
+        private final EXERCISECATEGORY cexerciseCategory;
+
+        /** Feeling of the exercise. */
+        private final int cfeeling;
+
+        /**
+         * Optional fields.
+         */
+
+        /** Comment to be built. */
+        private String ccomment;
+
+        /** Subcategory to be built. */
+        private Subcategory cexerciseSubcategory;
+
+        /** Distance to be built. */
+        private Double cdistance;
+
+        /** Maximum heart rate to be built. */
+        private Integer cmaxHeartRate;
+
+        /**
+         * Creates an EntryBuilder with all required fields.
+         * @param title the title for the LogEntry.
+         * @param date the date for the LogEntry.
+         * @param duration the duration for the LogEntry.
+         * @param exerciseCategory the exercise category for the LogEntry.
+         * @param feeling the feeling for the LogEntry
+         */
+        public EntryBuilder(
+            final String title,
+            final LocalDate date,
+            final Duration duration,
+            final EXERCISECATEGORY exerciseCategory,
+            final int feeling) {
+
+            this.ctitle = title;
+            this.cdate = date;
+            this.cduration = duration;
+            this.cexerciseCategory = exerciseCategory;
+            this.cfeeling = feeling;
+
+        }
+
+        /**
+         * Sets the comment for the builder.
+         * @param comment the comment to set.
+         * @return this builder.
+         */
+        public EntryBuilder comment(final String comment) {
+
+            this.ccomment = comment;
+            return this;
+        }
+
+        /**
+         * Sets the exercise subcategory for the builder.
+         * @param exerciseSubcategory the subcategory to set.
+         * @return this builder.
+         */
+        public EntryBuilder exerciseSubcategory(
+            final Subcategory exerciseSubcategory) {
+
+            this.cexerciseSubcategory = exerciseSubcategory;
+            return this;
+        }
+
+        /**
+         * Sets the distance for the builder.
+         * @param distance the distance to set.
+         * @return this builder.
+         */
+        public EntryBuilder distance(final Double distance) {
+
+            this.cdistance = distance;
+            return this;
+        }
+
+        /**
+         * Sets the max heart rate for the builder.
+         * @param maxHeartRate the heart rate to set.
+         * @return this builder.
+         */
+        public EntryBuilder maxHeartRate(final Integer maxHeartRate) {
+
+            this.cmaxHeartRate = maxHeartRate;
+            return this;
+        }
+
+        /**
+         * Constructs the LogEntry object.
+         * @return the LogEntry.
+         * @throws IllegalArgumentException if any of the arguments are invalid.
+         */
+        public LogEntry build() throws IllegalArgumentException {
+            LogEntry logEntry = new LogEntry(this);
+            return logEntry;
+        }
+
+
+
+    }
+
 
 }
