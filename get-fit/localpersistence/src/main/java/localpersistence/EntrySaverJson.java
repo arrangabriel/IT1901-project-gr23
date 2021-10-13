@@ -42,6 +42,26 @@ public final class EntrySaverJson {
     }
 
     /**
+     * Puts the information stored in the enty into the hashmap.
+     * @param map the map to put into.
+     * @param entry the entry to store.
+     */
+    private static void putEntry(
+        final HashMap<String, String> map,
+        final LogEntry entry) {
+
+        map.put("title", entry.getTitle());
+        map.put("comment", entry.getComment());
+        map.put("date", entry.getDate().toString());
+        map.put("feeling", Integer.toString(entry.getFeeling()));
+        map.put("distance", Double.toString(entry.getDistance()));
+        map.put("maxHeartRate", Integer.toString(entry.getMaxHeartRate()));
+        map.put("exerciseCategory", entry.getExerciseCategory().toString());
+        map.put("exerciseSubCategory", entry.getExerciseSubCategory()
+        .toString());
+    }
+
+    /**
      * Iterates over every entry in the provided EntryManager
      * and adds their data as a string to a hashmap.
      * Saves the hashmap to the specified JSON file.
@@ -65,36 +85,7 @@ public final class EntrySaverJson {
         for (String entryId : entryManager.entryIds()) {
             LogEntry entry = entryManager.getEntry(entryId);
             HashMap<String, String> innerMap = new HashMap<>();
-            innerMap.put("title", entry
-                                    .getTitle());
-
-            innerMap.put("comment", entry
-                                    .getComment());
-
-            innerMap.put("date", entry
-                                    .getDate()
-                                    .toString());
-
-            innerMap.put("duration", String.valueOf(entry
-                                                    .getDuration()
-                                                    .getSeconds()));
-
-            innerMap.put("feeling", Integer.toString(entry
-                                                    .getFeeling()));
-
-            innerMap.put("distance", String.valueOf(entry
-                                                    .getDistance()));
-
-            innerMap.put("maxHeartRate", String.valueOf(entry
-                                                    .getMaxHeartRate()));
-
-            innerMap.put("exerciseCategory", entry
-                                                    .getExerciseCategory()
-                                                    .toString());
-
-            innerMap.put("exerciseSubCategory", entry
-                                                    .getExerciseSubCategory()
-                                                    .toString());
+            putEntry(innerMap, entry);
 
             json.put(entryId, innerMap);
         }
