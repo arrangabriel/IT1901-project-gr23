@@ -1,6 +1,7 @@
 package core;
 
 import java.time.LocalDate;
+import java.util.Arrays;
 import java.time.Duration;
 
 import org.junit.jupiter.api.Assertions;
@@ -40,8 +41,13 @@ public class TestLogEntry {
         return builder;
     }
 
-    
     @Test
+    public void test() {
+        Assertions.assertTrue(CARDIOSUBCATEGORIES.HIGHINTENSITY.equals(CARDIOSUBCATEGORIES.HIGHINTENSITY));
+        Assertions.assertTrue(Arrays.stream(EXERCISECATEGORY.RUNNING.getSubcategories()).anyMatch(CARDIOSUBCATEGORIES.HIGHINTENSITY::equals));
+    }
+    
+    @Test // Above test proves it should work, considering it is nearly identical with the test in LogEntry (line 271)
     public void testLogEntry() {
         String id = "0";
         String title = "Tets";

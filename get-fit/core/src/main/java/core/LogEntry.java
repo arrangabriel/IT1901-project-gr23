@@ -268,7 +268,7 @@ public class LogEntry {
 
 
         if (builder.cexerciseSubcategory != null
-        && (Arrays.stream(builder.cexerciseCategory.subcategories)
+        && (Arrays.stream(builder.cexerciseCategory.getSubcategories())
         .anyMatch(builder.cexerciseSubcategory::equals))) {
             return new Validity(false,
             "Subcategory must be part of exercise category");
