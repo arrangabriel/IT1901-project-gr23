@@ -13,6 +13,7 @@ import java.time.Duration;
 import core.EntryManager;
 import core.LogEntry;
 import core.LogEntry.EXERCISECATEGORY;
+import core.LogEntry.Subcategory;
 import core.LogEntry.EntryBuilder;
 
 import org.json.simple.JSONObject;
@@ -114,6 +115,31 @@ public final class EntrySaverJson {
     }
 
     /**
+     * Converts a string representation of a subcategory into a subcategory.
+     * @param category The string representation of the subcategory.
+     * @return The actual subcategory or null if no match.
+     */
+    public static LogEntry.Subcategory stringToSubcategory(
+        final String category) {
+
+        LogEntry.Subcategory subCategory = null;
+        outerloop:
+        for (EXERCISECATEGORY exCategory: LogEntry.EXERCISECATEGORY.values()) {
+            for (LogEntry.Subcategory sub: exCategory.getSubcategories()) {
+                try {
+                    subCategory = sub.getValueOf(category);
+                    if (subCategory != null) {
+                        break outerloop;
+                    }
+                } catch (Exception e) {
+                    // NEQ
+                }
+            }
+        }
+        return subCategory;
+    }
+
+    /**
      * Loads a specified JSON file and constructs
      * LogEntries which it appends to the provided EntryManager.
      * @param entryManager the EntryManager to load data into.
@@ -146,30 +172,11 @@ public final class EntrySaverJson {
             JSONObject jsonObject = (JSONObject) jsonParser.parse(dataString);
 
             for (Object key : jsonObject.keySet()) {
-                String id = (String) key;
 
                 //Suppressed unchecked warning. Any better solution Stefan?:
                 @SuppressWarnings("unchecked")
                 HashMap<String, String> innerMap =
                             (HashMap<String, String>) jsonObject.get(key);
-
-                LogEntry.Subcategory subCategory = null;
-                outerloop:
-                for (EXERCISECATEGORY category
-                        : LogEntry.EXERCISECATEGORY.values()) {
-                    for (LogEntry.Subcategory sub
-                            : category.getSubcategories()) {
-                       try {
-                           subCategory = sub.getValueOf(innerMap.get(
-                                                        "exerciseSubCategory"));
-                           if (subCategory != null) {
-                               break outerloop;
-                           }
-                       } catch (Exception e) {
-                           // NEQ
-                       }
-                    }
-                }
 
                 String title = innerMap.get("title");
                 LocalDate date = LocalDate.parse(innerMap.get("date"));
@@ -193,6 +200,8 @@ public final class EntrySaverJson {
                 EXERCISECATEGORY category = EXERCISECATEGORY.valueOf(
                     innerMap.get("exerciseCategory"));
 
+                Subcategory subCategory = stringToSubcategory(
+                    innerMap.get("exerciseSubcategory"));
 
                 EntryBuilder builder = new EntryBuilder(
                     title, date, duration, category, feeling)
