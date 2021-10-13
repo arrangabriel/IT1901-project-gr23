@@ -15,7 +15,6 @@ public class TestLogEntry {
     static int hour = minute*60;
 
     private EntryBuilder genValid() {
-        String id = "0";
         String title = "Tets";
         String comment = "This is a test";
         LocalDate date = LocalDate.now().minusDays(1);
