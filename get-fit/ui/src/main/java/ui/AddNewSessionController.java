@@ -2,87 +2,103 @@ package ui;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
-import java.io.IOException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.input.KeyCode;
-import java.time.Duration;
-import localpersistence.EntrySaverJson;
-import java.time.LocalDate;
-import javafx.scene.control.Slider;
+import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.DatePicker;
+import javafx.scene.control.Label;
+import javafx.scene.control.Slider;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
+import localpersistence.EntrySaverJson;
+
+import java.io.IOException;
+import java.time.Duration;
+import java.time.LocalDate;
 
 
 public class AddNewSessionController {
     //fxml component attributes
-    @FXML private Label header, timeLabel, dateLabel, distanceLabel, commentLabel, errorLabel;
-    @FXML private TextField nameOfSessionField, distance, hour, min;
-    @FXML private TextArea commentField;
-    @FXML private DatePicker sessionDatePicker;
-    @FXML private Button createSession;
-    @FXML private Slider feelingSlider;
-    @FXML private ComboBox<String> exerciseType, tags;
+
+    @FXML
+    private Label header, timeLabel, dateLabel, distanceLabel, commentLabel,
+            errorLabel;
+    @FXML
+    private TextField nameOfSessionField, distance, hour, min;
+    @FXML
+    private TextArea commentField;
+    @FXML
+    private DatePicker sessionDatePicker;
+    @FXML
+    private Button createSession;
+    @FXML
+    private Slider feelingSlider;
+    @FXML
+    private ComboBox<String> exerciseType, tags;
+
+    // TODO generate these
+    private ObservableList<String> exerciseTypeSelecter =
+            FXCollections.observableArrayList("Running", "Cycling", "Strength",
+                    "Svimming");
+    private ObservableList<String> tagsStrengthSelecter =
+            FXCollections.observableArrayList("Push", "Pull", "Legs",
+                    "Full body");
+    private ObservableList<String> tagsCardioSelecter =
+            FXCollections.observableArrayList("Short", "Long", "High intensity",
+                    "Low intensity");
 
     /**
      * Adds an entry to the app EntryManager and switches the view to StartPage
+     *
      * @param event the event data from pushed button.
      * @throws IOException if .FXML file could not be found.
      */
     @FXML
-    public void createSessionButtonPushed(ActionEvent event) throws IOException{
+    public void createSessionButtonPushed(ActionEvent event)
+            throws IOException {
         // TODO - handle exception when entry could not be created
-        Duration duration = Duration.ofHours(Integer.parseInt(hour.getText())).plusSeconds(Duration.ofMinutes
-            (Integer.parseInt(min.getText())).getSeconds());
-        try{
+        Duration duration = Duration.ofHours(Integer.parseInt(hour.getText()))
+                .plusSeconds(Duration.ofMinutes
+                        (Integer.parseInt(min.getText())).getSeconds());
+        try {
             App.entryManager.addEntry(
-                nameOfSessionField.getText(),
-                commentField.getText(),
-                sessionDatePicker.getValue(),
-                duration);
+                    nameOfSessionField.getText(),
+                    commentField.getText(),
+                    sessionDatePicker.getValue(),
+                    duration);
             EntrySaverJson.save(App.entryManager);
             App.setRoot("StartPage");
-        }
-        catch(IllegalArgumentException e){
+        } catch (IllegalArgumentException e) {
             errorLabel.setText(e.getMessage());
         }
-       
-    } 
+
+    }
+
     @FXML
-    public void returnButtonPushed(ActionEvent event) throws IOException{
+    public void returnButtonPushed(ActionEvent event) throws IOException {
         App.setRoot("StartPage");
     }
 
-   
-
-    private ObservableList<String> exerciseTypeSelecter = FXCollections.observableArrayList("Running" , "Cycling", "Strength" ,"Svimming");
-    private ObservableList<String> tagsStrengthSelecter = FXCollections.observableArrayList("Push", "Pull", "Legs", "Full body");
-    private ObservableList<String> tagsCardioSelecter = FXCollections.observableArrayList("Short", "Long", "High intensity", "Low intensity");
-    
     @FXML
-    public void handleTagsSelecter(ActionEvent event) throws IOException{
-        if(exerciseType.getSelectionModel().getSelectedItem().equals("Strength")){
+    public void handleTagsSelecter(ActionEvent event) throws IOException {
+        if (exerciseType.getSelectionModel().getSelectedItem()
+                .equals("Strength")) {
             tags.setItems(tagsStrengthSelecter);
             distance.setVisible(false);
             distanceLabel.setVisible(false);
-        }
-        else{
+        } else {
             tags.setItems(tagsCardioSelecter);
             distance.setVisible(true);
             distanceLabel.setVisible(true);
         }
-        
+
     }
 
-   
 
     /**
      * Initializes the controller.
+     *
      * @throws NumberFormatException if the input is too large
      */
     @FXML
@@ -90,20 +106,21 @@ public class AddNewSessionController {
         exerciseType.setItems(exerciseTypeSelecter);
         distance.setVisible(false);
         distanceLabel.setVisible(false);
-        
+
         // this code is quite duplicate, but ObservableValue makes it necessary
         hour.textProperty().addListener((obs, oldValue, newValue) -> {
-            if(!newValue.isEmpty()) {
+            if (!newValue.isEmpty()) {
                 try {
                     // throws exception if newvalue is not numeric
                     int value = Integer.parseInt(newValue);
 
                     // this 999 value is slightly arbitrary, to fit the input to the textField
-                    if(value < 0 || value > 99){
-                        throw new NumberFormatException("Input out of allowed range.");
+                    if (value < 0 || value > 99) {
+                        throw new NumberFormatException(
+                                "Input out of allowed range.");
                     }
                     // check if input is multiple zeroes
-                    if(value == 0){
+                    if (value == 0) {
                         hour.setText("0");
                     }
                 } catch (NumberFormatException e) {
@@ -113,15 +130,16 @@ public class AddNewSessionController {
             }
         });
         min.textProperty().addListener((obs, oldValue, newValue) -> {
-            if(!newValue.isEmpty()) {
+            if (!newValue.isEmpty()) {
                 try {
                     // throws exception if newvalue is not numeric
                     int value = Integer.parseInt(newValue);
-                    if(value < 0 || value > 59){
-                        throw new NumberFormatException("Input out of allowed range.");
+                    if (value < 0 || value > 59) {
+                        throw new NumberFormatException(
+                                "Input out of allowed range.");
                     }
                     // check if input is multiple zeroes
-                    if(value == 0){
+                    if (value == 0) {
                         min.setText("0");
                     }
                 } catch (NumberFormatException e) {
@@ -134,9 +152,5 @@ public class AddNewSessionController {
         sessionDatePicker.setValue(LocalDate.now());
     }
 
-    
 
-
-
-    
 }
