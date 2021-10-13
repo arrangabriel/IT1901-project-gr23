@@ -13,6 +13,7 @@ import java.time.Duration;
 import core.EntryManager;
 import core.LogEntry;
 import core.LogEntry.EXERCISECATEGORY;
+import core.LogEntry.EntryBuilder;
 
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -61,7 +62,8 @@ public final class EntrySaverJson {
 
         JSONObject json = new JSONObject();
 
-        for (LogEntry entry : entryManager) {
+        for (String entryId : entryManager.entryIds()) {
+            LogEntry entry = entryManager.getEntry(entryId);
             HashMap<String, String> innerMap = new HashMap<>();
             innerMap.put("title", entry
                                     .getTitle());
@@ -94,7 +96,7 @@ public final class EntrySaverJson {
                                                     .getExerciseSubCategory()
                                                     .toString());
 
-            json.put(entry.getId(), innerMap);
+            json.put(entryId, innerMap);
         }
         File file = new File(saveFile);
         file.createNewFile();
@@ -178,35 +180,41 @@ public final class EntrySaverJson {
                     }
                 }
 
-                if (subCategory == null) {
-                    throw new IllegalStateException("Malformed save file");
+                String title = innerMap.get("title");
+                LocalDate date = LocalDate.parse(innerMap.get("date"));
+                String comment = innerMap.get("comment");
+                Double distance = null;
+                Integer maxHeartRate = null;
+                Integer feeling = Integer.parseInt(innerMap.get("feeling"));
+
+                if (!innerMap.get("distance").equals("null")) {
+                    distance = Double.parseDouble(
+                        innerMap.get("distance"));
+                }
+                if (!innerMap.get("maxHeartRate").equals("null")) {
+                    maxHeartRate = Integer.parseInt(
+                        innerMap.get("maxHeartRate"));
                 }
 
-                entryManager.addEntry(
-                    id,
+                Duration duration = Duration.ofSeconds(
+                    Long.parseLong(innerMap.get("duration")));
 
-                    innerMap.get("title"),
+                EXERCISECATEGORY category = EXERCISECATEGORY.valueOf(
+                    innerMap.get("exerciseCategory"));
 
-                    innerMap.get("comment"),
 
-                    LocalDate.parse(innerMap.get("date")),
+                EntryBuilder builder = new EntryBuilder(
+                    title, date, duration, category, feeling)
+                    .comment(comment)
+                    .distance(distance)
+                    .exerciseSubcategory(subCategory)
+                    .maxHeartRate(maxHeartRate);
 
-                    Duration.ofSeconds(
-                            Long.parseLong(innerMap.get("duration"))),
-                    Integer.parseInt(innerMap.get("feeling")),
 
-                    !innerMap.get("distance").equals("null") ? Double.parseDouble(innerMap.get("distance")) : null,
-                    !innerMap.get("maxHeartRate").equals("null") ? Integer.parseInt(innerMap.get("maxHeartRate")) : null,
-
-                    LogEntry.EXERCISECATEGORY.valueOf(innerMap.get(
-                        "exerciseCategory")),
-
-                    subCategory
-
-                );
+                entryManager.addEntry(builder);
             }
 
-        } catch (ParseException pException){
+        } catch (ParseException pException) {
             throw new IllegalStateException("Could not load data from file");
         }
     }
