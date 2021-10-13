@@ -2,6 +2,9 @@ package math;
 
 import core.EntryManager;
 import core.LogEntry;
+import java.util.Iterator;
+import core.EntryManager.SortedIteratorBuilder;
+
 
 public class Statistics {
     
@@ -33,5 +36,36 @@ public class Statistics {
         double average = sum/entryManager.entryCount();
 
         return average;
+    }
+    
+    /** 
+    * Returns the average speed across all LogEntries in the EntryManager that
+    * has RUNNING as exercise category.
+    * @param entryManager the entryManager to calculate average speed from
+    * @return the average speed in 
+    */
+    public static double getAverageSpeed(EntryManager entryManager) throws IllegalStateException {
+
+        double distance = 0;
+
+        Iterator<LogEntry> entries = new SortedIteratorBuilder(
+            LogEntry.SORTCONFIGURATIONS.DATE).filterExerciseCategory(
+                LogEntry.EXERCISECATEGORY.RUNNING).iterator(false);
+        
+        double time = 0;
+
+        while (entries.hasNext()) {
+           LogEntry entry = entries.next();
+
+           if (entry.getDistance().equals(null)) {
+            distance += entry.getDistance();
+           }
+           time += entry.getDuration().toMinutes();
+        }
+
+        if (distance == 0){
+            throw new IllegalStateException("The distance must be over 0");
+        }
+        return time/distance;
     }
 }
