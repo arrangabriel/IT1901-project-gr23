@@ -165,7 +165,7 @@ public class LogEntry {
      *                                  duration is zero or negative,
      *                                  the date is ahead of now,
      *                                  or the title is empty.
-     * @see validate
+     * @see #validate
      */
     public LogEntry(
         final EntryBuilder builder)
@@ -478,7 +478,7 @@ public class LogEntry {
          * @param exerciseCategory the exercise category for the LogEntry.
          * @param feeling the feeling for the LogEntry
          * @throws IllegalArgumentException if any of the input is invalid.
-         * @see validate
+         * @see #validate
          */
         public EntryBuilder(
             final String title,
