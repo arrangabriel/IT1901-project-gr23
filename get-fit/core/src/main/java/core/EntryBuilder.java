@@ -14,37 +14,57 @@ public class EntryBuilder {
      */
 
     /** Title to be built. */
-    private final String title;
+    private final String ctitle;
 
     /** Date to be built. */
-    private final LocalDate date;
+    private final LocalDate cdate;
 
     /** Duration to be built. */
-    private final Duration duration;
+    private final Duration cduration;
 
     /** Exercise category to be built. */
-    private final EXERCISECATEGORY exerciseCategory;
+    private final EXERCISECATEGORY cexerciseCategory;
 
     /** Feeling of the exercise. */
-    private final int feeling;
+    private final int cfeeling;
 
     /**
      * Optional fields.
      */
 
      /** Comment to be built. */
-     private String comment;
+     private String ccomment;
 
      /** Subcategory to be built. */
-     private Subcategory exerciseSubcategory;
+     private Subcategory cexerciseSubcategory;
 
      /** Distance to be built. */
-     private Double distance;
+     private Double cdistance;
 
      /** Maximum heart rate to be built. */
-     private Integer maxHeartRate;
+     private Integer cmaxHeartRate;
 
+    /**
+     * Creates an EntryBuilder with all required fields.
+     * @param title the title for the LogEntry.
+     * @param date the date for the LogEntry.
+     * @param duration the duration for the LogEntry.
+     * @param exerciseCategory the exercise category for the LogEntry.
+     * @param feeling the feeling for the LogEntry
+     */
+    public EntryBuilder(
+        final String title,
+        final LocalDate date,
+        final Duration duration,
+        final EXERCISECATEGORY exerciseCategory,
+        final int feeling) {
 
-     
+        this.ctitle = title;
+        this.cdate = date;
+        this.cduration = duration;
+        this.cexerciseCategory = exerciseCategory;
+        this.cfeeling = feeling;
+
+    }
 
 }
