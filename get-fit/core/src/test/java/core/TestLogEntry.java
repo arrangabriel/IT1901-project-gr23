@@ -18,7 +18,7 @@ public class TestLogEntry {
     static int minute = 60;
     static int hour = minute*60;
 
-    private LogEntry genValid() {
+    private EntryBuilder genValid() {
         String id = "0";
         String title = "Tets";
         String comment = "This is a test";
@@ -37,8 +37,7 @@ public class TestLogEntry {
             .exerciseSubcategory(subcategory)
             .distance(distance)
             .maxHeartRate(maxHeartRate);
-        LogEntry entry = new LogEntry(builder);
-        return entry;
+        return builder;
     }
 
     
@@ -97,14 +96,14 @@ public class TestLogEntry {
 
     @Test
     public void illegalDistance() {
-        Assertions.assertThrows(IllegalArgumentException.class, () -> new EntryBuilder("Test",LocalDate.now().minusDays(1), Duration.ofSeconds(hour), EXERCISECATEGORY.STRENGTH, 1).distance(-10.0));
-        Assertions.assertThrows(IllegalArgumentException.class, () -> new EntryBuilder("Test",LocalDate.now().minusDays(1), Duration.ofSeconds(hour), EXERCISECATEGORY.STRENGTH, 1).distance(0.0));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> genValid().distance(-10.0));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> genValid().distance(0.0));
     }
 
     @Test
     public void illegalMaxHeartRate() {
-        Assertions.assertThrows(IllegalArgumentException.class, () -> new EntryBuilder("Test",LocalDate.now().minusDays(1), Duration.ofSeconds(hour), EXERCISECATEGORY.STRENGTH, 1).maxHeartRate(10));
-        Assertions.assertThrows(IllegalArgumentException.class, () -> new EntryBuilder("Test",LocalDate.now().minusDays(1), Duration.ofSeconds(hour), EXERCISECATEGORY.STRENGTH, 1).maxHeartRate(700));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> genValid().maxHeartRate(10));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> genValid().maxHeartRate(700));
     }
 
 }
