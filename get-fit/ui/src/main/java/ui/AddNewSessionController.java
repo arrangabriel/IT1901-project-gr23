@@ -114,17 +114,42 @@ public class AddNewSessionController {
     @FXML
     public void handleTagsSelecter(final ActionEvent event) throws IOException {
         // make this more general
-        if (exerciseType.getSelectionModel().getSelectedItem()
-                .equals("Strength")) {
-            tags.setItems(tagsStrengthSelecter);
-            distance.setVisible(false);
-            distanceLabel.setVisible(false);
-        } else {
-            tags.setItems(tagsCardioSelecter);
-            distance.setVisible(true);
-            distanceLabel.setVisible(true);
+        LogEntry.EXERCISECATEGORY mainCategory = LogEntry.EXERCISECATEGORY.valueOf(exerciseType.getSelectionModel().getSelectedItem());
+        switch (mainCategory) {
+            case ANY:
+                // generate empty selector, validate in createSessionButtonPushed
+                tags.setItems(FXCollections.observableArrayList(""));
+                // this might be iffy
+                setCardio(true);
+                break;
+            case STRENGTH:
+                tags.setItems(getSubcategoryStringObservableList(mainCategory));
+                // set a placeholder value?
+                setCardio(false);
+                break;
+            case CYCLING:
+            case RUNNING:
+            case SWIMMING:
+                tags.setItems(getSubcategoryStringObservableList(mainCategory));
+                setCardio(true);
+                break;
         }
 
+    }
+
+    private void setCardio(boolean isCardio) {
+        // TODO - add new fields to this
+        distance.setVisible(isCardio);
+        distanceLabel.setVisible(isCardio);
+    }
+
+    private ObservableList<String> getSubcategoryStringObservableList(
+            LogEntry.EXERCISECATEGORY mainCategory) {
+        return Arrays.stream(mainCategory.getSubcategories())
+                .map(
+                        LogEntry.Subcategory::toString)
+                .collect(Collectors
+                        .toCollection(FXCollections::observableArrayList));
     }
 
 
@@ -135,13 +160,13 @@ public class AddNewSessionController {
      */
     @FXML
     private void initialize() throws NumberFormatException {
-        // TODO - refactor this to a function call
+        // TODO - maybe refactor this to a function call
         ObservableList<String> exerciseCategoryNames = exerciseCategories
                 .stream()
                 .map(
                 Enum::toString)
                 .collect(Collectors
-                        .toCollection(FXCollections::observableArrayList);
+                        .toCollection(FXCollections::observableArrayList));
 
         exerciseType.setItems(exerciseCategoryNames);
         distance.setVisible(false);
