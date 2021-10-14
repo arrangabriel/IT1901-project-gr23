@@ -167,12 +167,16 @@ public final class EntrySaverJson {
         JSONParser jsonParser = new JSONParser();
         File file = new File(saveFile);
         Scanner reader = new Scanner(file, "utf-8");
-        String dataString = "";
+        String dataString;
+        StringBuffer buffer = new StringBuffer();
 
         while (reader.hasNextLine()) {
-            dataString += reader.nextLine();
+            buffer.append(reader.nextLine());
         }
+
         reader.close();
+
+        dataString = buffer.toString();
 
         try {
             JSONObject jsonObject = (JSONObject) jsonParser.parse(dataString);
