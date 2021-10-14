@@ -19,7 +19,6 @@ validate:
 
 compile:
   stage: build
-  needs: ["validate"]
   script: cd get-fit && mvn compile
   only:
     - merge_requests
@@ -35,7 +34,7 @@ compile:
 
 test:
   stage: test
-  needs: ["compile"]
+  needs: ["build"]
   script: cd get-fit && mvn test
   only:
     - merge_requests
@@ -46,7 +45,7 @@ test:
 
 test-coverage-minimum:
   stage: coverage
-  needs: ["compile"]
+  needs: ["build"]
   script: cd get-fit && mvn verify
   only:
     - merge_requests
@@ -56,7 +55,7 @@ test-coverage-minimum:
 
 test-coverage-80:
   stage: coverage
-  needs: ["test-coverage-minimum"]
+  needs: ["build"]
   script: cd get-fit && mvn verify -Dminimum=0.8
   allow_failure: true
   only:
@@ -68,7 +67,7 @@ test-coverage-80:
 
 checkstyle:
   stage: quality
-  needs: ["compile"]
+  needs: ["build"]
   script: cd get-fit && mvn checkstyle:check
   allow_failure: true
   only:
@@ -79,7 +78,7 @@ checkstyle:
 
 spotbugs:
   stage: bugs
-  needs: ["compile"]
+  needs: ["build"]
   script: cd get-fit && mvn install && mvn spotbugs:check
   allow_failure: true
   only:
