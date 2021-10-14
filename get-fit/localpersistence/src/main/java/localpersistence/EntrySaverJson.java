@@ -94,14 +94,14 @@ public final class EntrySaverJson {
             json.put(entryId, innerMap);
         }
         File file = new File(saveFile);
-        
+
         boolean created = file.createNewFile();
         created = !created;                     // Appease spotbugs
-        
+
         FileWriter writer = new FileWriter(file, Charset.forName("utf-8"));
         try {
             writer.write(json.toJSONString());
-            writer.flush();   
+            writer.flush();
         } catch (IOException e) {
 
         } finally {
@@ -187,7 +187,9 @@ public final class EntrySaverJson {
 
 
             //@SuppressWarnings("unchecked")
-            for (Map.Entry<String, HashMap<String, String>> entryIdPair : (Set<Map.Entry<String, HashMap<String, String>>>) jsonObject.entrySet()) {
+            for (Map.Entry<String, HashMap<String, String>> entryIdPair : (
+                Set<Map.Entry<String, HashMap<String, String>>>)
+                jsonObject.entrySet()) {
 
                 HashMap<String, String> innerMap = entryIdPair.getValue();
 
