@@ -93,7 +93,7 @@ public class AppTest extends ApplicationTest {
         int oldCount = App.entryManager.entryCount();
 
         click("Add session");
-
+        sleep(6000);
         clickOn("#titleField");
         write("New new Session");
         clickOn("#sessionDatePicker");
