@@ -38,7 +38,7 @@ public class AddNewSessionController {
     /**
      * Maximum heart rate limit.
      */
-    private final int maxHeartRateLimit = 230;
+    private final int maxHeartRateLimit = LogEntry.MAXHEARTRATEHUMAN;
 
     /**
      * All possible exercise category values.
