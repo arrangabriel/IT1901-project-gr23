@@ -29,17 +29,12 @@ public class AppTest extends ApplicationTest {
 
     @Override
     public void start(Stage stage) throws IOException {
-        scene = new Scene(loadFXML("StartPage"));
-        stage.setScene(scene);
+        FXMLLoader Loader = new FXMLLoader();
+        Loader.setLocation(getClass().getResource("StartPage.fxml"));
+        Parent root = Loader.load();
+        Scene  s = new Scene(root);
+        stage.setScene(s);
         stage.show();
-    }
-
-    void setRoot(String file) throws IOException{
-        scene.setRoot(loadFXML(file));
-    }
-    
-    public Parent loadFXML (String file) throws IOException{
-        return new FXMLLoader(this.getClass().getResource(file + ".fxml")).load();
     }
 
     private void click(String... labels) {
