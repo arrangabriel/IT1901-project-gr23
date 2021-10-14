@@ -2,23 +2,61 @@ default:
   image: maven
 
 stages:
+  - build
   - test
-  - minimum-coverage
-  - extended-coverage
-  - code-quality
+  - coverage
+  - quality
+  - bugs
 
-test:
-  stage: test
-  script: cd get-fit && mvn test
+validate:
+  stage: build
+  script: cd get-fit && mvn validate
   only:
     - merge_requests
   except:
     variables:
       - $CI_MERGE_REQUEST_TARGET_BRANCH_NAME != "master" && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME != "dev"
 
+compile:
+  stage: build
+  script: cd get-fit && mvn compile
+  only:
+    - merge_requests
+  except:
+    variables:
+      - $CI_MERGE_REQUEST_TARGET_BRANCH_NAME != "master" && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME != "dev"
+  artifacts:
+    paths:
+      - get-fit/core/target/classes/*
+      - get-fit/localpersistence/target/classes/*
+      - get-fit/ui/target/classes/*
+    expire_in: 10 minutes
+
+test:
+  stage: test
+  needs: ["compile"]
+  script: cd get-fit && mvn test
+  only:
+    - merge_requests
+  except:
+    variables:
+      - $CI_MERGE_REQUEST_TARGET_BRANCH_NAME != "master" && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME != "dev"
+  artifacts:
+    paths:
+      - get-fit/core/target/surefire-reports/*.xml
+      - get-fit/localpersistance/target/surefire-reports/*.xml
+      - get-fit/ui/target/surefire-reports/*.xml
+    reports:
+      junit:
+      - get-fit/core/target/surefire-reports/*.xml
+      - get-fit/core/target/surefire-reports/*.xml
+      - get-fit/core/target/surefire-reports/*.xml
+
+
 
 test-coverage-minimum:
-  stage: minimum-coverage
+  stage: coverage
+  needs: ["compile"]
   script: cd get-fit && mvn verify
   only:
     - merge_requests
@@ -27,7 +65,8 @@ test-coverage-minimum:
       - $CI_MERGE_REQUEST_TARGET_BRANCH_NAME != "master" && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME != "dev"
 
 test-coverage-80:
-  stage: extended-coverage
+  stage: coverage
+  needs: ["compile"]
   script: cd get-fit && mvn verify -Dminimum=0.8
   allow_failure: true
   only:
@@ -38,8 +77,20 @@ test-coverage-80:
 
 
 checkstyle:
-  stage: code-quality
+  stage: quality
+  needs: ["compile"]
   script: cd get-fit && mvn checkstyle:check
+  allow_failure: true
+  only:
+    - merge_requests
+  except:
+    variables:
+      - $CI_MERGE_REQUEST_TARGET_BRANCH_NAME != "master" && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME != "dev"
+
+spotbugs:
+  stage: bugs
+  needs: ["compile"]
+  script: cd get-fit && mvn install && mvn spotbugs:check
   allow_failure: true
   only:
     - merge_requests

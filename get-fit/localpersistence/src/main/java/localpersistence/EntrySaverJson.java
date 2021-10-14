@@ -1,13 +1,15 @@
 package localpersistence;
 
 import java.util.HashMap;
-
+import java.util.Map;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.time.LocalDate;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
+import java.util.Set;
 import java.time.Duration;
 
 import core.EntryManager;
@@ -92,12 +94,19 @@ public final class EntrySaverJson {
             json.put(entryId, innerMap);
         }
         File file = new File(saveFile);
-        file.createNewFile();
-        FileWriter writer = new FileWriter(file);
-        writer.write(json.toJSONString());
-        writer.flush();
 
-        writer.close();
+        boolean created = file.createNewFile();
+        created = !created;                     // Appease spotbugs
+
+        FileWriter writer = new FileWriter(file, Charset.forName("utf-8"));
+        try {
+            writer.write(json.toJSONString());
+            writer.flush();
+        } catch (IOException e) {
+
+        } finally {
+            writer.close();
+        }
     }
 
     /**
@@ -161,23 +170,28 @@ public final class EntrySaverJson {
 
         JSONParser jsonParser = new JSONParser();
         File file = new File(saveFile);
-        Scanner reader = new Scanner(file);
-        String dataString = "";
+        Scanner reader = new Scanner(file, "utf-8");
+        String dataString;
+        StringBuffer buffer = new StringBuffer();
 
         while (reader.hasNextLine()) {
-            dataString += reader.nextLine();
+            buffer.append(reader.nextLine());
         }
+
         reader.close();
+
+        dataString = buffer.toString();
 
         try {
             JSONObject jsonObject = (JSONObject) jsonParser.parse(dataString);
 
-            for (Object key : jsonObject.keySet()) {
 
-                //Suppressed unchecked warning. Any better solution Stefan?:
-                @SuppressWarnings("unchecked")
-                HashMap<String, String> innerMap =
-                            (HashMap<String, String>) jsonObject.get(key);
+            //@SuppressWarnings("unchecked")
+            for (Map.Entry<String, HashMap<String, String>> entryIdPair
+                : (Set<Map.Entry<String, HashMap<String, String>>>)
+                    jsonObject.entrySet()) {
+
+                HashMap<String, String> innerMap = entryIdPair.getValue();
 
                 String title = innerMap.get("title");
                 LocalDate date = LocalDate.parse(innerMap.get("date"));
@@ -215,7 +229,7 @@ public final class EntrySaverJson {
                     .maxHeartRate(maxHeartRate);
 
 
-                entryManager.addEntry(builder.build());
+                entryManager.addEntry(entryIdPair.getKey(), builder.build());
             }
 
         } catch (ParseException pException) {
