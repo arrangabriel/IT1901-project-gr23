@@ -21,7 +21,7 @@ public final class EntryManager implements Iterable<LogEntry> {
     /**
      * Hashmap of LogEntries.
      */
-    private final HashMap<String, LogEntry> entryMap = new HashMap<>();
+    private final static HashMap<String, LogEntry> entryMap = new HashMap<>();
 
     /**
      * An entry manager instance is a wrapper for a list of logEntries.
@@ -115,7 +115,7 @@ public final class EntryManager implements Iterable<LogEntry> {
      * @return the number of LogEntries in this EntryManager
      */
     public int entryCount() {
-        return this.entryMap.size();
+        return EntryManager.entryMap.size();
     }
 
     /**
@@ -134,7 +134,7 @@ public final class EntryManager implements Iterable<LogEntry> {
      */
     @Override
     public Iterator<LogEntry> iterator() {
-        return this.entryMap.values().iterator();
+        return EntryManager.entryMap.values().iterator();
     }
 
     // TODO: Arran write a docstring for this
