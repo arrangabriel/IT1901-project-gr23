@@ -160,10 +160,13 @@ public final class EntryManager implements Iterable<LogEntry> {
             switch (sortConfiguration) {
                 case DATE:
                     comparator = Comparator.comparing(LogEntry::getDate);
+                    break;
                 case DURATION:
                     comparator = Comparator.comparing(LogEntry::getDuration);
+                    break;
                 case TITLE:
                     comparator = Comparator.comparing(LogEntry::getTitle);
+                    break;
                 default:
                     throw new IllegalArgumentException(
                         "Illegal sort configuration");
