@@ -57,7 +57,7 @@ public class AppTest extends ApplicationTest {
 
         click("Add session");
 
-        clickOn("#nameOfSessionField");
+        clickOn("#titleField");
         write("New new Session");
         clickOn("#sessionDatePicker");
         clickOn("#hour");
@@ -66,7 +66,7 @@ public class AppTest extends ApplicationTest {
         write("30");
         clickOn("#exerciseType");
 
-        clickOn("#maximumHeartRate");
+        clickOn("#heartRate");
         write("150");
         clickOn("#commentField");
         write("New comment");
