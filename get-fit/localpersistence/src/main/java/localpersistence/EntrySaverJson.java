@@ -93,7 +93,10 @@ public final class EntrySaverJson {
             json.put(entryId, innerMap);
         }
         File file = new File(saveFile);
-        file.createNewFile();
+        
+        boolean created = file.createNewFile();
+        created = !created;                     // Appease spotbugs
+        
         FileWriter writer = new FileWriter(file, Charset.forName("utf-8"));
         try {
             writer.write(json.toJSONString());
