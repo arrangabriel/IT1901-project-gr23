@@ -48,10 +48,10 @@
       <Button fx:id="createSession" layoutX="440.0" layoutY="296.0" mnemonicParsing="false"
               onAction="#createSessionButtonPushed" text="Create session"/>
 
-      <ComboBox fx:id="exerciseType" layoutX="19.0" layoutY="194.0" onAction="#handleTagsSelecter"
+      <ComboBox fx:id="exerciseType" layoutX="19.0" layoutY="194.0" onAction="#handleTagsSelector"
                 prefWidth="150.0"/>
 
-      <ComboBox fx:id="tags" layoutX="19.0" layoutY="250.0" onAction="#handleTagsSelecter" prefHeight="17.0"
+      <ComboBox fx:id="tags" layoutX="19.0" layoutY="250.0" onAction="#handleTagsSelector" prefHeight="17.0"
                 prefWidth="150.0"/>
 
       <Label layoutX="19.0" layoutY="177.0" prefHeight="17.0" prefWidth="90.0" text="Excercise Type"/>

@@ -23,68 +23,123 @@ import java.util.stream.Collectors;
 
 public class AddNewSessionController {
 
-    @FXML
-    private Button Return;
-    @FXML
-    private Label header11;
-    @FXML
-    private Label header1;
-    @FXML
-    private TextField hour1;
-    @FXML
-    private Label header;
-    @FXML
-    private Label timeLabel;
-    @FXML
-    private Label dateLabel;
-    @FXML
-    private Label distanceLabel;
-    @FXML
-    private Label commentLabel;
-    @FXML
-    private Label errorLabel;
-    @FXML
-    private TextField nameOfSessionField;
-    @FXML
-    private TextField distance;
-    @FXML
-    private TextField hour;
-    @FXML
-    private TextField min;
-    @FXML
-    private TextArea commentField;
-    @FXML
-    private DatePicker sessionDatePicker;
-    @FXML
-    private Button createSession;
-    @FXML
-    private Slider feelingSlider;
-    @FXML
-    private ComboBox<String> exerciseType, tags;
-
-    // TODO generate these
-    //private ObservableList<String> exerciseTypeSelecter =
-    //        FXCollections.observableArrayList("Running", "Cycling", "Strength",
-    //                "Svimming");
-    //private ObservableList<String> tagsStrengthSelecter =
-    //        FXCollections.observableArrayList("Push", "Pull", "Legs",
-    //                "Full body");
-    //private ObservableList<String> tagsCardioSelecter =
-    //        FXCollections.observableArrayList("Short", "Long", "High intensity",
-    //                "Low intensity");
-
+    /**
+     * Slightly arbitrary maximum hour limit for duration.
+     */
+    private final int maxHours = 99;
+    /**
+     * Maximum minute limit.
+     */
+    private final int maxMinutes = 59;
+    /**
+     * All possible exercise category values.
+     */
     private final ObservableList<LogEntry.EXERCISECATEGORY> exerciseCategories =
             FXCollections.observableArrayList(
                     LogEntry.EXERCISECATEGORY.values());
+    /**
+     * Back-button.
+     */
+    @FXML
+    private Button Return;
+    /***/
+    @FXML
+    private Label header11;
+    /***/
+    @FXML
+    private Label header1;
+    /***/
+    @FXML
+    private TextField hour1;
+    /**
+     * Main header.
+     */
+    @FXML
+    private Label header;
+    /**
+     * Label for time fields.
+     */
+    @FXML
+    private Label timeLabel;
+    /**
+     * Label for date field.
+     */
+    @FXML
+    private Label dateLabel;
+    /**
+     * Label for distance field.
+     */
+    @FXML
+    private Label distanceLabel;
+    /**
+     * Label for comment field.
+     */
+    @FXML
+    private Label commentLabel;
+    /**
+     * Label for error message.
+     */
+    @FXML
+    private Label errorLabel;
+    /**
+     * Title input-field.
+     */
+    @FXML
+    private TextField nameOfSessionField;
+    /**
+     * Distance input-field.
+     */
+    @FXML
+    private TextField distance;
+    /**
+     * Hour input-field.
+     */
+    @FXML
+    private TextField hour;
+    /**
+     * Minute input-field.
+     */
+    @FXML
+    private TextField min;
+    /**
+     * Comment input-field.
+     */
+    @FXML
+    private TextArea commentField;
+    /**
+     * Date-picker.
+     */
+    @FXML
+    private DatePicker sessionDatePicker;
+    /**
+     * Feeling input-slider.
+     */
+    @FXML
+    private Slider feelingSlider;
+    /**
+     * Exercise type-selector.
+     */
+    @FXML
+    private ComboBox<String> exerciseType;
+    /**
+     * Exercise subcategory-selector.
+     */
+    @FXML
+    private ComboBox<String> tags;
+    /**
+     * Create session button.
+     */
+    @FXML
+    private Button createSession;
 
     /**
-     * Adds an entry to the app EntryManager and switches the view to StartPage
+     * Adds an entry to the app EntryManager and switches the view to StartPage.
      *
-     * @param event the event data from pushed button.
+     * @param ignored an ActionEvent from the observed change.
      * @throws IOException if .FXML file could not be found.
      */
     @FXML
-    public void createSessionButtonPushed(final ActionEvent event)
+    public void createSessionButtonPushed(final ActionEvent ignored)
             throws IOException {
         // TODO - handle exception when entry could not be created
         Duration duration = Duration.ofHours(Integer.parseInt(hour.getText()))
@@ -105,46 +160,58 @@ public class AddNewSessionController {
 
     }
 
+    /**
+     * This function handles going back too main page when fired.
+     *
+     * @param ignored an ActionEvent from the observed change.
+     * @throws IOException if StartPage could not be found.
+     */
     @FXML
-    public void returnButtonPushed(final ActionEvent event) throws IOException {
-        // TODO - check if we need to clear all fields
+    public void returnButtonPushed(final ActionEvent ignored) throws IOException {
         App.setRoot("StartPage");
     }
 
+    /**
+     * Changes ui according to the selected exercise category.
+     *
+     * @param event an ActionEvent from the observed change.
+     */
     @FXML
-    public void handleTagsSelecter(final ActionEvent event) throws IOException {
-        // make this more general
-        LogEntry.EXERCISECATEGORY mainCategory = LogEntry.EXERCISECATEGORY.valueOf(exerciseType.getSelectionModel().getSelectedItem());
+    public void handleTagsSelector(final ActionEvent event) {
+
+        LogEntry.EXERCISECATEGORY mainCategory = LogEntry.EXERCISECATEGORY
+                .valueOf(exerciseType.getSelectionModel().getSelectedItem());
         switch (mainCategory) {
-            case ANY:
-                // generate empty selector, validate in createSessionButtonPushed
+            case ANY -> {
+                // generate empty selector,
+                // validate in createSessionButtonPushed
                 tags.setItems(FXCollections.observableArrayList(""));
                 // this might be iffy
                 setCardio(true);
-                break;
-            case STRENGTH:
+            }
+            case STRENGTH -> {
                 tags.setItems(getSubcategoryStringObservableList(mainCategory));
                 // set a placeholder value?
                 setCardio(false);
-                break;
-            case CYCLING:
-            case RUNNING:
-            case SWIMMING:
+            }
+            case CYCLING, RUNNING, SWIMMING -> {
                 tags.setItems(getSubcategoryStringObservableList(mainCategory));
                 setCardio(true);
-                break;
+            }
+            default -> {
+            }
         }
 
     }
 
-    private void setCardio(boolean isCardio) {
+    private void setCardio(final boolean isCardio) {
         // TODO - add new fields to this
         distance.setVisible(isCardio);
         distanceLabel.setVisible(isCardio);
     }
 
     private ObservableList<String> getSubcategoryStringObservableList(
-            LogEntry.EXERCISECATEGORY mainCategory) {
+            final LogEntry.EXERCISECATEGORY mainCategory) {
         return Arrays.stream(mainCategory.getSubcategories())
                 .map(
                         LogEntry.Subcategory::toString)
@@ -164,57 +231,45 @@ public class AddNewSessionController {
         ObservableList<String> exerciseCategoryNames = exerciseCategories
                 .stream()
                 .map(
-                Enum::toString)
+                        Enum::toString)
                 .collect(Collectors
                         .toCollection(FXCollections::observableArrayList));
 
         exerciseType.setItems(exerciseCategoryNames);
-        distance.setVisible(false);
-        distanceLabel.setVisible(false);
+        setCardio(false);
 
         // validation of fields when they are changed
-        hour.textProperty().addListener((obs, oldValue, newValue) -> {
-            if (!newValue.isEmpty()) {
-                try {
-                    // throws exception if newvalue is not numeric
-                    int value = Integer.parseInt(newValue);
-
-                    // this 999 value is slightly arbitrary, to fit the input to the textField
-                    if (value < 0 || value > 99) {
-                        throw new NumberFormatException(
-                                "Input out of allowed range.");
-                    }
-                    // check if input is multiple zeroes
-                    if (value == 0) {
-                        hour.setText("0");
-                    }
-                } catch (NumberFormatException e) {
-                    // reset to previous value
-                    hour.setText(oldValue);
-                }
-            }
-        });
-        min.textProperty().addListener((obs, oldValue, newValue) -> {
-            if (!newValue.isEmpty()) {
-                try {
-                    // throws exception if newvalue is not numeric
-                    int value = Integer.parseInt(newValue);
-                    if (value < 0 || value > 59) {
-                        throw new NumberFormatException(
-                                "Input out of allowed range.");
-                    }
-                    // check if input is multiple zeroes
-                    if (value == 0) {
-                        min.setText("0");
-                    }
-                } catch (NumberFormatException e) {
-                    // reset to previous value
-                    min.setText(oldValue);
-                }
-            }
-        });
+        validateDuration(hour, maxHours);
+        validateDuration(min, maxMinutes);
         // set current date on startup
         sessionDatePicker.setValue(LocalDate.now());
+    }
+
+    /**
+     * Adds a max (and lower 0) int validation listener to the textField.
+     * @param time the field to be validated.
+     * @param maxTime maximum int to validate against.
+     */
+    private void validateDuration(final TextField time, final int maxTime) {
+        time.textProperty().addListener((obs, oldValue, newValue) -> {
+            if (!newValue.isEmpty()) {
+                try {
+                    // throws exception if newvalue is not numeric
+                    int value = Integer.parseInt(newValue);
+                    if (value < 0 || value > maxTime) {
+                        throw new NumberFormatException(
+                                "Input out of allowed range.");
+                    }
+                    // check if input is multiple zeroes
+                    if (value == 0) {
+                        time.setText("0");
+                    }
+                } catch (NumberFormatException e) {
+                    // reset to previous value
+                    time.setText(oldValue);
+                }
+            }
+        });
     }
 
 
