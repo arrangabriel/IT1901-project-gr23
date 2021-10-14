@@ -43,7 +43,7 @@
 
        <Label fx:id="errorLabel" layoutX="128.0" layoutY="301.0" prefHeight="17.0" prefWidth="285.0" textFill="#b50c0c" />
 
-       <Button fx:id="back" layoutX="19.0" layoutY="297.0" mnemonicParsing="false" onAction="#backButtonPushed" prefHeight="27.0" prefWidth="83.0" text="Return" />
+       <Button fx:id="back" layoutX="19.0" layoutY="297.0" mnemonicParsing="false" onAction="#returnButtonPushed" prefHeight="27.0" prefWidth="83.0" text="Return" />
        <Button fx:id="createSession" layoutX="440.0" layoutY="296.0" mnemonicParsing="false" onAction="#createSessionButtonPushed" text="Create session" />
     </Pane>
 </AnchorPane>
