@@ -82,6 +82,11 @@ public class AddNewSessionController {
     @FXML
     private Label errorLabel;
     /**
+     * Label for tags-selector.
+     */
+    @FXML
+    private Label tagsLabel;
+    /**
      * Title input-field.
      */
     @FXML
@@ -167,7 +172,8 @@ public class AddNewSessionController {
      * @throws IOException if StartPage could not be found.
      */
     @FXML
-    public void returnButtonPushed(final ActionEvent ignored) throws IOException {
+    public void returnButtonPushed(final ActionEvent ignored)
+            throws IOException {
         App.setRoot("StartPage");
     }
 
@@ -183,25 +189,32 @@ public class AddNewSessionController {
                 .valueOf(exerciseType.getSelectionModel().getSelectedItem());
         switch (mainCategory) {
             case ANY -> {
-                // generate empty selector,
                 // validate in createSessionButtonPushed
-                tags.setItems(FXCollections.observableArrayList(""));
+                // generate empty selector,
+                // tags.setItems(FXCollections.observableArrayList(""));
                 // this might be iffy
+                showTags(false);
                 setCardio(true);
             }
             case STRENGTH -> {
                 tags.setItems(getSubcategoryStringObservableList(mainCategory));
-                // set a placeholder value?
+                showTags(true);
                 setCardio(false);
             }
             case CYCLING, RUNNING, SWIMMING -> {
                 tags.setItems(getSubcategoryStringObservableList(mainCategory));
+                showTags(true);
                 setCardio(true);
             }
             default -> {
             }
         }
 
+    }
+
+    private void showTags(final boolean show) {
+        tagsLabel.setVisible(show);
+        tags.setVisible(show);
     }
 
     private void setCardio(final boolean isCardio) {
@@ -219,7 +232,6 @@ public class AddNewSessionController {
                         .toCollection(FXCollections::observableArrayList));
     }
 
-
     /**
      * Initializes the controller.
      *
@@ -236,7 +248,9 @@ public class AddNewSessionController {
                         .toCollection(FXCollections::observableArrayList));
 
         exerciseType.setItems(exerciseCategoryNames);
-        setCardio(false);
+        exerciseType.getSelectionModel().selectFirst();
+        showTags(false);
+        setCardio(true);
 
         // validation of fields when they are changed
         validateDuration(hour, maxHours);
@@ -247,7 +261,8 @@ public class AddNewSessionController {
 
     /**
      * Adds a max (and lower 0) int validation listener to the textField.
-     * @param time the field to be validated.
+     *
+     * @param time    the field to be validated.
      * @param maxTime maximum int to validate against.
      */
     private void validateDuration(final TextField time, final int maxTime) {
@@ -271,6 +286,4 @@ public class AddNewSessionController {
             }
         });
     }
-
-
 }

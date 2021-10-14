@@ -56,7 +56,7 @@
 
       <Label layoutX="19.0" layoutY="177.0" prefHeight="17.0" prefWidth="90.0" text="Excercise Type"/>
 
-      <Label layoutX="18.0" layoutY="234.0" prefHeight="17.0" prefWidth="90.0" text="Tags"/>
+      <Label fx:id="tagsLabel" layoutX="18.0" layoutY="234.0" prefHeight="17.0" prefWidth="90.0" text="Tag"/>
 
       <TextField fx:id="hour1" alignment="CENTER" layoutX="302.0" layoutY="29.0" prefHeight="27.0" prefWidth="43.0"
                  promptText="hr"/>
