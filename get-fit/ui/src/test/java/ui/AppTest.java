@@ -66,6 +66,7 @@ public class AppTest extends ApplicationTest {
 
     private void clearEntryManager() {
         for (Iterator<LogEntry> iterator = App.entryManager.iterator(); iterator.hasNext();) {
+            iterator.next();
             iterator.remove();
         }
         saveEntryManager();
