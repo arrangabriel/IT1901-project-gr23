@@ -49,7 +49,7 @@ public class AppTest extends ApplicationTest {
     private void updateRoot() throws IOException {
         FXMLLoader Loader = new FXMLLoader();
         Loader.setLocation(getClass().getResource("StartPage.fxml"));
-        Parent root = Loader.load();
+        this.root = Loader.load();
     }
 
     /*
