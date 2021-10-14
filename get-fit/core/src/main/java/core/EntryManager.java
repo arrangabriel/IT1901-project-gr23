@@ -147,7 +147,7 @@ public final class EntryManager implements Iterable<LogEntry> {
          * @param sortConfiguration a LogEntry.SORTCONFIGURATIONS to sort by.
          * @throws IllegalArgumentException if sortConfigurations is null.
          */
-        SortedIteratorBuilder(final EntryManager entryManager,
+        public SortedIteratorBuilder(final EntryManager entryManager,
                 final LogEntry.SORTCONFIGURATIONS sortConfiguration)
                 throws IllegalArgumentException {
 
