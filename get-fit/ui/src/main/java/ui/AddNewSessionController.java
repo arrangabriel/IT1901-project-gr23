@@ -30,15 +30,26 @@ public class AddNewSessionController {
      * Maximum minute limit.
      */
     private final int maxMinutes = 59;
-    /**Maximum heart rate limit.*/
+    /**
+     * Maximum heart rate limit.
+     */
     private final int maxHeartRateLimit = 230;
+
     /**
      * All possible exercise category values.
      */
     private final ObservableList<LogEntry.EXERCISECATEGORY> exerciseCategories =
             FXCollections.observableArrayList(
                     LogEntry.EXERCISECATEGORY.values());
-    /**Label for exercise type selector.*/
+
+    /**
+     * Label for duration input.
+     */
+    @FXML
+    private Label durationLabel;
+    /**
+     * Label for exercise type selector.
+     */
     @FXML
     private Label exerciseTypeLabel;
     /**
@@ -46,20 +57,26 @@ public class AddNewSessionController {
      */
     @FXML
     private Button back;
-    /***/
+    /**
+     * Label for feeling slider.
+     */
     @FXML
     private Label feelingLabel;
-    /**Label for heart rate input.*/
+    /**
+     * Label for heart rate input.
+     */
     @FXML
     private Label maxHeartRateLabel;
-    /**Heart rate input field.*/
+    /**
+     * Heart rate input field.
+     */
     @FXML
     private TextField heartRate;
     /**
      * Main header.
      */
     @FXML
-    private Label header;
+    private Label titleLabel;
     /**
      * Label for time fields.
      */
@@ -94,7 +111,7 @@ public class AddNewSessionController {
      * Title input-field.
      */
     @FXML
-    private TextField nameOfSessionField;
+    private TextField titleField;
     /**
      * Distance input-field.
      */
@@ -151,22 +168,91 @@ public class AddNewSessionController {
     public void createSessionButtonPushed(final ActionEvent ignored)
             throws IOException {
         // TODO - handle exception when entry could not be created
-        Duration duration = Duration.ofHours(Integer.parseInt(hour.getText()))
-                .plusSeconds(Duration.ofMinutes(
-                        Integer.parseInt(min.getText())).getSeconds());
+
+        String title = titleField.getText();
+        LocalDate date = sessionDatePicker.getValue();
+        Duration duration;
+        LogEntry.EXERCISECATEGORY category =
+                LogEntry.EXERCISECATEGORY.valueOf(exerciseType.getValue());
+        int feeling = (int) feelingSlider.getValue();
+        int maxHeartRate;
+        LogEntry.Subcategory subCategory;
+        int distanceValue;
+        String comment = commentField.getText();
+
         try {
-            // TODO - create and add entry to manager with build pattern
-            //App.entryManager.addEntry(
-            //        nameOfSessionField.getText(),
-            //        commentField.getText(),
-            //        sessionDatePicker.getValue(),
-            //        duration);
+            // checks if duration fields have values in them.
+            try {
+                duration = Duration.ofHours(Integer.parseInt(hour.getText()))
+                        .plusSeconds(Duration.ofMinutes(
+                                Integer.parseInt(min.getText())).getSeconds());
+            } catch (NumberFormatException e) {
+                throw new IllegalArgumentException("Duration must be set.");
+            }
+
+            // tries to build.
+            LogEntry.EntryBuilder logBuilder = new LogEntry.EntryBuilder(
+                    title, date, duration, category, feeling);
+
+            // adds maxHeartRate if value is present.
+            try {
+                maxHeartRate = Integer.parseInt(heartRate.getText());
+                logBuilder = logBuilder.maxHeartRate(maxHeartRate);
+            } catch (NumberFormatException ignored1) {
+            }
+
+            // adds comment if value is present.
+            if (!comment.isEmpty()) {
+                logBuilder = logBuilder.comment(comment);
+            }
+
+            // returns null if nothing is selected.
+            String subCategoryString = tags.getValue();
+
+            switch (category) {
+                case STRENGTH -> {
+                    // adds subcategory if value is present.
+                    try {
+                        subCategory = LogEntry.STRENGTHSUBCATEGORIES.valueOf(
+                                subCategoryString);
+                        logBuilder =
+                                logBuilder.exerciseSubcategory(subCategory);
+                    } catch (NullPointerException ignored1) {
+                    }
+                }
+                case SWIMMING, RUNNING, CYCLING -> {
+                    // adds distance if value is present.
+                    try {
+                        distanceValue =
+                                Integer.parseInt(distance.getText());
+                        logBuilder =
+                                logBuilder.distance((double) distanceValue);
+                    } catch (NumberFormatException ignored1) {
+                    }
+                    // adds subcategory if value is present.
+                    try {
+                        subCategory = LogEntry.CARDIOSUBCATEGORIES.valueOf(
+                                subCategoryString);
+                        logBuilder =
+                                logBuilder.exerciseSubcategory(subCategory);
+                    } catch (NullPointerException ignored1) {
+                    }
+                }
+                default -> {
+                }
+            }
+            App.entryManager.addEntry(logBuilder.build());
             EntrySaverJson.save(App.entryManager);
             App.setRoot("StartPage");
         } catch (IllegalArgumentException e) {
-            errorLabel.setText(e.getMessage());
+            if (title.isEmpty()) {
+                // case 1, title is empty.
+                errorLabel.setText("Title is needed.");
+            } else {
+                // case 2, durations are empty.
+                errorLabel.setText(e.getMessage());
+            }
         }
-
     }
 
     /**
@@ -192,33 +278,17 @@ public class AddNewSessionController {
         LogEntry.EXERCISECATEGORY mainCategory = LogEntry.EXERCISECATEGORY
                 .valueOf(exerciseType.getSelectionModel().getSelectedItem());
         switch (mainCategory) {
-            case ANY -> {
-                // validate in createSessionButtonPushed
-                // generate empty selector,
-                // tags.setItems(FXCollections.observableArrayList(""));
-                // this might be iffy
-                showTags(false);
-                setCardio(true);
-            }
             case STRENGTH -> {
                 tags.setItems(getSubcategoryStringObservableList(mainCategory));
-                showTags(true);
                 setCardio(false);
             }
             case CYCLING, RUNNING, SWIMMING -> {
                 tags.setItems(getSubcategoryStringObservableList(mainCategory));
-                showTags(true);
                 setCardio(true);
             }
             default -> {
             }
         }
-
-    }
-
-    private void showTags(final boolean show) {
-        tagsLabel.setVisible(show);
-        tags.setVisible(show);
     }
 
     private void setCardio(final boolean isCardio) {
@@ -253,8 +323,9 @@ public class AddNewSessionController {
 
         exerciseType.setItems(exerciseCategoryNames);
         exerciseType.getSelectionModel().selectFirst();
-        showTags(false);
-        setCardio(true);
+        tags.setItems(getSubcategoryStringObservableList(
+                LogEntry.EXERCISECATEGORY.STRENGTH));
+        setCardio(false);
 
         // validation of fields when they are changed
         validateIntegerInput(hour, maxHours);
@@ -270,7 +341,8 @@ public class AddNewSessionController {
      * @param field    the field to be validated.
      * @param maxValue maximum int to validate against.
      */
-    private void validateIntegerInput(final TextField field, final int maxValue) {
+    private void validateIntegerInput(final TextField field,
+                                      final int maxValue) {
         field.textProperty().addListener((obs, oldValue, newValue) -> {
             if (!newValue.isEmpty()) {
                 try {

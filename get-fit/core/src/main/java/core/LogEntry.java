@@ -83,8 +83,6 @@ public final class LogEntry {
     // expand these in the future
     /** The categories an exercise can fall under. */
     public enum EXERCISECATEGORY {
-        /** Represents any or generic exercise. */
-        ANY,
         /** Represents strength exercise. */
         STRENGTH(STRENGTHSUBCATEGORIES.values()),
         /** Represents a running exercise. */
@@ -102,11 +100,6 @@ public final class LogEntry {
         */
         EXERCISECATEGORY(final Subcategory[] subcategoriesArray) {
             this.subcategories = subcategoriesArray;
-        }
-
-        /** Empties the subcategories array. */
-        EXERCISECATEGORY() {
-            this.subcategories = new Subcategory[] {};
         }
 
         /**
@@ -581,7 +574,7 @@ public final class LogEntry {
          * Constructs the LogEntry object.
          * @return the LogEntry.
          * @throws IllegalArgumentException if any of the arguments are invalid.
-         * @see validate
+         * @see #validate
          */
         public LogEntry build() throws IllegalArgumentException {
 
