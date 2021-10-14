@@ -110,6 +110,7 @@ public class AppTest extends ApplicationTest {
 
 
         click("Create session");
+        sleep(2000);
 
         Assertions.assertEquals(oldCount+1, App.entryManager.entryCount());
 
