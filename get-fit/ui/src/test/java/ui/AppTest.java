@@ -92,7 +92,7 @@ public class AppTest extends ApplicationTest {
     @Test
     public void checkView() throws IOException {
         updateRoot();
-        List<String> viewEntries = listOfEntries.getItems();
+        List<String> viewEntries = getEntriesView().getItems();
         for(int i = 0; i < viewEntries.size(); i++){
             Assertions.assertEquals(App.entryManager.getEntry(String.valueOf(i)).getTitle(), viewEntries.get(i));
         }
