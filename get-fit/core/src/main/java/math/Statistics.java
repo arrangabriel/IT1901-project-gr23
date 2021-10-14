@@ -58,7 +58,7 @@ public final class Statistics {
 
         double distance = 0;
 
-        Iterator<LogEntry> entries = new SortedIteratorBuilder(
+        Iterator<LogEntry> entries = new SortedIteratorBuilder(entryManager, 
             LogEntry.SORTCONFIGURATIONS.DATE).filterExerciseCategory(
                 LogEntry.EXERCISECATEGORY.RUNNING).iterator(false);
 
@@ -67,10 +67,10 @@ public final class Statistics {
         while (entries.hasNext()) {
            LogEntry entry = entries.next();
 
-           if (entry.getDistance().equals(null)) {
+           if (entry.getDistance() != (null)) {
             distance += entry.getDistance();
-           }
            time += entry.getDuration().toMinutes();
+           }
         }
 
         if (distance == 0) {
