@@ -41,6 +41,17 @@ test:
   except:
     variables:
       - $CI_MERGE_REQUEST_TARGET_BRANCH_NAME != "master" && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME != "dev"
+  artifacts:
+    paths:
+      - get-fit/core/target/surefire-reports/*.xml
+      - get-fit/localpersistance/target/surefire-reports/*.xml
+      - get-fit/ui/target/surefire-reports/*.xml
+    reports:
+      junit:
+      - get-fit/core/target/surefire-reports/*.xml
+      - get-fit/core/target/surefire-reports/*.xml
+      - get-fit/core/target/surefire-reports/*.xml
+
 
 
 test-coverage-minimum:
