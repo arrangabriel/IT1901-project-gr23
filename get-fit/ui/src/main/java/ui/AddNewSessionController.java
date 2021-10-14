@@ -1,5 +1,6 @@
 package ui;
 
+import core.LogEntry;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -16,16 +17,40 @@ import localpersistence.EntrySaverJson;
 import java.io.IOException;
 import java.time.Duration;
 import java.time.LocalDate;
+import java.util.Arrays;
+import java.util.stream.Collectors;
 
 
 public class AddNewSessionController {
-    //fxml component attributes
 
     @FXML
-    private Label header, timeLabel, dateLabel, distanceLabel, commentLabel,
-            errorLabel;
+    private Button Return;
     @FXML
-    private TextField nameOfSessionField, distance, hour, min;
+    private Label header11;
+    @FXML
+    private Label header1;
+    @FXML
+    private TextField hour1;
+    @FXML
+    private Label header;
+    @FXML
+    private Label timeLabel;
+    @FXML
+    private Label dateLabel;
+    @FXML
+    private Label distanceLabel;
+    @FXML
+    private Label commentLabel;
+    @FXML
+    private Label errorLabel;
+    @FXML
+    private TextField nameOfSessionField;
+    @FXML
+    private TextField distance;
+    @FXML
+    private TextField hour;
+    @FXML
+    private TextField min;
     @FXML
     private TextArea commentField;
     @FXML
@@ -38,15 +63,19 @@ public class AddNewSessionController {
     private ComboBox<String> exerciseType, tags;
 
     // TODO generate these
-    private ObservableList<String> exerciseTypeSelecter =
-            FXCollections.observableArrayList("Running", "Cycling", "Strength",
-                    "Svimming");
-    private ObservableList<String> tagsStrengthSelecter =
-            FXCollections.observableArrayList("Push", "Pull", "Legs",
-                    "Full body");
-    private ObservableList<String> tagsCardioSelecter =
-            FXCollections.observableArrayList("Short", "Long", "High intensity",
-                    "Low intensity");
+    //private ObservableList<String> exerciseTypeSelecter =
+    //        FXCollections.observableArrayList("Running", "Cycling", "Strength",
+    //                "Svimming");
+    //private ObservableList<String> tagsStrengthSelecter =
+    //        FXCollections.observableArrayList("Push", "Pull", "Legs",
+    //                "Full body");
+    //private ObservableList<String> tagsCardioSelecter =
+    //        FXCollections.observableArrayList("Short", "Long", "High intensity",
+    //                "Low intensity");
+
+    private final ObservableList<LogEntry.EXERCISECATEGORY> exerciseCategories =
+            FXCollections.observableArrayList(
+                    LogEntry.EXERCISECATEGORY.values());
 
     /**
      * Adds an entry to the app EntryManager and switches the view to StartPage
@@ -55,18 +84,19 @@ public class AddNewSessionController {
      * @throws IOException if .FXML file could not be found.
      */
     @FXML
-    public void createSessionButtonPushed(ActionEvent event)
+    public void createSessionButtonPushed(final ActionEvent event)
             throws IOException {
         // TODO - handle exception when entry could not be created
         Duration duration = Duration.ofHours(Integer.parseInt(hour.getText()))
-                .plusSeconds(Duration.ofMinutes
-                        (Integer.parseInt(min.getText())).getSeconds());
+                .plusSeconds(Duration.ofMinutes(
+                        Integer.parseInt(min.getText())).getSeconds());
         try {
-            App.entryManager.addEntry(
-                    nameOfSessionField.getText(),
-                    commentField.getText(),
-                    sessionDatePicker.getValue(),
-                    duration);
+            // TODO - create and add entry to manager with build pattern
+            //App.entryManager.addEntry(
+            //        nameOfSessionField.getText(),
+            //        commentField.getText(),
+            //        sessionDatePicker.getValue(),
+            //        duration);
             EntrySaverJson.save(App.entryManager);
             App.setRoot("StartPage");
         } catch (IllegalArgumentException e) {
@@ -76,12 +106,14 @@ public class AddNewSessionController {
     }
 
     @FXML
-    public void returnButtonPushed(ActionEvent event) throws IOException {
+    public void returnButtonPushed(final ActionEvent event) throws IOException {
+        // TODO - check if we need to clear all fields
         App.setRoot("StartPage");
     }
 
     @FXML
-    public void handleTagsSelecter(ActionEvent event) throws IOException {
+    public void handleTagsSelecter(final ActionEvent event) throws IOException {
+        // make this more general
         if (exerciseType.getSelectionModel().getSelectedItem()
                 .equals("Strength")) {
             tags.setItems(tagsStrengthSelecter);
@@ -103,11 +135,19 @@ public class AddNewSessionController {
      */
     @FXML
     private void initialize() throws NumberFormatException {
-        exerciseType.setItems(exerciseTypeSelecter);
+        // TODO - refactor this to a function call
+        ObservableList<String> exerciseCategoryNames = exerciseCategories
+                .stream()
+                .map(
+                Enum::toString)
+                .collect(Collectors
+                        .toCollection(FXCollections::observableArrayList);
+
+        exerciseType.setItems(exerciseCategoryNames);
         distance.setVisible(false);
         distanceLabel.setVisible(false);
 
-        // this code is quite duplicate, but ObservableValue makes it necessary
+        // validation of fields when they are changed
         hour.textProperty().addListener((obs, oldValue, newValue) -> {
             if (!newValue.isEmpty()) {
                 try {
