@@ -43,7 +43,7 @@ public class AppTest extends ApplicationTest {
         }
     }
 
-    private void updateRoot() {
+    private void updateRoot() throws IOException {
         FXMLLoader Loader = new FXMLLoader();
         Loader.setLocation(getClass().getResource("StartPage.fxml"));
         Parent root = Loader.load();
@@ -87,7 +87,7 @@ public class AppTest extends ApplicationTest {
     }
 
     @Test
-    public void checkView(){
+    public void checkView() throws IOException {
         updateRoot();
         List<String> viewEntries = getEntriesView().getItems();
         for(int i = 0; i < viewEntries.size(); i++){
