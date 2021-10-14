@@ -42,7 +42,7 @@ public class Statistics {
     * Returns the average speed across all LogEntries in the EntryManager that
     * has RUNNING as exercise category.
     * @param entryManager the entryManager to calculate average speed from
-    * @return the average speed in 
+    * @return the average speed of a group of entries 
     */
     public static double getAverageSpeed(EntryManager entryManager) throws IllegalStateException {
 
