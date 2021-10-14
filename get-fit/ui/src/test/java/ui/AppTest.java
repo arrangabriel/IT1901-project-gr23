@@ -93,29 +93,40 @@ public class AppTest extends ApplicationTest {
         int oldCount = App.entryManager.entryCount();
 
         sleep(6000);
+        System.out.println("Going to click Add session");
         click("Add session");
+        System.out.println("Clicked!");
         sleep(6000);
+        System.out.println("Going to click #titleField");
         clickOn("#titleField");
         write("New new Session");
         sleep(6000);
+        System.out.println("Going to click #sessionDatePicker");
         clickOn("#sessionDatePicker");
         sleep(6000);
+        System.out.println("Going to click #hour");
         clickOn("#hour");
         write("1");
         sleep(6000);
+        System.out.println("Going to click #min");
         clickOn("#min");
         write("30");
         sleep(6000);
+        System.out.println("Going to click #exerciseType");
         clickOn("#exerciseType");
 
         sleep(6000);
+        System.out.println("Going to click #heartRate");
         clickOn("#heartRate");
         write("150");
         sleep(6000);
+        System.out.println("Going to click #commentField");
         clickOn("#commentField");
         write("New comment");
 
 
+        sleep(2000);
+        System.out.println("Going to click Create session");
         click("Create session");
         sleep(2000);
 
