@@ -37,16 +37,16 @@ public final class LogEntry {
     private Integer maxHeartRate;
 
     /** The top end of the feeling scale. */
-    private static final int MAXFEELING = 10;
+    public static final int MAXFEELING = 10;
 
     /** The bottom end of the feeling scale. */
-    private static final int MINFEELING = 1;
+    public static final int MINFEELING = 1;
 
     /** The max heart rate of a human being. */
-    private static final int MAXHEARTRATEHUMAN = 480; // World record
+    public static final int MAXHEARTRATEHUMAN = 480; // World record
 
     /** The min heart rate of a human being. */
-    private static final int MINHEARTRATEHUMAN = 40;
+    public static final int MINHEARTRATEHUMAN = 40;
 
     // it is paramount that all sorting configurations are
     // supported by all possible LogEntries.

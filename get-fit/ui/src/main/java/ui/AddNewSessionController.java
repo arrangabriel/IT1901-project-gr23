@@ -328,9 +328,10 @@ public class AddNewSessionController {
         setCardio(false);
 
         // validation of fields when they are changed
-        validateIntegerInput(hour, maxHours);
-        validateIntegerInput(min, maxMinutes);
-        validateIntegerInput(heartRate, maxHeartRateLimit);
+        validateIntegerInput(hour, 0, maxHours);
+        validateIntegerInput(min, 0, maxMinutes);
+        validateIntegerInput(heartRate, LogEntry.MINHEARTRATEHUMAN,
+                LogEntry.MAXHEARTRATEHUMAN);
         // set current date on startup
         sessionDatePicker.setValue(LocalDate.now());
     }
@@ -339,16 +340,18 @@ public class AddNewSessionController {
      * Adds a max (and lower 0) int validation listener to the textField.
      *
      * @param field    the field to be validated.
+     * @param minValue minimum int to validate against.
      * @param maxValue maximum int to validate against.
      */
     private void validateIntegerInput(final TextField field,
+                                      final int minValue,
                                       final int maxValue) {
         field.textProperty().addListener((obs, oldValue, newValue) -> {
             if (!newValue.isEmpty()) {
                 try {
                     // throws exception if newvalue is not numeric
                     int value = Integer.parseInt(newValue);
-                    if (value < 0 || value > maxValue) {
+                    if (value < minValue || value > maxValue) {
                         throw new NumberFormatException(
                                 "Input out of allowed range.");
                     }
