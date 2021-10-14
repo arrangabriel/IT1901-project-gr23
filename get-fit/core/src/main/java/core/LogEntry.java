@@ -114,7 +114,7 @@ public final class LogEntry {
          * @return the subcategories.
          */
         public Subcategory[] getSubcategories() {
-            return this.subcategories;
+            return this.subcategories.clone();
         }
     }
 
