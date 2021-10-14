@@ -52,16 +52,16 @@ public class TestEntryManager {
         EntryManager manager = genValidManager();
         Assertions.assertEquals(0, manager.entryCount());
         EntryBuilder builder = genValidBuilder();
-        String id = manager.addEntry(builder);
+        String id = manager.addEntry(builder.build());
         Assertions.assertEquals(1, manager.entryCount());
-        Assertions.assertThrows(IllegalArgumentException.class, () -> manager.addEntry(id, builder));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> manager.addEntry(id, builder.build()));
     }
 
     @Test
     public void testRemoveEntry() {
         EntryManager manager = genValidManager();
         EntryBuilder builder = genValidBuilder();
-        String id = manager.addEntry(builder);
+        String id = manager.addEntry(builder.build());
         Assertions.assertEquals(1, manager.entryCount());
         boolean result1 = manager.removeEntry(id);
         Assertions.assertEquals(0, manager.entryCount());
@@ -75,7 +75,7 @@ public class TestEntryManager {
     public void testGetEntry() {
         EntryManager manager = genValidManager();
         EntryBuilder builder = genValidBuilder();
-        manager.addEntry("0", builder);
+        manager.addEntry("0", builder.build());
         Assertions.assertThrows(IllegalArgumentException.class, () -> manager.getEntry("1"));
         Assertions.assertThrows(IllegalArgumentException.class, () -> manager.getEntry(null));
     }
@@ -85,7 +85,7 @@ public class TestEntryManager {
         EntryManager manager = genValidManager();
         EntryBuilder builder = genValidBuilder();
         Assertions.assertEquals(0, manager.entryCount());
-        manager.addEntry(builder);
+        manager.addEntry(builder.build());
         Assertions.assertEquals(1, manager.entryCount());
     }
 

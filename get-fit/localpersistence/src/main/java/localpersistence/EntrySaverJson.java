@@ -215,7 +215,7 @@ public final class EntrySaverJson {
                     .maxHeartRate(maxHeartRate);
 
 
-                entryManager.addEntry(builder);
+                entryManager.addEntry(builder.build());
             }
 
         } catch (ParseException pException) {

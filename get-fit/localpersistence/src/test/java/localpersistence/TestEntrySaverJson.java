@@ -44,10 +44,10 @@ public class TestEntrySaverJson {
     private EntryManager genValidManager() {
         EntryManager manager = new EntryManager();
 
-        manager.addEntry("0", genValidBuilder("Test1", "comment"));
-        manager.addEntry("1", genValidBuilder("Test2", "comment2"));
-        manager.addEntry("2", genValidBuilder("Test3", "comment3"));
-        manager.addEntry("3", genValidBuilder("Test4", "comment4"));
+        manager.addEntry("0", genValidBuilder("Test1", "comment").build());
+        manager.addEntry("1", genValidBuilder("Test2", "comment2").build());
+        manager.addEntry("2", genValidBuilder("Test3", "comment3").build());
+        manager.addEntry("3", genValidBuilder("Test4", "comment4").build());
         return manager;
     }
 

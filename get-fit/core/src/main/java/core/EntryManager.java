@@ -33,17 +33,17 @@ public final class EntryManager implements Iterable<LogEntry> {
     /**
      * Adds a fresh entry to this EntryManager. Generates an id internally.
      *
-     * @param builder the builder for the new LogEntry.
+     * @param entry the builder for the new LogEntry.
      * @return the generated id for the new LogEntry as a string.
      * @throws IllegalArgumentException if any of the input is invalid.
      * @see #validate
      */
-    public String addEntry(final EntryBuilder builder)
+    public String addEntry(final LogEntry entry)
             throws IllegalArgumentException {
 
         String id = String.valueOf(entryMap.size());
 
-        addEntry(id, builder);
+        addEntry(id, entry);
 
         return id;
     }
@@ -53,14 +53,14 @@ public final class EntryManager implements Iterable<LogEntry> {
      * EntryManager
      *
      * @param id                    the id for the new LogEntry.
-     * @param builder               the builder for the new LogEntry.
+     * @param entry               the builder for the new LogEntry.
      * @throws IllegalArgumentException if any of the input is invalid
      * or the id is allready in use.
      * @see #validate
      */
     public void addEntry(
         final String id,
-        final EntryBuilder builder)
+        final LogEntry entry)
             throws IllegalArgumentException {
 
 
@@ -68,12 +68,7 @@ public final class EntryManager implements Iterable<LogEntry> {
             throw new IllegalArgumentException("Entry already exists");
         }
 
-        Validity validity = LogEntry.validate(builder);
-        if (!validity.valid()) {
-            throw new IllegalArgumentException(validity.reason());
-        }
-
-        entryMap.put(id, new LogEntry(builder));
+        entryMap.put(id, entry);
     }
 
     /**
