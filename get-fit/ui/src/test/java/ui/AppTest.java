@@ -1,6 +1,7 @@
 package ui;
 
 import localpersistence.EntrySaverJson;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -22,6 +23,8 @@ import org.junit.jupiter.api.Assertions;
 
 
 public class AppTest extends ApplicationTest {
+    @FXML
+    ListView<String> listOfEntries;
     private static Scene scene;
     //private StartPageController controller;
     private StartPageController controller;
@@ -89,7 +92,7 @@ public class AppTest extends ApplicationTest {
     @Test
     public void checkView() throws IOException {
         updateRoot();
-        List<String> viewEntries = getEntriesView().getItems();
+        List<String> viewEntries = listOfEntries.getItems();
         for(int i = 0; i < viewEntries.size(); i++){
             Assertions.assertEquals(App.entryManager.getEntry(String.valueOf(i)).getTitle(), viewEntries.get(i));
         }
