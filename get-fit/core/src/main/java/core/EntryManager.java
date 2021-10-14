@@ -160,13 +160,14 @@ public final class EntryManager implements Iterable<LogEntry> {
             Comparator<LogEntry> comparator = null;
             switch (sortConfiguration) {
                 case DATE:
-                    Comparator.comparing(LogEntry::getDate);
+                    comparator = Comparator.comparing(LogEntry::getDate);
                 case DURATION:
-                    Comparator.comparing(LogEntry::getDuration);
+                    comparator = Comparator.comparing(LogEntry::getDuration);
                 case TITLE:
-                    Comparator.comparing(LogEntry::getTitle);
+                    comparator = Comparator.comparing(LogEntry::getTitle);
                 default:
-                    System.out.println("This cannot happen");
+                    throw new IllegalArgumentException(
+                        "Illegal sort configuration");
             }
 
             this.logEntryStream = entryMap
