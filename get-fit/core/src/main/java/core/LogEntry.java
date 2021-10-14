@@ -7,7 +7,7 @@ import java.util.Arrays;
 /**
  * Representation of a workout or exercise.
  */
-public class LogEntry {
+public final class LogEntry {
 
     /** Title of LogEntry. */
     private String title;
@@ -89,7 +89,7 @@ public class LogEntry {
         STRENGTH(STRENGTHSUBCATEGORIES.values()),
         /** Represents a running exercise. */
         RUNNING(CARDIOSUBCATEGORIES.values()),
-        /** Reoresents a cycling exercise. */
+        /** Reoresents a cyclinc exercise. */
         CYCLING(CARDIOSUBCATEGORIES.values()),
         /** Represents a swimming exercise. */
         SWIMMING(CARDIOSUBCATEGORIES.values());
@@ -223,7 +223,7 @@ public class LogEntry {
      */
     public static Validity validate(final EntryBuilder builder) {
 
-        /** Required fields. */
+        /* Required fields. */
         if (builder.ctitle == null
         || builder.ctitle.length() < 1) {
 
@@ -259,7 +259,7 @@ public class LogEntry {
             "Exercise category cannot be null");
         }
 
-        /** Optional fields. */
+        /* Optional fields. */
         if (builder.ccomment != null
         && (builder.ccomment.length() < 1)) {
             return new Validity(false,
@@ -268,7 +268,7 @@ public class LogEntry {
 
 
         if (builder.cexerciseSubcategory != null
-        && (Arrays.stream(builder.cexerciseCategory.subcategories)
+        && (!Arrays.stream(builder.cexerciseCategory.getSubcategories())
         .anyMatch(builder.cexerciseSubcategory::equals))) {
             return new Validity(false,
             "Subcategory must be part of exercise category");
@@ -426,7 +426,7 @@ public class LogEntry {
     /** Builder class for EntrLog. */
     public static class EntryBuilder {
 
-        /**
+        /*
          * Required fields.
          */
 
@@ -445,7 +445,7 @@ public class LogEntry {
         /** Feeling of the exercise. */
         private final int cfeeling;
 
-        /**
+        /*
          * Optional fields.
          */
 
