@@ -2,16 +2,15 @@ default:
   image: maven
 
 stages:
-  - test
   - build
-  - minimum-coverage
-  - extended-coverage
-  - code-quality
+  - test
+  - coverage
+  - quality
   - bugs
 
-test:
-  stage: test
-  script: cd get-fit && mvn test
+validate:
+  stage: build
+  script: cd get-fit && mvn validate
   only:
     - merge_requests
   except:
@@ -20,16 +19,24 @@ test:
 
 compile:
   stage: build
+  needs: ["validate"]
   script: cd get-fit && mvn compile
   only:
     - merge_requests
   except:
     variables:
       - $CI_MERGE_REQUEST_TARGET_BRANCH_NAME != "master" && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME != "dev"
+  artifacts:
+    paths:
+      get-fit/core/target/classes/*
+      get-fit/localpersistence/target/classes/*
+      get-fit/ui/target/classes/*
+    expire_in: 10 minutes
 
-install:
-  stage: build
-  script: cd get-fit && mvn install
+test:
+  stage: test
+  needs: ["compile"]
+  script: cd get-fit && mvn test
   only:
     - merge_requests
   except:
@@ -37,9 +44,9 @@ install:
       - $CI_MERGE_REQUEST_TARGET_BRANCH_NAME != "master" && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME != "dev"
 
 
-
 test-coverage-minimum:
-  stage: minimum-coverage
+  stage: coverage
+  needs: ["compile"]
   script: cd get-fit && mvn verify
   only:
     - merge_requests
@@ -48,7 +55,8 @@ test-coverage-minimum:
       - $CI_MERGE_REQUEST_TARGET_BRANCH_NAME != "master" && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME != "dev"
 
 test-coverage-80:
-  stage: extended-coverage
+  stage: coverage
+  needs: ["test-coverage-minimum"]
   script: cd get-fit && mvn verify -Dminimum=0.8
   allow_failure: true
   only:
@@ -59,7 +67,8 @@ test-coverage-80:
 
 
 checkstyle:
-  stage: code-quality
+  stage: quality
+  needs: ["compile"]
   script: cd get-fit && mvn checkstyle:check
   allow_failure: true
   only:
@@ -70,6 +79,7 @@ checkstyle:
 
 spotbugs:
   stage: bugs
+  needs: ["compile"]
   script: cd get-fit && mvn install && mvn spotbugs:check
   allow_failure: true
   only:
