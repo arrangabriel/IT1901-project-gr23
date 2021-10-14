@@ -55,6 +55,7 @@ public final class EntrySaverJson {
         map.put("comment", entry.getComment());
         map.put("date", entry.getDate().toString());
         map.put("feeling", Integer.toString(entry.getFeeling()));
+        map.put("duration", Long.toString(entry.getDuration().toSeconds()));
         map.put("distance", Double.toString(entry.getDistance()));
         map.put("maxHeartRate", Integer.toString(entry.getMaxHeartRate()));
         map.put("exerciseCategory", entry.getExerciseCategory().toString());
@@ -180,7 +181,7 @@ public final class EntrySaverJson {
 
                 String title = innerMap.get("title");
                 LocalDate date = LocalDate.parse(innerMap.get("date"));
-                String comment = innerMap.get("comment");
+                String comment = null;
                 Double distance = null;
                 Integer maxHeartRate = null;
                 Integer feeling = Integer.parseInt(innerMap.get("feeling"));
@@ -192,6 +193,9 @@ public final class EntrySaverJson {
                 if (!innerMap.get("maxHeartRate").equals("null")) {
                     maxHeartRate = Integer.parseInt(
                         innerMap.get("maxHeartRate"));
+                }
+                if (!innerMap.get("comment").equals("null")) {
+                    comment = innerMap.get("comment");
                 }
 
                 Duration duration = Duration.ofSeconds(
