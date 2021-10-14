@@ -28,9 +28,9 @@ compile:
       - $CI_MERGE_REQUEST_TARGET_BRANCH_NAME != "master" && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME != "dev"
   artifacts:
     paths:
-      get-fit/core/target/classes/*
-      get-fit/localpersistence/target/classes/*
-      get-fit/ui/target/classes/*
+      - get-fit/core/target/classes/*
+      - get-fit/localpersistence/target/classes/*
+      - get-fit/ui/target/classes/*
     expire_in: 10 minutes
 
 test:
