@@ -1,5 +1,9 @@
 package ui;
 
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
 import java.io.IOException;
 import java.io.FileNotFoundException;
 import javafx.fxml.FXML;
@@ -8,14 +12,14 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
-import javafx.stage.Stage;
 import localpersistence.EntrySaverJson;
+import javafx.scene.Node;
 
 import core.LogEntry;
 import core.EntryManager;
 
 public class StartPageController {
-    @FXML Button addSession;
+    @FXML Button addSession, viewStatistics;
     @FXML ListView<String> listOfEntries;
     @FXML Label errorLabel;
 
@@ -26,11 +30,25 @@ public class StartPageController {
      */
     @FXML
     public void addSessionButtonPushed(ActionEvent event) throws IOException{
-        App.setRoot("AddNewSession");
+        FXMLLoader Loader = new FXMLLoader();
+		Loader.setLocation(getClass().getResource("AddNewSession.fxml"));
+		Parent p = Loader.load();
+		Scene  s = new Scene(p);
+        Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
+		window.setScene(s);
+		window.show();
+      
     }
 
     public void handleViewStatisticsButton(ActionEvent event) throws IOException{
-        App.setRoot("Statistics");
+        FXMLLoader Loader = new FXMLLoader();
+		Loader.setLocation(getClass().getResource("Statistics.fxml"));
+		Parent p = Loader.load();
+		Scene  s = new Scene(p);
+        Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
+		window.setScene(s);
+		window.show();
+        
     } 
     @FXML
     public void deleteButtonPushed(ActionEvent event) throws IOException{

@@ -17,17 +17,28 @@ import localpersistence.EntrySaverJson;
 import java.time.LocalDate;
 import javafx.scene.control.Slider;
 import javafx.scene.control.ComboBox;
+import javafx.scene.Node;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
 
 
 public class AddNewSessionController {
     //fxml component attributes
     @FXML private Label header, timeLabel, dateLabel, distanceLabel, commentLabel, errorLabel;
-    @FXML private TextField nameOfSessionField, distance, hour, min;
+    @FXML private TextField nameOfSessionField, distance, hour, min, maximumHeartrate;
     @FXML private TextArea commentField;
     @FXML private DatePicker sessionDatePicker;
     @FXML private Button createSession;
     @FXML private Slider feelingSlider;
     @FXML private ComboBox<String> exerciseType, tags;
+
+
+
+
+
+
 
     /**
      * Adds an entry to the app EntryManager and switches the view to StartPage
@@ -46,7 +57,15 @@ public class AddNewSessionController {
                 sessionDatePicker.getValue(),
                 duration);
             EntrySaverJson.save(App.entryManager);
-            App.setRoot("StartPage");
+
+            FXMLLoader Loader = new FXMLLoader();
+            Loader.setLocation(getClass().getResource("StartPage.fxml"));
+            Parent p = Loader.load();
+            Scene  s = new Scene(p);
+            Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
+            window.setScene(s);
+            window.show();
+            
         }
         catch(IllegalArgumentException e){
             errorLabel.setText(e.getMessage());
@@ -55,7 +74,13 @@ public class AddNewSessionController {
     } 
     @FXML
     public void returnButtonPushed(ActionEvent event) throws IOException{
-        App.setRoot("StartPage");
+        FXMLLoader Loader = new FXMLLoader();
+            Loader.setLocation(getClass().getResource("StartPage.fxml"));
+            Parent p = Loader.load();
+            Scene  s = new Scene(p);
+            Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
+            window.setScene(s);
+            window.show();
     }
 
    
@@ -79,7 +104,6 @@ public class AddNewSessionController {
         
     }
 
-   
 
     /**
      * Initializes the controller.

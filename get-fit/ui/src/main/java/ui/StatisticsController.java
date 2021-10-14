@@ -11,6 +11,11 @@ import javafx.event.ActionEvent;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collection;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
+import javafx.scene.Node;
 
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.chart.NumberAxis;
@@ -63,7 +68,13 @@ public class StatisticsController {
      */
    @FXML
     public void returnToStartPagePushed(ActionEvent event) throws IOException{
-        App.setRoot("StartPage");
+        FXMLLoader Loader = new FXMLLoader();
+		Loader.setLocation(getClass().getResource("StartPage.fxml"));
+		Parent p = Loader.load();
+		Scene  s = new Scene(p);
+        Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
+		window.setScene(s);
+		window.show();
     }
 
     //Unfinished function:

@@ -21,7 +21,7 @@
          </children>
       </Pane>
       <Button fx:id="addSession" layoutX="464.0" layoutY="345.0" mnemonicParsing="false" onAction="#addSessionButtonPushed" prefHeight="39.0" prefWidth="111.0" text="Add session" />
-      <Button fx:id="addSession1" layoutX="22.0" layoutY="345.0" mnemonicParsing="false" onAction="#handleViewStatisticsButton" prefHeight="39.0" prefWidth="111.0" text="View  statistics" />
+      <Button fx:id="viewStatistics" layoutX="22.0" layoutY="345.0" mnemonicParsing="false" onAction="#handleViewStatisticsButton" prefHeight="39.0" prefWidth="111.0" text="View  statistics" />
       <Button fx:id="Delete" layoutX="489.0" layoutY="72.0" mnemonicParsing="false" onAction="#deleteButtonPushed" prefHeight="28.0" prefWidth="81.0" text="Delete" />
       <Separator layoutX="22.0" layoutY="83.0" prefHeight="6.0" prefWidth="428.0" />
       <Label fx:id="errorLabel" layoutX="174.0" layoutY="356.0" prefHeight="17.0" prefWidth="275.0" textFill="#b50c0c" />

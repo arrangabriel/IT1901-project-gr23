@@ -36,7 +36,7 @@
             <ComboBox fx:id="tags" layoutX="19.0" layoutY="250.0" onAction="#handleTagsSelecter" prefHeight="17.0" prefWidth="150.0" />
             <Label layoutX="19.0" layoutY="177.0" prefHeight="17.0" prefWidth="90.0" text="Excercise Type" />
             <Label layoutX="18.0" layoutY="234.0" prefHeight="17.0" prefWidth="90.0" text="Tags" />
-            <TextField fx:id="hour1" alignment="CENTER" layoutX="302.0" layoutY="29.0" prefHeight="27.0" prefWidth="43.0" promptText="hr" />
+            <TextField fx:id="maximumHeartRate" alignment="CENTER" layoutX="302.0" layoutY="29.0" prefHeight="27.0" prefWidth="43.0" promptText="hr" />
             <Label fx:id="header1" layoutX="300.0" layoutY="10.0" prefHeight="19.0" prefWidth="117.0" text="Maximum heart rate" />
             <Slider fx:id="feelingSlider" blockIncrement="1.0" layoutX="301.0" layoutY="86.0" majorTickUnit="1.0" max="10.0" min="1.0" minorTickCount="10" prefHeight="15.0" prefWidth="152.0" showTickLabels="true" showTickMarks="true" />
             <Label fx:id="header11" layoutX="301.0" layoutY="64.0" prefHeight="19.0" prefWidth="157.0" text="How did this workout feel?" />
