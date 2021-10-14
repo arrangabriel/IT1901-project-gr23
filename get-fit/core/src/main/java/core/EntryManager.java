@@ -6,6 +6,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -117,6 +118,23 @@ public final class EntryManager implements Iterable<LogEntry> {
      */
     public Set<String> entryIds() {
         return this.entryMap.keySet();
+    }
+
+    /**
+     * Removes a LogEntry with the specified id,
+     * and replaces it with the provided entry.
+     * @param id the id of the LogEntry to swap.
+     * @param entry the entry to put in place.
+     * @throws NoSuchElementException if the id doesn't exist in the manager.
+     */
+    public void swapEntry(
+        final String id,
+        final LogEntry entry)
+            throws NoSuchElementException {
+
+        removeEntry(id);
+        addEntry(id, entry);
+
     }
 
     /**
