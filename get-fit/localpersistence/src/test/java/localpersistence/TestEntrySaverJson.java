@@ -2,7 +2,9 @@ package localpersistence;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.channels.IllegalSelectorException;
 import java.time.Duration;
 import java.time.LocalDate;
 
@@ -81,5 +83,32 @@ public class TestEntrySaverJson {
 
         }
     }
+
+    @Test
+    public void testBadFile() {
+        EntryManager manager = genValidManager();
+        File file = new File(saveFile);
+        try {
+            file.createNewFile();
+            FileWriter writer = new FileWriter(file);
+            writer.write("Nonsense");
+            writer.flush();
+            writer.close();
+        } catch (IOException e) {
+
+        }
+        Assertions.assertThrows(IllegalStateException.class, () -> EntrySaverJson.load(manager, saveFile));
+    }
+
+    @Test
+    public void testBadArgs() {
+        EntryManager manager = genValidManager();
+        Assertions.assertThrows(IllegalArgumentException.class, () -> EntrySaverJson.load(manager, null));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> EntrySaverJson.load(null, saveFile));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> EntrySaverJson.save(manager, null));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> EntrySaverJson.save(null, saveFile));
+    }
+
+
 
 }
