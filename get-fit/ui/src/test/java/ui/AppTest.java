@@ -92,19 +92,26 @@ public class AppTest extends ApplicationTest {
     public void testCreateButton(){
         int oldCount = App.entryManager.entryCount();
 
+        sleep(6000);
         click("Add session");
         sleep(6000);
         clickOn("#titleField");
         write("New new Session");
+        sleep(6000);
         clickOn("#sessionDatePicker");
+        sleep(6000);
         clickOn("#hour");
         write("1");
+        sleep(6000);
         clickOn("#min");
         write("30");
+        sleep(6000);
         clickOn("#exerciseType");
 
+        sleep(6000);
         clickOn("#heartRate");
         write("150");
+        sleep(6000);
         clickOn("#commentField");
         write("New comment");
 
