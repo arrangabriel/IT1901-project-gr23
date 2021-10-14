@@ -23,62 +23,74 @@ import java.util.stream.Collectors;
 
 public class AddNewSessionController {
 
+    /**Back-button.*/
     @FXML
     private Button Return;
+    /***/
     @FXML
     private Label header11;
+    /***/
     @FXML
     private Label header1;
+    /***/
     @FXML
     private TextField hour1;
+    /**Main header.*/
     @FXML
     private Label header;
+    /**Label for time fields.*/
     @FXML
     private Label timeLabel;
+    /**Label for date field.*/
     @FXML
     private Label dateLabel;
+    /**Label for distance field.*/
     @FXML
     private Label distanceLabel;
+    /**Label for comment field*/
     @FXML
     private Label commentLabel;
+    /**Label for error message.*/
     @FXML
     private Label errorLabel;
+    /**Title input-field.*/
     @FXML
     private TextField nameOfSessionField;
+    /**Distance input-field.*/
     @FXML
     private TextField distance;
+    /**Hour input-field.*/
     @FXML
     private TextField hour;
+    /**Minute input-field*/
     @FXML
     private TextField min;
+    /**Comment input-field.*/
     @FXML
     private TextArea commentField;
+    /**Date-picker.*/
     @FXML
     private DatePicker sessionDatePicker;
-    @FXML
-    private Button createSession;
+    /**Feeling input-slider.*/
     @FXML
     private Slider feelingSlider;
+    /**Exercise type-selector.*/
     @FXML
-    private ComboBox<String> exerciseType, tags;
+    private ComboBox<String> exerciseType;
+    /**Exercise subcategory-selector.*/
+    @FXML
+    private ComboBox<String> tags;
+    /**Create session button.*/
+    @FXML
+    private Button createSession;
 
-    // TODO generate these
-    //private ObservableList<String> exerciseTypeSelecter =
-    //        FXCollections.observableArrayList("Running", "Cycling", "Strength",
-    //                "Svimming");
-    //private ObservableList<String> tagsStrengthSelecter =
-    //        FXCollections.observableArrayList("Push", "Pull", "Legs",
-    //                "Full body");
-    //private ObservableList<String> tagsCardioSelecter =
-    //        FXCollections.observableArrayList("Short", "Long", "High intensity",
-    //                "Low intensity");
-
+    /**All possible exercise category values.*/
     private final ObservableList<LogEntry.EXERCISECATEGORY> exerciseCategories =
             FXCollections.observableArrayList(
                     LogEntry.EXERCISECATEGORY.values());
 
     /**
-     * Adds an entry to the app EntryManager and switches the view to StartPage
+     * Adds an entry to the app EntryManager and switches the view to StartPage.
      *
      * @param event the event data from pushed button.
      * @throws IOException if .FXML file could not be found.
@@ -107,13 +119,12 @@ public class AddNewSessionController {
 
     @FXML
     public void returnButtonPushed(final ActionEvent event) throws IOException {
-        // TODO - check if we need to clear all fields
         App.setRoot("StartPage");
     }
 
     @FXML
     public void handleTagsSelecter(final ActionEvent event) throws IOException {
-        // make this more general
+
         LogEntry.EXERCISECATEGORY mainCategory = LogEntry.EXERCISECATEGORY.valueOf(exerciseType.getSelectionModel().getSelectedItem());
         switch (mainCategory) {
             case ANY:
@@ -137,7 +148,7 @@ public class AddNewSessionController {
 
     }
 
-    private void setCardio(boolean isCardio) {
+    private void setCardio(final boolean isCardio) {
         // TODO - add new fields to this
         distance.setVisible(isCardio);
         distanceLabel.setVisible(isCardio);
