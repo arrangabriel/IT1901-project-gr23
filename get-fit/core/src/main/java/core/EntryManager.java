@@ -135,7 +135,7 @@ public final class EntryManager implements Iterable<LogEntry> {
     /**
      * Builder for LogEntry iterator.
      */
-    public class SortedIteratorBuilder {
+    public static class SortedIteratorBuilder {
 
         /**
          * Internally modifiable stream of LogEntries.
