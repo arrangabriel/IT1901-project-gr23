@@ -1,18 +1,22 @@
 package localpersistence;
 
 import java.util.HashMap;
-
+import java.util.Map;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.time.LocalDate;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
+import java.util.Set;
 import java.time.Duration;
 
 import core.EntryManager;
 import core.LogEntry;
 import core.LogEntry.EXERCISECATEGORY;
+import core.LogEntry.Subcategory;
+import core.LogEntry.EntryBuilder;
 
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -41,6 +45,27 @@ public final class EntrySaverJson {
     }
 
     /**
+     * Puts the information stored in the enty into the hashmap.
+     * @param map the map to put into.
+     * @param entry the entry to store.
+     */
+    private static void putEntry(
+        final HashMap<String, String> map,
+        final LogEntry entry) {
+
+        map.put("title", entry.getTitle());
+        map.put("comment", entry.getComment());
+        map.put("date", entry.getDate().toString());
+        map.put("feeling", Integer.toString(entry.getFeeling()));
+        map.put("duration", Long.toString(entry.getDuration().toSeconds()));
+        map.put("distance", Double.toString(entry.getDistance()));
+        map.put("maxHeartRate", Integer.toString(entry.getMaxHeartRate()));
+        map.put("exerciseCategory", entry.getExerciseCategory().toString());
+        map.put("exerciseSubCategory", entry.getExerciseSubCategory()
+        .toString());
+    }
+
+    /**
      * Iterates over every entry in the provided EntryManager
      * and adds their data as a string to a hashmap.
      * Saves the hashmap to the specified JSON file.
@@ -61,48 +86,27 @@ public final class EntrySaverJson {
 
         JSONObject json = new JSONObject();
 
-        for (LogEntry entry : entryManager) {
+        for (String entryId : entryManager.entryIds()) {
+            LogEntry entry = entryManager.getEntry(entryId);
             HashMap<String, String> innerMap = new HashMap<>();
-            innerMap.put("title", entry
-                                    .getTitle());
+            putEntry(innerMap, entry);
 
-            innerMap.put("comment", entry
-                                    .getComment());
-
-            innerMap.put("date", entry
-                                    .getDate()
-                                    .toString());
-
-            innerMap.put("duration", String.valueOf(entry
-                                                    .getDuration()
-                                                    .getSeconds()));
-
-            innerMap.put("feeling", Integer.toString(entry
-                                                    .getFeeling()));
-
-            innerMap.put("distance", String.valueOf(entry
-                                                    .getDistance()));
-
-            innerMap.put("maxHeartRate", String.valueOf(entry
-                                                    .getMaxHeartRate()));
-
-            innerMap.put("exerciseCategory", entry
-                                                    .getExerciseCategory()
-                                                    .toString());
-
-            innerMap.put("exerciseSubCategory", entry
-                                                    .getExerciseSubCategory()
-                                                    .toString());
-
-            json.put(entry.getId(), innerMap);
+            json.put(entryId, innerMap);
         }
         File file = new File(saveFile);
-        file.createNewFile();
-        FileWriter writer = new FileWriter(file);
-        writer.write(json.toJSONString());
-        writer.flush();
+        
+        boolean created = file.createNewFile();
+        created = !created;                     // Appease spotbugs
+        
+        FileWriter writer = new FileWriter(file, Charset.forName("utf-8"));
+        try {
+            writer.write(json.toJSONString());
+            writer.flush();   
+        } catch (IOException e) {
 
-        writer.close();
+        } finally {
+            writer.close();
+        }
     }
 
     /**
@@ -118,6 +122,31 @@ public final class EntrySaverJson {
 
         load(entryManager, "SavedData.json");
 
+    }
+
+    /**
+     * Converts a string representation of a subcategory into a subcategory.
+     * @param category The string representation of the subcategory.
+     * @return The actual subcategory or null if no match.
+     */
+    public static LogEntry.Subcategory stringToSubcategory(
+        final String category) {
+
+        LogEntry.Subcategory subCategory = null;
+        outerloop:
+        for (EXERCISECATEGORY exCategory: LogEntry.EXERCISECATEGORY.values()) {
+            for (LogEntry.Subcategory sub: exCategory.getSubcategories()) {
+                try {
+                    subCategory = sub.getValueOf(category);
+                    if (subCategory != null) {
+                        break outerloop;
+                    }
+                } catch (Exception e) {
+                    // NEQ
+                }
+            }
+        }
+        return subCategory;
     }
 
     /**
@@ -141,72 +170,67 @@ public final class EntrySaverJson {
 
         JSONParser jsonParser = new JSONParser();
         File file = new File(saveFile);
-        Scanner reader = new Scanner(file);
-        String dataString = "";
+        Scanner reader = new Scanner(file, "utf-8");
+        String dataString;
+        StringBuffer buffer = new StringBuffer();
 
         while (reader.hasNextLine()) {
-            dataString += reader.nextLine();
+            buffer.append(reader.nextLine());
         }
+
         reader.close();
+
+        dataString = buffer.toString();
 
         try {
             JSONObject jsonObject = (JSONObject) jsonParser.parse(dataString);
 
-            for (Object key : jsonObject.keySet()) {
-                String id = (String) key;
 
-                //Suppressed unchecked warning. Any better solution Stefan?:
-                @SuppressWarnings("unchecked")
-                HashMap<String, String> innerMap =
-                            (HashMap<String, String>) jsonObject.get(key);
+            //@SuppressWarnings("unchecked")
+            for (Map.Entry<String, HashMap<String, String>> entryIdPair : (Set<Map.Entry<String, HashMap<String, String>>>) jsonObject.entrySet()) {
 
-                LogEntry.Subcategory subCategory = null;
-                outerloop:
-                for (EXERCISECATEGORY category
-                        : LogEntry.EXERCISECATEGORY.values()) {
-                    for (LogEntry.Subcategory sub
-                            : category.getSubcategories()) {
-                       try {
-                           subCategory = sub.getValueOf(innerMap.get(
-                                                        "exerciseSubCategory"));
-                           if (subCategory != null) {
-                               break outerloop;
-                           }
-                       } catch (Exception e) {
-                           // NEQ
-                       }
-                    }
+                HashMap<String, String> innerMap = entryIdPair.getValue();
+
+                String title = innerMap.get("title");
+                LocalDate date = LocalDate.parse(innerMap.get("date"));
+                String comment = null;
+                Double distance = null;
+                Integer maxHeartRate = null;
+                Integer feeling = Integer.parseInt(innerMap.get("feeling"));
+
+                if (!innerMap.get("distance").equals("null")) {
+                    distance = Double.parseDouble(
+                        innerMap.get("distance"));
+                }
+                if (!innerMap.get("maxHeartRate").equals("null")) {
+                    maxHeartRate = Integer.parseInt(
+                        innerMap.get("maxHeartRate"));
+                }
+                if (!innerMap.get("comment").equals("null")) {
+                    comment = innerMap.get("comment");
                 }
 
-                if (subCategory == null) {
-                    throw new IllegalStateException("Malformed save file");
-                }
+                Duration duration = Duration.ofSeconds(
+                    Long.parseLong(innerMap.get("duration")));
 
-                entryManager.addEntry(
-                    id,
+                EXERCISECATEGORY category = EXERCISECATEGORY.valueOf(
+                    innerMap.get("exerciseCategory"));
 
-                    innerMap.get("title"),
+                Subcategory subCategory = stringToSubcategory(
+                    innerMap.get("exerciseSubcategory"));
 
-                    innerMap.get("comment"),
+                EntryBuilder builder = new EntryBuilder(
+                    title, date, duration, category, feeling)
+                    .comment(comment)
+                    .distance(distance)
+                    .exerciseSubcategory(subCategory)
+                    .maxHeartRate(maxHeartRate);
 
-                    LocalDate.parse(innerMap.get("date")),
 
-                    Duration.ofSeconds(
-                            Long.parseLong(innerMap.get("duration"))),
-                    Integer.parseInt(innerMap.get("feeling")),
-
-                    !innerMap.get("distance").equals("null") ? Double.parseDouble(innerMap.get("distance")) : null,
-                    !innerMap.get("maxHeartRate").equals("null") ? Integer.parseInt(innerMap.get("maxHeartRate")) : null,
-
-                    LogEntry.EXERCISECATEGORY.valueOf(innerMap.get(
-                        "exerciseCategory")),
-
-                    subCategory
-
-                );
+                entryManager.addEntry(entryIdPair.getKey(), builder.build());
             }
 
-        } catch (ParseException pException){
+        } catch (ParseException pException) {
             throw new IllegalStateException("Could not load data from file");
         }
     }

@@ -1,27 +1,24 @@
 package core;
 
-
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
-import core.LogEntry.EntryBuilder;
-import core.LogEntry.Validity;
 
 /**
  * Provides management for EntryLogs.
  */
-public class EntryManager implements Iterable<LogEntry> {
+public final class EntryManager implements Iterable<LogEntry> {
 
     /**
      * Hashmap of LogEntries.
      */
-    private final static HashMap<String, LogEntry> entryMap = new HashMap<>();
+    private final HashMap<String, LogEntry> entryMap = new HashMap<>();
 
     /**
      * An entry manager instance is a wrapper for a list of logEntries.
@@ -33,27 +30,17 @@ public class EntryManager implements Iterable<LogEntry> {
     /**
      * Adds a fresh entry to this EntryManager. Generates an id internally.
      *
-     * @param title               the title field for the new LogEntry as a string.
-     * @param comment             the comment field for the new LogEntry as a string.
-     * @param date                the date field for the new LogEntry
-     *                            as a time.LocalDate instance.
-     * @param duration            the duration field for the new LogEntry
-     *                            as a time.Duration instance.
-     * @param feeling             how the exercise felt on a scale from 1 to 10.
-     * @param distance            how much distance was covered during the exercise.
-     * @param maxHeartRate        the max recorded hear rate during the exercise.
-     * @param exerciseCategory    the category of the exercise.
-     * @param exerciseSubCategory the subcategory of the exercise.
+     * @param entry the builder for the new LogEntry.
      * @return the generated id for the new LogEntry as a string.
      * @throws IllegalArgumentException if any of the input is invalid.
      * @see #validate
      */
-    public String addEntry(final EntryBuilder builder)
+    public String addEntry(final LogEntry entry)
             throws IllegalArgumentException {
 
         String id = String.valueOf(entryMap.size());
 
-        addEntry(id, builder);
+        addEntry(id, entry);
 
         return id;
     }
@@ -62,37 +49,23 @@ public class EntryManager implements Iterable<LogEntry> {
      * Adds an already existing LogEntry (i.e. one that has an id) to this
      * EntryManager
      *
-     * @param id                  the id for the new LogEntry
-     * @param title               the title field for the new LogEntry as a string.
-     * @param comment             the comment field for the new LogEntry as a string.
-     * @param date                the date field for the new LogEntry
-     *                            as a time.LocalDate instance.
-     * @param duration            the duration field for the new LogEntry
-     *                            as a time.Duration instance.
-     * @param feeling             how the exercise felt on a scale from 1 to 10.
-     * @param distance            how much distance was covered during the exercise.
-     * @param maxHeartRate        the max recorded hear rate during the exercise.
-     * @param exerciseCategory    the category of the exercise.
-     * @param exerciseSubCategory the subcategory of the exercise.
-     * @throws IllegalArgumentException if any of the input is invalid or the id is allready in use.
+     * @param id    the id for the new LogEntry.
+     * @param entry the builder for the new LogEntry.
+     * @throws IllegalArgumentException if any of the input is invalid
+     *                                  or the id is allready in use.
      * @see #validate
      */
     public void addEntry(
-        final String id,
-        final EntryBuilder builder)
+            final String id,
+            final LogEntry entry)
             throws IllegalArgumentException {
-        
+
 
         if (entryMap.containsKey(id)) {
             throw new IllegalArgumentException("Entry already exists");
         }
 
-        Validity validity = LogEntry.validate(builder);
-        if (!validity.valid()) {
-            throw new IllegalArgumentException(validity.reason());
-        }
-
-        entryMap.put(id, new LogEntry(builder));
+        entryMap.put(id, entry);
     }
 
     /**
@@ -134,7 +107,16 @@ public class EntryManager implements Iterable<LogEntry> {
      * @return the number of LogEntries in this EntryManager
      */
     public int entryCount() {
-        return EntryManager.entryMap.size();
+        return this.entryMap.size();
+    }
+
+    /**
+     * Returns a set of all ids in the entry manager.
+     *
+     * @return the set of ids.
+     */
+    public Set<String> entryIds() {
+        return this.entryMap.keySet();
     }
 
     /**
@@ -145,10 +127,13 @@ public class EntryManager implements Iterable<LogEntry> {
      */
     @Override
     public Iterator<LogEntry> iterator() {
-        return EntryManager.entryMap.values().iterator();
+        return this.entryMap.values().iterator();
     }
 
-    public  static class SortedIteratorBuilder {
+    /**
+     * Builder for LogEntry iterator.
+     */
+    public static class SortedIteratorBuilder {
 
         /**
          * Internally modifiable stream of LogEntries.
@@ -158,10 +143,11 @@ public class EntryManager implements Iterable<LogEntry> {
         /**
          * Builder for a sorted iterator of this EntryManager's LogEntries.
          *
+         * @param entryManager the entry manager to get entries from.
          * @param sortConfiguration a LogEntry.SORTCONFIGURATIONS to sort by.
          * @throws IllegalArgumentException if sortConfigurations is null.
          */
-        public SortedIteratorBuilder(
+        public SortedIteratorBuilder(final EntryManager entryManager,
                 final LogEntry.SORTCONFIGURATIONS sortConfiguration)
                 throws IllegalArgumentException {
 
@@ -170,13 +156,23 @@ public class EntryManager implements Iterable<LogEntry> {
                         "Sort configuration cannot be null.");
             }
 
-            Comparator<LogEntry> comparator = switch (sortConfiguration) {
-                case DATE -> Comparator.comparing(LogEntry::getDate);
-                case DURATION -> Comparator.comparing(LogEntry::getDuration);
-                case TITLE -> Comparator.comparing(LogEntry::getTitle);
-            };
+            Comparator<LogEntry> comparator = null;
+            switch (sortConfiguration) {
+                case DATE:
+                    comparator = Comparator.comparing(LogEntry::getDate);
+                    break;
+                case DURATION:
+                    comparator = Comparator.comparing(LogEntry::getDuration);
+                    break;
+                case TITLE:
+                    comparator = Comparator.comparing(LogEntry::getTitle);
+                    break;
+                default:
+                    throw new IllegalArgumentException(
+                        "Illegal sort configuration");
+            }
 
-            this.logEntryStream = entryMap
+            this.logEntryStream = entryManager.entryMap
                     .values()
                     .stream()
                     .sorted(comparator);
