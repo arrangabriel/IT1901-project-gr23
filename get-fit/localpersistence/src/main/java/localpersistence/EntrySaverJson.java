@@ -1,7 +1,7 @@
 package localpersistence;
 
 import java.util.HashMap;
-
+import java.util.Map;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -9,6 +9,7 @@ import java.time.LocalDate;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
+import java.util.Set;
 import java.time.Duration;
 
 import core.EntryManager;
@@ -184,12 +185,11 @@ public final class EntrySaverJson {
         try {
             JSONObject jsonObject = (JSONObject) jsonParser.parse(dataString);
 
-            for (Object mapObject : jsonObject.entrySet()) {
 
-                //Suppressed unchecked warning. Any better solution Stefan?:
-                @SuppressWarnings("unchecked")
-                HashMap<String, String> innerMap =
-                           (HashMap<String, String>) mapObject;
+            //@SuppressWarnings("unchecked")
+            for (Map.Entry<String, HashMap<String, String>> entryIdPair : (Set<Map.Entry<String, HashMap<String, String>>>) jsonObject.entrySet()) {
+
+                HashMap<String, String> innerMap = entryIdPair.getValue();
 
                 String title = innerMap.get("title");
                 LocalDate date = LocalDate.parse(innerMap.get("date"));
@@ -227,7 +227,7 @@ public final class EntrySaverJson {
                     .maxHeartRate(maxHeartRate);
 
 
-                entryManager.addEntry(builder.build());
+                entryManager.addEntry(entryIdPair.getKey(), builder.build());
             }
 
         } catch (ParseException pException) {
