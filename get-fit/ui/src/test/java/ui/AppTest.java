@@ -76,7 +76,7 @@ public class AppTest extends ApplicationTest {
 
 
     private ListView<String> getEntriesView() {
-        return (ListView<String>) getRootNode().lookup("#listOfEntries");
+        return (ListView<String>) root.lookup("#listOfEntries");
     }
 
     @Test
