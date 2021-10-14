@@ -79,7 +79,7 @@ public final class EntrySaverJson {
 
         map.put("exerciseCategory", entry.getExerciseCategory().toString());
 
-        if (entry.getExerciseSubCategories() != null) {
+        if (entry.getExerciseSubCategory() != null) {
             map.put("exerciseSubCategory", entry.getExerciseSubCategory()
             .toString());
         } else {
