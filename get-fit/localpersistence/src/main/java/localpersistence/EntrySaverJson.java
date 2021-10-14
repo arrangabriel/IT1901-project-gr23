@@ -4,6 +4,7 @@ import java.util.HashMap;
 
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.time.LocalDate;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -93,11 +94,15 @@ public final class EntrySaverJson {
         }
         File file = new File(saveFile);
         file.createNewFile();
-        FileWriter writer = new FileWriter(file);
-        writer.write(json.toJSONString());
-        writer.flush();
+        FileWriter writer = new FileWriter(file, Charset.forName("utf-8"));
+        try {
+            writer.write(json.toJSONString());
+            writer.flush();   
+        } catch (IOException e) {
 
-        writer.close();
+        } finally {
+            writer.close();
+        }
     }
 
     /**
