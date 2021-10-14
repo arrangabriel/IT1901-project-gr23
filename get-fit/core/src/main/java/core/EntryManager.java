@@ -10,9 +10,6 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import core.LogEntry.EntryBuilder;
-import core.LogEntry.Validity;
-
 /**
  * Provides management for EntryLogs.
  */
@@ -52,15 +49,15 @@ public final class EntryManager implements Iterable<LogEntry> {
      * Adds an already existing LogEntry (i.e. one that has an id) to this
      * EntryManager
      *
-     * @param id                    the id for the new LogEntry.
-     * @param entry               the builder for the new LogEntry.
+     * @param id    the id for the new LogEntry.
+     * @param entry the builder for the new LogEntry.
      * @throws IllegalArgumentException if any of the input is invalid
-     * or the id is allready in use.
+     *                                  or the id is allready in use.
      * @see #validate
      */
     public void addEntry(
-        final String id,
-        final LogEntry entry)
+            final String id,
+            final LogEntry entry)
             throws IllegalArgumentException {
 
 
@@ -115,6 +112,7 @@ public final class EntryManager implements Iterable<LogEntry> {
 
     /**
      * Returns a set of all ids in the entry manager.
+     *
      * @return the set of ids.
      */
     public Set<String> entryIds() {
@@ -135,7 +133,7 @@ public final class EntryManager implements Iterable<LogEntry> {
     /**
      * Builder for LogEntry iterator.
      */
-    public class SortedIteratorBuilder {
+    static class SortedIteratorBuilder {
 
         /**
          * Internally modifiable stream of LogEntries.
@@ -148,7 +146,7 @@ public final class EntryManager implements Iterable<LogEntry> {
          * @param sortConfiguration a LogEntry.SORTCONFIGURATIONS to sort by.
          * @throws IllegalArgumentException if sortConfigurations is null.
          */
-        public SortedIteratorBuilder(
+        SortedIteratorBuilder(EntryManager entryManager,
                 final LogEntry.SORTCONFIGURATIONS sortConfiguration)
                 throws IllegalArgumentException {
 
@@ -169,7 +167,7 @@ public final class EntryManager implements Iterable<LogEntry> {
                     System.out.println("This cannot happen");
             }
 
-            this.logEntryStream = entryMap
+            this.logEntryStream = entryManager.entryMap
                     .values()
                     .stream()
                     .sorted(comparator);
