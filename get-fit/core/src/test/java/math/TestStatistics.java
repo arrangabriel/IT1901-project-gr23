@@ -72,11 +72,16 @@ public class TestStatistics {
         EntryBuilder builder1 = genValidEntryBuilder(Duration.ofSeconds(hour), 5.0, LogEntry.EXERCISECATEGORY.RUNNING);
         EntryBuilder builder2 = genValidEntryBuilder(Duration.ofSeconds(2 * hour), 10.0, LogEntry.EXERCISECATEGORY.RUNNING);
         EntryBuilder builder3 = genValidEntryBuilder(Duration.ofSeconds(3 * hour), 15.0, LogEntry.EXERCISECATEGORY.STRENGTH);
+        EntryBuilder builder4 = genValidEntryBuilder(Duration.ofSeconds(3 * hour), 40.0, LogEntry.EXERCISECATEGORY.CYCLING);
         manager.addEntry(builder1.build());
         manager.addEntry(builder2.build());
         manager.addEntry(builder3.build());
+        manager.addEntry(builder4.build());
 
-        Assertions.assertEquals(12, Statistics.getAverageSpeed(manager));
+        Assertions.assertEquals(12, Statistics.getAverageSpeed(manager, LogEntry.EXERCISECATEGORY.RUNNING));
+        Assertions.assertEquals(4.5, Statistics.getAverageSpeed(manager, LogEntry.EXERCISECATEGORY.CYCLING));
+
+
     }
 
     @Test
@@ -84,7 +89,7 @@ public class TestStatistics {
         EntryManager manager = genValidEntryManager();
         EntryBuilder builder = genValidEntryBuilder(Duration.ofSeconds(hour), null, LogEntry.EXERCISECATEGORY.RUNNING);
         manager.addEntry(builder.build());
-        Assertions.assertThrows(IllegalStateException.class, () -> Statistics.getAverageSpeed(manager));
+        Assertions.assertThrows(IllegalStateException.class, () -> Statistics.getAverageSpeed(manager, LogEntry.EXERCISECATEGORY.RUNNING));
     }
 
 

@@ -16,7 +16,7 @@ public final class Statistics {
      * @param entryManager the entry manager to count over.
      * @return the count of entries.
      */
-    public static int getCount(final EntryManager entryManager){
+    public static int getCount(final EntryManager entryManager) {
         return entryManager.entryCount();
     }
 
@@ -47,22 +47,24 @@ public final class Statistics {
     }
 
     /**
-    * Returns the average speed across all LogEntries in the EntryManager that
-    * has RUNNING as exercise category.
+    * Returns the average speed across all LogEntries in the EntryManager.
     * @param entryManager the entryManager to calculate average speed from.
-    * @return the average speed of a group of entries.
+    * @param category the exercise category to sort average speed from.
+    * @return the average speed of the sessions in min/km.
     * @throws IllegalStateException if distance is not positive.
     */
-    public static double getAverageSpeed(final EntryManager entryManager)
+    public static double getAverageSpeed(
+        final EntryManager entryManager,
+        final LogEntry.EXERCISECATEGORY category)
         throws IllegalStateException {
 
-        double distance = 0;
 
-        Iterator<LogEntry> entries = new SortedIteratorBuilder(entryManager, 
+        Iterator<LogEntry> entries = new SortedIteratorBuilder(entryManager,
             LogEntry.SORTCONFIGURATIONS.DATE).filterExerciseCategory(
-                LogEntry.EXERCISECATEGORY.RUNNING).iterator(false);
+                category).iterator(false);
 
         double time = 0;
+        double distance = 0;
 
         while (entries.hasNext()) {
            LogEntry entry = entries.next();
