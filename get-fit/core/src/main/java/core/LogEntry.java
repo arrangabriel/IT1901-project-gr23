@@ -89,7 +89,7 @@ public final class LogEntry {
         STRENGTH(STRENGTHSUBCATEGORIES.values()),
         /** Represents a running exercise. */
         RUNNING(CARDIOSUBCATEGORIES.values()),
-        /** Reoresents a cyclinc exercise. */
+        /** Reoresents a cycling exercise. */
         CYCLING(CARDIOSUBCATEGORIES.values()),
         /** Represents a swimming exercise. */
         SWIMMING(CARDIOSUBCATEGORIES.values());
