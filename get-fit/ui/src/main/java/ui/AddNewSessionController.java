@@ -5,6 +5,10 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
@@ -12,6 +16,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 import localpersistence.EntrySaverJson;
 
 import java.io.IOException;
@@ -161,11 +166,11 @@ public class AddNewSessionController {
     /**
      * Adds an entry to the app EntryManager and switches the view to StartPage.
      *
-     * @param ignored an ActionEvent from the observed change.
+     * @param event an ActionEvent from the observed change.
      * @throws IOException if .FXML file could not be found.
      */
     @FXML
-    public void createSessionButtonPushed(final ActionEvent ignored)
+    public void createSessionButtonPushed(final ActionEvent event)
             throws IOException {
         // TODO - handle exception when entry could not be created
 
@@ -198,7 +203,7 @@ public class AddNewSessionController {
             try {
                 maxHeartRate = Integer.parseInt(heartRate.getText());
                 logBuilder = logBuilder.maxHeartRate(maxHeartRate);
-            } catch (NumberFormatException ignored1) {
+            } catch (NumberFormatException event1) {
             }
 
             // adds comment if value is present.
@@ -217,7 +222,7 @@ public class AddNewSessionController {
                                 subCategoryString);
                         logBuilder =
                                 logBuilder.exerciseSubcategory(subCategory);
-                    } catch (NullPointerException ignored1) {
+                    } catch (NullPointerException event1) {
                     }
                 }
                 case SWIMMING, RUNNING, CYCLING -> {
@@ -227,7 +232,7 @@ public class AddNewSessionController {
                                 Integer.parseInt(distance.getText());
                         logBuilder =
                                 logBuilder.distance((double) distanceValue);
-                    } catch (NumberFormatException ignored1) {
+                    } catch (NumberFormatException event1) {
                     }
                     // adds subcategory if value is present.
                     try {
@@ -235,7 +240,7 @@ public class AddNewSessionController {
                                 subCategoryString);
                         logBuilder =
                                 logBuilder.exerciseSubcategory(subCategory);
-                    } catch (NullPointerException ignored1) {
+                    } catch (NullPointerException event1) {
                     }
                 }
                 default -> {
@@ -246,8 +251,10 @@ public class AddNewSessionController {
 
             FXMLLoader Loader = new FXMLLoader();
             Loader.setLocation(getClass().getResource("StartPage.fxml"));
+
             Parent p = Loader.load();
             Scene  s = new Scene(p);
+
             Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
             window.setScene(s);
             window.show();
@@ -278,7 +285,7 @@ public class AddNewSessionController {
             Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
             window.setScene(s);
             window.show();
-    
+    }
 
     /**
      * Changes ui according to the selected exercise category.
