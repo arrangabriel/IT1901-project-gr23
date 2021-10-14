@@ -2,9 +2,7 @@ package localpersistence;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.nio.channels.IllegalSelectorException;
 import java.time.Duration;
 import java.time.LocalDate;
 
@@ -14,42 +12,17 @@ import org.junit.jupiter.api.BeforeEach;
 
 import core.EntryManager;
 import core.LogEntry;
-import core.LogEntry.EntryBuilder;
 
 public class TestEntrySaverJson {
 
-    static int minute = 60;
-    static int hour = minute*60;
-
     private final String saveFile = "SavedTestData.json";
-
-    private EntryBuilder genValidBuilder(String title, String comment) {
-        LocalDate date = LocalDate.now().minusDays(1);
-        Duration duration = Duration.ofSeconds(hour);
-        int feeling = 1;
-        double distance = 1;
-        Integer maxHeartRate = 80;
-
-        LogEntry.EXERCISECATEGORY exerciseCategory = LogEntry.EXERCISECATEGORY.STRENGTH;
-        LogEntry.Subcategory subcategory = LogEntry.STRENGTHSUBCATEGORIES.PULL;
-
-        EntryBuilder builder = new EntryBuilder(
-            title, date, duration, exerciseCategory, feeling)
-            .comment(comment)
-            .exerciseSubcategory(subcategory)
-            .distance(distance)
-            .maxHeartRate(maxHeartRate);
-        return builder;
-    }
- 
 
     private EntryManager genValidManager() {
         EntryManager manager = new EntryManager();
-
-        manager.addEntry("0", genValidBuilder("Test1", "comment").build());
-        manager.addEntry("1", genValidBuilder("Test2", "comment2").build());
-        manager.addEntry("2", genValidBuilder("Test3", "comment3").build());
-        manager.addEntry("3", genValidBuilder("Test4", "comment4").build());
+        manager.addEntry("0", "Test0", "comment the first", LocalDate.now().minusDays(2), Duration.ofSeconds(3600));
+        manager.addEntry("1", "Test1", "comment the second", LocalDate.now().minusDays(1), Duration.ofSeconds(3600*2));
+        manager.addEntry("2", "Test2", "comment the third", LocalDate.now().minusDays(3), Duration.ofSeconds(3600/2));
+        manager.addEntry("3", "Test3", "comment the fourth", LocalDate.now().minusDays(7), Duration.ofSeconds(3600*4));
         return manager;
     }
 
@@ -83,32 +56,5 @@ public class TestEntrySaverJson {
 
         }
     }
-
-    @Test
-    public void testBadFile() {
-        EntryManager manager = genValidManager();
-        File file = new File(saveFile);
-        try {
-            file.createNewFile();
-            FileWriter writer = new FileWriter(file);
-            writer.write("Nonsense");
-            writer.flush();
-            writer.close();
-        } catch (IOException e) {
-
-        }
-        Assertions.assertThrows(IllegalStateException.class, () -> EntrySaverJson.load(manager, saveFile));
-    }
-
-    @Test
-    public void testBadArgs() {
-        EntryManager manager = genValidManager();
-        Assertions.assertThrows(IllegalArgumentException.class, () -> EntrySaverJson.load(manager, null));
-        Assertions.assertThrows(IllegalArgumentException.class, () -> EntrySaverJson.load(null, saveFile));
-        Assertions.assertThrows(IllegalArgumentException.class, () -> EntrySaverJson.save(manager, null));
-        Assertions.assertThrows(IllegalArgumentException.class, () -> EntrySaverJson.save(null, saveFile));
-    }
-
-
 
 }
