@@ -43,9 +43,8 @@ public class AddNewSessionController {
     @FXML
     public void createSessionButtonPushed(ActionEvent event) throws IOException{
         // TODO - handle exception when entry could not be created
-        // TODO - the addEntry call needs to be updated to fit new constructor
-        //App.entryManager.addEntry(nameOfSessionField.getText(),commentField.getText(),sessionDatePicker.getValue(), Duration.ofSeconds(1));
-        //EntrySaverJson.save(App.entryManager);
+        App.entryManager.addEntry(nameOfSessionField.getText(),commentField.getText(),sessionDatePicker.getValue(), Duration.ofSeconds(1));
+        EntrySaverJson.save(App.entryManager);
         App.setRoot("StartPage");
     }
 
