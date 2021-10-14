@@ -27,30 +27,30 @@ public class TestEntryManager {
     public void testAddEntry1() {
         EntryManager manager = genValidManager();
         Assertions.assertEquals(0, manager.entryCount());
-        manager.addEntry("0", "title", "comment", LocalDate.now().minusDays(1), Duration.ofSeconds(hour), 1, null, null, LogEntry.EXERCISE_CATEGORIES.STRENGTH, LogEntry.STRENGTH_SUBCATEGORIES.PULL);
+        manager.addEntry("0", "title", "comment", LocalDate.now().minusDays(1), Duration.ofSeconds(hour), 1, null, null, LogEntry.EXERCISECATEGORY.STRENGTH, LogEntry.STRENGTHSUBCATEGORIES.PULL);
         Assertions.assertEquals(1, manager.entryCount());
-        Assertions.assertThrows(IllegalArgumentException.class, () -> manager.addEntry("0", "title", "comment", LocalDate.now().minusDays(1), Duration.ofSeconds(hour), 1, null, null, LogEntry.EXERCISE_CATEGORIES.STRENGTH, LogEntry.STRENGTH_SUBCATEGORIES.PULL));
-        Assertions.assertThrows(IllegalArgumentException.class, () -> manager.addEntry(null, "title", "comment", LocalDate.now().minusDays(1), Duration.ofSeconds(hour), 1, null, null, LogEntry.EXERCISE_CATEGORIES.STRENGTH, LogEntry.STRENGTH_SUBCATEGORIES.PULL));
-        Assertions.assertThrows(IllegalArgumentException.class, () -> manager.addEntry("0", null, "comment", LocalDate.now().minusDays(1), Duration.ofSeconds(hour), 1, null, null, LogEntry.EXERCISE_CATEGORIES.STRENGTH, LogEntry.STRENGTH_SUBCATEGORIES.PULL));
-        Assertions.assertThrows(IllegalArgumentException.class, () -> manager.addEntry("0", "title", null, LocalDate.now().minusDays(1), Duration.ofSeconds(hour), 1, null, null, LogEntry.EXERCISE_CATEGORIES.STRENGTH, LogEntry.STRENGTH_SUBCATEGORIES.PULL));
-        Assertions.assertThrows(IllegalArgumentException.class, () -> manager.addEntry("0", "title", "comment", null, Duration.ofSeconds(hour), 1, null, null, LogEntry.EXERCISE_CATEGORIES.STRENGTH, LogEntry.STRENGTH_SUBCATEGORIES.PULL));
-        Assertions.assertThrows(IllegalArgumentException.class, () -> manager.addEntry("0", "title", "comment", LocalDate.now().minusDays(1), null, 1, null, null, LogEntry.EXERCISE_CATEGORIES.STRENGTH, LogEntry.STRENGTH_SUBCATEGORIES.PULL));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> manager.addEntry("0", "title", "comment", LocalDate.now().minusDays(1), Duration.ofSeconds(hour), 1, null, null, LogEntry.EXERCISECATEGORY.STRENGTH, LogEntry.STRENGTHSUBCATEGORIES.PULL));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> manager.addEntry(null, "title", "comment", LocalDate.now().minusDays(1), Duration.ofSeconds(hour), 1, null, null, LogEntry.EXERCISECATEGORY.STRENGTH, LogEntry.STRENGTHSUBCATEGORIES.PULL));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> manager.addEntry("0", null, "comment", LocalDate.now().minusDays(1), Duration.ofSeconds(hour), 1, null, null, LogEntry.EXERCISECATEGORY.STRENGTH, LogEntry.STRENGTHSUBCATEGORIES.PULL));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> manager.addEntry("0", "title", null, LocalDate.now().minusDays(1), Duration.ofSeconds(hour), 1, null, null, LogEntry.EXERCISECATEGORY.STRENGTH, LogEntry.STRENGTHSUBCATEGORIES.PULL));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> manager.addEntry("0", "title", "comment", null, Duration.ofSeconds(hour), 1, null, null, LogEntry.EXERCISECATEGORY.STRENGTH, LogEntry.STRENGTHSUBCATEGORIES.PULL));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> manager.addEntry("0", "title", "comment", LocalDate.now().minusDays(1), null, 1, null, null, LogEntry.EXERCISECATEGORY.STRENGTH, LogEntry.STRENGTHSUBCATEGORIES.PULL));
     }
 
     @Test
     public void testAddEntry2() {
         EntryManager manager = genValidManager();
-        Assertions.assertThrows(IllegalArgumentException.class, () -> manager.addEntry(null, "comment", LocalDate.now().minusDays(1), Duration.ofSeconds(hour), 1, null, null, LogEntry.EXERCISE_CATEGORIES.STRENGTH, LogEntry.STRENGTH_SUBCATEGORIES.PULL));
-        Assertions.assertThrows(IllegalArgumentException.class, () -> manager.addEntry("title", null, LocalDate.now().minusDays(1), Duration.ofSeconds(hour), 1, null, null, LogEntry.EXERCISE_CATEGORIES.STRENGTH, LogEntry.STRENGTH_SUBCATEGORIES.PULL));
-        Assertions.assertThrows(IllegalArgumentException.class, () -> manager.addEntry("title", "comment", null, Duration.ofSeconds(hour), 1, null, null, LogEntry.EXERCISE_CATEGORIES.STRENGTH, LogEntry.STRENGTH_SUBCATEGORIES.PULL));
-        Assertions.assertThrows(IllegalArgumentException.class, () -> manager.addEntry("title", "comment", LocalDate.now().minusDays(1), null, 1, null, null, LogEntry.EXERCISE_CATEGORIES.STRENGTH, LogEntry.STRENGTH_SUBCATEGORIES.PULL));
-        Assertions.assertEquals("0", manager.addEntry( "title", "comment", LocalDate.now().minusDays(1), Duration.ofSeconds(hour), 1, null, null, LogEntry.EXERCISE_CATEGORIES.STRENGTH, LogEntry.STRENGTH_SUBCATEGORIES.PULL));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> manager.addEntry(null, "comment", LocalDate.now().minusDays(1), Duration.ofSeconds(hour), 1, null, null, LogEntry.EXERCISECATEGORY.STRENGTH, LogEntry.STRENGTHSUBCATEGORIES.PULL));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> manager.addEntry("title", null, LocalDate.now().minusDays(1), Duration.ofSeconds(hour), 1, null, null, LogEntry.EXERCISECATEGORY.STRENGTH, LogEntry.STRENGTHSUBCATEGORIES.PULL));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> manager.addEntry("title", "comment", null, Duration.ofSeconds(hour), 1, null, null, LogEntry.EXERCISECATEGORY.STRENGTH, LogEntry.STRENGTHSUBCATEGORIES.PULL));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> manager.addEntry("title", "comment", LocalDate.now().minusDays(1), null, 1, null, null, LogEntry.EXERCISECATEGORY.STRENGTH, LogEntry.STRENGTHSUBCATEGORIES.PULL));
+        Assertions.assertEquals("0", manager.addEntry( "title", "comment", LocalDate.now().minusDays(1), Duration.ofSeconds(hour), 1, null, null, LogEntry.EXERCISECATEGORY.STRENGTH, LogEntry.STRENGTHSUBCATEGORIES.PULL));
     }
 
     @Test
     public void testRemoveEntry() {
         EntryManager manager = genValidManager();
-        manager.addEntry("0", "title", "comment", LocalDate.now().minusDays(1), Duration.ofSeconds(hour), 1, null, null, LogEntry.EXERCISE_CATEGORIES.STRENGTH, LogEntry.STRENGTH_SUBCATEGORIES.PULL);
+        manager.addEntry("0", "title", "comment", LocalDate.now().minusDays(1), Duration.ofSeconds(hour), 1, null, null, LogEntry.EXERCISECATEGORY.STRENGTH, LogEntry.STRENGTHSUBCATEGORIES.PULL);
         Assertions.assertEquals(1, manager.entryCount());
         boolean result1 = manager.removeEntry("0");
         Assertions.assertEquals(0, manager.entryCount());
@@ -63,7 +63,7 @@ public class TestEntryManager {
     @Test
     public void testGetEntry() {
         EntryManager manager = genValidManager();
-        manager.addEntry("0", "title", "comment", LocalDate.now().minusDays(1), Duration.ofSeconds(hour), 1, null, null, LogEntry.EXERCISE_CATEGORIES.STRENGTH, LogEntry.STRENGTH_SUBCATEGORIES.PULL);
+        manager.addEntry("0", "title", "comment", LocalDate.now().minusDays(1), Duration.ofSeconds(hour), 1, null, null, LogEntry.EXERCISECATEGORY.STRENGTH, LogEntry.STRENGTHSUBCATEGORIES.PULL);
         Assertions.assertEquals("0", manager.getEntry("0").getId());
         Assertions.assertThrows(IllegalArgumentException.class, () -> manager.getEntry("1"));
         Assertions.assertThrows(IllegalArgumentException.class, () -> manager.getEntry(null));
@@ -73,7 +73,7 @@ public class TestEntryManager {
     public void testEntryCount(){
         EntryManager manager = genValidManager();
         Assertions.assertEquals(0, manager.entryCount());
-        manager.addEntry("0", "title", "comment", LocalDate.now().minusDays(1), Duration.ofSeconds(hour), 1, null, null, LogEntry.EXERCISE_CATEGORIES.STRENGTH, LogEntry.STRENGTH_SUBCATEGORIES.PULL);
+        manager.addEntry("0", "title", "comment", LocalDate.now().minusDays(1), Duration.ofSeconds(hour), 1, null, null, LogEntry.EXERCISECATEGORY.STRENGTH, LogEntry.STRENGTHSUBCATEGORIES.PULL);
         Assertions.assertEquals(1, manager.entryCount());
     }
 

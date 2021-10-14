@@ -2,10 +2,21 @@ package math;
 
 import core.EntryManager;
 import core.LogEntry;
+import java.util.Iterator;
+import core.EntryManager.SortedIteratorBuilder;
 
-public class Statistics {
-    
-    public static int getCount(EntryManager entryManager){
+/** Statistics class. */
+public final class Statistics {
+
+    /** Hidden constructor. */
+    private Statistics() { }
+
+    /**
+     * Returns the count of entries in the entryManager.
+     * @param entryManager the entry manager to count over.
+     * @return the count of entries.
+     */
+    public static int getCount(final EntryManager entryManager){
         return entryManager.entryCount();
     }
 
@@ -14,7 +25,7 @@ public class Statistics {
      * @param entryManager the entryManager to total.
      * @return the total duration.
      */
-    public static double getTotalDuration(EntryManager entryManager) {
+    public static double getTotalDuration(final EntryManager entryManager) {
         double sum = 0;
         for (LogEntry logEntry : entryManager) {
             sum += logEntry.getDuration().toSeconds();
@@ -28,26 +39,43 @@ public class Statistics {
      * @param entryManager the entryManager to average.
      * @return the average duration.
      */
-    public static double getAverageDuration(EntryManager entryManager) {
+    public static double getAverageDuration(final EntryManager entryManager) {
         double sum = getTotalDuration(entryManager);
-        double average = sum/entryManager.entryCount();
+        double average = sum / entryManager.entryCount();
 
         return average;
     }
 
     /**
-     * Returns the average feeling across all LogEntries in the EntryManager.
-     * @param entryManager the entryManager across which to average feelings.
-     * @return the average feeling.
-     */
-    public static double getAverageFeeling(EntryManager entryManager) {
-        double sum = 0;
+    * Returns the average speed across all LogEntries in the EntryManager that
+    * has RUNNING as exercise category.
+    * @param entryManager the entryManager to calculate average speed from.
+    * @return the average speed of a group of entries.
+    * @throws IllegalStateException if distance is not positive.
+    */
+    public static double getAverageSpeed(final EntryManager entryManager)
+        throws IllegalStateException {
 
-        for (LogEntry logEntry : entryManager) {
-            sum += logEntry.getFeeling();
+        double distance = 0;
+
+        Iterator<LogEntry> entries = new SortedIteratorBuilder(
+            LogEntry.SORTCONFIGURATIONS.DATE).filterExerciseCategory(
+                LogEntry.EXERCISECATEGORY.RUNNING).iterator(false);
+
+        double time = 0;
+
+        while (entries.hasNext()) {
+           LogEntry entry = entries.next();
+
+           if (entry.getDistance().equals(null)) {
+            distance += entry.getDistance();
+           }
+           time += entry.getDuration().toMinutes();
         }
 
-        double average = sum/getCount(entryManager);
-        return average;
+        if (distance == 0) {
+            throw new IllegalStateException("The distance must be over 0");
+        }
+        return time / distance;
     }
 }

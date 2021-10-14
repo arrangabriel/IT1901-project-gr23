@@ -1,67 +1,108 @@
 package core;
 
-import java.time.Duration;
+
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Iterator;
+import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import core.LogEntry.EntryBuilder;
+import core.LogEntry.Validity;
+
+/**
+ * Provides management for EntryLogs.
+ */
 public class EntryManager implements Iterable<LogEntry> {
 
-    private final HashMap<String, LogEntry> entryMap = new HashMap<>();
+    /**
+     * Hashmap of LogEntries.
+     */
+    private final static HashMap<String, LogEntry> entryMap = new HashMap<>();
 
     /**
      * An entry manager instance is a wrapper for a list of logEntries.
      * Functions as the API interface for the core-module.
      */
-    public EntryManager() {}
+    public EntryManager() {
+    }
 
     /**
      * Adds a fresh entry to this EntryManager. Generates an id internally.
-     * @param title the title field for the new LogEntry as a string.
-     * @param comment the comment field for the new LogEntry as a string.
-     * @param date the date field for the new LogEntry as a time.LocalDate instance.
-     * @param duration the duration field for the new LogEntry as a time.Duration instance.
-     * @throws IllegalArgumentException if any of the arguments are null.
+     *
+     * @param title               the title field for the new LogEntry as a string.
+     * @param comment             the comment field for the new LogEntry as a string.
+     * @param date                the date field for the new LogEntry
+     *                            as a time.LocalDate instance.
+     * @param duration            the duration field for the new LogEntry
+     *                            as a time.Duration instance.
+     * @param feeling             how the exercise felt on a scale from 1 to 10.
+     * @param distance            how much distance was covered during the exercise.
+     * @param maxHeartRate        the max recorded hear rate during the exercise.
+     * @param exerciseCategory    the category of the exercise.
+     * @param exerciseSubCategory the subcategory of the exercise.
      * @return the generated id for the new LogEntry as a string.
+     * @throws IllegalArgumentException if any of the input is invalid.
+     * @see #validate
      */
-    public String addEntry(String title, String comment, LocalDate date, Duration duration, int feeling, Double distance, Integer maxHeartRate, LogEntry.EXERCISE_CATEGORIES exerciseCategory, LogEntry.Subcategory exerciseSubCategory) throws IllegalArgumentException {
+    public String addEntry(final EntryBuilder builder)
+            throws IllegalArgumentException {
+
         String id = String.valueOf(entryMap.size());
-        addEntry(id, title, comment, date, duration, feeling, distance, maxHeartRate, exerciseCategory, exerciseSubCategory);
+
+        addEntry(id, builder);
+
         return id;
     }
 
     /**
-     * Adds an already existing LogEntry (i.e. one that has an id) to this EntryManager
-     * @param id the id for the new LogEntry
-     * @param title the title field for the new LogEntry as a string.
-     * @param comment the comment field for the new LogEntry as a string.
-     * @param date the date field for the new LogEntry as a time.LocalDate instance.
-     * @param duration the duration field for the new LogEntry as a time.Duration instance.
-     * @throws IllegalArgumentException if any of the arguments are null or the entry already exists.
+     * Adds an already existing LogEntry (i.e. one that has an id) to this
+     * EntryManager
+     *
+     * @param id                  the id for the new LogEntry
+     * @param title               the title field for the new LogEntry as a string.
+     * @param comment             the comment field for the new LogEntry as a string.
+     * @param date                the date field for the new LogEntry
+     *                            as a time.LocalDate instance.
+     * @param duration            the duration field for the new LogEntry
+     *                            as a time.Duration instance.
+     * @param feeling             how the exercise felt on a scale from 1 to 10.
+     * @param distance            how much distance was covered during the exercise.
+     * @param maxHeartRate        the max recorded hear rate during the exercise.
+     * @param exerciseCategory    the category of the exercise.
+     * @param exerciseSubCategory the subcategory of the exercise.
+     * @throws IllegalArgumentException if any of the input is invalid or the id is allready in use.
+     * @see #validate
      */
-    public void addEntry(String id, String title, String comment, LocalDate date, Duration duration, int feeling, Double distance, Integer maxHeartRate, LogEntry.EXERCISE_CATEGORIES exerciseCategory, LogEntry.Subcategory exerciseSubCategory) throws IllegalArgumentException {
-        if (id == null || title == null || comment == null || date == null || duration == null) {
-            throw new IllegalArgumentException("Arguments cannot be null");
-        }
+    public void addEntry(
+        final String id,
+        final EntryBuilder builder)
+            throws IllegalArgumentException {
+        
 
         if (entryMap.containsKey(id)) {
             throw new IllegalArgumentException("Entry already exists");
         }
-        entryMap.put(id, new LogEntry(id, title, comment, date, duration, feeling, distance, maxHeartRate, exerciseCategory, exerciseSubCategory));
+
+        Validity validity = LogEntry.validate(builder);
+        if (!validity.valid()) {
+            throw new IllegalArgumentException(validity.reason());
+        }
+
+        entryMap.put(id, new LogEntry(builder));
     }
 
     /**
      * Gets a LogEntry instance by its id, if such a LogEntry exists.
+     *
      * @param id the id to be searched for.
-     * @throws IllegalArgumentException if id is null or the entry doesn't exist
      * @return the LogEntry instance with the associated id.
+     * @throws IllegalArgumentException if id is null or the entry doesn't exist
      */
-    public LogEntry getEntry(String id) throws IllegalArgumentException {
+    public LogEntry getEntry(final String id) throws IllegalArgumentException {
         if (id == null) {
             throw new IllegalArgumentException("Arguments cannot be null");
         }
@@ -75,123 +116,161 @@ public class EntryManager implements Iterable<LogEntry> {
 
     /**
      * Removes a LogEntry by its id, if such a LogEntry exists.
+     *
      * @param id the id to be removed.
-     * @throws IllegalArgumentException if id is null or the entry doesn't exist
+     * @return wether an entry was actually removed
+     * @throws IllegalArgumentException if id is null
      */
-    public boolean removeEntry(String id) throws IllegalArgumentException {
+    public boolean removeEntry(final String id)
+            throws IllegalArgumentException {
         if (id == null) {
             throw new IllegalArgumentException("Arguments cannot be null");
         }
 
-       return entryMap.remove(id) != null;
+        return entryMap.remove(id) != null;
     }
 
     /**
      * @return the number of LogEntries in this EntryManager
      */
     public int entryCount() {
-        return this.entryMap.size();
+        return EntryManager.entryMap.size();
     }
 
     /**
-     * Gives an iterator for the LogEntries in this EntryManager in an arbitrary order.
+     * Gives an iterator for the LogEntries in this EntryManager in an arbitrary
+     * order.
+     *
      * @return an iterator of LogEntry instances.
      */
     @Override
     public Iterator<LogEntry> iterator() {
-        return this.entryMap.values().iterator();
+        return EntryManager.entryMap.values().iterator();
     }
 
-    /**
-     * Returns an iterator sorted by parameters.
-     * @param sortConfig one of the supported sorting configurations.
-     * @param reverse reverses output if set to true.
-     * @param exerciseCategory the main excercise category to sort by.
-     * @param exerciseSubCategory the exercise sub-category to sort by.
-     * @return an iterator of LogEntry instances, sorted by the parameter criteria.
-     * @throws IllegalArgumentException if any arguments are null.
-     */
-    public Iterator<LogEntry> sortedIterator(LogEntry.SORT_CONFIGURATIONS sortConfig, boolean reverse, LogEntry.EXERCISE_CATEGORIES exerciseCategory,
-                                             LogEntry.Subcategory exerciseSubCategory) throws IllegalArgumentException{
-        if (sortConfig == null || exerciseCategory == null){
-            throw new IllegalArgumentException("Arguments cannot be null.");
-        }
+    public  static class SortedIteratorBuilder {
 
-        Stream<LogEntry> entryStream = entryMap.values().stream();
+        /**
+         * Internally modifiable stream of LogEntries.
+         */
+        private Stream<LogEntry> logEntryStream;
 
-        if(!exerciseCategory.equals(LogEntry.EXERCISE_CATEGORIES.ANY)) {
-            entryStream = entryStream.filter((entry) -> entry.getExerciseCategory().equals(exerciseCategory));
-            // If null, don't perform subcategory filtering.
-            // This being a general ANY enum would be nice, but can't be done with current structure.
-            if(exerciseSubCategory != null) {
-                entryStream = entryStream.filter((entry) -> entry.getExerciseSubCategory().equals(exerciseSubCategory));
+        /**
+         * Builder for a sorted iterator of this EntryManager's LogEntries.
+         *
+         * @param sortConfiguration a LogEntry.SORTCONFIGURATIONS to sort by.
+         * @throws IllegalArgumentException if sortConfigurations is null.
+         */
+        public SortedIteratorBuilder(
+                final LogEntry.SORTCONFIGURATIONS sortConfiguration)
+                throws IllegalArgumentException {
+
+            if (sortConfiguration == null) {
+                throw new IllegalArgumentException(
+                        "Sort configuration cannot be null.");
             }
+
+            Comparator<LogEntry> comparator = switch (sortConfiguration) {
+                case DATE -> Comparator.comparing(LogEntry::getDate);
+                case DURATION -> Comparator.comparing(LogEntry::getDuration);
+                case TITLE -> Comparator.comparing(LogEntry::getTitle);
+            };
+
+            this.logEntryStream = entryMap
+                    .values()
+                    .stream()
+                    .sorted(comparator);
         }
 
-        switch (sortConfig){
-            case DATE -> entryStream = entryStream.sorted(Comparator.comparing(LogEntry::getDate));
-            case DURATION -> entryStream = entryStream.sorted(Comparator.comparing(LogEntry::getDuration));
-            case TITLE -> entryStream = entryStream.sorted(Comparator.comparing(LogEntry::getTitle));
+        /**
+         * Filters the entries to a single exercise category.
+         *
+         * @param category LogEntry.EXERCISECATEGORY to be filtered by.
+         * @return the modified SortedIteratorBuilder.
+         * @throws IllegalArgumentException if category is null.
+         */
+        public SortedIteratorBuilder filterExerciseCategory(
+                final LogEntry.EXERCISECATEGORY category)
+                throws IllegalArgumentException {
+
+            if (category == null) {
+                throw new IllegalArgumentException("Category cannot be null.");
+            }
+
+            this.logEntryStream = this.logEntryStream
+                    .filter((entry) -> entry
+                            .getExerciseCategory()
+                            .equals(category));
+            return this;
         }
 
-        List<LogEntry> entryList = entryStream.collect(Collectors.toList());
-        if (reverse){ Collections.reverse(entryList); }
+        /**
+         * Filters the entries to a single exercise category.
+         *
+         * @param subcategory LogEntry.Subcategory to be filtered by.
+         * @return the modified SortedIteratorBuilder.
+         * @throws IllegalArgumentException if Subcategory is null.
+         */
+        public SortedIteratorBuilder filterSubCategory(
+                final LogEntry.Subcategory subcategory)
+                throws IllegalArgumentException {
 
-        return entryList.iterator();
-    }
+            if (subcategory == null) {
+                throw new IllegalArgumentException(
+                        "Subcategory cannot be null.");
+            }
 
-    /**
-     * Returns an iterator sorted by parameters.
-     * @param sortConfig one of the supported sorting configurations.
-     * @return an iterator of LogEntry instances, sorted by the parameter criteria.
-     */
-    public Iterator<LogEntry> sortedIterator(LogEntry.SORT_CONFIGURATIONS sortConfig) throws IllegalArgumentException{
-        return sortedIterator(sortConfig, false, LogEntry.EXERCISE_CATEGORIES.ANY, null);
-    }
+            this.logEntryStream = this.logEntryStream
+                    .filter((entry) -> entry
+                            .getExerciseSubCategory()
+                            .equals(subcategory));
+            return this;
+        }
 
-    /**
-     * Returns an iterator sorted by parameters.
-     * @param sortConfig one of the supported sorting configurations.
-     * @param reverse reverses output if set to true.
-     * @return an iterator of LogEntry instances, sorted by the parameter criteria.
-     */
-    public Iterator<LogEntry> sortedIterator(LogEntry.SORT_CONFIGURATIONS sortConfig, boolean reverse) throws IllegalArgumentException{
-        return sortedIterator(sortConfig, reverse, LogEntry.EXERCISE_CATEGORIES.ANY, null);
-    }
+        /**
+         * Filters the entries to a time interval.
+         *
+         * @param firstDate the beginning date (inclusive) of the interval.
+         * @param lastDate  the ending date (inclusive) of the interval.
+         * @return the modified SortedIteratorBuilder.
+         * @throws IllegalArgumentException if any of the dates are null.
+         */
+        public SortedIteratorBuilder filterTimeInterval(
+                final LocalDate firstDate, final LocalDate lastDate)
+                throws IllegalArgumentException {
 
-    /**
-     * Returns an iterator sorted by parameters.
-     * @param sortConfig one of the supported sorting configurations.
-     * @param exerciseCategory one of the supported exercise categories.
-     * @return an iterator of LogEntry instances, sorted by the parameter criteria.
-     */
-    public Iterator<LogEntry> sortedIterator(LogEntry.SORT_CONFIGURATIONS sortConfig,
-                                             LogEntry.EXERCISE_CATEGORIES exerciseCategory) throws IllegalArgumentException{
-        return sortedIterator(sortConfig, false, exerciseCategory, null);
-    }
+            if (firstDate == null || lastDate == null) {
+                throw new IllegalArgumentException("Dates cannot be null.");
+            }
 
-    /**
-     * Returns an iterator sorted by parameters.
-     * @param sortConfig one of the supported sorting configurations.
-     * @param reverse reverses output if set to true.
-     * @param exerciseCategory one of the supported exercise categories.
-     * @return an iterator of LogEntry instances, sorted by the parameter criteria.
-     */
-    public Iterator<LogEntry> sortedIterator(LogEntry.SORT_CONFIGURATIONS sortConfig, boolean reverse,
-                                             LogEntry.EXERCISE_CATEGORIES exerciseCategory) throws IllegalArgumentException{
-        return sortedIterator(sortConfig, reverse, exerciseCategory, null);
-    }
+            this.logEntryStream = this.logEntryStream
+                    .filter((entry) -> {
+                        LocalDate entryDate = entry.getDate();
+                        // Check that date is in the interval (inclusive)
+                        return (entryDate.isAfter(firstDate)
+                                || entryDate.isEqual(firstDate))
+                                && (entryDate.isBefore(lastDate)
+                                || entryDate.isEqual(lastDate));
+                    });
 
-    /**
-     * Returns an iterator sorted by parameters.
-     * @param sortConfig one of the supported sorting configurations.
-     * @param exerciseCategory one of the supported exercise categories.
-     * @param exerciseSubCategory one of the supported exercise subCategories.
-     * @return an iterator of LogEntry instances, sorted by the parameter criteria.
-     */
-    public Iterator<LogEntry> sortedIterator(LogEntry.SORT_CONFIGURATIONS sortConfig,
-                                             LogEntry.EXERCISE_CATEGORIES exerciseCategory,
-                                             LogEntry.Subcategory exerciseSubCategory) throws IllegalArgumentException{
-        return sortedIterator(sortConfig, false, exerciseCategory, exerciseSubCategory);
+            return this;
+        }
+
+        /**
+         * Builds the sorted iterator.
+         *
+         * @param reverse reverses order if set to true.
+         * @return an iterator of LogEntries.
+         */
+        public Iterator<LogEntry> iterator(final boolean reverse) {
+
+            List<LogEntry> entryList = this.logEntryStream
+                    .collect(Collectors.toList());
+            if (reverse) {
+                Collections.reverse(entryList);
+            }
+
+            return entryList.iterator();
+        }
     }
 }
