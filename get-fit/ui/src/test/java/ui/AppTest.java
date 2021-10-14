@@ -5,13 +5,24 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import localpersistence.EntrySaverJson;
+
 import org.junit.jupiter.api.Test;
 import org.testfx.framework.junit5.ApplicationTest;
 import java.io.IOException;
+import java.time.Duration;
+import java.time.LocalDate;
+
 import org.testfx.matcher.control.LabeledMatchers;
+
+import core.LogEntry;
+import core.EntryManager;
+import core.LogEntry.EntryBuilder;
+
 import java.util.List;
 import javafx.scene.control.ListView;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 
 
 public class AppTest extends ApplicationTest {
@@ -44,8 +55,40 @@ public class AppTest extends ApplicationTest {
         this.root = Loader.load();
     }
 
+    private void saveEntryManager() {
+        try {
+            EntrySaverJson.save(App.entryManager);
+        } catch (IOException e) {
+            Assertions.fail();
+        }
+    }
+
+    private void clearEntryManager() {
+        for (String id : App.entryManager.entryIds()) {
+            App.entryManager.removeEntry(id);
+        }
+        saveEntryManager();
+    }
+
+    @BeforeEach
+    private void setUp() {
+        clearEntryManager();
+        LogEntry entry = new EntryBuilder("Test", LocalDate.now().minusDays(1), Duration.ofSeconds(3600), LogEntry.EXERCISECATEGORY.STRENGTH, 5)
+            .comment("Generated test")
+            .build();
+
+        LogEntry entry2 = new EntryBuilder("Second Test", LocalDate.now().minusDays(1), Duration.ofSeconds(3600), LogEntry.EXERCISECATEGORY.STRENGTH, 5)
+            .comment("Another generated test")
+            .build();
+
+        App.entryManager.addEntry(entry);
+        App.entryManager.addEntry(entry2);
+        saveEntryManager();
+    }
+
     @Test
     public void testCreateButton(){
+        int oldCount = App.entryManager.entryCount();
 
         click("Add session");
 
@@ -65,7 +108,9 @@ public class AppTest extends ApplicationTest {
 
 
         click("Create session");
-        sleep(2000);
+
+        Assertions.assertEquals(oldCount+1, App.entryManager.entryCount());
+
     }
 
 
