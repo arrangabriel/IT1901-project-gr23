@@ -43,9 +43,10 @@ public class AppTest extends ApplicationTest {
         }
     }
 
+    /*
     public Parent getRootNode() {
         return root;
-    }
+    }*/
 
 
 
