@@ -133,7 +133,7 @@ public final class EntryManager implements Iterable<LogEntry> {
     /**
      * Builder for LogEntry iterator.
      */
-    static class SortedIteratorBuilder {
+    public static class SortedIteratorBuilder {
 
         /**
          * Internally modifiable stream of LogEntries.
@@ -143,10 +143,11 @@ public final class EntryManager implements Iterable<LogEntry> {
         /**
          * Builder for a sorted iterator of this EntryManager's LogEntries.
          *
+         * @param entryManager the entry manager to get entries from.
          * @param sortConfiguration a LogEntry.SORTCONFIGURATIONS to sort by.
          * @throws IllegalArgumentException if sortConfigurations is null.
          */
-        SortedIteratorBuilder(EntryManager entryManager,
+        public SortedIteratorBuilder(final EntryManager entryManager,
                 final LogEntry.SORTCONFIGURATIONS sortConfiguration)
                 throws IllegalArgumentException {
 
