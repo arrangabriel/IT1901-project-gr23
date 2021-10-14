@@ -19,6 +19,7 @@ import core.LogEntry;
 import core.EntryManager;
 import core.LogEntry.EntryBuilder;
 
+import java.util.Iterator;
 import java.util.List;
 import javafx.scene.control.ListView;
 import org.junit.jupiter.api.Assertions;
@@ -64,8 +65,8 @@ public class AppTest extends ApplicationTest {
     }
 
     private void clearEntryManager() {
-        for (String id : App.entryManager.entryIds()) {
-            App.entryManager.removeEntry(id);
+        for (Iterator<LogEntry> iterator = App.entryManager.iterator(); iterator.hasNext();) {
+            iterator.remove();
         }
         saveEntryManager();
     }
