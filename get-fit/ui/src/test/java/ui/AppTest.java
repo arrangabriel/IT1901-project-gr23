@@ -43,6 +43,12 @@ public class AppTest extends ApplicationTest {
         }
     }
 
+    private void updateRoot() {
+        FXMLLoader Loader = new FXMLLoader();
+        Loader.setLocation(getClass().getResource("StartPage.fxml"));
+        Parent root = Loader.load();
+    }
+
     /*
     public Parent getRootNode() {
         return root;
@@ -82,7 +88,7 @@ public class AppTest extends ApplicationTest {
 
     @Test
     public void checkView(){
-
+        updateRoot();
         List<String> viewEntries = getEntriesView().getItems();
         for(int i = 0; i < viewEntries.size(); i++){
             Assertions.assertEquals(App.entryManager.getEntry(String.valueOf(i)).getTitle(), viewEntries.get(i));
