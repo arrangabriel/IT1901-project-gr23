@@ -20,7 +20,6 @@ import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.stream.Collectors;
 
-
 public class AddNewSessionController {
 
     /**
@@ -31,26 +30,31 @@ public class AddNewSessionController {
      * Maximum minute limit.
      */
     private final int maxMinutes = 59;
+    /**Maximum heart rate limit.*/
+    private final int maxHeartRateLimit = 230;
     /**
      * All possible exercise category values.
      */
     private final ObservableList<LogEntry.EXERCISECATEGORY> exerciseCategories =
             FXCollections.observableArrayList(
                     LogEntry.EXERCISECATEGORY.values());
+    /**Label for exercise type selector.*/
+    @FXML
+    private Label exerciseTypeLabel;
     /**
      * Back-button.
      */
     @FXML
-    private Button Return;
+    private Button back;
     /***/
     @FXML
-    private Label header11;
-    /***/
+    private Label feelingLabel;
+    /**Label for heart rate input.*/
     @FXML
-    private Label header1;
-    /***/
+    private Label maxHeartRateLabel;
+    /**Heart rate input field.*/
     @FXML
-    private TextField hour1;
+    private TextField heartRate;
     /**
      * Main header.
      */
@@ -172,7 +176,7 @@ public class AddNewSessionController {
      * @throws IOException if StartPage could not be found.
      */
     @FXML
-    public void returnButtonPushed(final ActionEvent ignored)
+    public void backButtonPushed(final ActionEvent ignored)
             throws IOException {
         App.setRoot("StartPage");
     }
@@ -253,8 +257,9 @@ public class AddNewSessionController {
         setCardio(true);
 
         // validation of fields when they are changed
-        validateDuration(hour, maxHours);
-        validateDuration(min, maxMinutes);
+        validateIntegerInput(hour, maxHours);
+        validateIntegerInput(min, maxMinutes);
+        validateIntegerInput(heartRate, maxHeartRateLimit);
         // set current date on startup
         sessionDatePicker.setValue(LocalDate.now());
     }
@@ -262,26 +267,26 @@ public class AddNewSessionController {
     /**
      * Adds a max (and lower 0) int validation listener to the textField.
      *
-     * @param time    the field to be validated.
-     * @param maxTime maximum int to validate against.
+     * @param field    the field to be validated.
+     * @param maxValue maximum int to validate against.
      */
-    private void validateDuration(final TextField time, final int maxTime) {
-        time.textProperty().addListener((obs, oldValue, newValue) -> {
+    private void validateIntegerInput(final TextField field, final int maxValue) {
+        field.textProperty().addListener((obs, oldValue, newValue) -> {
             if (!newValue.isEmpty()) {
                 try {
                     // throws exception if newvalue is not numeric
                     int value = Integer.parseInt(newValue);
-                    if (value < 0 || value > maxTime) {
+                    if (value < 0 || value > maxValue) {
                         throw new NumberFormatException(
                                 "Input out of allowed range.");
                     }
                     // check if input is multiple zeroes
                     if (value == 0) {
-                        time.setText("0");
+                        field.setText("0");
                     }
                 } catch (NumberFormatException e) {
                     // reset to previous value
-                    time.setText(oldValue);
+                    field.setText(oldValue);
                 }
             }
         });
