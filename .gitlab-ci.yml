@@ -3,6 +3,7 @@ default:
 
 stages:
   - test
+  - build
   - minimum-coverage
   - extended-coverage
   - code-quality
@@ -16,6 +17,25 @@ test:
   except:
     variables:
       - $CI_MERGE_REQUEST_TARGET_BRANCH_NAME != "master" && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME != "dev"
+
+compile:
+  stage: build
+  script: cd get-fit && mvn compile
+  only:
+    - merge_requests
+  except:
+    variables:
+      - $CI_MERGE_REQUEST_TARGET_BRANCH_NAME != "master" && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME != "dev"
+
+install:
+  stage: build
+  script: cd get-fit && mvn install
+  only:
+    - merge_requests
+  except:
+    variables:
+      - $CI_MERGE_REQUEST_TARGET_BRANCH_NAME != "master" && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME != "dev"
+
 
 
 test-coverage-minimum:
@@ -50,7 +70,7 @@ checkstyle:
 
 spotbugs:
   stage: bugs
-  script: cd get-fit && mvn spotbugs:check
+  script: cd get-fit && mvn install && mvn spotbugs:check
   allow_failure: true
   only:
     - merge_requests
