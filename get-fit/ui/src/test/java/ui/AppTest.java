@@ -52,21 +52,13 @@ public class AppTest extends ApplicationTest {
         this.root = Loader.load();
     }
 
-    /*
-    public Parent getRootNode() {
-        return root;
-    }*/
-
-
-
-
     @Test
     public void testCreateButton(){
 
         click("Add session");
 
         clickOn("#nameOfSessionField");
-        write("New Session");
+        write("New new Session");
         clickOn("#sessionDatePicker");
         clickOn("#hour");
         write("1");
