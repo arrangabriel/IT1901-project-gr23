@@ -54,15 +54,37 @@ public final class EntrySaverJson {
         final LogEntry entry) {
 
         map.put("title", entry.getTitle());
-        map.put("comment", entry.getComment());
+
+        if (entry.getComment() != null) {
+            map.put("comment", entry.getComment());
+        } else {
+            map.put("comment", "null");
+        }
+
         map.put("date", entry.getDate().toString());
         map.put("feeling", Integer.toString(entry.getFeeling()));
         map.put("duration", Long.toString(entry.getDuration().toSeconds()));
-        map.put("distance", Double.toString(entry.getDistance()));
-        map.put("maxHeartRate", Integer.toString(entry.getMaxHeartRate()));
+
+        if (entry.getDistance() != null) {
+            map.put("distance", Double.toString(entry.getDistance()));
+        } else {
+            map.put("distance", "null");
+        }
+
+        if (entry.getMaxHeartRate() != null) {
+            map.put("maxHeartRate", Integer.toString(entry.getMaxHeartRate()));
+        } else {
+            map.put("maxHeartRate", "null");
+        }
+
         map.put("exerciseCategory", entry.getExerciseCategory().toString());
-        map.put("exerciseSubCategory", entry.getExerciseSubCategory()
-        .toString());
+
+        if (entry.getExerciseSubCategories() != null) {
+            map.put("exerciseSubCategory", entry.getExerciseSubCategory()
+            .toString());
+        } else {
+            map.put("exerciseSubCategory", "null");
+        }
     }
 
     /**
