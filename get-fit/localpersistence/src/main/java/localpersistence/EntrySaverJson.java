@@ -181,12 +181,12 @@ public final class EntrySaverJson {
         try {
             JSONObject jsonObject = (JSONObject) jsonParser.parse(dataString);
 
-            for (Object key : jsonObject.keySet()) {
+            for (Object mapObject : jsonObject.entrySet()) {
 
                 //Suppressed unchecked warning. Any better solution Stefan?:
                 @SuppressWarnings("unchecked")
                 HashMap<String, String> innerMap =
-                            (HashMap<String, String>) jsonObject.get(key);
+                           (HashMap<String, String>) mapObject;
 
                 String title = innerMap.get("title");
                 LocalDate date = LocalDate.parse(innerMap.get("date"));
