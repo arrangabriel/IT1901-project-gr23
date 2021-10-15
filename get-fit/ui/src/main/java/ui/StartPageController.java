@@ -138,10 +138,10 @@ public class StartPageController {
 
         // this is a placeholder.
         Button open = new Button();
-        open.setText("show");
+        open.setText("Show");
 
         Button delete = new Button();
-        delete.setText("delete");
+        delete.setText("Delete");
 
         GridPane.setHalignment(title, HPos.LEFT);
         GridPane.setHalignment(date, HPos.LEFT);
