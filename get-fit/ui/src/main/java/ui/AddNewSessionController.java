@@ -284,7 +284,7 @@ public class AddNewSessionController {
             Parent p = Loader.load();
             Scene  s = new Scene(p);
             Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
-            window.setTitle("Add new session");
+            window.setTitle("Get fit");
             window.setScene(s);
             window.show();
     }
