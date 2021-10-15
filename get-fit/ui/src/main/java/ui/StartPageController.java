@@ -6,6 +6,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.HPos;
 import javafx.scene.control.Button;
@@ -140,8 +141,25 @@ public class StartPageController {
         Button open = new Button();
         open.setText("Show");
 
+        open.setOnAction(new EventHandler<ActionEvent>() {
+            @Override public void handle(ActionEvent e) {
+                //Do stuff
+            }
+        });
+
         Button delete = new Button();
         delete.setText("Delete");
+
+        delete.setOnAction(new EventHandler<ActionEvent>() {
+            @Override public void handle(ActionEvent e) {
+                App.entryManager.removeEntry(entry.getId());
+                try {
+                    EntrySaverJson.save(App.entryManager);
+                } catch (IOException exc) {
+                    errorLabel.setText(exc.getMessage());
+                }
+            }
+        });
 
         GridPane.setHalignment(title, HPos.LEFT);
         GridPane.setHalignment(date, HPos.LEFT);
