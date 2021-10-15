@@ -44,6 +44,7 @@ public class AppTest extends ApplicationTest {
         Loader.setLocation(getClass().getResource("StartPage.fxml"));
         Parent root = Loader.load();
         Scene  s = new Scene(root);
+        stage.setTitle("Get fit");
         stage.setScene(s);
         stage.show();
     }

@@ -19,8 +19,8 @@ public class App extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
-        // TODO - fix this
         Parent parent = FXMLLoader.load(getClass().getResource("StartPage.fxml"));
+        stage.setTitle("Get fit");
         stage.setScene(new Scene(parent));
         stage.show();
     }

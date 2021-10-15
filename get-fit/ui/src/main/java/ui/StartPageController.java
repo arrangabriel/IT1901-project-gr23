@@ -35,6 +35,7 @@ public class StartPageController {
 		Parent p = Loader.load();
 		Scene  s = new Scene(p);
         Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
+        window.setTitle("Add new session");
 		window.setScene(s);
 		window.show();
       
@@ -71,8 +72,6 @@ public class StartPageController {
      */
     @FXML
     private void initialize(){
-        Stage stage = (Stage) addSession.getScene().getWindow();
-        stage.setTitle("Get fit");
         if(App.entryManager.entryCount()== 0){
             try{
                 EntrySaverJson.load(App.entryManager);
