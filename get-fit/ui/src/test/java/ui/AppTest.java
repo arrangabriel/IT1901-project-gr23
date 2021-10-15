@@ -174,7 +174,7 @@ public class AppTest extends ApplicationTest {
     @Test
     public void goBack() {
         click("Add session");
-        click("back");
+        click("Return");
         System.out.println(this.stageRef.getScene());
     }
 
