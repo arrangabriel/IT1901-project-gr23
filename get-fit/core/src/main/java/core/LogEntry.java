@@ -26,6 +26,10 @@ public final class LogEntry {
      */
     public static final int MINHEARTRATEHUMAN = 40;
     /**
+     * Id of the LogEntry
+     */
+    private String id;
+    /**
      * Title of LogEntry.
      */
     private String title;
@@ -87,6 +91,7 @@ public final class LogEntry {
             throw new IllegalArgumentException(validity.reason());
         }
 
+        this.id = builder.cid;
         this.title = builder.ctitle;
         this.comment = builder.ccomment;
         this.date = builder.cdate;
@@ -105,6 +110,9 @@ public final class LogEntry {
     /**
      * Validates a EntryBuilder.
      * Requirements:<br><br>
+     * <b>id</b>                    must not be null and have a positive length.
+     * <br><br>
+     * 
      * <b>title</b>                 must not be null and have a positive length.
      * <br><br>
      *
@@ -138,66 +146,77 @@ public final class LogEntry {
      */
     public static Validity validate(final EntryBuilder builder) {
 
+        if (builder.cid == null
+            || builder.cid.length() < 1) {
+            return new Validity(false,
+                    "Id cannot be empty null");
+        }
+
         /* Required fields. */
         if (builder.ctitle == null
-                || builder.ctitle.length() < 1) {
+            || builder.ctitle.length() < 1) {
 
             return new Validity(false,
                     "Title cannot be empty or null");
         }
 
         if (builder.cdate == null
-                || builder.cdate.isAfter(LocalDate.now())) {
+            || builder.cdate.isAfter(LocalDate.now())) {
 
             return new Validity(false,
                     "Date cannot be after now or null");
         }
 
         if (builder.cduration == null
-                || builder.cduration.isNegative()
-                || builder.cduration.isZero()) {
+            || builder.cduration.isNegative()
+            || builder.cduration.isZero()) {
 
             return new Validity(false,
                     "Duration cannot be null and must be positive");
         }
 
-        if (
-                builder.cfeeling > LogEntry.MAXFEELING
-                        || builder.cfeeling < LogEntry.MINFEELING) {
+        if (builder.cfeeling > LogEntry.MAXFEELING
+            || builder.cfeeling < LogEntry.MINFEELING) {
+            
             return new Validity(false, String.format(
                     "Feeling must be between %i and %i",
                     LogEntry.MAXFEELING, LogEntry.MINFEELING));
         }
 
         if (builder.cexerciseCategory == null) {
+
             return new Validity(false,
                     "Exercise category cannot be null");
         }
 
         /* Optional fields. */
         if (builder.ccomment != null
-                && (builder.ccomment.length() < 1)) {
+            && (builder.ccomment.length() < 1)) {
+
             return new Validity(false,
                     "Comment should not be empty, should be null instead");
         }
 
 
         if (builder.cexerciseSubcategory != null
-                && (!Arrays.stream(builder.cexerciseCategory.getSubcategories())
+            && (!Arrays.stream(builder.cexerciseCategory.getSubcategories())
                 .anyMatch(builder.cexerciseSubcategory::equals))) {
+
             return new Validity(false,
                     "Subcategory must be part of exercise category");
         }
 
         if (builder.cdistance != null
-                && (builder.cdistance < 1)) {
+            && (builder.cdistance < 1)) {
+
             return new Validity(false,
                     "Distance must be positive");
         }
 
         if (builder.cmaxHeartRate != null
-                && (builder.cmaxHeartRate > LogEntry.MAXHEARTRATEHUMAN
-                || builder.cmaxHeartRate < LogEntry.MINHEARTRATEHUMAN)) {
+            && (builder.cmaxHeartRate > LogEntry.MAXHEARTRATEHUMAN
+            || builder.cmaxHeartRate < LogEntry.MINHEARTRATEHUMAN)) {
+
             return new Validity(false, String.format(
                     "Heart rate must be between %i and %i",
                     LogEntry.MAXHEARTRATEHUMAN, LogEntry.MINHEARTRATEHUMAN));
@@ -498,6 +517,10 @@ public final class LogEntry {
          */
 
         /**
+         * Id to be built.
+         */
+        private final String cid;
+        /**
          * Title to be built.
          */
         private final String ctitle;
@@ -558,6 +581,7 @@ public final class LogEntry {
          * @see #validate
          */
         public EntryBuilder(
+                final String id,
                 final String title,
                 final LocalDate date,
                 final Duration duration,
@@ -565,6 +589,7 @@ public final class LogEntry {
                 final int feeling)
                 throws IllegalArgumentException {
 
+            this.cid = id;
             this.ctitle = title;
             this.cdate = date;
             this.cduration = duration;
