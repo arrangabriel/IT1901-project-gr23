@@ -22,6 +22,11 @@ public final class EntryManager implements Iterable<LogEntry> {
     private final HashMap<String, LogEntry> entryMap = new HashMap<>();
 
     /**
+     * Current id hash position.
+     */
+    private int idHashPosition = 0;
+
+    /**
      * An entry manager instance is a wrapper for a list of logEntries.
      * Functions as the API interface for the core-module.
      */
@@ -39,7 +44,8 @@ public final class EntryManager implements Iterable<LogEntry> {
     public String addEntry(final LogEntry entry)
             throws IllegalArgumentException {
 
-        String id = String.valueOf(entryMap.size());
+        String id = String.valueOf(this.idHashPosition);
+        this.idHashPosition++;
 
         addEntry(id, entry);
 
@@ -62,7 +68,6 @@ public final class EntryManager implements Iterable<LogEntry> {
             final LogEntry entry)
             throws IllegalArgumentException, IllegalStateException {
 
-
         if (entryMap.containsKey(id)) {
             throw new IllegalArgumentException("Entry already exists");
         }
@@ -70,6 +75,13 @@ public final class EntryManager implements Iterable<LogEntry> {
         entry.setId(id);
 
         entryMap.put(id, entry);
+    }
+
+    public void updateHashPosition(int pos) {
+        if (pos > this.idHashPosition) {
+            this.idHashPosition = pos;
+            this.idHashPosition++;
+        }
     }
 
     /**
