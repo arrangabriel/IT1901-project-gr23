@@ -158,7 +158,6 @@ public class StartPageController {
                 } catch (IOException exc) {
                     errorLabel.setText(exc.getMessage());
                 }
-                sort(null);
             }
         });
 
