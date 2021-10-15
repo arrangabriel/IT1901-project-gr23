@@ -93,7 +93,7 @@ Consist of a boolean and String field.
 
 - reason() -> String: Returns the reason for the validity of the builder.
 
-**classEntryBuilder**
+**class EntryBuilder**
 
 The builder class for the LogEntry. Consist of the required fields of type String, LocalDate, Duration, EXERCISECATEGORY, int. It also consist of the optional fields String, Subcategory, Double, Integer.
 
