@@ -22,6 +22,8 @@ import core.LogEntry.EntryBuilder;
 import java.util.Iterator;
 import java.util.List;
 import javafx.scene.control.ListView;
+
+import org.junit.AfterClass;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 
@@ -56,7 +58,7 @@ public class AppTest extends ApplicationTest {
         this.root = Loader.load();
     }
 
-    private void saveEntryManager() {
+    private static void saveEntryManager() {
         try {
             EntrySaverJson.save(App.entryManager);
         } catch (IOException e) {
@@ -64,7 +66,7 @@ public class AppTest extends ApplicationTest {
         }
     }
 
-    private void clearEntryManager() {
+    private static void clearEntryManager() {
         for (Iterator<LogEntry> iterator = App.entryManager.iterator(); iterator.hasNext();) {
             iterator.next();
             iterator.remove();
@@ -128,6 +130,11 @@ public class AppTest extends ApplicationTest {
         }
 
 
+    }
+
+    @AfterClass
+    public static void teardown() {
+        clearEntryManager();
     }
 
 
