@@ -10,10 +10,15 @@ Handles saving and loading to and from a json file
 
 ### Methods
 
-- save(EntryManager)-> void
-- save(EntryManager, String) -> void
-- load(EntryManager) -> void
-- load(EntryManager, String) -> void
+- save(EntryManager)-> void: Iterates over every entry in the provided EntryManager and adds their data as a string to a hashmap. It saves the hashmap to the file SavedData.json.
+
+- save(EntryManager, String) -> void: Iterates over every entry in the provided EntryManager and adds their data as a string to a hashmap.
+
+- load(EntryManager) -> void: Loads SavedData.json and constructs LogEntries which it then appends to the provided EntryManager.
+
+- stringToSubcategory -> LogEntry.Subcategory: Converts a string representation of a subcategory into a subcategory. It returns the subcategory or null if there are no match.
+
+- load(EntryManager, String) -> void: Loads a specified JSON file and constructs LogEntries which it appends to the provided EntryManager.
 
 # Structure
 
