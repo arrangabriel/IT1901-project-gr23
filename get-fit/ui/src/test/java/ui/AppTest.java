@@ -179,6 +179,19 @@ public class AppTest extends ApplicationTest {
         Assertions.assertEquals("Add new session", this.stageRef.getTitle());
         click("Return");
         Assertions.assertEquals("Get fit", this.stageRef.getTitle());
+        click("Add session");
+        Assertions.assertEquals("Add new session", this.stageRef.getTitle());
+        clickOn("#titleField");
+        write("New Test");
+        clickOn("#hour");
+        write("0");
+        clickOn("#min");
+        write("30");
+        clickOn("#exerciseType");
+        clickOn("#heartRate");
+        write("60");
+        click("Create session");
+        Assertions.assertEquals("Get fit", this.stageRef.getTitle());
     }
 
     @AfterClass
