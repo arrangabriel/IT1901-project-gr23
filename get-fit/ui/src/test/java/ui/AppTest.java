@@ -157,7 +157,7 @@ public class AppTest extends ApplicationTest {
         addEntryClicking("Push", "I did bench presses as well as some pushups",
         "1", "45", "STRENGTH", "90","PUSH");
         addEntryClicking("Cardio", "I ran a while",
-        "3", "30", "RUNNIN", "200","LONG");
+        "3", "30", "RUNNING", "200","LONG");
         addEntryClicking("Swimming", "Did a couple of laps",
         "1", "00", "SWIMMING", "220","HIGHINTENSITY");
 
