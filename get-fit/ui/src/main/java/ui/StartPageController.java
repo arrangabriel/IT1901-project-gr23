@@ -97,16 +97,16 @@ public class StartPageController {
             iteratorBuilder = iteratorBuilder.filterExerciseCategory(category);
             LogEntry.Subcategory subcategory = null;
             switch (category) {
-                case STRENGTH -> {
+                case STRENGTH:
                     subcategory = LogEntry.STRENGTHSUBCATEGORIES.valueOf(
                             sortSubcategory.getValue());
-                }
-                case SWIMMING, CYCLING, RUNNING -> {
+                    break;
+                case SWIMMING, CYCLING, RUNNING:
                     subcategory = LogEntry.CARDIOSUBCATEGORIES.valueOf(
                             sortSubcategory.getValue());
-                }
-                default -> {
-                }
+                    break;
+                default:
+                    break;
             }
             iteratorBuilder = iteratorBuilder.filterSubCategory(subcategory);
         } catch (IllegalArgumentException ignored1) {
