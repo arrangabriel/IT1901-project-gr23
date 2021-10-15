@@ -188,20 +188,18 @@ public class StartPageController {
         } else {
             switch (LogEntry.EXERCISECATEGORY.valueOf(
                     sortCategory.getValue())) {
-                case STRENGTH:
+                case STRENGTH -> {
                     sortSubcategory.setItems(sortStrengthSubcategories);
                     sortSubcategory.getSelectionModel().selectFirst();
                     sortSubcategory.setVisible(true);
-                    break;
-                
-                case SWIMMING, CYCLING, RUNNING:
+                }
+                case SWIMMING, CYCLING, RUNNING -> {
                     sortSubcategory.setItems(sortCardioSubcategories);
                     sortSubcategory.getSelectionModel().selectFirst();
                     sortSubcategory.setVisible(true);
-                    break;
-                
-                default:
-                    break;
+                }
+                default -> {
+                }
             }
         }
         // silly
