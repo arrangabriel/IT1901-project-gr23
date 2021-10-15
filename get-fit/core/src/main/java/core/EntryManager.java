@@ -54,17 +54,20 @@ public final class EntryManager implements Iterable<LogEntry> {
      * @param entry the builder for the new LogEntry.
      * @throws IllegalArgumentException if any of the input is invalid
      *                                  or the id is allready in use.
+     * @throws IllegalStateException if the entry allready has a set id.
      * @see #validate
      */
     public void addEntry(
             final String id,
             final LogEntry entry)
-            throws IllegalArgumentException {
+            throws IllegalArgumentException, IllegalStateException {
 
 
         if (entryMap.containsKey(id)) {
             throw new IllegalArgumentException("Entry already exists");
         }
+
+        entry.setId(id);
 
         entryMap.put(id, entry);
     }
