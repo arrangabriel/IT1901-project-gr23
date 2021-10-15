@@ -35,9 +35,11 @@ public class AppTest extends ApplicationTest {
     //private StartPageController controller;
     private StartPageController controller;
     private Parent root;
+    private Stage stageRef;
 
     @Override
     public void start(Stage stage) throws IOException {
+        this.stageRef = stage;
         FXMLLoader Loader = new FXMLLoader();
         Loader.setLocation(getClass().getResource("StartPage.fxml"));
         Parent root = Loader.load();
@@ -74,7 +76,7 @@ public class AppTest extends ApplicationTest {
         saveEntryManager();
     }
 
-    private void addEntryClicking(String title, String comment, String hour, String min, String type, String hr, String sub) {
+    private void addEntryClicking(String title, String comment, String hour, String min, String type, String hr, String sub, String distance) {
         click("Add session");
         clickOn("#titleField");
         write(title);
@@ -88,6 +90,10 @@ public class AppTest extends ApplicationTest {
         clickOn(sub);
         clickOn("#heartRate");
         write(hr);
+        if (distance != null) {
+            clickOn("#distance");
+            write(distance);
+        }
         clickOn("#commentField");
         write(comment);
         click("Create session");
@@ -155,14 +161,21 @@ public class AppTest extends ApplicationTest {
     @Test
     public void varietyCreation() {
         addEntryClicking("Push", "I did bench presses as well as some pushups",
-        "1", "45", "STRENGTH", "90","PUSH");
+        "1", "45", "STRENGTH", "90","PUSH", null);
         addEntryClicking("Cardio", "I ran a while",
-        "3", "30", "RUNNING", "200","LONG");
+        "3", "30", "RUNNING", "200","LONG", "6");
         addEntryClicking("Swimming", "Did a couple of laps",
-        "1", "00", "SWIMMING", "220","HIGHINTENSITY");
+        "1", "00", "SWIMMING", "220","HIGHINTENSITY", "10");
 
         
         checkView();
+    }
+
+    @Test
+    public void goBack() {
+        click("Add session");
+        click("back");
+        System.out.println(this.stageRef.getScene());
     }
 
     @AfterClass
