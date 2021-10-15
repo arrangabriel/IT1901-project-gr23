@@ -173,10 +173,11 @@ public class AppTest extends ApplicationTest {
 
     @Test
     public void goBack() {
+        Assertions.assertEquals("Get fit", this.stageRef.getTitle());
         click("Add session");
-        System.out.println(this.stageRef.getScene().toString());
+        Assertions.assertEquals("Add new session", this.stageRef.getTitle());
         click("Return");
-        System.out.println(this.stageRef.getScene().toString());
+        Assertions.assertEquals("Get fit", this.stageRef.getTitle());
     }
 
     @AfterClass

@@ -71,6 +71,7 @@ public class StartPageController {
      */
     @FXML
     private void initialize(){
+        App.getStage().setTitle("Get fit");
         if(App.entryManager.entryCount()== 0){
             try{
                 EntrySaverJson.load(App.entryManager);
