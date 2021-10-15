@@ -8,6 +8,7 @@ import java.nio.channels.IllegalSelectorException;
 import java.time.Duration;
 import java.time.LocalDate;
 
+import org.junit.AfterClass;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
@@ -21,7 +22,7 @@ public class TestEntrySaverJson {
     static int minute = 60;
     static int hour = minute*60;
 
-    private final String saveFile = "SavedTestData.json";
+    private static final String saveFile = "SavedTestData.json";
 
     private EntryBuilder genValidBuilder(String title, String comment) {
         LocalDate date = LocalDate.now().minusDays(1);
@@ -109,6 +110,10 @@ public class TestEntrySaverJson {
         Assertions.assertThrows(IllegalArgumentException.class, () -> EntrySaverJson.save(null, saveFile));
     }
 
-
+    @AfterClass
+    public static void teardown() {
+        File f = new File(saveFile);
+        f.delete();
+    }
 
 }
