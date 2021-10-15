@@ -229,6 +229,15 @@ public final class LogEntry {
     // expand these in the future
 
     /**
+     * Returns the id field of this logEntry.
+     *
+     * @return the id field as a string.
+     */
+    public String getId() {
+        return id;
+    }
+
+    /**
      * Returns the title field of this logEntry.
      *
      * @return the title field as a string.
