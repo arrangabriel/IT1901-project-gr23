@@ -140,15 +140,20 @@ public class StartPageController {
         Button open = new Button();
         open.setText("show");
 
+        Button delete = new Button();
+        delete.setText("delete");
+
         GridPane.setHalignment(title, HPos.LEFT);
         GridPane.setHalignment(date, HPos.LEFT);
         GridPane.setHalignment(category, HPos.LEFT);
         GridPane.setHalignment(open, HPos.RIGHT);
+        GridPane.setHalignment(delete, HPos.LEFT);
 
         grid.add(title, 0, 0);
         grid.add(date, 1, 0);
         grid.add(category, 2, 0);
         grid.add(open, 3, 0);
+        grid.add(delete, 3, 0);
 
         vBox.getChildren().add(grid);
 
