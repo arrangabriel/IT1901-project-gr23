@@ -74,6 +74,25 @@ public class AppTest extends ApplicationTest {
         saveEntryManager();
     }
 
+    private void addEntryClicking(String title, String comment, String hour, String min, String type, String hr, String sub) {
+        click("Add session");
+        clickOn("#titleField");
+        write(title);
+        clickOn("#hour");
+        write(hour);
+        clickOn("#min");
+        write(min);
+        clickOn("#exerciseType");
+        clickOn(type);
+        clickOn("#tags");
+        clickOn(sub);
+        clickOn("#heartRate");
+        write(hr);
+        clickOn("#commentField");
+        write(comment);
+        click("Create session");
+    }
+
     @BeforeEach
     private void setUp() {
         clearEntryManager();
@@ -121,15 +140,29 @@ public class AppTest extends ApplicationTest {
         return (ListView<String>) root.lookup("#listOfEntries");
     }
 
-    @Test
-    public void checkView() throws IOException {
-        updateRoot();
+    public void checkView() {
+        try {
+            updateRoot();
+        } catch (IOException e) {
+            Assertions.fail();
+        }
         List<String> viewEntries = getEntriesView().getItems();
         for(int i = 0; i < viewEntries.size(); i++){
             Assertions.assertEquals(App.entryManager.getEntry(String.valueOf(i)).getTitle(), viewEntries.get(i));
         }
+    }
 
+    @Test
+    public void varietyCreation() {
+        addEntryClicking("Push", "I did bench presses as well as some pushups",
+        "1", "45", "STRENGTH", "90","PUSH");
+        addEntryClicking("Cardio", "I ran a while",
+        "3", "30", "RUNNIN", "200","LONG");
+        addEntryClicking("Swimming", "Did a couple of laps",
+        "1", "00", "SWIMMING", "220","HIGHINTENSITY");
 
+        
+        checkView();
     }
 
     @AfterClass
