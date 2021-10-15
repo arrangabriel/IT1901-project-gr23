@@ -1,29 +1,31 @@
-# Release 1
+# Release 2
 
-For release one we intend to create a MVP of the project.
+For release 2 we inteded to expand the MVP from the first release with new features and to improve the quality of the existing code. We have also expanded the test package with more tests and implemented testing of the ui. 
 
-## Idea for the project
+## New features
 
-We intend for the project to be an exercise/activity tracker. We have created a figma model for release 1, which is meant to illustrate our goal for this first release. 
+For this release we implemented a lot of new features. This includes the ability to sort the enteries saved on the start page list view by 
+sorting the entries on the start page list view. We also added the ability to complete the add new session page to be fully operational. Its also possible to show saved entries on the start page and delete entries on the start page.
 
-The figma model can be found here: 
-[Figma model for release 1](/docs/release1/Figma_ui_model_release1.pdf)
+## Code improvements
+- Build structure in backend and changed the implementation in localpresistency.
+- Changed switching scenes method.
+
+## New implementation
+- Spotbugs
+- Checkstyle
+- Jacoco
+
+## Test
 
 
-### Log a workout
-The following will be included in a log:
 
-- Title
-- Date
-- Duration
-- Comment
 
-### View workout log
-There will be a workout log where all of the added workouts will appear as a list. For the MVP this log can not be interacted with, but it is meant to be expanded. 
+## Planned implementations that was not ready for release 2
+We did plan to be able to show and calculate statistics for this release. The statistics class was created to handle different type of calculations and the statistics fxml file was also created to display data. We did however find out that it was better to focus on improving test coverage and code quality rather than to implement more features. US3 and US4 were created and added to the project and some of the functionality displayed here are found in the code that we decided to delay for release 3. 
 
-The MVP is focused on solving the most basic user story, where the problem is to be able to store a workout with a comment. 
-This user story can be found here:
-[User story 1](/DesignDocumentation/Scenario-us1.png)
+
+
 
 
 
