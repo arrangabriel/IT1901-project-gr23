@@ -145,12 +145,6 @@ public final class LogEntry {
      */
     public static Validity validate(final EntryBuilder builder) {
 
-        if (builder.cid == null
-            || builder.cid.length() < 1) {
-            return new Validity(false,
-                    "Id cannot be empty null");
-        }
-
         /* Required fields. */
         if (builder.ctitle == null
             || builder.ctitle.length() < 1) {
