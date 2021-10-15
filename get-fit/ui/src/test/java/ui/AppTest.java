@@ -174,9 +174,9 @@ public class AppTest extends ApplicationTest {
     @Test
     public void goBack() {
         click("Add session");
-        System.out.println(this.stageRef.getScene());
+        System.out.println(this.stageRef.getScene().toString());
         click("Return");
-        System.out.println(this.stageRef.getScene());
+        System.out.println(this.stageRef.getScene().toString());
     }
 
     @AfterClass
