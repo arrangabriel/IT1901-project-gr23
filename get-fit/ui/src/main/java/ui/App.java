@@ -20,14 +20,9 @@ public class App extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         // TODO - fix this
-        stageRef = stage;
         Parent parent = FXMLLoader.load(getClass().getResource("StartPage.fxml"));
         stage.setScene(new Scene(parent));
         stage.show();
-    }
-
-    public static Stage getStage() {
-        return stageRef;
     }
 
     public static void main(String[] args) {

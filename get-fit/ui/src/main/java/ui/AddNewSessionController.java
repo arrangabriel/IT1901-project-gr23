@@ -333,7 +333,8 @@ public class AddNewSessionController {
      */
     @FXML
     private void initialize() throws NumberFormatException {
-        App.getStage().setTitle("Add new session");
+        Stage stage = (Stage) titleLabel.getScene().getWindow();
+        stage.setTitle("Add session");
         // TODO - maybe refactor this to a function call
         ObservableList<String> exerciseCategoryNames = exerciseCategories
                 .stream()
