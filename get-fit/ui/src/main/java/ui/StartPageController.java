@@ -1,6 +1,7 @@
 package ui;
 
 import java.io.IOException;
+import java.io.FileNotFoundException;
 import javafx.fxml.FXML;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
@@ -8,6 +9,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.stage.Stage;
+import localpersistence.EntrySaverJson;
 
 import core.LogEntry;
 import core.EntryManager;
@@ -15,6 +17,7 @@ import core.EntryManager;
 public class StartPageController {
     @FXML Button addSession;
     @FXML ListView<String> listOfEntries;
+    @FXML Label errorLabel;
 
     /**
      * Switches the view to AddNewSession.
@@ -26,15 +29,23 @@ public class StartPageController {
         App.setRoot("AddNewSession");
     }
 
+    public void handleViewStatisticsButton(ActionEvent event) throws IOException{
+        App.setRoot("Statistics");
+    } 
+    @FXML
+    public void deleteButtonPushed(ActionEvent event) throws IOException{
+        //App.entryManager.removeEntry(listOfEntries.getSelectionModel().getSelectedItem().getId());
+        //App.entryManager.removeEntry(listOfEntries.getSelectionModel().getSelectedItem().getId());
+      
+    }
+
     /**
      * Iterates over the EntryManager of the app and adds the titles to listOfEntries.
      */
     public void addToList(){
         for (LogEntry entry : App.entryManager){
             listOfEntries.getItems().add(entry.getTitle());
-            
         }
-
     }
 
     /**
@@ -42,6 +53,15 @@ public class StartPageController {
      */
     @FXML
     private void initialize(){
+        if(App.entryManager.entryCount()== 0){
+            try{
+                EntrySaverJson.load(App.entryManager);
+            }
+            catch (FileNotFoundException e){
+                System.out.println("SaveData.json could not be found.");
+                errorLabel.setText("The file was not found.");
+            }
+        }
         this.addToList();
     }
 }
