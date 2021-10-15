@@ -91,7 +91,6 @@ public final class LogEntry {
             throw new IllegalArgumentException(validity.reason());
         }
 
-        this.id = builder.cid;
         this.title = builder.ctitle;
         this.comment = builder.ccomment;
         this.date = builder.cdate;
@@ -227,6 +226,19 @@ public final class LogEntry {
     }
 
     // expand these in the future
+
+    /**
+     * Sets the id for the LogEntry. Can only be done once.
+     * @param id the id to set.
+     * @throws IllegalStateException if the id has allready been set.
+     */
+    public void setId(String id) throws IllegalStateException {
+        if (this.id == null) {
+            this.id = id;
+        } else {
+            throw new IllegalStateException("Id allready set");
+        }
+    }
 
     /**
      * Returns the id field of this logEntry.
@@ -526,10 +538,6 @@ public final class LogEntry {
          */
 
         /**
-         * Id to be built.
-         */
-        private final String cid;
-        /**
          * Title to be built.
          */
         private final String ctitle;
@@ -590,7 +598,6 @@ public final class LogEntry {
          * @see #validate
          */
         public EntryBuilder(
-                final String id,
                 final String title,
                 final LocalDate date,
                 final Duration duration,
@@ -598,7 +605,6 @@ public final class LogEntry {
                 final int feeling)
                 throws IllegalArgumentException {
 
-            this.cid = id;
             this.ctitle = title;
             this.cdate = date;
             this.cduration = duration;
