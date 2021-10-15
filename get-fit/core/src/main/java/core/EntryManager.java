@@ -77,7 +77,11 @@ public final class EntryManager implements Iterable<LogEntry> {
         entryMap.put(id, entry);
     }
 
-    public void updateHashPosition(int pos) {
+    /**
+     * Updates the position for id hashing.
+     * @param pos the new position.
+     */
+    public void updateHashPosition(final int pos) {
         if (pos > this.idHashPosition) {
             this.idHashPosition = pos;
             this.idHashPosition++;
@@ -181,8 +185,9 @@ public final class EntryManager implements Iterable<LogEntry> {
          * @param sortConfiguration a LogEntry.SORTCONFIGURATIONS to sort by.
          * @throws IllegalArgumentException if sortConfigurations is null.
          */
-        public SortedIteratorBuilder(final EntryManager entryManager,
-                                     final LogEntry.SORTCONFIGURATIONS sortConfiguration)
+        public SortedIteratorBuilder(
+            final EntryManager entryManager,
+            final LogEntry.SORTCONFIGURATIONS sortConfiguration)
                 throws IllegalArgumentException {
 
             if (sortConfiguration == null) {

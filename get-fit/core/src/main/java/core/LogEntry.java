@@ -26,7 +26,7 @@ public final class LogEntry {
      */
     public static final int MINHEARTRATEHUMAN = 40;
     /**
-     * Id of the LogEntry
+     * Id of the LogEntry.
      */
     private String id;
     /**
@@ -111,7 +111,7 @@ public final class LogEntry {
      * Requirements:<br><br>
      * <b>id</b>                    must not be null and have a positive length.
      * <br><br>
-     * 
+     *
      * <b>title</b>                 must not be null and have a positive length.
      * <br><br>
      *
@@ -170,7 +170,7 @@ public final class LogEntry {
 
         if (builder.cfeeling > LogEntry.MAXFEELING
             || builder.cfeeling < LogEntry.MINFEELING) {
-            
+
             return new Validity(false, String.format(
                     "Feeling must be between %i and %i",
                     LogEntry.MAXFEELING, LogEntry.MINFEELING));
@@ -223,12 +223,12 @@ public final class LogEntry {
 
     /**
      * Sets the id for the LogEntry. Can only be done once.
-     * @param id the id to set.
+     * @param setId the id to set.
      * @throws IllegalStateException if the id has allready been set.
      */
-    public void setId(String id) throws IllegalStateException {
+    public void setId(final String setId) throws IllegalStateException {
         if (this.id == null) {
-            this.id = id;
+            this.id = setId;
         } else {
             throw new IllegalStateException("Id allready set");
         }
