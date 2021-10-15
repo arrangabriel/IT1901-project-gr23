@@ -31,9 +31,9 @@ public class AddNewSessionController {
      */
     private final int maxMinutes = 59;
     /**
-     * Maximum heart rate limit.
+     * Maximum distance limit.
      */
-    private final int maxHeartRateLimit = 230;
+    private final int maxDistance = 200;
 
     /**
      * All possible exercise category values.
@@ -196,6 +196,11 @@ public class AddNewSessionController {
             // adds maxHeartRate if value is present.
             try {
                 maxHeartRate = Integer.parseInt(heartRate.getText());
+                if (maxHeartRate < LogEntry.MINHEARTRATEHUMAN) {
+                    throw new IllegalArgumentException(
+                            "Heart rate must be more than "
+                                    + LogEntry.MINHEARTRATEHUMAN);
+                }
                 logBuilder = logBuilder.maxHeartRate(maxHeartRate);
             } catch (NumberFormatException ignored1) {
             }
@@ -359,5 +364,6 @@ public class AddNewSessionController {
         validateIntegerInput(min, maxMinutes);
         validateIntegerInput(heartRate,
                 LogEntry.MAXHEARTRATEHUMAN);
+        validateIntegerInput(distance, maxDistance);
     }
 }
