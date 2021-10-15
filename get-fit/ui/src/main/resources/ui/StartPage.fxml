@@ -12,10 +12,10 @@
    </Label>
 
    <HBox alignment="CENTER" layoutX="28.0" layoutY="75.0" prefHeight="39.0" prefWidth="542.0">
-      <ComboBox fx:id="sortConfig" prefHeight="26.0" prefWidth="115.0" promptText="Sort by" onHidden="#sort"/>
-      <ComboBox fx:id="sortCategory" layoutX="177.0" layoutY="17.0" prefHeight="26.0" prefWidth="106.0" promptText="Category" onHidden="#sort"/>
-      <ComboBox fx:id="sortSubcategory" layoutX="252.0" layoutY="17.0" prefHeight="26.0" prefWidth="109.0" promptText="Subcategory" onHidden="#sort"/>
-      <Button fx:id="sortReverse" mnemonicParsing="false" text="Reverse" onAction="#sort"/>
+      <ComboBox fx:id="sortConfig" onHidden="#sort" prefHeight="26.0" prefWidth="96.0" promptText="Sort by" />
+      <ComboBox fx:id="sortCategory" layoutX="177.0" layoutY="17.0" onHidden="#replaceSubcategories" prefHeight="26.0" prefWidth="119.0" promptText="Category" />
+      <ComboBox fx:id="sortSubcategory" layoutX="252.0" layoutY="17.0" onHidden="#sort" prefHeight="26.0" prefWidth="129.0" promptText="Subcategory" />
+      <Button fx:id="sortReverse" mnemonicParsing="false" onAction="#reverse" text="Reverse" />
    </HBox>
 
    <Pane layoutX="28.0" layoutY="116.0" prefHeight="211.0" prefWidth="542.0">

@@ -123,13 +123,14 @@ public final class EntryManager implements Iterable<LogEntry> {
     /**
      * Removes a LogEntry with the specified id,
      * and replaces it with the provided entry.
-     * @param id the id of the LogEntry to swap.
+     *
+     * @param id    the id of the LogEntry to swap.
      * @param entry the entry to put in place.
      * @throws NoSuchElementException if the id doesn't exist in the manager.
      */
     public void swapEntry(
-        final String id,
-        final LogEntry entry)
+            final String id,
+            final LogEntry entry)
             throws NoSuchElementException {
 
         removeEntry(id);
@@ -161,12 +162,12 @@ public final class EntryManager implements Iterable<LogEntry> {
         /**
          * Builder for a sorted iterator of this EntryManager's LogEntries.
          *
-         * @param entryManager the entry manager to get entries from.
+         * @param entryManager      the entry manager to get entries from.
          * @param sortConfiguration a LogEntry.SORTCONFIGURATIONS to sort by.
          * @throws IllegalArgumentException if sortConfigurations is null.
          */
         public SortedIteratorBuilder(final EntryManager entryManager,
-                final LogEntry.SORTCONFIGURATIONS sortConfiguration)
+                                     final LogEntry.SORTCONFIGURATIONS sortConfiguration)
                 throws IllegalArgumentException {
 
             if (sortConfiguration == null) {
@@ -187,7 +188,7 @@ public final class EntryManager implements Iterable<LogEntry> {
                     break;
                 default:
                     throw new IllegalArgumentException(
-                        "Illegal sort configuration");
+                            "Illegal sort configuration");
             }
 
             this.logEntryStream = entryManager.entryMap
@@ -235,9 +236,15 @@ public final class EntryManager implements Iterable<LogEntry> {
             }
 
             this.logEntryStream = this.logEntryStream
-                    .filter((entry) -> entry
-                            .getExerciseSubCategory()
-                            .equals(subcategory));
+                    .filter((entry) -> {
+                        LogEntry.Subcategory entrySubcategory =
+                                entry.getExerciseSubCategory();
+                        if (entrySubcategory != null) {
+                            return entrySubcategory.equals(subcategory);
+                        } else {
+                            return false;
+                        }
+                    });
             return this;
         }
 

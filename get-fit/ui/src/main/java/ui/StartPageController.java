@@ -2,6 +2,8 @@ package ui;
 
 import core.EntryManager;
 import core.LogEntry;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.FXML;
@@ -50,6 +52,12 @@ public class StartPageController {
     @FXML
     private Label errorLabel;
 
+    private ObservableList<String> sortConfigs;
+    private ObservableList<String> sortCategories;
+    private ObservableList<String> sortStrengthSubcategories;
+    private ObservableList<String> sortCardioSubcategories;
+    private boolean reverse;
+
     /**
      * Switches the view to AddNewSession.
      *
@@ -75,11 +83,39 @@ public class StartPageController {
     }
 
     @FXML
-    public void sort(Event event) {
-        System.out.println("Whoopty");
+    public void sort(final Event event) {
+        LogEntry.SORTCONFIGURATIONS config =
+                LogEntry.SORTCONFIGURATIONS.valueOf(sortConfig.getValue());
+        EntryManager.SortedIteratorBuilder iteratorBuilder =
+                new EntryManager.SortedIteratorBuilder(App.entryManager,
+                        config);
+        try {
+            // throws illegalargumentexception if value is ANY.
+            LogEntry.EXERCISECATEGORY category =
+                    LogEntry.EXERCISECATEGORY.valueOf(sortCategory.getValue());
+            iteratorBuilder = iteratorBuilder.filterExerciseCategory(category);
+            LogEntry.Subcategory subcategory = null;
+            switch (category) {
+                case STRENGTH -> {
+                    subcategory = LogEntry.STRENGTHSUBCATEGORIES.valueOf(
+                            sortSubcategory.getValue());
+                }
+                case SWIMMING, CYCLING, RUNNING -> {
+                    subcategory = LogEntry.CARDIOSUBCATEGORIES.valueOf(
+                            sortSubcategory.getValue());
+                }
+                default -> {
+                }
+            }
+            iteratorBuilder = iteratorBuilder.filterSubCategory(subcategory);
+        } catch (IllegalArgumentException ignored1) {
+            // reaching this part short circuits filtering, order matters.
+        }
+        addIteratorToView(iteratorBuilder.iterator(reverse));
     }
 
     public void addIteratorToView(final Iterator<LogEntry> entries) {
+        listOfEntries.getItems().clear();
         while (entries.hasNext()) {
             LogEntry entry = entries.next();
             listOfEntries.getItems().add(createListEntry(entry));
@@ -119,13 +155,78 @@ public class StartPageController {
         return vBox;
     }
 
+    @FXML
+    public void replaceSubcategories(Event event) {
+        // hide and clear if there should be none
+        if (sortCategory.getValue().equals("ANY")) {
+            sortSubcategory.setItems(FXCollections.observableArrayList());
+            sortSubcategory.setVisible(false);
+        } else {
+            switch (LogEntry.EXERCISECATEGORY.valueOf(
+                    sortCategory.getValue())) {
+                case STRENGTH -> {
+                    sortSubcategory.setItems(sortStrengthSubcategories);
+                    sortSubcategory.getSelectionModel().selectFirst();
+                    sortSubcategory.setVisible(true);
+                }
+                case SWIMMING, CYCLING, RUNNING -> {
+                    sortSubcategory.setItems(sortCardioSubcategories);
+                    sortSubcategory.getSelectionModel().selectFirst();
+                    sortSubcategory.setVisible(true);
+                }
+                default -> {
+                }
+            }
+        }
+        // silly
+        sort(event);
+    }
+
+    @FXML
+    public void reverse(ActionEvent event) {
+        reverse = !reverse;
+        //if (reverse) {
+        //    set symbol here at a later date
+        //}
+        sort(event);
+    }
+
     /**
      * Initializes the controller.
      */
     @FXML
     private void initialize() {
         //populate sorting selectors
+        sortConfigs =
+                FXCollections.observableArrayList();
+        sortCategories =
+                FXCollections.observableArrayList();
+        sortCategories.add("ANY");
+        sortStrengthSubcategories =
+                FXCollections.observableArrayList();
+        sortStrengthSubcategories.add("ANY");
+        sortCardioSubcategories =
+                FXCollections.observableArrayList();
+        sortCardioSubcategories.add("ANY");
 
+        for (LogEntry.SORTCONFIGURATIONS sortConfiguration : LogEntry.SORTCONFIGURATIONS.values()) {
+            sortConfigs.add(sortConfiguration.name());
+        }
+        for (LogEntry.EXERCISECATEGORY exercisecategory : LogEntry.EXERCISECATEGORY.values()) {
+            sortCategories.add(exercisecategory.name());
+        }
+        for (LogEntry.STRENGTHSUBCATEGORIES strengthSubcategory : LogEntry.STRENGTHSUBCATEGORIES.values()) {
+            sortStrengthSubcategories.add(strengthSubcategory.name());
+        }
+        for (LogEntry.CARDIOSUBCATEGORIES cardioSubcategory : LogEntry.CARDIOSUBCATEGORIES.values()) {
+            sortCardioSubcategories.add(cardioSubcategory.name());
+        }
+
+        sortConfig.setItems(sortConfigs);
+        sortConfig.getSelectionModel().selectFirst();
+        sortCategory.setItems(sortCategories);
+        sortCategory.getSelectionModel().selectFirst();
+        sortSubcategory.setVisible(false);
 
         if (App.entryManager.entryCount() == 0) {
             try {
