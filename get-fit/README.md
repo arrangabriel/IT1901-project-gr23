@@ -12,7 +12,7 @@ There are more user stories and design models under:
 [Design documentation](/DesignDocumentation/Scenarios)
 
 ## PlantUML diagram
-Under follows a rendered PlantUML diagram that represents the architecture of the Get Fit application. The PlantUML code can also be found her: [Get Fit PlantUML architecture file](/get-fit/architecture.puml)
+Under follows a rendered PlantUML diagram that represents the architecture of the Get Fit application. The PlantUML code can be found her: [Get Fit PlantUML architecture file](/get-fit/architecture.puml)
 
 ![Design documentation](/get-fit/Get_Fit_Architecture.png)
 
