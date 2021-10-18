@@ -175,7 +175,7 @@ public class AppTest extends ApplicationTest {
     @Test
     public void goBack() {
         Assertions.assertEquals("Get fit", this.stageRef.getTitle());
-        click("Add session");
+        click("Add workout");
         Assertions.assertEquals("Add new session", this.stageRef.getTitle());
         click("Return");
         Assertions.assertEquals("Get fit", this.stageRef.getTitle());
