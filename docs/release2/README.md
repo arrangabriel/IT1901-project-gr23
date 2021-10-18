@@ -7,9 +7,9 @@ For release 2 we inteded to expand the MVP from the first release with new featu
 For this release we implemented a lot of new features. This includes the ability to sort the sessions(enteries) saved on the start page list view. They can be sorted by date, duration or title. We also added the ability to complete the add new session page to handle more data. It is also possible to view older sessions (enteries) from the start page and individual sessions(entries) can be deleted. 
 
 ## Code improvements
-The LogEntry class is changed to implement a builder pattern. This is because the old code was messy with a lot of inputs and long code lines. With this new builder pattern the logEntry object can be created with just the necessary inputs and the optional can be left out completly when creating an object. This also changed the code structure in the Localpresistency class and in EntryManager. The core module was also expanded to handle more inputs. In general the code has been changed to achiev a higher level of quality.
+The LogEntry class is changed to implement a builder pattern. This is because the old code was messy with a lot of inputs and long code lines. With this new builder pattern the logEntry object can be created with just the necessary inputs and the optional inputs can be left out completly when creating an object. This also changed the code in Localpresistency and in EntryManager. The core module was also expanded to handle more inputs. In general the code has been changed to achiev a higher level of quality.
 
-- Changed switching scenes method.
+We have also changed the way we switch scenes in the ui module. This is because we used a global variable "root", and this made testing difficult because we could not change the root variable.
 
 ## New project plugins
 - Spotbugs
