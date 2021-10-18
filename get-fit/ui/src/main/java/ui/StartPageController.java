@@ -6,13 +6,14 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.HPos;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TextArea;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
@@ -21,10 +22,26 @@ import localpersistence.EntrySaverJson;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.time.Duration;
 import java.util.Iterator;
 
 public class StartPageController {
 
+    /***/
+    @FXML
+    private AnchorPane entryView;
+    /***/
+    @FXML
+    private Button hideView;
+    /***/
+    @FXML
+    private Text titleView;
+    /***/
+    @FXML
+    private Text dateView;
+    /***/
+    @FXML
+    private TextArea commentView;
     /***/
     @FXML
     private Text subcategoryView;
@@ -55,9 +72,6 @@ public class StartPageController {
     /***/
     @FXML
     private Button sortReverse;
-    /***/
-    @FXML
-    private Button delete;
     /***/
     @FXML
     private Button goToStatistics;
@@ -104,6 +118,12 @@ public class StartPageController {
         App.setRoot("AddNewSession");
     }
 
+    /**
+     * Switches to statistics page.
+     *
+     * @param event a JavaFX event.
+     * @throws IOException if .FXML page could not be found.
+     */
     @FXML
     public void handleGoToStatistics(final ActionEvent event)
             throws IOException {
@@ -111,11 +131,21 @@ public class StartPageController {
         App.setRoot("Statistics");
     }
 
+    /**
+     * Hides entry view pane.
+     *
+     * @param event a JavaFX event.
+     */
     @FXML
-    public void deleteButtonPushed(ActionEvent event) throws IOException {
-        //App.entryManager.removeEntry(listOfEntries.getSelectionModel().getSelectedItem().getId());
+    public void closeView(final ActionEvent event) {
+        entryView.setVisible(false);
     }
 
+    /**
+     * Fill list with entries according to sort parameters.
+     *
+     * @param event a JavaFX event.
+     */
     @FXML
     public void sort(final Event event) {
         LogEntry.SORTCONFIGURATIONS config =
@@ -150,7 +180,8 @@ public class StartPageController {
 
     /**
      * Places an iterator of entries in the view.
-     * @param entries
+     *
+     * @param entries an iterator of entries.
      */
     public void addIteratorToView(final Iterator<LogEntry> entries) {
         listOfEntries.getItems().clear();
@@ -160,6 +191,7 @@ public class StartPageController {
         }
     }
 
+    @SuppressWarnings("checkstyle:MagicNumber")
     private VBox createListEntry(final LogEntry entry) {
         VBox vBox = new VBox();
         GridPane grid = new GridPane();
@@ -178,27 +210,68 @@ public class StartPageController {
         Button open = new Button();
         open.setText("Show");
 
-        open.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent e) {
-                //Do stuff
+        open.setOnAction(e -> {
+            // title
+            titleView.setText(entry.getTitle());
+            // date
+            // this may need formating
+            dateView.setText(entry.getDate().toString());
+            // category
+            dateView.setText(entry.getExerciseCategory().toString());
+            // duration
+            dateView.setText(entry.getDuration().toString());
+            // feeling
+            feelingView.setText(String.valueOf(entry.getFeeling()));
+            // duration
+            durationView.setText(entry.getDuration().toString());
+            // subcategory optional
+            Duration duration = entry.getDuration();
+            if (duration != null) {
+                subcategoryView.setText(duration.toString());
+                subcategoryView.setVisible(true);
+            } else {
+                subcategoryView.setText("");
+                subcategoryView.setVisible(false);
             }
+            // maxHeartRate optional
+            Integer maxHeartRate = entry.getMaxHeartRate();
+            if (maxHeartRate != null) {
+                heartRateView.setText(maxHeartRate.toString());
+                heartRateView.setVisible(true);
+            } else {
+                subcategoryView.setText("");
+                heartRateView.setVisible(false);
+            }
+            // distance
+            Double distance = entry.getDistance();
+            if (distance != null) {
+                distanceView.setText(distance.toString());
+                distanceView.setVisible(true);
+            } else {
+                distanceView.setText("");
+                distanceView.setVisible(false);
+            }
+            // comment
+            String comment = entry.getComment();
+            if (comment != null) {
+                commentView.setText(comment);
+            } else {
+                commentView.clear();
+            }
+            entryView.setVisible(true);
         });
 
         Button delete = new Button();
         delete.setText("Delete");
 
-        delete.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent e) {
-                App.entryManager.removeEntry(entry.getId());
-                try {
-                    EntrySaverJson.save(App.entryManager);
-                } catch (IOException exc) {
-                    errorLabel.setText(exc.getMessage());
-                }
-                sort(null);
+        delete.setOnAction(e -> {
+            App.entryManager.removeEntry(entry.getId());
+            try {
+                EntrySaverJson.save(App.entryManager);
+            } catch (IOException exc) {
+                errorLabel.setText(exc.getMessage());
             }
+            sort(null);
         });
 
         GridPane.setHalignment(title, HPos.LEFT);
@@ -221,11 +294,12 @@ public class StartPageController {
     /**
      * Updates ui when main category is selected.
      * Also updates the current sort.
+     *
      * @param event a JavaFX event.
      */
     @FXML
     public void replaceSubcategories(final Event event) {
-        // hide and clear if there should be none
+        // hide and clear subcategories when there should be none.
         if (sortCategory.getValue().equals("ANY")) {
             sortSubcategory.setItems(FXCollections.observableArrayList());
             sortSubcategory.setVisible(false);
@@ -246,12 +320,12 @@ public class StartPageController {
                 }
             }
         }
-        // silly
         sort(event);
     }
 
     /**
      * Updates ui sort with reversal.
+     *
      * @param event a JavaFX event.
      */
     @FXML
@@ -281,16 +355,20 @@ public class StartPageController {
                 FXCollections.observableArrayList();
         sortCardioSubcategories.add("ANY");
 
-        for (LogEntry.SORTCONFIGURATIONS sortConfiguration : LogEntry.SORTCONFIGURATIONS.values()) {
+        for (LogEntry.SORTCONFIGURATIONS sortConfiguration
+                : LogEntry.SORTCONFIGURATIONS.values()) {
             sortConfigs.add(sortConfiguration.name());
         }
-        for (LogEntry.EXERCISECATEGORY exercisecategory : LogEntry.EXERCISECATEGORY.values()) {
+        for (LogEntry.EXERCISECATEGORY exercisecategory
+                : LogEntry.EXERCISECATEGORY.values()) {
             sortCategories.add(exercisecategory.name());
         }
-        for (LogEntry.STRENGTHSUBCATEGORIES strengthSubcategory : LogEntry.STRENGTHSUBCATEGORIES.values()) {
+        for (LogEntry.STRENGTHSUBCATEGORIES strengthSubcategory
+                : LogEntry.STRENGTHSUBCATEGORIES.values()) {
             sortStrengthSubcategories.add(strengthSubcategory.name());
         }
-        for (LogEntry.CARDIOSUBCATEGORIES cardioSubcategory : LogEntry.CARDIOSUBCATEGORIES.values()) {
+        for (LogEntry.CARDIOSUBCATEGORIES cardioSubcategory
+                : LogEntry.CARDIOSUBCATEGORIES.values()) {
             sortCardioSubcategories.add(cardioSubcategory.name());
         }
 
