@@ -1,12 +1,5 @@
 package ui;
 
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.stage.Stage;
-import java.io.IOException;
-import java.io.FileNotFoundException;
-import javafx.fxml.FXML;
 import core.EntryManager;
 import core.LogEntry;
 import javafx.collections.FXCollections;
@@ -14,7 +7,11 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.HPos;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
@@ -25,8 +22,8 @@ import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 import localpersistence.EntrySaverJson;
-import javafx.scene.Node;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -130,31 +127,34 @@ public class StartPageController {
      * @throws IOException if .FXML file could not be found.
      */
     @FXML
-    public void addSessionButtonPushed(ActionEvent event) throws IOException{
-        FXMLLoader Loader = new FXMLLoader();
-		Loader.setLocation(getClass().getResource("AddNewSession.fxml"));
-		Parent p = Loader.load();
-		Scene  s = new Scene(p);
-        Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
+    public void addSessionButtonPushed(final ActionEvent event)
+            throws IOException {
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("AddNewSession.fxml"));
+        Parent p = loader.load();
+        Scene s = new Scene(p);
+        Stage window =
+                (Stage) ((Node) event.getSource()).getScene().getWindow();
         window.setTitle("Add new session");
-		window.setScene(s);
-		window.show();
-      
+        window.setScene(s);
+        window.show();
     }
 
     /* Easteregg for future release
     public void handleViewStatisticsButton(ActionEvent event) throws IOException{
         FXMLLoader Loader = new FXMLLoader();
-		Loader.setLocation(getClass().getResource("Statistics.fxml"));
-		Parent p = Loader.load();
-		Scene  s = new Scene(p);
+        Loader.setLocation(getClass().getResource("Statistics.fxml"));
+        Parent p = Loader.load();
+        Scene  s = new Scene(p);
         Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
-		window.setScene(s);
-		window.show();
-        
-    } */
+        window.setScene(s);
+        window.show();
+    }
+    */
+
     /**
      * Hides entry view.
+     *
      * @param event ignored.
      */
     @FXML
@@ -234,7 +234,6 @@ public class StartPageController {
             // title
             titleView.setText(entry.getTitle());
             // date
-            // this may need formatting
             dateView.setText(entry.getDate().toString());
             // category
             categoryView.setText(entry.getExerciseCategory().toString());
@@ -287,6 +286,7 @@ public class StartPageController {
         grid.add(delete, 3, 0);
 
         vBox.getChildren().add(grid);
+        vBox.setId(entry.getId());
 
         return vBox;
     }
@@ -302,7 +302,6 @@ public class StartPageController {
             textField.setVisible(false);
             textLabel.setVisible(false);
         }
-
     }
 
     /**
