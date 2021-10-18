@@ -4,6 +4,7 @@ import core.EntryManager;
 import core.LogEntry;
 import core.LogEntry.EntryBuilder;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.ListView;
@@ -56,7 +57,7 @@ public class AppTest extends ApplicationTest {
     // Due to some weirdness related to doing work in the background for testing,
     // the ui might not be up to date when starting a new test
     public void refresh() {
-        click("Add workoout'A");
+        click("Add workout");
         click("Return");
     }
 
@@ -219,6 +220,23 @@ public class AppTest extends ApplicationTest {
         Assertions.assertEquals(numberOfEntries - 1, App.entryManager.entryCount());
         checkView();
     }
+
+    /*@Test
+    public void testShow() {
+        try{
+            updateRoot();
+        }
+        catch (IOException e) {
+                Assertions.fail();
+        }
+
+        Node entryView = root.lookup("#entryView");
+        Assertions.assertEquals(false, entryView.isVisible());
+        System.out.println(entryView.isVisible());
+        click("Show"); 
+        System.out.println(entryView.isVisible());
+        Assertions.assertEquals(true, entryView.isVisible());
+    }*/
 
 
 }
