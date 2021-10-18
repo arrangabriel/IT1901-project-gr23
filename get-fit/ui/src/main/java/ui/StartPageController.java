@@ -22,6 +22,7 @@ import localpersistence.EntrySaverJson;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.time.Duration;
 import java.util.Iterator;
 
 public class StartPageController {
@@ -229,7 +230,7 @@ public class StartPageController {
             // feeling
             feelingView.setText(String.valueOf(entry.getFeeling()));
             // duration
-            durationView.setText(entry.getDuration().toString());
+            durationView.setText(durationToHours(entry.getDuration()));
             // subcategory optional
             LogEntry.Subcategory subcategory = entry.getExerciseSubCategory();
             setOptionalField(subcategory, subcategoryView, subvategoryLabel);
@@ -279,7 +280,8 @@ public class StartPageController {
         return vBox;
     }
 
-    private void setOptionalField(final Object data, final Text textField, final Text textLabel) {
+    private void setOptionalField(final Object data, final Text textField,
+                                  final Text textLabel) {
         if (data != null) {
             textField.setText(data.toString());
             textField.setVisible(true);
@@ -322,6 +324,12 @@ public class StartPageController {
             }
         }
         sort(event);
+    }
+
+    private String durationToHours(final Duration duration) {
+        double hours = (double) duration.toHours();
+        double minutes = (double) duration.toMinutes() / 60;
+        return String.valueOf((double) Math.round((hours + minutes) * 10) / 10);
     }
 
     /**
