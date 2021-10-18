@@ -35,7 +35,7 @@ public class StartPageController {
     private Text heartRateLabel;
     /***/
     @FXML
-    private Text subvategoryLabel;
+    private Text subcategoryLabel;
     /***/
     @FXML
     private AnchorPane entryView;
@@ -127,18 +127,21 @@ public class StartPageController {
         App.setRoot("AddNewSession");
     }
 
-    /**
+
+    /*
      * Switches to statistics page.
      *
      * @param event a JavaFX event.
      * @throws IOException if .FXML page could not be found.
      */
+    /*
     @FXML
     public void handleGoToStatistics(final ActionEvent event)
             throws IOException {
         // TODO - change this to new version @Emilie
         App.setRoot("Statistics");
     }
+    */
 
     /**
      * Hides entry view pane.
@@ -163,7 +166,7 @@ public class StartPageController {
                 new EntryManager.SortedIteratorBuilder(App.entryManager,
                         config);
         try {
-            // throws illegalargumentexception if value is ANY.
+            // throws IllegalArgumentException if value is ANY.
             LogEntry.EXERCISECATEGORY category =
                     LogEntry.EXERCISECATEGORY.valueOf(sortCategory.getValue());
             iteratorBuilder = iteratorBuilder.filterExerciseCategory(category);
@@ -200,7 +203,6 @@ public class StartPageController {
         }
     }
 
-    @SuppressWarnings("checkstyle:MagicNumber")
     private VBox createListEntry(final LogEntry entry) {
         VBox vBox = new VBox();
         GridPane grid = new GridPane();
@@ -223,7 +225,7 @@ public class StartPageController {
             // title
             titleView.setText(entry.getTitle());
             // date
-            // this may need formating
+            // this may need formatting
             dateView.setText(entry.getDate().toString());
             // category
             categoryView.setText(entry.getExerciseCategory().toString());
@@ -233,7 +235,7 @@ public class StartPageController {
             durationView.setText(durationToHours(entry.getDuration()));
             // subcategory optional
             LogEntry.Subcategory subcategory = entry.getExerciseSubCategory();
-            setOptionalField(subcategory, subcategoryView, subvategoryLabel);
+            setOptionalField(subcategory, subcategoryView, subcategoryLabel);
             // maxHeartRate optional
             Integer maxHeartRate = entry.getMaxHeartRate();
             setOptionalField(maxHeartRate, heartRateView, heartRateLabel);
@@ -368,9 +370,9 @@ public class StartPageController {
                 : LogEntry.SORTCONFIGURATIONS.values()) {
             sortConfigs.add(sortConfiguration.name());
         }
-        for (LogEntry.EXERCISECATEGORY exercisecategory
+        for (LogEntry.EXERCISECATEGORY exerciseCategory
                 : LogEntry.EXERCISECATEGORY.values()) {
-            sortCategories.add(exercisecategory.name());
+            sortCategories.add(exerciseCategory.name());
         }
         for (LogEntry.STRENGTHSUBCATEGORIES strengthSubcategory
                 : LogEntry.STRENGTHSUBCATEGORIES.values()) {

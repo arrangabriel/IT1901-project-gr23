@@ -24,7 +24,7 @@
 
     <Button fx:id="addSession" layoutX="464.0" layoutY="345.0" mnemonicParsing="false" onAction="#addSessionButtonPushed" prefHeight="39.0" prefWidth="111.0" text="Add workout" />
 
-    <Button fx:id="goToStatistics" layoutX="22.0" layoutY="345.0" mnemonicParsing="false" onAction="#handleGoToStatistics" prefHeight="39.0" prefWidth="111.0" text="View  statistics" />
+    <!--<Button fx:id="goToStatistics" layoutX="22.0" layoutY="345.0" mnemonicParsing="false" onAction="#handleGoToStatistics" prefHeight="39.0" prefWidth="111.0" text="View  statistics" />-->
 
     <Separator layoutX="22.0" layoutY="69.0" prefHeight="6.0" prefWidth="428.0" />
 
@@ -62,7 +62,7 @@
                 <Text fx:id="feelingView" strokeType="OUTSIDE" strokeWidth="0.0" text="feeling" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                 <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Exercise type:" GridPane.rowIndex="2" />
                 <Text fx:id="categoryView" strokeType="OUTSIDE" strokeWidth="0.0" text="category" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                <Text fx:id="subvategoryLabel" strokeType="OUTSIDE" strokeWidth="0.0" text="Subcategory:" GridPane.rowIndex="3" />
+                <Text fx:id="subcategoryLabel" strokeType="OUTSIDE" strokeWidth="0.0" text="Subcategory:" GridPane.rowIndex="3" />
                 <Text fx:id="subcategoryView" strokeType="OUTSIDE" strokeWidth="0.0" text="subcategory" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                 <Text fx:id="heartRateLabel" strokeType="OUTSIDE" strokeWidth="0.0" text="Max heart rate:" GridPane.rowIndex="4" />
                 <Text fx:id="heartRateView" strokeType="OUTSIDE" strokeWidth="0.0" text="maxHeartRate" GridPane.columnIndex="1" GridPane.rowIndex="4" />
