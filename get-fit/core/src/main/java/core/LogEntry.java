@@ -415,13 +415,9 @@ public final class LogEntry {
          */
         LEGS,
         /**
-         * Full exercises.
+         * Full body exercises.
          */
-        FULL,
-        /**
-         * Body exercises.
-         */
-        BODY;
+        FULLBODY;
 
         @Override
         public Subcategory getValueOf(final String name) {
