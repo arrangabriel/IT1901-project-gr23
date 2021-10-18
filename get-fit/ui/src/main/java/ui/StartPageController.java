@@ -361,6 +361,7 @@ public class StartPageController {
      */
     @FXML
     private void initialize() {
+        entryView.setVisible(false);
         //populate sorting selectors
         sortConfigs =
                 FXCollections.observableArrayList();
