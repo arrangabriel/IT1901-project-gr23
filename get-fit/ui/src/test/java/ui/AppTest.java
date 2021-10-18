@@ -22,13 +22,7 @@ import java.time.LocalDate;
 import java.util.Iterator;
 import java.util.List;
 
-
 public class AppTest extends ApplicationTest {
-    private static Scene scene;
-    @FXML
-    ListView<String> listOfEntries;
-    //private StartPageController controller;
-    private StartPageController controller;
     private Parent root;
     private Stage stageRef;
 
