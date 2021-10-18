@@ -331,7 +331,7 @@ public class StartPageController {
     private String durationToHours(final Duration duration) {
         double hours = (double) duration.toHours();
         double minutes = (double) duration.toMinutes() / 60;
-        return String.valueOf((double) Math.round((hours + minutes) * 10) / 10);
+        return (double) Math.round((hours + minutes) * 10) / 10 + "h";
     }
 
     /**
