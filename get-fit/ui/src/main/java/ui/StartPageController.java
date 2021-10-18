@@ -142,7 +142,8 @@ public class StartPageController {
         open.setText("Show");
 
         open.setOnAction(new EventHandler<ActionEvent>() {
-            @Override public void handle(ActionEvent e) {
+            @Override
+            public void handle(ActionEvent e) {
                 //Do stuff
             }
         });
@@ -151,7 +152,8 @@ public class StartPageController {
         delete.setText("Delete");
 
         delete.setOnAction(new EventHandler<ActionEvent>() {
-            @Override public void handle(ActionEvent e) {
+            @Override
+            public void handle(ActionEvent e) {
                 App.entryManager.removeEntry(entry.getId());
                 try {
                     EntrySaverJson.save(App.entryManager);
