@@ -6,16 +6,17 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import org.junit.jupiter.api.Test;
 import org.testfx.framework.junit5.ApplicationTest;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import org.testfx.matcher.control.LabeledMatchers;
+
 import java.io.IOException;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 
 public class AddNewSessionController_test extends ApplicationTest {
 
-    private AddNewSessionController controller;
     private static Scene scene;
+    private AddNewSessionController controller;
 
     @Override
     public void start(final Stage stage) throws Exception {
@@ -24,36 +25,36 @@ public class AddNewSessionController_test extends ApplicationTest {
         stage.show();
     }
 
-    void setRoot(String file) throws IOException{
+    void setRoot(String file) throws IOException {
         scene.setRoot(loadFXML(file));
     }
-    
-    private Parent loadFXML (String file) throws IOException{
-        return new FXMLLoader(this.getClass().getResource(file + ".fxml")).load();
+
+    private Parent loadFXML(String file) throws IOException {
+        return new FXMLLoader(
+                this.getClass().getResource(file + ".fxml")).load();
     }
-  
 
-  private void click(String... labels) {
-    for (var label : labels) {
-        clickOn(LabeledMatchers.hasText(label));
+
+    private void click(String... labels) {
+        for (var label : labels) {
+            clickOn(LabeledMatchers.hasText(label));
+        }
     }
-}
 
 
+    @Test
+    public void testCreateButton() {
+        String nameOfSession = "New session";
+        String comment = "New comment";
+        String hour = "1";
+        String min = "30";
+        String maximumHeartrate = "150";
+        clickOn("nameOfSessionField").write(nameOfSession);
+        clickOn("commentField").write(comment);
+        clickOn("hour").write(min);
 
-  @Test
-  public void testCreateButton(){
-      String nameOfSession = "New session";
-      String comment = "New comment";
-      String hour = "1";
-      String min = "30";
-      String maximumHeartrate = "150";
-      clickOn("nameOfSessionField").write(nameOfSession);
-      clickOn("commentField").write(comment);
-      clickOn("hour").write(min);
-
-      click("#createNewSessionButtonPushed");
-  }
+        click("#createNewSessionButtonPushed");
+    }
 
   /*@Test
   public void testReturnButton() {
@@ -76,11 +77,10 @@ public class AddNewSessionController_test extends ApplicationTest {
     assertNotEquals(afterRoot, beforeRoot);
   }*/
 
-  @Test
-  public void testController_initial() {
-    assertNotNull(this.controller);
-  }
+    @Test
+    public void testController_initial() {
+        assertNotNull(this.controller);
+    }
 
 
-    
 }
