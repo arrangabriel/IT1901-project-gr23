@@ -147,29 +147,29 @@ public final class LogEntry {
 
         /* Required fields. */
         if (builder.ctitle == null
-            || builder.ctitle.length() < 1) {
+                || builder.ctitle.length() < 1) {
 
             return new Validity(false,
                     "Title cannot be empty or null");
         }
 
         if (builder.cdate == null
-            || builder.cdate.isAfter(LocalDate.now())) {
+                || builder.cdate.isAfter(LocalDate.now())) {
 
             return new Validity(false,
                     "Date cannot be after now or null");
         }
 
         if (builder.cduration == null
-            || builder.cduration.isNegative()
-            || builder.cduration.isZero()) {
+                || builder.cduration.isNegative()
+                || builder.cduration.isZero()) {
 
             return new Validity(false,
                     "Duration cannot be null and must be positive");
         }
 
         if (builder.cfeeling > LogEntry.MAXFEELING
-            || builder.cfeeling < LogEntry.MINFEELING) {
+                || builder.cfeeling < LogEntry.MINFEELING) {
 
             return new Validity(false, String.format(
                     "Feeling must be between %i and %i",
@@ -184,7 +184,7 @@ public final class LogEntry {
 
         /* Optional fields. */
         if (builder.ccomment != null
-            && (builder.ccomment.length() < 1)) {
+                && (builder.ccomment.length() < 1)) {
 
             return new Validity(false,
                     "Comment should not be empty, should be null instead");
@@ -192,7 +192,7 @@ public final class LogEntry {
 
 
         if (builder.cexerciseSubcategory != null
-            && (!Arrays.stream(builder.cexerciseCategory.getSubcategories())
+                && (!Arrays.stream(builder.cexerciseCategory.getSubcategories())
                 .anyMatch(builder.cexerciseSubcategory::equals))) {
 
             return new Validity(false,
@@ -200,15 +200,15 @@ public final class LogEntry {
         }
 
         if (builder.cdistance != null
-            && (builder.cdistance < 1)) {
+                && (builder.cdistance < 1)) {
 
             return new Validity(false,
                     "Distance must be positive");
         }
 
         if (builder.cmaxHeartRate != null
-            && (builder.cmaxHeartRate > LogEntry.MAXHEARTRATEHUMAN
-            || builder.cmaxHeartRate < LogEntry.MINHEARTRATEHUMAN)) {
+                && (builder.cmaxHeartRate > LogEntry.MAXHEARTRATEHUMAN
+                || builder.cmaxHeartRate < LogEntry.MINHEARTRATEHUMAN)) {
 
             return new Validity(false, String.format(
                     "Heart rate must be between %i and %i",
@@ -222,7 +222,17 @@ public final class LogEntry {
     // expand these in the future
 
     /**
+     * Returns the id field of this logEntry.
+     *
+     * @return the id field as a string.
+     */
+    public String getId() {
+        return id;
+    }
+
+    /**
      * Sets the id for the LogEntry. Can only be done once.
+     *
      * @param setId the id to set.
      * @throws IllegalStateException if the id has allready been set.
      */
@@ -232,15 +242,6 @@ public final class LogEntry {
         } else {
             throw new IllegalStateException("Id allready set");
         }
-    }
-
-    /**
-     * Returns the id field of this logEntry.
-     *
-     * @return the id field as a string.
-     */
-    public String getId() {
-        return id;
     }
 
     /**

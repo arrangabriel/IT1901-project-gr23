@@ -60,7 +60,7 @@ public final class EntryManager implements Iterable<LogEntry> {
      * @param entry the builder for the new LogEntry.
      * @throws IllegalArgumentException if any of the input is invalid
      *                                  or the id is allready in use.
-     * @throws IllegalStateException if the entry allready has a set id.
+     * @throws IllegalStateException    if the entry allready has a set id.
      * @see #validate
      */
     public void addEntry(
@@ -79,6 +79,7 @@ public final class EntryManager implements Iterable<LogEntry> {
 
     /**
      * Updates the position for id hashing.
+     *
      * @param pos the new position.
      */
     public void updateHashPosition(final int pos) {
@@ -186,8 +187,8 @@ public final class EntryManager implements Iterable<LogEntry> {
          * @throws IllegalArgumentException if sortConfigurations is null.
          */
         public SortedIteratorBuilder(
-            final EntryManager entryManager,
-            final LogEntry.SORTCONFIGURATIONS sortConfiguration)
+                final EntryManager entryManager,
+                final LogEntry.SORTCONFIGURATIONS sortConfiguration)
                 throws IllegalArgumentException {
 
             if (sortConfiguration == null) {
