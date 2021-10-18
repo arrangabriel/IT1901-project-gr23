@@ -27,6 +27,24 @@ public class StartPageController {
 
     /***/
     @FXML
+    private Text subcategoryView;
+    /***/
+    @FXML
+    private Text heartRateView;
+    /***/
+    @FXML
+    private Text feelingView;
+    /***/
+    @FXML
+    private Text distanceView;
+    /***/
+    @FXML
+    private Text categoryView;
+    /***/
+    @FXML
+    private Text durationView;
+    /***/
+    @FXML
     private ComboBox<String> sortConfig;
     /***/
     @FXML
@@ -53,10 +71,25 @@ public class StartPageController {
     @FXML
     private Label errorLabel;
 
+    /**
+     * String-names of sort configurations.
+     */
     private ObservableList<String> sortConfigs;
+    /**
+     * String-names of exercise categories.
+     */
     private ObservableList<String> sortCategories;
+    /**
+     * String-names of strength-subcategories.
+     */
     private ObservableList<String> sortStrengthSubcategories;
+    /**
+     * String-names of cardio-subcategories.
+     */
     private ObservableList<String> sortCardioSubcategories;
+    /**
+     * Sort order.
+     */
     private boolean reverse;
 
     /**
@@ -115,6 +148,10 @@ public class StartPageController {
         addIteratorToView(iteratorBuilder.iterator(reverse));
     }
 
+    /**
+     * Places an iterator of entries in the view.
+     * @param entries
+     */
     public void addIteratorToView(final Iterator<LogEntry> entries) {
         listOfEntries.getItems().clear();
         while (entries.hasNext()) {
@@ -181,8 +218,13 @@ public class StartPageController {
         return vBox;
     }
 
+    /**
+     * Updates ui when main category is selected.
+     * Also updates the current sort.
+     * @param event a JavaFX event.
+     */
     @FXML
-    public void replaceSubcategories(Event event) {
+    public void replaceSubcategories(final Event event) {
         // hide and clear if there should be none
         if (sortCategory.getValue().equals("ANY")) {
             sortSubcategory.setItems(FXCollections.observableArrayList());
@@ -208,8 +250,12 @@ public class StartPageController {
         sort(event);
     }
 
+    /**
+     * Updates ui sort with reversal.
+     * @param event a JavaFX event.
+     */
     @FXML
-    public void reverse(ActionEvent event) {
+    public void reverse(final ActionEvent event) {
         reverse = !reverse;
         //if (reverse) {
         //    set symbol here at a later date
