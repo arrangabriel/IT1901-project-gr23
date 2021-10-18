@@ -78,7 +78,7 @@ public class AppTest extends ApplicationTest {
     }
 
     private void addEntryClicking(String title, String comment, String hour, String min, String type, String hr, String sub, String distance) {
-        click("Add session");
+        click("Add workout");
         clickOn("#titleField");
         write(title);
         clickOn("#hour");
@@ -120,7 +120,7 @@ public class AppTest extends ApplicationTest {
     public void testCreateButton(){
         int oldCount = App.entryManager.entryCount();
 
-        click("Add session");
+        click("Add workout");
         clickOn("#titleField");
         write("New new Session");
         clickOn("#sessionDatePicker");
