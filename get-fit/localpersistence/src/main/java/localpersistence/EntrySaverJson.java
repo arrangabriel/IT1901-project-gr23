@@ -250,7 +250,8 @@ public final class EntrySaverJson {
                     .exerciseSubcategory(subCategory)
                     .maxHeartRate(maxHeartRate);
 
-
+                entryManager.updateHashPosition(
+                    Integer.parseInt(entryIdPair.getKey()));
                 entryManager.addEntry(entryIdPair.getKey(), builder.build());
             }
 

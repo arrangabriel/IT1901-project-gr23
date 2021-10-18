@@ -36,9 +36,9 @@ public class AddNewSessionController {
      */
     private final int maxMinutes = 59;
     /**
-     * Maximum heart rate limit.
+     * Maximum distance limit.
      */
-    private final int maxHeartRateLimit = LogEntry.MAXHEARTRATEHUMAN;
+    private final int maxDistance = 200;
 
     /**
      * All possible exercise category values.
@@ -172,7 +172,6 @@ public class AddNewSessionController {
     @FXML
     public void createSessionButtonPushed(final ActionEvent event)
             throws IOException {
-        // TODO - handle exception when entry could not be created
 
         String title = titleField.getText();
         LocalDate date = sessionDatePicker.getValue();
@@ -186,7 +185,7 @@ public class AddNewSessionController {
         String comment = commentField.getText();
 
         try {
-            // checks if duration fields have values in them.
+            // checks if duration fields have values.
             try {
                 duration = Duration.ofHours(Integer.parseInt(hour.getText()))
                         .plusSeconds(Duration.ofMinutes(
@@ -195,13 +194,18 @@ public class AddNewSessionController {
                 throw new IllegalArgumentException("Duration must be set.");
             }
 
-            // tries to build.
+            // tries to build with required values.
             LogEntry.EntryBuilder logBuilder = new LogEntry.EntryBuilder(
                     title, date, duration, category, feeling);
 
             // adds maxHeartRate if value is present.
             try {
                 maxHeartRate = Integer.parseInt(heartRate.getText());
+                if (maxHeartRate < LogEntry.MINHEARTRATEHUMAN) {
+                    throw new IllegalArgumentException(
+                            "Heart rate must be more than "
+                                    + LogEntry.MINHEARTRATEHUMAN);
+                }
                 logBuilder = logBuilder.maxHeartRate(maxHeartRate);
             } catch (NumberFormatException event1) {
             }
@@ -215,6 +219,7 @@ public class AddNewSessionController {
             String subCategoryString = tags.getValue();
 
             switch (category) {
+                // special cases
                 case STRENGTH -> {
                     // adds subcategory if value is present.
                     try {
@@ -246,6 +251,8 @@ public class AddNewSessionController {
                 default -> {
                 }
             }
+
+            // add and save newly created LogEntry.
             App.entryManager.addEntry(logBuilder.build());
             EntrySaverJson.save(App.entryManager);
 
@@ -314,7 +321,6 @@ public class AddNewSessionController {
     }
 
     private void setCardio(final boolean isCardio) {
-        // TODO - add new fields to this
         distance.setVisible(isCardio);
         distanceLabel.setVisible(isCardio);
     }
@@ -328,42 +334,6 @@ public class AddNewSessionController {
                         .toCollection(FXCollections::observableArrayList));
     }
 
-    /**
-     * Initializes the controller.
-     *
-     * @throws NumberFormatException if the input is too large
-     */
-    @FXML
-    private void initialize() throws NumberFormatException {
-        // TODO - maybe refactor this to a function call
-        ObservableList<String> exerciseCategoryNames = exerciseCategories
-                .stream()
-                .map(
-                        Enum::toString)
-                .collect(Collectors
-                        .toCollection(FXCollections::observableArrayList));
-
-        exerciseType.setItems(exerciseCategoryNames);
-        exerciseType.getSelectionModel().selectFirst();
-        tags.setItems(getSubcategoryStringObservableList(
-                LogEntry.EXERCISECATEGORY.STRENGTH));
-        setCardio(false);
-
-        // validation of fields when they are changed
-        validateIntegerInput(hour, maxHours);
-        validateIntegerInput(min, maxMinutes);
-        validateIntegerInput(heartRate,
-                LogEntry.MAXHEARTRATEHUMAN);
-        // set current date on startup
-        sessionDatePicker.setValue(LocalDate.now());
-    }
-
-    /**
-     * Adds a max (and lower 0) int validation listener to the textField.
-     *
-     * @param field    the field to be validated.
-     * @param maxValue maximum int to validate against.
-     */
     private void validateIntegerInput(final TextField field,
                                       final int maxValue) {
         field.textProperty().addListener((obs, oldValue, newValue) -> {
@@ -385,5 +355,37 @@ public class AddNewSessionController {
                 }
             }
         });
+    }
+
+    /**
+     * Initializes the controller.
+     *
+     * @throws NumberFormatException if the input is too large
+     */
+    @FXML
+    private void initialize() throws NumberFormatException {
+
+        // generate an ObservableList of exercise category names.
+        ObservableList<String> exerciseCategoryNames = exerciseCategories
+                .stream()
+                .map(
+                        Enum::toString)
+                .collect(Collectors
+                        .toCollection(FXCollections::observableArrayList));
+
+        // set initial values.
+        exerciseType.setItems(exerciseCategoryNames);
+        exerciseType.getSelectionModel().selectFirst();
+        tags.setItems(getSubcategoryStringObservableList(
+                LogEntry.EXERCISECATEGORY.STRENGTH));
+        setCardio(false);
+        sessionDatePicker.setValue(LocalDate.now());
+
+        // validation of fields when they are changed.
+        validateIntegerInput(hour, maxHours);
+        validateIntegerInput(min, maxMinutes);
+        validateIntegerInput(heartRate,
+                LogEntry.MAXHEARTRATEHUMAN);
+        validateIntegerInput(distance, maxDistance);
     }
 }

@@ -68,6 +68,13 @@ public class TestLogEntry {
     }
 
     @Test
+    public void illegalId() {
+        LogEntry entry = new EntryBuilder("Test", LocalDate.now().minusDays(1), Duration.ofSeconds(hour), LogEntry.EXERCISECATEGORY.STRENGTH, 1).build();
+        entry.setId("0");
+        Assertions.assertThrows(IllegalStateException.class, () -> entry.setId("0"));
+    }
+
+    @Test
     public void illegalTitle() {
         Assertions.assertThrows(IllegalArgumentException.class, () -> new EntryBuilder("",LocalDate.now().minusDays(1), Duration.ofSeconds(hour), LogEntry.EXERCISECATEGORY.STRENGTH, 1));
     }
