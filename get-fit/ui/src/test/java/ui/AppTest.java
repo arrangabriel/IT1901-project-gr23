@@ -6,6 +6,9 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.ListView;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import localpersistence.EntrySaverJson;
 import org.junit.AfterClass;
@@ -142,8 +145,8 @@ public class AppTest extends ApplicationTest {
 
     }
 
-    private ListView<String> getEntriesView() {
-        return (ListView<String>) root.lookup("#listOfEntries");
+    private ListView<VBox> getEntriesView() {
+        return (ListView<VBox>) root.lookup("#listOfEntries");
     }
 
     public void checkView() {
@@ -152,11 +155,12 @@ public class AppTest extends ApplicationTest {
         } catch (IOException e) {
             Assertions.fail();
         }
-        List<String> viewEntries = getEntriesView().getItems();
+        List<VBox> viewEntries = getEntriesView().getItems();
         for (int i = 0; i < viewEntries.size(); i++) {
+            VBox box = viewEntries.get(i);
             Assertions.assertEquals(
-                    App.entryManager.getEntry(String.valueOf(i)).getTitle(),
-                    viewEntries.get(i));
+                    App.entryManager.getEntry(box.getId()).getTitle(),
+                    ((Text)((Pane) box.getChildren().get(0)).getChildren().get(0)).getText());
         }
     }
 
