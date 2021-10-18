@@ -260,13 +260,14 @@ public class AddNewSessionController {
             Loader.setLocation(getClass().getResource("StartPage.fxml"));
 
             Parent p = Loader.load();
-            Scene  s = new Scene(p);
+            Scene s = new Scene(p);
 
-            Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
+            Stage window =
+                    (Stage) ((Node) event.getSource()).getScene().getWindow();
             window.setTitle("Get fit");
             window.setScene(s);
             window.show();
-            
+
         } catch (IllegalArgumentException e) {
             if (title.isEmpty()) {
                 // case 1, title is empty.
@@ -281,19 +282,20 @@ public class AddNewSessionController {
     /**
      * This function handles going back too main page when fired.
      *
-     * @param ignored an ActionEvent from the observed change.
+     * @param event an ActionEvent from the observed change.
      * @throws IOException if StartPage could not be found.
      */
     @FXML
-    public void returnButtonPushed(ActionEvent event) throws IOException{
+    public void backButtonPushed(ActionEvent event) throws IOException {
         FXMLLoader Loader = new FXMLLoader();
-            Loader.setLocation(getClass().getResource("StartPage.fxml"));
-            Parent p = Loader.load();
-            Scene  s = new Scene(p);
-            Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
-            window.setTitle("Get fit");
-            window.setScene(s);
-            window.show();
+        Loader.setLocation(getClass().getResource("StartPage.fxml"));
+        Parent p = Loader.load();
+        Scene s = new Scene(p);
+        Stage window =
+                (Stage) ((Node) event.getSource()).getScene().getWindow();
+        window.setTitle("Get fit");
+        window.setScene(s);
+        window.show();
     }
 
     /**
