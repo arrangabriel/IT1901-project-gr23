@@ -58,15 +58,15 @@
                 </rowConstraints>
                 <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Duration:" />
                 <Text fx:id="durationView" strokeType="OUTSIDE" strokeWidth="0.0" text="duration" GridPane.columnIndex="1" />
-                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Exercise type:" GridPane.rowIndex="1" />
-                <Text fx:id="categoryView" strokeType="OUTSIDE" strokeWidth="0.0" text="category" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Subcategory:" GridPane.rowIndex="2" />
-                <Text fx:id="subcategoryView" strokeType="OUTSIDE" strokeWidth="0.0" text="subcategory" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Max heart rate:" GridPane.rowIndex="3" />
-                <Text fx:id="heartRateView" strokeType="OUTSIDE" strokeWidth="0.0" text="maxHeartRate" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Difficulty:" GridPane.rowIndex="4" />
-                <Text fx:id="feelingView" strokeType="OUTSIDE" strokeWidth="0.0" text="feeling" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Distance:" GridPane.rowIndex="5" />
+                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Difficulty:" GridPane.rowIndex="1" />
+                <Text fx:id="feelingView" strokeType="OUTSIDE" strokeWidth="0.0" text="feeling" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Exercise type:" GridPane.rowIndex="2" />
+                <Text fx:id="categoryView" strokeType="OUTSIDE" strokeWidth="0.0" text="category" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                <Text fx:id="subvategoryLabel" strokeType="OUTSIDE" strokeWidth="0.0" text="Subcategory:" GridPane.rowIndex="3" />
+                <Text fx:id="subcategoryView" strokeType="OUTSIDE" strokeWidth="0.0" text="subcategory" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                <Text fx:id="heartRateLabel" strokeType="OUTSIDE" strokeWidth="0.0" text="Max heart rate:" GridPane.rowIndex="4" />
+                <Text fx:id="heartRateView" strokeType="OUTSIDE" strokeWidth="0.0" text="maxHeartRate" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                <Text fx:id="distanceLabel" strokeType="OUTSIDE" strokeWidth="0.0" text="Distance:" GridPane.rowIndex="5" />
                 <Text fx:id="distanceView" strokeType="OUTSIDE" strokeWidth="0.0" text="distance" GridPane.columnIndex="1" GridPane.rowIndex="5" />
             </GridPane>
             <TextArea fx:id="commentView" editable="false" focusTraversable="false" layoutX="312.0" layoutY="80.0" prefHeight="251.0" prefWidth="232.0" AnchorPane.rightAnchor="20.0" />

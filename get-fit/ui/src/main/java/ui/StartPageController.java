@@ -22,11 +22,19 @@ import localpersistence.EntrySaverJson;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.time.Duration;
 import java.util.Iterator;
 
 public class StartPageController {
 
+    /***/
+    @FXML
+    private Text distanceLabel;
+    /***/
+    @FXML
+    private Text heartRateLabel;
+    /***/
+    @FXML
+    private Text subvategoryLabel;
     /***/
     @FXML
     private AnchorPane entryView;
@@ -217,40 +225,20 @@ public class StartPageController {
             // this may need formating
             dateView.setText(entry.getDate().toString());
             // category
-            dateView.setText(entry.getExerciseCategory().toString());
-            // duration
-            dateView.setText(entry.getDuration().toString());
+            categoryView.setText(entry.getExerciseCategory().toString());
             // feeling
             feelingView.setText(String.valueOf(entry.getFeeling()));
             // duration
             durationView.setText(entry.getDuration().toString());
             // subcategory optional
-            Duration duration = entry.getDuration();
-            if (duration != null) {
-                subcategoryView.setText(duration.toString());
-                subcategoryView.setVisible(true);
-            } else {
-                subcategoryView.setText("");
-                subcategoryView.setVisible(false);
-            }
+            LogEntry.Subcategory subcategory = entry.getExerciseSubCategory();
+            setOptionalField(subcategory, subcategoryView, subvategoryLabel);
             // maxHeartRate optional
             Integer maxHeartRate = entry.getMaxHeartRate();
-            if (maxHeartRate != null) {
-                heartRateView.setText(maxHeartRate.toString());
-                heartRateView.setVisible(true);
-            } else {
-                subcategoryView.setText("");
-                heartRateView.setVisible(false);
-            }
+            setOptionalField(maxHeartRate, heartRateView, heartRateLabel);
             // distance
             Double distance = entry.getDistance();
-            if (distance != null) {
-                distanceView.setText(distance.toString());
-                distanceView.setVisible(true);
-            } else {
-                distanceView.setText("");
-                distanceView.setVisible(false);
-            }
+            setOptionalField(distance, distanceView, distanceLabel);
             // comment
             String comment = entry.getComment();
             if (comment != null) {
@@ -289,6 +277,19 @@ public class StartPageController {
         vBox.getChildren().add(grid);
 
         return vBox;
+    }
+
+    private void setOptionalField(final Object data, final Text textField, final Text textLabel) {
+        if (data != null) {
+            textField.setText(data.toString());
+            textField.setVisible(true);
+            textLabel.setVisible(true);
+        } else {
+            textField.setText("");
+            textField.setVisible(false);
+            textLabel.setVisible(false);
+        }
+
     }
 
     /**
