@@ -35,7 +35,7 @@ compile:
 test:
   stage: test
   needs: ["compile"]
-  script: cd get-fit && mvn test
+  script: cd get-fit && mvn test -DnoTestUI=true
   only:
     - merge_requests
   except:
@@ -57,7 +57,7 @@ test:
 test-coverage-minimum:
   stage: coverage
   needs: ["compile"]
-  script: cd get-fit && mvn verify
+  script: cd get-fit && mvn verify -DnoTestUI=true
   only:
     - merge_requests
   except:
@@ -67,7 +67,7 @@ test-coverage-minimum:
 test-coverage-80:
   stage: coverage
   needs: ["compile"]
-  script: cd get-fit && mvn verify -Dminimum=0.8
+  script: cd get-fit && mvn verify -Dminimum=0.8 -DnoTestUI=true
   allow_failure: true
   only:
     - merge_requests
@@ -90,7 +90,7 @@ checkstyle:
 spotbugs:
   stage: bugs
   needs: ["compile"]
-  script: cd get-fit && mvn install && mvn spotbugs:check
+  script: cd get-fit && mvn install && mvn spotbugs:check -DnoTestUI=true
   allow_failure: true
   only:
     - merge_requests
