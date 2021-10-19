@@ -1,8 +1,10 @@
 package ui;
 
+import core.EntryManager;
 import core.LogEntry;
 import core.LogEntry.EntryBuilder;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.ListView;
@@ -12,6 +14,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import localpersistence.EntrySaverJson;
 import org.junit.AfterClass;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -39,8 +42,9 @@ public class AppTest extends ApplicationTest {
     private static void clearEntryManager() {
         for (Iterator<LogEntry> iterator = App.entryManager.iterator();
              iterator.hasNext(); ) {
-            iterator.next();
+            LogEntry entry = iterator.next();
             iterator.remove();
+            App.entryManager.removeEntry(entry.getId());
         }
         saveEntryManager();
     }
@@ -49,6 +53,14 @@ public class AppTest extends ApplicationTest {
     public static void teardown() {
         clearEntryManager();
     }
+
+    // Due to some weirdness related to doing work in the background for testing,
+    // the ui might not be up to date when starting a new test
+    public void refresh() {
+        click("Add workout");
+        click("Return");
+    }
+
 
     @Override
     public void start(Stage stage) throws IOException {
@@ -117,6 +129,7 @@ public class AppTest extends ApplicationTest {
         App.entryManager.addEntry(entry);
         App.entryManager.addEntry(entry2);
         saveEntryManager();
+        refresh();
     }
 
     @Test
@@ -162,6 +175,7 @@ public class AppTest extends ApplicationTest {
                     App.entryManager.getEntry(box.getId()).getTitle(),
                     ((Text)((Pane) box.getChildren().get(0)).getChildren().get(0)).getText());
         }
+        Assertions.assertEquals(viewEntries.size(), App.entryManager.entryCount());
     }
 
     @Test
@@ -198,6 +212,31 @@ public class AppTest extends ApplicationTest {
         click("Create session");
         Assertions.assertEquals("Get fit", this.stageRef.getTitle());
     }
+
+    @Test
+    public void testDelete() {
+        int numberOfEntries = App.entryManager.entryCount();
+        click("Delete");
+        Assertions.assertEquals(numberOfEntries - 1, App.entryManager.entryCount());
+        checkView();
+    }
+
+    /*@Test
+    public void testShow() {
+        try{
+            updateRoot();
+        }
+        catch (IOException e) {
+                Assertions.fail();
+        }
+
+        Node entryView = root.lookup("#entryView");
+        Assertions.assertEquals(false, entryView.isVisible());
+        System.out.println(entryView.isVisible());
+        click("Show"); 
+        System.out.println(entryView.isVisible());
+        Assertions.assertEquals(true, entryView.isVisible());
+    }*/
 
 
 }

@@ -45,7 +45,7 @@
 
     <Label fx:id="errorLabel" layoutX="174.0" layoutY="356.0" prefHeight="17.0" prefWidth="275.0" textFill="#b50c0c"/>
     <AnchorPane fx:id="entryView" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: white;"
-                visible="false" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0"
+                AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0"
                 AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
         <children>
             <Button fx:id="hideView" layoutX="544.0" layoutY="12.0" mnemonicParsing="false" onAction="#closeView"
