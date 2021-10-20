@@ -19,3 +19,8 @@ The ui module also include a resource directory:
 **[ui-module](/get-fit/ui)** contains one package, **[ui](/get-fit/ui/src/main/java/ui)**. This package includes controllers that handle interactions between user and interface
 
 The user interface is created with JavaFx an FXML. The FXML directory is located in **[ui-resources](/get-fit/ui/src/main/resources/ui)** All FXML files are connected to a controller.
+
+## PlantUML diagram
+This PlantUML diagram that represents the architecture of the Get Fit application. It shows how the components and packages relate to each other. The PlantUML code can be found her: [Get Fit PlantUML architecture file](/get-fit/architecture.puml)
+
+![Design documentation](/DesignDocumentation/Project-architecture/Get_Fit_Architecture.png)
