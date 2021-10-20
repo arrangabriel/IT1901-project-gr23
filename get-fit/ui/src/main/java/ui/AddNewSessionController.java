@@ -207,7 +207,7 @@ public class AddNewSessionController {
                                     + LogEntry.MINHEARTRATEHUMAN);
                 }
                 logBuilder = logBuilder.maxHeartRate(maxHeartRate);
-            } catch (NumberFormatException event1) {
+            } catch (NumberFormatException ignored) {
             }
 
             // adds comment if value is present.
@@ -227,7 +227,7 @@ public class AddNewSessionController {
                                 subCategoryString);
                         logBuilder =
                                 logBuilder.exerciseSubcategory(subCategory);
-                    } catch (NullPointerException event1) {
+                    } catch (NullPointerException ignored) {
                     }
                 }
                 case SWIMMING, RUNNING, CYCLING -> {
@@ -237,7 +237,7 @@ public class AddNewSessionController {
                                 Integer.parseInt(distance.getText());
                         logBuilder =
                                 logBuilder.distance((double) distanceValue);
-                    } catch (NumberFormatException event1) {
+                    } catch (NumberFormatException ignored) {
                     }
                     // adds subcategory if value is present.
                     try {
@@ -245,7 +245,7 @@ public class AddNewSessionController {
                                 subCategoryString);
                         logBuilder =
                                 logBuilder.exerciseSubcategory(subCategory);
-                    } catch (NullPointerException event1) {
+                    } catch (NullPointerException ignored) {
                     }
                 }
                 default -> {
@@ -256,17 +256,7 @@ public class AddNewSessionController {
             App.entryManager.addEntry(logBuilder.build());
             EntrySaverJson.save(App.entryManager);
 
-            FXMLLoader Loader = new FXMLLoader();
-            Loader.setLocation(getClass().getResource("StartPage.fxml"));
-
-            Parent p = Loader.load();
-            Scene s = new Scene(p);
-
-            Stage window =
-                    (Stage) ((Node) event.getSource()).getScene().getWindow();
-            window.setTitle("Get fit");
-            window.setScene(s);
-            window.show();
+            goToStartPage(event);
 
         } catch (IllegalArgumentException e) {
             if (title.isEmpty()) {
@@ -279,6 +269,18 @@ public class AddNewSessionController {
         }
     }
 
+    private void goToStartPage(final ActionEvent event) throws IOException {
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("StartPage.fxml"));
+        Parent p = loader.load();
+        Scene s = new Scene(p);
+        Stage window =
+                (Stage) ((Node) event.getSource()).getScene().getWindow();
+        window.setTitle("Get fit");
+        window.setScene(s);
+        window.show();
+    }
+
     /**
      * This function handles going back too main page when fired.
      *
@@ -286,16 +288,8 @@ public class AddNewSessionController {
      * @throws IOException if StartPage could not be found.
      */
     @FXML
-    public void backButtonPushed(ActionEvent event) throws IOException {
-        FXMLLoader Loader = new FXMLLoader();
-        Loader.setLocation(getClass().getResource("StartPage.fxml"));
-        Parent p = Loader.load();
-        Scene s = new Scene(p);
-        Stage window =
-                (Stage) ((Node) event.getSource()).getScene().getWindow();
-        window.setTitle("Get fit");
-        window.setScene(s);
-        window.show();
+    public void backButtonPushed(final ActionEvent event) throws IOException {
+        goToStartPage(event);
     }
 
     /**
@@ -341,7 +335,7 @@ public class AddNewSessionController {
         field.textProperty().addListener((obs, oldValue, newValue) -> {
             if (!newValue.isEmpty()) {
                 try {
-                    // throws exception if newvalue is not numeric
+                    // throws exception if newValue is not numeric
                     int value = Integer.parseInt(newValue);
                     if (value < 0 || value > maxValue) {
                         throw new NumberFormatException(
