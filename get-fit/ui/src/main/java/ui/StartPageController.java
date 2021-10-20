@@ -401,7 +401,7 @@ public class StartPageController {
         if (App.entryManager.entryCount() == 0) {
             try {
                 EntrySaverJson.load(App.entryManager);
-            } catch (FileNotFoundException e) {
+            } catch (IOException e) {
                 System.out.println("SaveData.json could not be found.");
                 errorLabel.setText("The file was not found.");
             }

@@ -72,7 +72,7 @@ public class TestEntrySaverJson {
         Assertions.assertEquals(0, newManager.entryCount());
         try {
             EntrySaverJson.load(newManager, saveFile);
-        } catch (FileNotFoundException e) {
+        } catch (IOException e) {
             Assertions.fail();
         }
         Assertions.assertEquals(manager.entryCount(), newManager.entryCount());
