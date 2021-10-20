@@ -100,4 +100,44 @@ public class TestEntryManager {
         }
         Assertions.assertEquals(entryAmmount, counter);
     }
+
+
+    @Test
+    public void testSortedIteratorBuilder() {
+        EntryManager manager = genValidManager();
+        EntryBuilder builder1 = genValidBuilder(EXERCISECATEGORY.STRENGTH, STRENGTHSUBCATEGORIES.PUSH);
+        EntryBuilder builder2 = genValidBuilder(EXERCISECATEGORY.STRENGTH, STRENGTHSUBCATEGORIES.PUSH);
+        EntryBuilder builder3 = genValidBuilder(EXERCISECATEGORY.CYCLING, CARDIOSUBCATEGORIES.HIGHINTENSITY);
+        
+        manager.addEntry(builder1.build());
+        manager.addEntry(builder2.build());
+        manager.addEntry(builder3.build());
+        
+        int entryAmmount = manager.entryCount();
+        int counter = 0;
+
+        EntryManager.SortedIteratorBuilder itrbld1 = new EntryManager.SortedIteratorBuilder(manager, LogEntry.SORTCONFIGURATIONS.DATE);
+        EntryManager.SortedIteratorBuilder itrbld2 = new EntryManager.SortedIteratorBuilder(manager, LogEntry.SORTCONFIGURATIONS.DURATION);
+        EntryManager.SortedIteratorBuilder itrbld3 = new EntryManager.SortedIteratorBuilder(manager, LogEntry.SORTCONFIGURATIONS.TITLE);
+        //Iterator<LogEntry> itr1 = itrbld1;
+        //Iterator<LogEntry> itr2 = itrbld2.filterExerciseCategory(LogEntry.EXERCISECATEGORY.STRENGTH);
+        itrbld2.filterExerciseCategory(EXERCISECATEGORY.STRENGTH);
+        int c1 = 0;
+        int c2 = 0;
+        for (Iterator<LogEntry> itr = itrbld1.iterator(false); itr.hasNext();) {
+            itr.next();
+            c1++;
+        }for (Iterator<LogEntry> itr = itrbld2.iterator(false); itr.hasNext();) {
+            itr.next();
+            c2++;
+        }
+        Assertions.assertThrows(IllegalArgumentException.class, () -> itrbld3.filterSubCategory(null));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> itrbld3.filterTimeInterval(null, null));
+        
+        itrbld3.filterTimeInterval(LocalDate.now().minusDays(2), LocalDate.now());
+        
+        Assertions.assertTrue(c1 > c2);
+        Iterator<LogEntry> itr3 = itrbld3.iterator(false);
+
+    }
 }
