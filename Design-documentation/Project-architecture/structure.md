@@ -14,7 +14,7 @@ The ui module also include a resource directory:
 
 ### Local Persistence
 **[localpersistence-module](/get-fit/localpersistence)** contains one package, **[localpersistence](/get-fit/localpersistence/src/main/java/localpersistence)**.  This package includes classes implemented with JSON. These classes write and load objects to and from file.
-**[Notes on implementation-decisions for saving (impicit/explicit).](/DesignDocumentation/Project-architecture/persitence-metaphor.md)**
+**[Notes on implementation-decisions for saving (impicit/explicit).](/Design-documentation/Project-architecture/persitence-metaphor.md)**
 
 ### UI
 **[ui-module](/get-fit/ui)** contains one package, **[ui](/get-fit/ui/src/main/java/ui)**. This package includes controllers that handle interactions between user and interface
@@ -24,4 +24,4 @@ The user interface is created with JavaFx an FXML. The FXML directory is located
 ## PlantUML diagram
 This PlantUML diagram that represents the architecture of the Get Fit application. It shows how the components and packages relate to each other. The PlantUML code can be found her: [Get Fit PlantUML architecture file](/get-fit/architecture.puml)
 
-![Design documentation](/DesignDocumentation/Project-architecture/Get_Fit_Architecture.png)
+![Design documentation](/Design-documentation/Project-architecture/Get_Fit_Architecture.png)

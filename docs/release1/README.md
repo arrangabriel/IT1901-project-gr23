@@ -23,7 +23,7 @@ There will be a workout log where all of the added workouts will appear as a lis
 
 The MVP is focused on solving the most basic user story, where the problem is to be able to store a workout with a comment. 
 This user story can be found here:
-[User story 1](/DesignDocumentation/Scenario-us1.png)
+[User story 1](/Design-documentation/Scenario-us1.png)
 
 
 

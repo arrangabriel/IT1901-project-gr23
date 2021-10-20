@@ -14,4 +14,4 @@ To test the project you must be in the get-fit directory and use the command `mv
 
 ## Structure 
 
-The project architecture is documented in **[project architecture.](/DesignDocumentation/Project-architecture/structure.md)**
+The project architecture is documented in **[project architecture.](/Design-documentation/Project-architecture/structure.md)**
