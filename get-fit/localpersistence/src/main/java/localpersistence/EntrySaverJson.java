@@ -121,7 +121,10 @@ public final class EntrySaverJson {
         }
         File file = new File(saveFile);
 
-        file.createNewFile();
+        if (!file.exists() || !file.isFile()) {
+            boolean created = file.createNewFile();
+            assert created;
+        }
 
         try (FileWriter writer = new FileWriter(file, StandardCharsets.UTF_8)) {
             writer.write(json.toJSONString());
