@@ -8,6 +8,10 @@ Through some trial and error we have arrived at the following workflow for branc
 - Merge into dev through a merge request where tests and code coverage analysis is automatically performed
 - Once enough features have accumulated and are of good quality and polish merge dev into master through another merge request with aditional testing
 
+# Workflow
+
+We use the SCRUM framework for efficently producing and delivering high quality code. The issues related to the milestone are used to divide different tasks between us. We use the milestones for grouping issues with releases, as we have been instructed to. The issues are labeled to easily sort and distinguish them from eachother. Pair programing is something we practice a lot, even though we divide the issues to individual members of the group. The group is divided into pairs, and those pairs tackl different challenges and take turn programming. By doing this all of the group members can learn from each other. It also makes us less vulnerable to typos and other errors, and it is easier to solve complex problems in pairs. Even though we use pair programming a lot, we do some of the easier work indiviually and make the other team members review the work. This is to make the development process more efficent. 
+
 # Jobs
 
 The repository employs a multitude of jobs in order to ensure only valid code is merged into the branches dev and main. The jobs run an assortment of maven goals and will give feedback if something goes wrong. The following jobs are run:
