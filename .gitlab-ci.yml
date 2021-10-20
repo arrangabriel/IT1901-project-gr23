@@ -90,7 +90,7 @@ checkstyle:
 spotbugs:
   stage: bugs
   needs: ["compile"]
-  script: cd get-fit && mvn install && mvn spotbugs:check -DnoTestUI=true
+  script: cd get-fit && mvn install -DnoTestUI=true && mvn spotbugs:check -DnoTestUI=true
   allow_failure: true
   only:
     - merge_requests
