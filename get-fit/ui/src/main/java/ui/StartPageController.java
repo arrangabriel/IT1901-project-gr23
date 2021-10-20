@@ -139,8 +139,9 @@ public class StartPageController {
         window.show();
     }
 
-    /* Easteregg for future release
-    public void handleViewStatisticsButton(ActionEvent event) throws IOException{
+    /* Easter egg for future release
+    public void handleViewStatisticsButton(
+    ActionEvent event) throws IOException{
         FXMLLoader Loader = new FXMLLoader();
         Loader.setLocation(getClass().getResource("Statistics.fxml"));
         Parent p = Loader.load();
