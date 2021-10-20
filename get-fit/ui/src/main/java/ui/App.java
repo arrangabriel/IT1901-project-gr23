@@ -13,6 +13,9 @@ import java.io.IOException;
  * JavaFX App.
  */
 public class App extends Application {
+    /**
+     * EntryManager is the brains of the operation.
+     */
     protected static EntryManager entryManager = new EntryManager();
 
     /**
@@ -24,15 +27,20 @@ public class App extends Application {
         launch();
     }
 
+    /**
+     * Starts the app.
+     *
+     * @param stage main stage.
+     */
     @Override
-    public void start(final Stage stage) throws IOException {
+    public void start(final Stage stage) {
         try {
             Parent parent =
                     FXMLLoader.load(getClass().getResource("StartPage.fxml"));
             stage.setTitle("Get fit");
             stage.setScene(new Scene(parent));
             stage.show();
-        } catch (NullPointerException e) {
+        } catch (IOException e) {
             System.out.println("Missing StartPage.fxml file.");
         }
     }
