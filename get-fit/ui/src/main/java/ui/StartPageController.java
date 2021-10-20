@@ -226,7 +226,6 @@ public class StartPageController {
         Text date = new Text(entry.getDate().toString());
         Text category = new Text(entry.getExerciseCategory().toString());
 
-        // this is a placeholder.
         Button open = new Button();
         open.setText("Show");
 

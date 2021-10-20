@@ -1,10 +1,8 @@
 package ui;
 
-import core.EntryManager;
 import core.LogEntry;
 import core.LogEntry.EntryBuilder;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.ListView;
@@ -14,7 +12,6 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import localpersistence.EntrySaverJson;
 import org.junit.AfterClass;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -55,7 +52,7 @@ public class AppTest extends ApplicationTest {
     }
 
     // Due to some weirdness related to doing work in the background for testing,
-    // the ui might not be up to date when starting a new test
+    // the ui might not be up-to-date when starting a new test
     public void refresh() {
         click("Add workout");
         click("Return");
@@ -169,18 +166,19 @@ public class AppTest extends ApplicationTest {
             Assertions.fail();
         }
         List<VBox> viewEntries = getEntriesView().getItems();
-        for (int i = 0; i < viewEntries.size(); i++) {
-            VBox box = viewEntries.get(i);
+        for (VBox box : viewEntries) {
             Assertions.assertEquals(
                     App.entryManager.getEntry(box.getId()).getTitle(),
-                    ((Text)((Pane) box.getChildren().get(0)).getChildren().get(0)).getText());
+                    ((Text) ((Pane) box.getChildren().get(0)).getChildren()
+                            .get(0)).getText());
         }
-        Assertions.assertEquals(viewEntries.size(), App.entryManager.entryCount());
+        Assertions.assertEquals(viewEntries.size(),
+                App.entryManager.entryCount());
     }
 
     @Test
     public void varietyCreation() {
-        addEntryClicking("Push", "I did bench presses as well as some pushups",
+        addEntryClicking("Push", "I did bench presses as well as some push-ups",
                 "1", "45", "STRENGTH", "90", "PUSH", null);
         addEntryClicking("Cardio", "I ran a while",
                 "3", "30", "RUNNING", "200", "LONG", "6");
@@ -217,11 +215,12 @@ public class AppTest extends ApplicationTest {
     public void testDelete() {
         int numberOfEntries = App.entryManager.entryCount();
         click("Delete");
-        Assertions.assertEquals(numberOfEntries - 1, App.entryManager.entryCount());
+        Assertions.assertEquals(numberOfEntries - 1,
+                App.entryManager.entryCount());
         checkView();
     }
-
-    /*@Test
+/*
+    @Test
     public void testShow() {
         try{
             updateRoot();
@@ -230,13 +229,11 @@ public class AppTest extends ApplicationTest {
                 Assertions.fail();
         }
 
-        Node entryView = root.lookup("#entryView");
-        Assertions.assertEquals(false, entryView.isVisible());
-        System.out.println(entryView.isVisible());
-        click("Show"); 
-        System.out.println(entryView.isVisible());
-        Assertions.assertEquals(true, entryView.isVisible());
-    }*/
-
-
+        AnchorPane entryView = (AnchorPane) root.lookup("#entryView");
+        Assertions.assertFalse(entryView.isVisible());
+        click("Show");
+        entryView = (AnchorPane) root.lookup("#entryView");
+        Assertions.assertTrue(entryView.isVisible());
+   }
+ */
 }
