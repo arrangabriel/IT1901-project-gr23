@@ -30,15 +30,15 @@ public class AddNewSessionController {
     /**
      * Slightly arbitrary maximum hour limit for duration.
      */
-    private final int maxHours = 99;
+    private static final int maxHours = 99;
     /**
      * Maximum minute limit.
      */
-    private final int maxMinutes = 59;
+    private static final int maxMinutes = 59;
     /**
      * Maximum distance limit.
      */
-    private final int maxDistance = 200;
+    private static final int maxDistance = 200;
 
     /**
      * All possible exercise category values.

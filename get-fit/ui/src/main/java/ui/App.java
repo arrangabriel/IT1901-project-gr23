@@ -16,7 +16,7 @@ public class App extends Application {
     /**
      * EntryManager is the brains of the operation.
      */
-    protected static EntryManager entryManager = new EntryManager();
+    protected static final EntryManager entryManager = new EntryManager();
 
     /**
      * Starts the app.
