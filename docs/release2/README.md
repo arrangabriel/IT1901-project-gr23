@@ -4,7 +4,7 @@ For release 2 we inteded to expand the MVP from the first release with new featu
 
 ## New features
 
-For this release we implemented a lot of new features. This includes the ability to sort the sessions(enteries) saved on the start page list view. They can be sorted by date, duration or title. We also added the ability to complete the add new session page to handle more data. It is also possible to view older sessions (enteries) from the start page and individual sessions(entries) can be deleted. 
+There was a handfull of new features planned for this release. These include the ability to sort the sessions saved on the start page list view. They can be sorted by date, duration or title. We completed the add new session page to handle more data. It is also possible to view older sessions from the start page and individual sessions can be deleted. As a whole this featureset was grouped under the GitLab milestone release 2, with single components divided into issues under the release 2 umbrella.
 
 ## Code improvements
 The LogEntry class is changed to implement a builder pattern. This is because the old code was messy with a lot of inputs and long code lines. With this new builder pattern the logEntry object can be created with just the necessary inputs and the optional inputs can be left out completly when creating an object. This also changed the code in Localpresistency and in EntryManager. The core module was also expanded to handle more inputs. In general the code has been changed to achiev a higher level of quality.
