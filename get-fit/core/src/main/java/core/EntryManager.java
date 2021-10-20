@@ -39,7 +39,6 @@ public final class EntryManager implements Iterable<LogEntry> {
      * @param entry the builder for the new LogEntry.
      * @return the generated id for the new LogEntry as a string.
      * @throws IllegalArgumentException if any of the input is invalid.
-     * @see #validate
      */
     public String addEntry(final LogEntry entry)
             throws IllegalArgumentException {
@@ -59,9 +58,8 @@ public final class EntryManager implements Iterable<LogEntry> {
      * @param id    the id for the new LogEntry.
      * @param entry the builder for the new LogEntry.
      * @throws IllegalArgumentException if any of the input is invalid
-     *                                  or the id is allready in use.
-     * @throws IllegalStateException    if the entry allready has a set id.
-     * @see #validate
+     *                                  or the id is already in use.
+     * @throws IllegalStateException    if the entry already has a set id.
      */
     public void addEntry(
             final String id,
@@ -112,7 +110,7 @@ public final class EntryManager implements Iterable<LogEntry> {
      * Removes a LogEntry by its id, if such a LogEntry exists.
      *
      * @param id the id to be removed.
-     * @return wether an entry was actually removed
+     * @return whether an entry was actually removed
      * @throws IllegalArgumentException if id is null
      */
     public boolean removeEntry(final String id)
@@ -196,21 +194,11 @@ public final class EntryManager implements Iterable<LogEntry> {
                         "Sort configuration cannot be null.");
             }
 
-            Comparator<LogEntry> comparator = null;
-            switch (sortConfiguration) {
-                case DATE:
-                    comparator = Comparator.comparing(LogEntry::getDate);
-                    break;
-                case DURATION:
-                    comparator = Comparator.comparing(LogEntry::getDuration);
-                    break;
-                case TITLE:
-                    comparator = Comparator.comparing(LogEntry::getTitle);
-                    break;
-                default:
-                    throw new IllegalArgumentException(
-                            "Illegal sort configuration");
-            }
+            Comparator<LogEntry> comparator = switch (sortConfiguration) {
+                case DATE -> Comparator.comparing(LogEntry::getDate);
+                case DURATION -> Comparator.comparing(LogEntry::getDuration);
+                case TITLE -> Comparator.comparing(LogEntry::getTitle);
+            };
 
             this.logEntryStream = entryManager.entryMap
                     .values()
