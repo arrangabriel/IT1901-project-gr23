@@ -22,6 +22,11 @@ public final class EntryManager implements Iterable<LogEntry> {
     private final HashMap<String, LogEntry> entryMap = new HashMap<>();
 
     /**
+     * Current id hash position.
+     */
+    private int idHashPosition = 0;
+
+    /**
      * An entry manager instance is a wrapper for a list of logEntries.
      * Functions as the API interface for the core-module.
      */
@@ -34,12 +39,12 @@ public final class EntryManager implements Iterable<LogEntry> {
      * @param entry the builder for the new LogEntry.
      * @return the generated id for the new LogEntry as a string.
      * @throws IllegalArgumentException if any of the input is invalid.
-     * @see #validate
      */
     public String addEntry(final LogEntry entry)
             throws IllegalArgumentException {
 
-        String id = String.valueOf(entryMap.size());
+        String id = String.valueOf(this.idHashPosition);
+        this.idHashPosition++;
 
         addEntry(id, entry);
 
@@ -53,20 +58,33 @@ public final class EntryManager implements Iterable<LogEntry> {
      * @param id    the id for the new LogEntry.
      * @param entry the builder for the new LogEntry.
      * @throws IllegalArgumentException if any of the input is invalid
-     *                                  or the id is allready in use.
-     * @see #validate
+     *                                  or the id is already in use.
+     * @throws IllegalStateException    if the entry already has a set id.
      */
     public void addEntry(
             final String id,
             final LogEntry entry)
-            throws IllegalArgumentException {
-
+            throws IllegalArgumentException, IllegalStateException {
 
         if (entryMap.containsKey(id)) {
             throw new IllegalArgumentException("Entry already exists");
         }
 
+        entry.setId(id);
+
         entryMap.put(id, entry);
+    }
+
+    /**
+     * Updates the position for id hashing.
+     *
+     * @param pos the new position.
+     */
+    public void updateHashPosition(final int pos) {
+        if (pos > this.idHashPosition) {
+            this.idHashPosition = pos;
+            this.idHashPosition++;
+        }
     }
 
     /**
@@ -92,7 +110,7 @@ public final class EntryManager implements Iterable<LogEntry> {
      * Removes a LogEntry by its id, if such a LogEntry exists.
      *
      * @param id the id to be removed.
-     * @return wether an entry was actually removed
+     * @return whether an entry was actually removed
      * @throws IllegalArgumentException if id is null
      */
     public boolean removeEntry(final String id)
@@ -123,13 +141,14 @@ public final class EntryManager implements Iterable<LogEntry> {
     /**
      * Removes a LogEntry with the specified id,
      * and replaces it with the provided entry.
-     * @param id the id of the LogEntry to swap.
+     *
+     * @param id    the id of the LogEntry to swap.
      * @param entry the entry to put in place.
      * @throws NoSuchElementException if the id doesn't exist in the manager.
      */
     public void swapEntry(
-        final String id,
-        final LogEntry entry)
+            final String id,
+            final LogEntry entry)
             throws NoSuchElementException {
 
         removeEntry(id);
@@ -161,11 +180,12 @@ public final class EntryManager implements Iterable<LogEntry> {
         /**
          * Builder for a sorted iterator of this EntryManager's LogEntries.
          *
-         * @param entryManager the entry manager to get entries from.
+         * @param entryManager      the entry manager to get entries from.
          * @param sortConfiguration a LogEntry.SORTCONFIGURATIONS to sort by.
          * @throws IllegalArgumentException if sortConfigurations is null.
          */
-        public SortedIteratorBuilder(final EntryManager entryManager,
+        public SortedIteratorBuilder(
+                final EntryManager entryManager,
                 final LogEntry.SORTCONFIGURATIONS sortConfiguration)
                 throws IllegalArgumentException {
 
@@ -174,21 +194,11 @@ public final class EntryManager implements Iterable<LogEntry> {
                         "Sort configuration cannot be null.");
             }
 
-            Comparator<LogEntry> comparator = null;
-            switch (sortConfiguration) {
-                case DATE:
-                    comparator = Comparator.comparing(LogEntry::getDate);
-                    break;
-                case DURATION:
-                    comparator = Comparator.comparing(LogEntry::getDuration);
-                    break;
-                case TITLE:
-                    comparator = Comparator.comparing(LogEntry::getTitle);
-                    break;
-                default:
-                    throw new IllegalArgumentException(
-                        "Illegal sort configuration");
-            }
+            Comparator<LogEntry> comparator = switch (sortConfiguration) {
+                case DATE -> Comparator.comparing(LogEntry::getDate);
+                case DURATION -> Comparator.comparing(LogEntry::getDuration);
+                case TITLE -> Comparator.comparing(LogEntry::getTitle);
+            };
 
             this.logEntryStream = entryManager.entryMap
                     .values()
@@ -235,9 +245,15 @@ public final class EntryManager implements Iterable<LogEntry> {
             }
 
             this.logEntryStream = this.logEntryStream
-                    .filter((entry) -> entry
-                            .getExerciseSubCategory()
-                            .equals(subcategory));
+                    .filter((entry) -> {
+                        LogEntry.Subcategory entrySubcategory =
+                                entry.getExerciseSubCategory();
+                        if (entrySubcategory != null) {
+                            return entrySubcategory.equals(subcategory);
+                        } else {
+                            return false;
+                        }
+                    });
             return this;
         }
 

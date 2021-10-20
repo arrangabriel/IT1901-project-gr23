@@ -1,57 +1,61 @@
 package localpersistence;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.nio.charset.Charset;
-import java.time.LocalDate;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.util.Scanner;
-import java.util.Set;
-import java.time.Duration;
-
 import core.EntryManager;
 import core.LogEntry;
 import core.LogEntry.EXERCISECATEGORY;
-import core.LogEntry.Subcategory;
 import core.LogEntry.EntryBuilder;
-
+import core.LogEntry.Subcategory;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
-/** Class for saving and loading entryManagers to and from JSON files. */
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.time.Duration;
+import java.time.LocalDate;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Scanner;
+import java.util.Set;
+
+/**
+ * Class for saving and loading entryManagers to and from JSON files.
+ */
 public final class EntrySaverJson {
 
-    /** Hidden constructor. */
-    private EntrySaverJson() { }
+    /**
+     * Hidden constructor.
+     */
+    private EntrySaverJson() {
+    }
 
     /**
      * Iterates over every entry in the provided EntryManager
      * and adds their data as a string to a hashmap.
      * Saves the hashmap to SavedData.json.
+     *
      * @param entryManager the EntryManager instance to be saved.
-     * @throws IOException if there was an issue during write.
+     * @throws IOException              if there was an issue during write.
      * @throws IllegalArgumentException if entryManager is null.
      */
     public static void save(
-        final EntryManager entryManager)
+            final EntryManager entryManager)
             throws IOException, IllegalArgumentException {
 
         save(entryManager, "SavedData.json");
-
     }
 
     /**
-     * Puts the information stored in the enty into the hashmap.
-     * @param map the map to put into.
+     * Puts the information stored in the entry into the hashmap.
+     *
+     * @param map   the map to put into.
      * @param entry the entry to store.
      */
     private static void putEntry(
-        final HashMap<String, String> map,
-        final LogEntry entry) {
+            final HashMap<String, String> map,
+            final LogEntry entry) {
 
         map.put("title", entry.getTitle());
 
@@ -81,7 +85,7 @@ public final class EntrySaverJson {
 
         if (entry.getExerciseSubCategory() != null) {
             map.put("exerciseSubCategory", entry.getExerciseSubCategory()
-            .toString());
+                    .toString());
         } else {
             map.put("exerciseSubCategory", "null");
         }
@@ -91,19 +95,19 @@ public final class EntrySaverJson {
      * Iterates over every entry in the provided EntryManager
      * and adds their data as a string to a hashmap.
      * Saves the hashmap to the specified JSON file.
+     *
      * @param entryManager the EntryManager instance to be saved.
-     * @param saveFile path to the file being written to.
+     * @param saveFile     path to the file being written to.
      * @throws IOException              if there was an issue during write.
      * @throws IllegalArgumentException if entryManager or saveFile is null.
      */
     public static void save(
-        final EntryManager entryManager,
-        final String saveFile)
+            final EntryManager entryManager,
+            final String saveFile)
             throws IOException, IllegalArgumentException {
 
         if (entryManager == null || saveFile == null) {
             throw new IllegalArgumentException("Arguments cannot be null");
-
         }
 
         JSONObject json = new JSONObject();
@@ -117,51 +121,47 @@ public final class EntrySaverJson {
         }
         File file = new File(saveFile);
 
-        boolean created = file.createNewFile();
-        created = !created;                     // Appease spotbugs
+        file.createNewFile();
 
-        FileWriter writer = new FileWriter(file, Charset.forName("utf-8"));
-        try {
+        try (FileWriter writer = new FileWriter(file, StandardCharsets.UTF_8)) {
             writer.write(json.toJSONString());
             writer.flush();
-        } catch (IOException e) {
-
-        } finally {
-            writer.close();
+        } catch (IOException ignored) {
         }
     }
 
     /**
      * Loads SavedData.json and constructs LogEntries which it appends to the
      * provided EntryManager.
+     *
      * @param entryManager the EntryManager to load data into.
-     * @throws FileNotFoundException    if SavedData.JSON could not be found.
+     * @throws IOException              if SavedData.JSON could not be found.
      * @throws IllegalArgumentException if entryManager is null.
      */
     public static void load(
-        final EntryManager entryManager)
-            throws FileNotFoundException, IllegalArgumentException {
+            final EntryManager entryManager)
+            throws IOException, IllegalArgumentException {
 
         load(entryManager, "SavedData.json");
-
     }
 
     /**
      * Converts a string representation of a subcategory into a subcategory.
+     *
      * @param category The string representation of the subcategory.
      * @return The actual subcategory or null if no match.
      */
     public static LogEntry.Subcategory stringToSubcategory(
-        final String category) {
+            final String category) {
 
         LogEntry.Subcategory subCategory = null;
-        outerloop:
-        for (EXERCISECATEGORY exCategory: LogEntry.EXERCISECATEGORY.values()) {
-            for (LogEntry.Subcategory sub: exCategory.getSubcategories()) {
+        outerLoop:
+        for (EXERCISECATEGORY exCategory : LogEntry.EXERCISECATEGORY.values()) {
+            for (LogEntry.Subcategory sub : exCategory.getSubcategories()) {
                 try {
                     subCategory = sub.getValueOf(category);
                     if (subCategory != null) {
-                        break outerloop;
+                        break outerLoop;
                     }
                 } catch (Exception e) {
                     // NEQ
@@ -174,27 +174,27 @@ public final class EntrySaverJson {
     /**
      * Loads a specified JSON file and constructs
      * LogEntries which it appends to the provided EntryManager.
+     *
      * @param entryManager the EntryManager to load data into.
      * @param saveFile     the path of the JSON file to load from.
-     * @throws FileNotFoundException   if the specified path could not be found.
+     * @throws IOException
+     * if the specified path could not be found.
      * @throws IllegalArgumentException if the entryManager or saveFile is null.
      */
     public static void load(
-        final EntryManager entryManager,
-        final String saveFile)
-            throws FileNotFoundException, IllegalArgumentException {
+            final EntryManager entryManager,
+            final String saveFile)
+            throws IOException, IllegalArgumentException {
 
         if (entryManager == null || saveFile == null) {
-
             throw new IllegalArgumentException("Arguments cannot be null");
-
         }
 
         JSONParser jsonParser = new JSONParser();
         File file = new File(saveFile);
-        Scanner reader = new Scanner(file, "utf-8");
+        Scanner reader = new Scanner(file, StandardCharsets.UTF_8);
         String dataString;
-        StringBuffer buffer = new StringBuffer();
+        StringBuilder buffer = new StringBuilder();
 
         while (reader.hasNextLine()) {
             buffer.append(reader.nextLine());
@@ -207,10 +207,8 @@ public final class EntrySaverJson {
         try {
             JSONObject jsonObject = (JSONObject) jsonParser.parse(dataString);
 
-
-            //@SuppressWarnings("unchecked")
             for (Map.Entry<String, HashMap<String, String>> entryIdPair
-                : (Set<Map.Entry<String, HashMap<String, String>>>)
+                    : (Set<Map.Entry<String, HashMap<String, String>>>)
                     jsonObject.entrySet()) {
 
                 HashMap<String, String> innerMap = entryIdPair.getValue();
@@ -220,37 +218,38 @@ public final class EntrySaverJson {
                 String comment = null;
                 Double distance = null;
                 Integer maxHeartRate = null;
-                Integer feeling = Integer.parseInt(innerMap.get("feeling"));
+                int feeling = Integer.parseInt(innerMap.get("feeling"));
 
                 if (!innerMap.get("distance").equals("null")) {
                     distance = Double.parseDouble(
-                        innerMap.get("distance"));
+                            innerMap.get("distance"));
                 }
                 if (!innerMap.get("maxHeartRate").equals("null")) {
                     maxHeartRate = Integer.parseInt(
-                        innerMap.get("maxHeartRate"));
+                            innerMap.get("maxHeartRate"));
                 }
                 if (!innerMap.get("comment").equals("null")) {
                     comment = innerMap.get("comment");
                 }
 
                 Duration duration = Duration.ofSeconds(
-                    Long.parseLong(innerMap.get("duration")));
+                        Long.parseLong(innerMap.get("duration")));
 
                 EXERCISECATEGORY category = EXERCISECATEGORY.valueOf(
-                    innerMap.get("exerciseCategory"));
+                        innerMap.get("exerciseCategory"));
 
                 Subcategory subCategory = stringToSubcategory(
-                    innerMap.get("exerciseSubcategory"));
+                        innerMap.get("exerciseSubcategory"));
 
                 EntryBuilder builder = new EntryBuilder(
-                    title, date, duration, category, feeling)
-                    .comment(comment)
-                    .distance(distance)
-                    .exerciseSubcategory(subCategory)
-                    .maxHeartRate(maxHeartRate);
+                        title, date, duration, category, feeling)
+                        .comment(comment)
+                        .distance(distance)
+                        .exerciseSubcategory(subCategory)
+                        .maxHeartRate(maxHeartRate);
 
-
+                entryManager.updateHashPosition(
+                        Integer.parseInt(entryIdPair.getKey()));
                 entryManager.addEntry(entryIdPair.getKey(), builder.build());
             }
 

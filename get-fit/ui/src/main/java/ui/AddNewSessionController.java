@@ -5,6 +5,10 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
@@ -12,6 +16,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 import localpersistence.EntrySaverJson;
 
 import java.io.IOException;
@@ -161,11 +166,11 @@ public class AddNewSessionController {
     /**
      * Adds an entry to the app EntryManager and switches the view to StartPage.
      *
-     * @param ignored an ActionEvent from the observed change.
+     * @param event an ActionEvent from the observed change.
      * @throws IOException if .FXML file could not be found.
      */
     @FXML
-    public void createSessionButtonPushed(final ActionEvent ignored)
+    public void createSessionButtonPushed(final ActionEvent event)
             throws IOException {
 
         String title = titleField.getText();
@@ -202,7 +207,7 @@ public class AddNewSessionController {
                                     + LogEntry.MINHEARTRATEHUMAN);
                 }
                 logBuilder = logBuilder.maxHeartRate(maxHeartRate);
-            } catch (NumberFormatException ignored1) {
+            } catch (NumberFormatException ignored) {
             }
 
             // adds comment if value is present.
@@ -222,7 +227,7 @@ public class AddNewSessionController {
                                 subCategoryString);
                         logBuilder =
                                 logBuilder.exerciseSubcategory(subCategory);
-                    } catch (NullPointerException ignored1) {
+                    } catch (NullPointerException ignored) {
                     }
                 }
                 case SWIMMING, RUNNING, CYCLING -> {
@@ -232,7 +237,7 @@ public class AddNewSessionController {
                                 Integer.parseInt(distance.getText());
                         logBuilder =
                                 logBuilder.distance((double) distanceValue);
-                    } catch (NumberFormatException ignored1) {
+                    } catch (NumberFormatException ignored) {
                     }
                     // adds subcategory if value is present.
                     try {
@@ -240,7 +245,7 @@ public class AddNewSessionController {
                                 subCategoryString);
                         logBuilder =
                                 logBuilder.exerciseSubcategory(subCategory);
-                    } catch (NullPointerException ignored1) {
+                    } catch (NullPointerException ignored) {
                     }
                 }
                 default -> {
@@ -250,7 +255,9 @@ public class AddNewSessionController {
             // add and save newly created LogEntry.
             App.entryManager.addEntry(logBuilder.build());
             EntrySaverJson.save(App.entryManager);
-            App.setRoot("StartPage");
+
+            goToStartPage(event);
+
         } catch (IllegalArgumentException e) {
             if (title.isEmpty()) {
                 // case 1, title is empty.
@@ -262,16 +269,27 @@ public class AddNewSessionController {
         }
     }
 
+    private void goToStartPage(final ActionEvent event) throws IOException {
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("StartPage.fxml"));
+        Parent p = loader.load();
+        Scene s = new Scene(p);
+        Stage window =
+                (Stage) ((Node) event.getSource()).getScene().getWindow();
+        window.setTitle("Get fit");
+        window.setScene(s);
+        window.show();
+    }
+
     /**
      * This function handles going back too main page when fired.
      *
-     * @param ignored an ActionEvent from the observed change.
+     * @param event an ActionEvent from the observed change.
      * @throws IOException if StartPage could not be found.
      */
     @FXML
-    public void backButtonPushed(final ActionEvent ignored)
-            throws IOException {
-        App.setRoot("StartPage");
+    public void backButtonPushed(final ActionEvent event) throws IOException {
+        goToStartPage(event);
     }
 
     /**
@@ -317,7 +335,7 @@ public class AddNewSessionController {
         field.textProperty().addListener((obs, oldValue, newValue) -> {
             if (!newValue.isEmpty()) {
                 try {
-                    // throws exception if newvalue is not numeric
+                    // throws exception if newValue is not numeric
                     int value = Integer.parseInt(newValue);
                     if (value < 0 || value > maxValue) {
                         throw new NumberFormatException(
