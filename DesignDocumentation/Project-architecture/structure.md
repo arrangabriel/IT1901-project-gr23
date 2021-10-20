@@ -14,6 +14,7 @@ The ui module also include a resource directory:
 
 ### Local Persistence
 **[localpersistence-module](/get-fit/localpersistence)** contains one package, **[localpersistence](/get-fit/localpersistence/src/main/java/localpersistence)**.  This package includes classes implemented with JSON. These classes write and load objects to and from file.
+**[Notes on implementation-decisions for saving (impicit/explicit).](/DesignDocumentation/Project-architecture/persitence-metaphor.md)**
 
 ### UI
 **[ui-module](/get-fit/ui)** contains one package, **[ui](/get-fit/ui/src/main/java/ui)**. This package includes controllers that handle interactions between user and interface
