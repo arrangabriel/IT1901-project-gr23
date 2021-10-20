@@ -22,6 +22,12 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collection;
 
+/*
+---------------------------------------
+This component is for a future release.
+---------------------------------------
+ */
+
 public class StatisticsController {
     private final ToggleGroup toggleGroup = new ToggleGroup();
     //fxml component attributes
