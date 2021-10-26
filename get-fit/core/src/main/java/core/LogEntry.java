@@ -288,6 +288,73 @@ public final class LogEntry {
     }
 
     /**
+     * Converts a string representation of a subcategory into a subcategory.
+     *
+     * @param category The string representation of the subcategory.
+     * @return The actual subcategory or null if no match.
+     */
+    public static Subcategory stringToSubcategory(
+            final String category) {
+
+        Subcategory subCategory = null;
+        outerLoop:
+        for (EXERCISECATEGORY exCategory : EXERCISECATEGORY.values()) {
+            for (Subcategory sub : exCategory.getSubcategories()) {
+                try {
+                    subCategory = sub.getValueOf(category);
+                    if (subCategory != null) {
+                        break outerLoop;
+                    }
+                } catch (Exception e) {
+                    // NEQ
+                }
+            }
+        }
+        return subCategory;
+    }
+
+    public static LogEntry fromHash(HashMap<String, String> map) {
+        String title = map.get("title");
+        LocalDate date = LocalDate.parse(map.get("date"));
+        String comment = null;
+        Double distance = null;
+        Integer maxHeartRate = null;
+        int feeling = Integer.parseInt(map.get("feeling"));
+
+        if (!map.get("distance").equals("null")) {
+            distance = Double.parseDouble(
+                    map.get("distance"));
+        }
+        if (!map.get("maxHeartRate").equals("null")) {
+            maxHeartRate = Integer.parseInt(
+                    map.get("maxHeartRate"));
+        }
+        if (!map.get("comment").equals("null")) {
+            comment = map.get("comment");
+        }
+
+        Duration duration = Duration.ofSeconds(
+                Long.parseLong(map.get("duration")));
+
+        EXERCISECATEGORY category = EXERCISECATEGORY.valueOf(
+                map.get("exerciseCategory"));
+
+        Subcategory subCategory = stringToSubcategory(
+                map.get("exerciseSubcategory"));
+
+
+        LogEntry entry = new EntryBuilder(
+            title, date, duration, category, feeling)
+            .comment(comment)
+            .distance(distance)
+            .exerciseSubcategory(subCategory)
+            .maxHeartRate(maxHeartRate)
+            .build();
+        
+            return entry;
+    }
+
+    /**
      * Returns the title field of this logEntry.
      *
      * @return the title field as a string.

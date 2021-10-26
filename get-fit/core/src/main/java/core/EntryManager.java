@@ -189,6 +189,37 @@ public final class EntryManager implements Iterable<LogEntry> {
     }
 
     /**
+     * Updates a provided EntryManager with the LogEntries represented in the HashMap
+     * @param map The map representing the LogEntries to add.
+     * @param manager The EntryManager to update.
+     */
+    public static void fromHash(HashMap<String, HashMap<String, String>> map, EntryManager manager) {
+
+        for (String entryId : map.keySet()) {
+            manager.updateHashPosition(
+                Integer.parseInt(entryId));
+            LogEntry entry = LogEntry.fromHash(map.get(entryId));
+            manager.addEntry(entry);
+        }
+
+    }
+
+    /**
+     * Constructs and populates an EntryManager from a HashMap repersentation of a EntryManager.
+     * @param map The map representing the EntryManager.
+     * @return The constructed EntryManager.
+     * @see #toHashMap
+     */
+    public static EntryManager fromHash(HashMap<String, HashMap<String, String>> map) {
+        
+        EntryManager entryManager = new EntryManager();
+
+        fromHash(map, entryManager);
+
+        return entryManager;
+    }
+
+    /**
      * Gives an iterator for the LogEntries in this EntryManager in an arbitrary
      * order.
      *

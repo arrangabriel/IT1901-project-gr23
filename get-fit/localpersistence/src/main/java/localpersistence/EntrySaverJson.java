@@ -208,51 +208,7 @@ public final class EntrySaverJson {
         try {
             JSONObject jsonObject = (JSONObject) jsonParser.parse(dataString);
 
-            for (Map.Entry<String, HashMap<String, String>> entryIdPair
-                    : (Set<Map.Entry<String, HashMap<String, String>>>)
-                    jsonObject.entrySet()) {
-
-                HashMap<String, String> innerMap = entryIdPair.getValue();
-
-                String title = innerMap.get("title");
-                LocalDate date = LocalDate.parse(innerMap.get("date"));
-                String comment = null;
-                Double distance = null;
-                Integer maxHeartRate = null;
-                int feeling = Integer.parseInt(innerMap.get("feeling"));
-
-                if (!innerMap.get("distance").equals("null")) {
-                    distance = Double.parseDouble(
-                            innerMap.get("distance"));
-                }
-                if (!innerMap.get("maxHeartRate").equals("null")) {
-                    maxHeartRate = Integer.parseInt(
-                            innerMap.get("maxHeartRate"));
-                }
-                if (!innerMap.get("comment").equals("null")) {
-                    comment = innerMap.get("comment");
-                }
-
-                Duration duration = Duration.ofSeconds(
-                        Long.parseLong(innerMap.get("duration")));
-
-                EXERCISECATEGORY category = EXERCISECATEGORY.valueOf(
-                        innerMap.get("exerciseCategory"));
-
-                Subcategory subCategory = stringToSubcategory(
-                        innerMap.get("exerciseSubcategory"));
-
-                EntryBuilder builder = new EntryBuilder(
-                        title, date, duration, category, feeling)
-                        .comment(comment)
-                        .distance(distance)
-                        .exerciseSubcategory(subCategory)
-                        .maxHeartRate(maxHeartRate);
-
-                entryManager.updateHashPosition(
-                        Integer.parseInt(entryIdPair.getKey()));
-                entryManager.addEntry(entryIdPair.getKey(), builder.build());
-            }
+            EntryManager.fromHash(jsonObject);
 
         } catch (ParseException pException) {
             throw new IllegalStateException("Could not load data from file");
