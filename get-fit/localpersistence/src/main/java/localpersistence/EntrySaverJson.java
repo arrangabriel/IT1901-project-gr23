@@ -112,13 +112,11 @@ public final class EntrySaverJson {
 
         JSONObject json = new JSONObject();
 
-        for (String entryId : entryManager.entryIds()) {
-            LogEntry entry = entryManager.getEntry(entryId);
-            HashMap<String, String> innerMap = new HashMap<>();
-            putEntry(innerMap, entry);
-
-            json.put(entryId, innerMap);
+        HashMap<String, HashMap<String, String>> map = entryManager.toHashMap();
+        for (String entryId : map.keySet()) {
+            json.put(entryId, map.get(entryId));
         }
+
         File file = new File(saveFile);
 
         if (!file.exists() || !file.isFile()) {

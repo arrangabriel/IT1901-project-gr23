@@ -3,6 +3,7 @@ package core;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.util.Arrays;
+import java.util.HashMap;
 
 /**
  * Representation of a workout or exercise.
@@ -242,6 +243,48 @@ public final class LogEntry {
         } else {
             throw new IllegalStateException("Id already set");
         }
+    }
+
+    /**
+     * Represents this LogEntry as a hashmap with values converted to strings.
+     * @return The hasmap representing this LogEntry.
+     */
+    public HashMap<String, String> toHashMap() {
+
+        HashMap<String, String> map = new HashMap<>();
+
+        map.put("title", this.getTitle());
+        if (this.getComment() != null) {
+            map.put("comment", this.getTitle());
+        } else {
+            map.put("comment", "null");
+        }
+
+        map.put("date", this.getDate().toString());
+        map.put("feeling", Integer.toString(this.getFeeling()));
+        map.put("duration", Long.toString(this.getDuration().toSeconds()));
+
+        if (this.getDistance() != null) {
+            map.put("distance", Double.toString(this.getDistance()));
+        } else {
+            map.put("distance", "null");
+        }
+
+        if (this.getMaxHeartRate() != null) {
+            map.put("maxHeartRate", Integer.toString(this.getMaxHeartRate()));
+        } else {
+            map.put("maxHeartRate", "null");
+        }
+
+        map.put("exerciseCategory", this.getExerciseCategory().toString());
+
+        if (this.getExerciseCategory() != null) {
+            map.put("exerciseCategory", this.getExerciseCategory().toString());
+        } else {
+            map.put("exerciseCategory", "null");
+        }
+
+        return map;
     }
 
     /**
@@ -598,7 +641,7 @@ public final class LogEntry {
             this.ctitle = title;
             this.cdate = date;
             this.cduration = duration;
-            this.cexerciseCategory = exerciseCategory;
+            this.cexerciseCategory /toHa= exerciseCategory;
             this.cfeeling = feeling;
 
             Validity validity = validate(this);

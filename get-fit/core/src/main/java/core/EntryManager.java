@@ -1,6 +1,7 @@
 package core;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -154,6 +155,37 @@ public final class EntryManager implements Iterable<LogEntry> {
         removeEntry(id);
         addEntry(id, entry);
 
+    }
+
+    /**
+     * Represents this EntryManager as a List with LogEntries represented as HashMaps.
+     * @return The List representing this EntryManager.
+     * @see LogEntry#toHashMap()
+     */
+    public List<HashMap<String, String>> toListHashMap() {
+
+        List<HashMap<String, String>> list = new ArrayList<>();
+        for (LogEntry entry : this) {
+            list.add(entry.toHashMap());
+        }
+
+        return list;
+    }
+
+    /**
+     * Represents this EntryManager as a HashMap with LogEntries also represented as HashMaps.
+     * @return The HashMap representing this EntryManager.
+     * @see LogEntry#toHashMap()
+     */
+    public HashMap<String, HashMap<String, String>> toHashMap() {
+        
+        HashMap<String, HashMap<String, String>> map = new HashMap<>();
+
+        for (LogEntry entry : this) {
+            map.put(entry.getId(), entry.toHashMap());
+        }
+
+        return map;
     }
 
     /**
