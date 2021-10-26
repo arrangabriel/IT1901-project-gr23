@@ -72,8 +72,7 @@ public final class EntryManager implements Iterable<LogEntry> {
         }
 
         entry.setId(id);
-
-        entryMap.put(id, entry);
+        this.entryMap.put(id, entry);
     }
 
     /**
@@ -191,15 +190,15 @@ public final class EntryManager implements Iterable<LogEntry> {
     /**
      * Updates a provided EntryManager with the LogEntries represented in the HashMap
      * @param map The map representing the LogEntries to add.
-     * @param manager The EntryManager to update.
+     * @param entryManager The EntryManager to update.
      */
-    public static void fromHash(HashMap<String, HashMap<String, String>> map, EntryManager manager) {
+    public static void fromHash(HashMap<String, HashMap<String, String>> map, EntryManager entryManager) {
 
         for (String entryId : map.keySet()) {
-            manager.updateHashPosition(
+            entryManager.updateHashPosition(
                 Integer.parseInt(entryId));
             LogEntry entry = LogEntry.fromHash(map.get(entryId));
-            manager.addEntry(entry);
+            entryManager.addEntry(entryId, entry);
         }
 
     }

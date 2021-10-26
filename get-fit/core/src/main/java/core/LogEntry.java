@@ -279,9 +279,9 @@ public final class LogEntry {
         map.put("exerciseCategory", this.getExerciseCategory().toString());
 
         if (this.getExerciseCategory() != null) {
-            map.put("exerciseCategory", this.getExerciseCategory().toString());
+            map.put("exerciseSubcategory", this.getExerciseSubCategory().toString());
         } else {
-            map.put("exerciseCategory", "null");
+            map.put("exerciseSubcategory", "null");
         }
 
         return map;

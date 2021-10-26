@@ -208,7 +208,8 @@ public final class EntrySaverJson {
         try {
             JSONObject jsonObject = (JSONObject) jsonParser.parse(dataString);
 
-            EntryManager.fromHash(jsonObject);
+            EntryManager.fromHash(jsonObject, entryManager);
+
 
         } catch (ParseException pException) {
             throw new IllegalStateException("Could not load data from file");
