@@ -641,7 +641,7 @@ public final class LogEntry {
             this.ctitle = title;
             this.cdate = date;
             this.cduration = duration;
-            this.cexerciseCategory /toHa= exerciseCategory;
+            this.cexerciseCategory = exerciseCategory;
             this.cfeeling = feeling;
 
             Validity validity = validate(this);
