@@ -12,7 +12,7 @@ Endpoint: `/api/{entryManagerId}/{entryId}`
 
 Response: 
 
-```JSON
+```json
 {
     "title": "Example title",
     "comment": "Example comment",
@@ -34,7 +34,7 @@ Endpoint: `/api/entrymanagers/list`
 
 Response:
 
-```JSON
+```json
 {
 
 }
@@ -48,7 +48,7 @@ Endpoint: `/api/{entryManagerId}/entrylogs`
 
 Response:
 
-```JSON
+```json
 {
 
 }
@@ -62,7 +62,7 @@ Endpoint: `/api/entrymanagers/add`
 
 Response:
 
-```JSON
+```json
 {
     "id": 0
 }
@@ -76,7 +76,7 @@ Endpoint: `/api/{entryManagerId}/add`
 
 Response:
 
-```JSON
+```json
 {
     "id": 0
 }
