@@ -2,7 +2,7 @@
 
 The following document explains the schema for the REST API that is implemented by the server. All clients should conform to this schema.
 
-[TOC]
+[[_TOC_]]
 
 ## Get LogEntry from an EntryManager
 
