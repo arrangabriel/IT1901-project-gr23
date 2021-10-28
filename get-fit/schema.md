@@ -87,10 +87,10 @@ Payload:
 
 ```json
 {
-    "title": "Example title",
-    "comment": "Example comment",
+    "title": "Example title 2",
+    "comment": "Example comment 2",
     "date": "2021-10-25",
-    "feeling": "7",
+    "feeling": "6",
     "duration": "3600",
     "distance": "3",
     "maxHeartRate": "150",
