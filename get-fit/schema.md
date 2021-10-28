@@ -100,5 +100,12 @@ Payload:
 }
 ```
 
+Response:
+
+```json
+{
+    "id": "0"
+}
+```
 
 
