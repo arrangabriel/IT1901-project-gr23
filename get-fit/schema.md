@@ -6,9 +6,9 @@ The following document explains the schema for the REST API that is implemented 
 
 ## Get LogEntry from an EntryManager
 
-Type: `GET`
+Type: <span style="color:#28b463">GET</span>
 
-Endpoint: `/api/{entryManagerId}/{entryId}`
+Endpoint: `/api/v1/entries/{entryId}`
 
 Response: 
 
@@ -26,58 +26,139 @@ Response:
 }
 ```
 
-## Get a list of EntryManagers
-
-Type: `GET`
-
-Endpoint: `/api/entrymanagers/list`
-
-Response:
-
-```json
-{
-
-}
-```
-
 ## Get a list of LogEntries from an EntryManager
 
-Type: `GET`
+Type: <span style="color:#28b463">GET</span>
 
-Endpoint: `/api/{entryManagerId}/entrylogs`
+Endpoint: `/api/v1/entries/list`
+
+Arguments:
+- s: Sorting
+    - date: Sort by date `s=date`
+    - duration: Sort by duration `s=duration`
+    - title: Sort by title `s=title`
+    - reverse: Reverse sorting `r=false`
+- f: Filtering
+    - category: Filter by category `c={category}`
+        - strength:
+            - strength
+        - cardio:
+            - running
+            - cycling
+            - swimming
+    - subcategory: Filter by subcategory `sc={subcategory}`
+        - strength:
+            - push
+            - pull
+            - legs
+            - fullbody
+        - cardio:
+            - short
+            - long
+            - highintensity
+            - lowintensity
+    - date: Filter by date `d={start yyyy-mm-dd}-{end yyyy-mm-dd}`
 
 Response:
 
 ```json
 {
-
-}
-```
-
-## Add a EntryManager
-
-Type: `POST`
-
-Endpoint: `/api/entrymanagers/add`
-
-Response:
-
-```json
-{
-    "id": 0
+    "entries": [
+        {
+            "id": 0,
+            "title": "Example title 0"
+        },
+        {
+            "id": 1,
+            "title": "Example title 1"
+        },
+        {
+            "id": 2,
+            "title": "Example title 2"
+        },
+    ]
+    
 }
 ```
 
 ## Add a LogEntry
 
-Type: `POST`
+Type: <span style="color:#2e86c1">POST</span>
 
-Endpoint: `/api/{entryManagerId}/add`
+Endpoint: `/api/v1/entries/add`
+
+Payload:
+
+```json
+{
+    "title": "Example title",
+    "comment": "Example comment",
+    "date": "2021-10-25",
+    "feeling": "7",
+    "duration": "3600",
+    "distance": "3",
+    "maxHeartRate": "150",
+    "exerciseCategory": "STRENGTH",
+    "exerciseSubCategory": "PULL"
+
+}
+```
 
 Response:
 
 ```json
 {
-    "id": 0
+    "id": "0"
 }
 ```
+
+## Edit a LogEntry
+
+Type: <span style="color:#2e86c1">POST</span>
+
+Endpoint: `/api/v1/entries/edit/{entryId}`
+
+Payload:
+
+```json
+{
+    "title": "Example title 2",
+    "comment": "Example comment 2",
+    "date": "2021-10-25",
+    "feeling": "6",
+    "duration": "3600",
+    "distance": "3",
+    "maxHeartRate": "150",
+    "exerciseCategory": "STRENGTH",
+    "exerciseSubCategory": "PULL"
+
+}
+```
+
+Response:
+
+```json
+{
+    "id": "0"
+}
+```
+
+## Remove LogEntry
+
+Type: <span style="color:#2e86c1">POST</span>
+
+Payload:
+
+```json
+{
+    "id": "0"
+}
+```
+Response:
+
+```json
+{
+    "id": "0"
+}
+```
+
