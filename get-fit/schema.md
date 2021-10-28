@@ -36,13 +36,21 @@ Response:
 
 ```json
 {
-    "0": {
-        "title": "Example Title"
-    },
-
-    "1": {
-        "title": "Second Example Title"
-    }
+    "entries": [
+        {
+            "id": 0,
+            "title": "Example title 0"
+        },
+        {
+            "id": 1,
+            "title": "Example title 1"
+        },
+        {
+            "id": 2,
+            "title": "Example title 2"
+        },
+    ]
+    
 }
 ```
 
