@@ -32,6 +32,33 @@ Type: <span style="color:#28b463">GET</span>
 
 Endpoint: `/api/v1/entries/list`
 
+Arguments:
+- s: Sorting
+    - date: Sort by date `s=date`
+    - duration: Sort by duration `s=duration`
+    - title: Sort by title `s=title`
+    - reverse: Reverse sorting `r=false`
+- f: Filtering
+    - category: Filter by category `c={category}`
+        - strength:
+            - strength
+        - cardio:
+            - running
+            - cycling
+            - swimming
+    - subcategory: Filter by subcategory `sc={subcategory}`
+        - strength:
+            - push
+            - pull
+            - legs
+            - fullbody
+        - cardio:
+            - short
+            - long
+            - highintensity
+            - lowintensity
+    - date: Filter by date `d={start yyyy-mm-dd}-{end yyyy-mm-dd}`
+
 Response:
 
 ```json
