@@ -47,49 +47,6 @@ public final class EntrySaverJson {
         save(entryManager, "SavedData.json");
     }
 
-    /**
-     * Puts the information stored in the entry into the hashmap.
-     *
-     * @param map   the map to put into.
-     * @param entry the entry to store.
-     */
-    private static void putEntry(
-            final HashMap<String, String> map,
-            final LogEntry entry) {
-
-        map.put("title", entry.getTitle());
-
-        if (entry.getComment() != null) {
-            map.put("comment", entry.getComment());
-        } else {
-            map.put("comment", "null");
-        }
-
-        map.put("date", entry.getDate().toString());
-        map.put("feeling", Integer.toString(entry.getFeeling()));
-        map.put("duration", Long.toString(entry.getDuration().toSeconds()));
-
-        if (entry.getDistance() != null) {
-            map.put("distance", Double.toString(entry.getDistance()));
-        } else {
-            map.put("distance", "null");
-        }
-
-        if (entry.getMaxHeartRate() != null) {
-            map.put("maxHeartRate", Integer.toString(entry.getMaxHeartRate()));
-        } else {
-            map.put("maxHeartRate", "null");
-        }
-
-        map.put("exerciseCategory", entry.getExerciseCategory().toString());
-
-        if (entry.getExerciseSubCategory() != null) {
-            map.put("exerciseSubCategory", entry.getExerciseSubCategory()
-                    .toString());
-        } else {
-            map.put("exerciseSubCategory", "null");
-        }
-    }
 
     /**
      * Iterates over every entry in the provided EntryManager
@@ -146,31 +103,7 @@ public final class EntrySaverJson {
         load(entryManager, "SavedData.json");
     }
 
-    /**
-     * Converts a string representation of a subcategory into a subcategory.
-     *
-     * @param category The string representation of the subcategory.
-     * @return The actual subcategory or null if no match.
-     */
-    public static LogEntry.Subcategory stringToSubcategory(
-            final String category) {
 
-        LogEntry.Subcategory subCategory = null;
-        outerLoop:
-        for (EXERCISECATEGORY exCategory : LogEntry.EXERCISECATEGORY.values()) {
-            for (LogEntry.Subcategory sub : exCategory.getSubcategories()) {
-                try {
-                    subCategory = sub.getValueOf(category);
-                    if (subCategory != null) {
-                        break outerLoop;
-                    }
-                } catch (Exception e) {
-                    // NEQ
-                }
-            }
-        }
-        return subCategory;
-    }
 
     /**
      * Loads a specified JSON file and constructs
