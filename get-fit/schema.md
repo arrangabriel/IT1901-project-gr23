@@ -6,9 +6,9 @@ The following document explains the schema for the REST API that is implemented 
 
 ## Get LogEntry from an EntryManager
 
-Type: `GET`
+Type: <span style="color:#28b463">GET</span>
 
-Endpoint: `/api/{entryManagerId}/{entryId}`
+Endpoint: `/api/v1/entries/{entryId}`
 
 Response: 
 
@@ -26,58 +26,53 @@ Response:
 }
 ```
 
-## Get a list of EntryManagers
-
-Type: `GET`
-
-Endpoint: `/api/entrymanagers/list`
-
-Response:
-
-```json
-{
-
-}
-```
-
 ## Get a list of LogEntries from an EntryManager
 
-Type: `GET`
+Type: <span style="color:#28b463">GET</span>
 
-Endpoint: `/api/{entryManagerId}/entrylogs`
-
-Response:
-
-```json
-{
-
-}
-```
-
-## Add a EntryManager
-
-Type: `POST`
-
-Endpoint: `/api/entrymanagers/add`
+Endpoint: `/api/v1/entries/all`
 
 Response:
 
 ```json
 {
-    "id": 0
+    "0": {
+        "title": "Example Title"
+    },
+
+    "1": {
+        "title": "Second Example Title"
+    }
 }
 ```
 
 ## Add a LogEntry
 
-Type: `POST`
+Type: <span style="color:#2e86c1">POST</span>
 
-Endpoint: `/api/{entryManagerId}/add`
+Endpoint: `/api/v1/entries/add`
+
+Payload:
+
+```json
+{
+    "title": "Example title",
+    "comment": "Example comment",
+    "date": "2021-10-25",
+    "feeling": "7",
+    "duration": "3600",
+    "distance": "3",
+    "maxHeartRate": "150",
+    "exerciseCategory": "STRENGTH",
+    "exerciseSubCategory": "PULL"
+
+}
+```
 
 Response:
 
 ```json
 {
-    "id": 0
+    "id": "0"
 }
 ```
