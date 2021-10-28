@@ -76,3 +76,29 @@ Response:
     "id": "0"
 }
 ```
+
+## Edit a LogEntry
+
+Type: <span style="color:#2e86c1">POST</span>
+
+Endpoint: `/api/v1/entries/edit/{entryId}`
+
+Payload:
+
+```json
+{
+    "title": "Example title",
+    "comment": "Example comment",
+    "date": "2021-10-25",
+    "feeling": "7",
+    "duration": "3600",
+    "distance": "3",
+    "maxHeartRate": "150",
+    "exerciseCategory": "STRENGTH",
+    "exerciseSubCategory": "PULL"
+
+}
+```
+
+
+
