@@ -30,7 +30,7 @@ Response:
 
 Type: <span style="color:#28b463">GET</span>
 
-Endpoint: `/api/v1/entries/all`
+Endpoint: `/api/v1/entries/list`
 
 Response:
 
