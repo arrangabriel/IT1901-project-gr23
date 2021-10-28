@@ -48,6 +48,31 @@ public class LogClient{
 
     }
 
+
+    private CompletableFuture<HttpResponse<String>> postAsync(String endpoint, String payload) throws URISyntaxException, IOException, InterruptedException {
+
+        HttpClient client = HttpClient.newBuilder()
+            .build();
+
+        HttpRequest request = HttpRequest.newBuilder()
+            .POST(HttpRequest.BodyPublishers.ofString(payload))
+            .uri(
+                new URI(this.url+endpoint)
+            )
+            .build();
+
+        return client.sendAsync(request, BodyHandlers.ofString());
+
+    }
+
+    private HttpResponse<String> post(String endpoint, String payload) throws URISyntaxException, IOException, InterruptedException, ExecutionException {
+
+        return this.postAsync(endpoint, payload).get();
+
+    }
+
+
+
     public static class LogClientBuilder {
 
         private String url;
