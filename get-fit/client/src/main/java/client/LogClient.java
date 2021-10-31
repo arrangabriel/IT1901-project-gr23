@@ -51,6 +51,9 @@ public class LogClient{
 
     public List<HashMap<String, String>> getLogEntryList() throws URISyntaxException, IOException, InterruptedException, ExecutionException {
 
+        // TODO Add sorting and filtering to request
+
+
         HttpResponse<String> response = this.get("/api/v1/entries/list");
         String jsonString = response.body();
 
