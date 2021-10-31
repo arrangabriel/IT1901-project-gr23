@@ -7,8 +7,11 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.net.http.HttpResponse.BodyHandlers;
+import java.util.HashMap;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
+
+import org.json.JSONObject;
 
 /**
  * Representation of a connection to a get-fit server
@@ -23,6 +26,23 @@ public class LogClient{
 
         this.url = builder.url;
         this.port = builder.port;
+
+    }
+
+    public HashMap<String, String> getLogEntry(String id) throws URISyntaxException, IOException, InterruptedException, ExecutionException {
+
+        HttpResponse<String> response = this.get("/api/v1/entries/"+id);
+        String jsonString = response.body();
+
+        JSONObject jsonObject = new JSONObject(jsonString);
+
+        HashMap<String, String> responseHash = new HashMap<String, String>();
+
+        for (String key : jsonObject.keySet()) {
+            responseHash.put(key, jsonObject.getString(key));
+        }
+
+        return responseHash;
 
     }
 
