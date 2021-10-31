@@ -7,10 +7,13 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.net.http.HttpResponse.BodyHandlers;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 /**
@@ -43,6 +46,29 @@ public class LogClient{
         }
 
         return responseHash;
+
+    }
+
+    public List<HashMap<String, String>> getLogEntryList() throws URISyntaxException, IOException, InterruptedException, ExecutionException {
+
+        HttpResponse<String> response = this.get("/api/v1/entries/list");
+        String jsonString = response.body();
+
+        JSONObject jsonObject = new JSONObject(jsonString);
+
+        List<HashMap<String, String>> responseList = new ArrayList<HashMap<String, String>>();
+
+        JSONArray array = jsonObject.getJSONArray("entries");
+        for (int i = 0; i < array.length(); i++) {
+            HashMap<String, String> innerMap = new HashMap<String, String>();
+
+            innerMap.put("id", array.getJSONObject(i).getString("id"));
+            innerMap.put("name", array.getJSONObject(i).getString("name"));
+
+            responseList.add(innerMap);
+        }        
+
+        return responseList;
 
     }
 
