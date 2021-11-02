@@ -61,9 +61,7 @@
 			<scope>test</scope>
 		</dependency>
 
-    
-   
-
+        
         <!-- overwrite dependency on spotbugs if you want to specify the version of spotbugs -->
         <dependency>
             <groupId>com.github.spotbugs</groupId>

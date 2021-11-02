@@ -1,6 +1,5 @@
 open module rest {
     
-    requires localpersistence;
 
     requires spring.boot;
     requires spring.web;
@@ -8,7 +7,8 @@ open module rest {
     requires spring.context;
     requires spring.beans;
 
-    requires core;
+    requires transitive core;
+    requires localpersistence;
 
     exports restapi;
     exports restserver;
