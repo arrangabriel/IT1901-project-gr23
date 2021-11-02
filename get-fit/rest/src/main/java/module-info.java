@@ -1,15 +1,15 @@
-module rest {
-    requires jakarta.ws.rs;
+open module rest {
+    
+    requires localpersistence;
 
-    requires jersey.common;
-    requires jersey.server;
-    requires jersey.media.json.jackson;
-
-    requires org.glassfish.hk2.api;
-    requires org.slf4j;
+    requires spring.boot;
+    requires spring.web;
+    requires spring.boot.autoconfigure;
+    requires spring.context;
+    requires spring.beans;
 
     requires core;
 
-    opens rest.restapi to jersey.server;
-
+    exports restapi;
+    exports restserver;
 }
