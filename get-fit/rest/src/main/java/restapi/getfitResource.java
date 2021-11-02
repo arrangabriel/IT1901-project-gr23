@@ -1,7 +1,6 @@
 package restapi;
 
 
-
-public class getfitResource {
+public class GetfitResource {
     
 }
