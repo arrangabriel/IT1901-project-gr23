@@ -40,23 +40,7 @@ Arguments:
     - reverse: Reverse sorting `r=false`
 - f: Filtering
     - category: Filter by category `c={category}`
-        - strength:
-            - strength
-        - cardio:
-            - running
-            - cycling
-            - swimming
     - subcategory: Filter by subcategory `sc={subcategory}`
-        - strength:
-            - push
-            - pull
-            - legs
-            - fullbody
-        - cardio:
-            - short
-            - long
-            - highintensity
-            - lowintensity
     - date: Filter by date `d={start yyyy-mm-dd}-{end yyyy-mm-dd}`
 
 Response:
@@ -77,6 +61,34 @@ Response:
             "title": "Example title 2"
         },
     ]
+    
+}
+```
+## Get a list of Filters
+
+Type: <span style="color:#28b463">GET</span>
+
+Endpoint: `/api/v1/entries/filters`
+
+Response:
+
+```json
+{
+    "categories": {
+        "strength": "strengthsubcategories",
+        "running": "cardiosubcategories",
+        "cycling": "cardiosubcategories"
+    },
+    "subcategories": {
+        "strengthsubcategories": [
+            "push",
+            "pull"
+        ],
+        "cardiosubcategories": [
+            "short",
+            "highintensity"
+        ]
+    }
     
 }
 ```
