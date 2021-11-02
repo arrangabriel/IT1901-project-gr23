@@ -1,6 +1,6 @@
 module localpersistence{
     requires transitive core;
-    requires json.simple;
+    requires org.json;
     
     exports localpersistence;
 }
