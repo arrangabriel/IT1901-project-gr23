@@ -5,9 +5,9 @@ import core.LogEntry;
 import core.LogEntry.EXERCISECATEGORY;
 import core.LogEntry.EntryBuilder;
 import core.LogEntry.Subcategory;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -82,7 +82,7 @@ public final class EntrySaverJson {
         }
 
         try (FileWriter writer = new FileWriter(file, StandardCharsets.UTF_8)) {
-            writer.write(json.toJSONString());
+            writer.write(json.toString());
             writer.flush();
         } catch (IOException ignored) {
         }
@@ -124,7 +124,6 @@ public final class EntrySaverJson {
             throw new IllegalArgumentException("Arguments cannot be null");
         }
 
-        JSONParser jsonParser = new JSONParser();
         File file = new File(saveFile);
         Scanner reader = new Scanner(file, StandardCharsets.UTF_8);
         String dataString;
@@ -139,12 +138,30 @@ public final class EntrySaverJson {
         dataString = buffer.toString();
 
         try {
-            JSONObject jsonObject = (JSONObject) jsonParser.parse(dataString);
+            JSONObject jsonObject = new JSONObject(dataString);
+            HashMap<String,HashMap<String, String>> jsonHash = new HashMap<>();
 
-            EntryManager.fromHash(jsonObject, entryManager);
+
+            for (String key : jsonObject.keySet()) {
+                HashMap<String, String> entryHash = new HashMap<>();
+
+                entryHash.put("title", jsonObject.getJSONObject(key).getString("title"));
+                entryHash.put("comment", jsonObject.getJSONObject(key).getString("comment"));
+                entryHash.put("date", jsonObject.getJSONObject(key).getString("date"));
+                entryHash.put("feeling", jsonObject.getJSONObject(key).getString("feeling"));
+                entryHash.put("duration", jsonObject.getJSONObject(key).getString("duration"));
+                entryHash.put("maxHeartRate", jsonObject.getJSONObject(key).getString("maxHeartRate"));
+                entryHash.put("exerciseCategory", jsonObject.getJSONObject(key).getString("exerciseCategory"));
+                entryHash.put("exerciseSubCategory", jsonObject.getJSONObject(key).getString("exerciseSubCategory"));
+
+                jsonHash.put(key, entryHash);
+
+            }
+
+            EntryManager.fromHash(jsonHash, entryManager);
 
 
-        } catch (ParseException pException) {
+        } catch (JSONException pException) {
             throw new IllegalStateException("Could not load data from file");
         }
     }

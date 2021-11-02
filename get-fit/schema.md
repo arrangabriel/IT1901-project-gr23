@@ -75,16 +75,15 @@ Response:
 ```json
 {
     "categories": {
-        "strength": "strengthsubcategories",
-        "running": "cardiosubcategories",
-        "cycling": "cardiosubcategories"
-    },
-    "subcategories": {
-        "strengthsubcategories": [
+        "strength": [
             "push",
             "pull"
         ],
-        "cardiosubcategories": [
+        "running": [
+            "short",
+            "highintensity"
+        ],
+        "cycling": [
             "short",
             "highintensity"
         ]
