@@ -10,6 +10,7 @@ import java.net.http.HttpResponse.BodyHandlers;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map.Entry;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
@@ -61,6 +62,41 @@ public class LogClient{
         }
 
         return responseHash;
+
+    }
+
+    /**
+     * Asynchronously requests details for every id.
+     * @param ids the ids to request details for.
+     * @return The hash map of hash maps representing the LogEntries
+     * @throws URISyntaxException If any of the ids ruin the URI syntax.
+     * @throws IOException If the underlying resources cannot be allocated.
+     * @throws InterruptedException If the requests were interrupted before retreiving the http responses.
+     * @throws ExecutionException If the requests were completed exceptionally.
+     */
+    public HashMap<String, HashMap<String, String>> getLogEntryDetailedList(String... ids) throws URISyntaxException, IOException, InterruptedException, ExecutionException {
+
+        HashMap<String, CompletableFuture<HttpResponse<String>>> futures = new HashMap<>();
+
+        for (String id : ids) {
+            futures.put(id, this.getAsync("/api/v1/entries/"+id));
+        }
+
+        HashMap<String, HashMap<String, String>> responses = new HashMap<>();
+
+        for (Entry<String, CompletableFuture<HttpResponse<String>>> futureEntry : futures.entrySet()) {
+
+            JSONObject jsonObject = new JSONObject(futureEntry.getValue().get().body());
+            HashMap<String, String> entryHash = new HashMap<>();
+
+            for (String key : jsonObject.keySet()) {
+                entryHash.put(key, jsonObject.getString(key));
+            }
+
+            responses.put(futureEntry.getKey(), entryHash);
+        }
+
+        return responses;
 
     }
 
@@ -165,6 +201,8 @@ public class LogClient{
      */
     private HttpResponse<String> get(String endpoint) throws URISyntaxException, IOException, InterruptedException, ExecutionException {
 
+
+        
         return this.getAsync(endpoint).get();
 
     }
