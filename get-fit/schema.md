@@ -75,15 +75,15 @@ Response:
 ```json
 {
     "categories": {
-        "strength": [
+        "strength"=[
             "push",
             "pull"
         ],
-        "running": [
+        "running"=[
             "short",
             "highintensity"
         ],
-        "cycling": [
+        "cycling"=[
             "short",
             "highintensity"
         ]
