@@ -50,11 +50,35 @@ public class LogClient{
     }
 
     public List<HashMap<String, String>> getLogEntryList() throws URISyntaxException, IOException, InterruptedException, ExecutionException {
+        return this.getLogEntryList(new ListBuilder());
+    }
 
-        // TODO Add sorting and filtering to request
+    public List<HashMap<String, String>> getLogEntryList(ListBuilder builder) throws URISyntaxException, IOException, InterruptedException, ExecutionException {
+
+        String queryString = "?";
+
+        List<String> queries = new ArrayList<>();
+
+        if (builder.reverse != null) {
+            queries.add("r=" + builder.reverse.toString());
+        }
+        if (builder.sort != null) {
+            queries.add("s="+builder.sort);
+        }
+        if (builder.category != null) {
+            queries.add("c="+builder.category);
+        }
+        if (builder.subCategory != null) {
+            queries.add("sc="+builder.subCategory);
+        }
+        if (builder.date != null) {
+            queries.add("d="+builder.date);
+        }
+
+        queryString += String.join("&", queries);
 
 
-        HttpResponse<String> response = this.get("/api/v1/entries/list");
+        HttpResponse<String> response = this.get("/api/v1/entries/list"+queryString);
         String jsonString = response.body();
 
         JSONObject jsonObject = new JSONObject(jsonString);
@@ -83,7 +107,7 @@ public class LogClient{
         HttpRequest request = HttpRequest.newBuilder()
             .GET()
             .uri(
-                new URI(this.url+endpoint)
+                new URI(this.url+":"+this.port+"/"+endpoint)
             )
             .build();
 
@@ -137,6 +161,36 @@ public class LogClient{
 
         public LogClient build() {
             return new LogClient(this);
+        }
+
+    }
+
+    public static class ListBuilder {
+
+        private Boolean reverse = null;
+        private String sort = null;
+        private String category = null;
+        private String subCategory = null;
+        private String date = null;
+
+        public void reverse(boolean reverse) {
+            this.reverse = reverse;
+        }
+
+        public void sort(String sort) {
+            this.sort = sort;
+        }
+
+        public void category(String category) {
+            this.category = category;
+        }
+
+        public void subCategory(String subCategory) {
+            this.subCategory = subCategory;
+        }
+
+        public void date(String date) {
+            this.date = date;
         }
 
     }
