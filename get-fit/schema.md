@@ -167,11 +167,5 @@ Payload:
     "id": "0"
 }
 ```
-Response:
 
-```json
-{
-    "id": "0"
-}
-```
 
