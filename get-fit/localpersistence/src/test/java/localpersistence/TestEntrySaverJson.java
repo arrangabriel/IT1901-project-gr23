@@ -1,14 +1,12 @@
 package localpersistence;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.nio.channels.IllegalSelectorException;
 import java.time.Duration;
 import java.time.LocalDate;
 
-import org.junit.AfterClass;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
@@ -110,7 +108,7 @@ public class TestEntrySaverJson {
         Assertions.assertThrows(IllegalArgumentException.class, () -> EntrySaverJson.save(null, saveFile));
     }
 
-    @AfterClass
+    @AfterAll
     public static void teardown() {
         File f = new File(saveFile);
         f.delete();
