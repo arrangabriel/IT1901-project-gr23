@@ -105,7 +105,7 @@ public class EntryManagerController {
 
     @PostMapping("edit/{entryId}")
     public void editLogEntry(@PathVariable("entryId") 
-    String id, String logEntry){
+    String id, @RequestBody String logEntry){
         
         entryManager.swapEntry(id, stringToEntry(logEntry));
         save(entryManager);
@@ -128,6 +128,7 @@ public class EntryManagerController {
         entryHash.put("comment", jsonObject.getString("comment"));
         entryHash.put("date", jsonObject.getString("date"));
         entryHash.put("feeling", jsonObject.getString("feeling"));
+        entryHash.put("distance", jsonObject.getString("distance"));
         entryHash.put("duration", jsonObject.getString("duration"));
         entryHash.put("maxHeartRate", jsonObject.getString("maxHeartRate"));
         entryHash.put("exerciseCategory", jsonObject.getString("exerciseCategory"));
