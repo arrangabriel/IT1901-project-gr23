@@ -9,7 +9,8 @@ open module rest {
 
     requires transitive core;
     requires localpersistence;
+    requires transitive org.json;
 
     exports restapi;
-    exports restserver;
+    
 }
