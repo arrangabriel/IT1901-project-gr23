@@ -37,7 +37,6 @@ public class TestLogEntry {
     
     @Test // Above test proves it should work, considering it is nearly identical with the test in LogEntry (line 271)
     public void testLogEntry() {
-        String id = "0";
         String title = "Tets";
         String comment = "This is a test";
         LocalDate date = LocalDate.now().minusDays(1);
