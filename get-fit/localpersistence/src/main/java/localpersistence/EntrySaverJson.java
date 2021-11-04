@@ -150,6 +150,7 @@ public final class EntrySaverJson {
                 entryHash.put("date", jsonObject.getJSONObject(key).getString("date"));
                 entryHash.put("feeling", jsonObject.getJSONObject(key).getString("feeling"));
                 entryHash.put("duration", jsonObject.getJSONObject(key).getString("duration"));
+                entryHash.put("distance", jsonObject.getString("distance"));
                 entryHash.put("maxHeartRate", jsonObject.getJSONObject(key).getString("maxHeartRate"));
                 entryHash.put("exerciseCategory", jsonObject.getJSONObject(key).getString("exerciseCategory"));
                 entryHash.put("exerciseSubCategory", jsonObject.getJSONObject(key).getString("exerciseSubCategory"));
