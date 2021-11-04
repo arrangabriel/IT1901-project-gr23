@@ -146,14 +146,6 @@ Payload:
 }
 ```
 
-Response:
-
-```json
-{
-    "id": "0"
-}
-```
-
 ## Remove LogEntry
 
 Type: <span style="color:#2e86c1">POST</span>
