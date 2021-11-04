@@ -158,6 +158,8 @@ Response:
 
 Type: <span style="color:#2e86c1">POST</span>
 
+Endpoint: `/api/v1/entries/remove/{entryId}`
+
 Payload:
 
 ```json
