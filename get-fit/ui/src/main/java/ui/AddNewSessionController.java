@@ -1,6 +1,5 @@
 package ui;
 
-import core.LogEntry;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -17,13 +16,17 @@ import javafx.scene.control.Slider;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import localpersistence.EntrySaverJson;
 
 import java.io.IOException;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
+
+import client.LogClient;
 
 public class AddNewSessionController {
 
@@ -39,13 +42,17 @@ public class AddNewSessionController {
      * Maximum distance limit.
      */
     private static final int maxDistance = 200;
-
     /**
-     * All possible exercise category values.
+     * Maximum heart rate limit.
      */
-    private final ObservableList<LogEntry.EXERCISECATEGORY> exerciseCategories =
-            FXCollections.observableArrayList(
-                    LogEntry.EXERCISECATEGORY.values());
+    private static final int maxHeartRate = 300;
+    
+    private LogClient client = new LogClient.LogClientBuilder()
+        .url("localhost")
+        .port(8080)
+        .build();
+
+    private HashMap<String, List<String>> categories;
 
     /**
      * Label for duration input.
@@ -321,11 +328,14 @@ public class AddNewSessionController {
         distanceLabel.setVisible(isCardio);
     }
 
+    private String capitalize(final String s) {
+        return s.substring(0, 1).toUpperCase() + s.substring(1);
+    }
+
     private ObservableList<String> getSubcategoryStringObservableList(
-            final LogEntry.EXERCISECATEGORY mainCategory) {
-        return Arrays.stream(mainCategory.getSubcategories())
-                .map(
-                        LogEntry.Subcategory::toString)
+            final String mainCategory) {
+        return categories.get(mainCategory).stream()
+                .map(this::capitalize)
                 .collect(Collectors
                         .toCollection(FXCollections::observableArrayList));
     }
@@ -360,28 +370,31 @@ public class AddNewSessionController {
      */
     @FXML
     private void initialize() throws NumberFormatException {
+        try {
+            categories = client.getExerciseCategories();
+        } catch (Exception e) {
+            // TODO: handle exception
+        }
+        Set<String> exerciseCategories = categories.keySet(); 
 
         // generate an ObservableList of exercise category names.
         ObservableList<String> exerciseCategoryNames = exerciseCategories
                 .stream()
-                .map(
-                        Enum::toString)
+                .map(this::capitalize)
                 .collect(Collectors
                         .toCollection(FXCollections::observableArrayList));
 
         // set initial values.
         exerciseType.setItems(exerciseCategoryNames);
         exerciseType.getSelectionModel().selectFirst();
-        tags.setItems(getSubcategoryStringObservableList(
-                LogEntry.EXERCISECATEGORY.STRENGTH));
+        tags.setItems(exerciseCategoryNames);
         setCardio(false);
         sessionDatePicker.setValue(LocalDate.now());
 
         // validation of fields when they are changed.
         validateIntegerInput(hour, maxHours);
         validateIntegerInput(min, maxMinutes);
-        validateIntegerInput(heartRate,
-                LogEntry.MAXHEARTRATEHUMAN);
+        validateIntegerInput(heartRate, maxHeartRate);
         validateIntegerInput(distance, maxDistance);
     }
 }
