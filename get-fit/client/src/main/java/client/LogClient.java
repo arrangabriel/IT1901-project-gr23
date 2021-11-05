@@ -203,6 +203,18 @@ public class LogClient{
     }
 
     /**
+     * Deletes a log entry on the server.
+     * @param id The id of the log entry to delete.
+     * @throws ExecutionException
+     * @throws InterruptedException
+     * @throws IOException
+     * @throws URISyntaxException
+     */
+    public void deleteLogEntry(String id) throws URISyntaxException, IOException, InterruptedException, ExecutionException {
+        this.post("/api/v1/entries/remove/"+id, "");
+    }
+
+    /**
      * Elementary asynchronous get request.
      * @param endpoint Where to send the request to.
      * @return The Http response promise.
