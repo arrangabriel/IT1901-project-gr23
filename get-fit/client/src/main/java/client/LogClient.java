@@ -203,6 +203,33 @@ public class LogClient{
     }
 
     /**
+     * Retreives a list of exercise categories from the server.
+     * @return A list of exercise categories from the server represented as a hash map.
+     * @throws ExecutionException
+     * @throws InterruptedException
+     * @throws IOException
+     * @throws URISyntaxException
+     */
+    public HashMap<String, List<String>> getExerciseCategories() throws URISyntaxException, IOException, InterruptedException, ExecutionException {
+        HttpResponse<String> response = this.get("/api/v1/entries/filters");
+
+        JSONObject jsonObject = new JSONObject(response.body());
+        HashMap<String, List<String>> categories = new HashMap<String, List<String>>();
+
+        for (String category : jsonObject.keySet()) {
+            JSONArray array = jsonObject.getJSONArray(category);
+            List<String> subCategories = new ArrayList<String>();
+
+            for (int i = 0; i < array.length(); i++) {
+                subCategories.add(array.getString(i));
+            }
+            categories.put(category, subCategories);
+        }
+
+        return categories;
+    }
+
+    /**
      * Deletes a log entry on the server.
      * @param id The id of the log entry to delete.
      * @throws ExecutionException
@@ -311,16 +338,18 @@ public class LogClient{
          * Set the url to the server.
          * @param server_url
          */
-        public void url(String server_url) {
+        public LogClientBuilder url(String server_url) {
             this.url = server_url;
+            return this;
         }
 
         /**
          * Set the port to the server.
          * @param server_prot
          */
-        public void port(int server_prot) {
-            this.port = server_prot;
+        public LogClientBuilder port(int server_port) {
+            this.port = server_port;
+            return this;
         }
 
         /**
