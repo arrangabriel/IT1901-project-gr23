@@ -157,7 +157,9 @@ public final class EntryManager implements Iterable<LogEntry> {
     }
 
     /**
-     * Represents this EntryManager as a List with LogEntries represented as HashMaps.
+     * Represents this EntryManager as a List of LogEntries,
+     * represented as HashMaps.
+     *
      * @return The List representing this EntryManager.
      * @see LogEntry#toHashMap()
      */
@@ -173,11 +175,12 @@ public final class EntryManager implements Iterable<LogEntry> {
 
     /**
      * Represents this EntryManager as a HashMap with LogEntries also represented as HashMaps.
+     *
      * @return The HashMap representing this EntryManager.
      * @see LogEntry#toHashMap()
      */
     public HashMap<String, HashMap<String, String>> toHashMap() {
-        
+
         HashMap<String, HashMap<String, String>> map = new HashMap<>();
 
         for (LogEntry entry : this) {
@@ -189,14 +192,17 @@ public final class EntryManager implements Iterable<LogEntry> {
 
     /**
      * Updates a provided EntryManager with the LogEntries represented in the HashMap
-     * @param map The map representing the LogEntries to add.
+     *
+     * @param map          The map representing the LogEntries to add.
      * @param entryManager The EntryManager to update.
      */
-    public static void fromHash(HashMap<String, HashMap<String, String>> map, EntryManager entryManager) {
+    public static void fromHash(
+            final HashMap<String, HashMap<String, String>> map,
+            final EntryManager entryManager) {
 
         for (String entryId : map.keySet()) {
             entryManager.updateHashPosition(
-                Integer.parseInt(entryId));
+                    Integer.parseInt(entryId));
             LogEntry entry = LogEntry.fromHash(map.get(entryId));
             entryManager.addEntry(entryId, entry);
         }
@@ -205,12 +211,14 @@ public final class EntryManager implements Iterable<LogEntry> {
 
     /**
      * Constructs and populates an EntryManager from a HashMap repersentation of a EntryManager.
+     *
      * @param map The map representing the EntryManager.
      * @return The constructed EntryManager.
      * @see #toHashMap
      */
-    public static EntryManager fromHash(HashMap<String, HashMap<String, String>> map) {
-        
+    public static EntryManager fromHash(
+            final HashMap<String, HashMap<String, String>> map) {
+
         EntryManager entryManager = new EntryManager();
 
         fromHash(map, entryManager);

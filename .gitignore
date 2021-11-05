@@ -19,3 +19,5 @@ org.eclipse.*
 .DS_Store
 /git-fit/local-persistence/modules-local-persistence.iml
 /git-fit/localpersistence/modules-local-persistence.iml
+/get-fit/client/modules-client.iml
+/get-fit/rest/modules-rest.iml
