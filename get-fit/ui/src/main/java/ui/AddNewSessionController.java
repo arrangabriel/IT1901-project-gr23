@@ -18,11 +18,13 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 
 import client.LogClient;
@@ -45,6 +47,10 @@ public class AddNewSessionController {
      * Maximum heart rate limit.
      */
     private static final int MAX_HEARTRATE = 300;
+    /**
+     * Minimum heart rate limit.
+     */
+    private static final int MIN_HEARTRATE = 20;
 
     /**
      * Session log client.
@@ -183,89 +189,88 @@ public class AddNewSessionController {
             throws IOException {
 
         String title = titleField.getText();
-        LocalDate date = sessionDatePicker.getValue();
-        Duration duration;
-        LogEntry.EXERCISECATEGORY category =
-                LogEntry.EXERCISECATEGORY.valueOf(exerciseType.getValue());
-        int feeling = (int) feelingSlider.getValue();
-        int maxHeartRate;
-        LogEntry.Subcategory subCategory;
-        int distanceValue;
+        String date = sessionDatePicker.getValue().toString();
+        String duration = "null";
+        String category = exerciseType.getValue();
+        String feeling = String.valueOf(feelingSlider.getValue());
+        String maxHeartRate = "null";
+        String subCategory = "null";
+        String distanceValue = "null";
         String comment = commentField.getText();
 
         try {
             // checks if duration fields have values.
             try {
-                duration = Duration.ofHours(Integer.parseInt(hour.getText()))
+                duration = String.valueOf(Duration.ofHours(Integer.parseInt(hour.getText()))
                         .plusSeconds(Duration.ofMinutes(
-                                Integer.parseInt(min.getText())).getSeconds());
+                                Integer.parseInt(min.getText())).getSeconds()));
+
             } catch (NumberFormatException e) {
                 throw new IllegalArgumentException("Duration must be set.");
             }
 
             // tries to build with required values.
-            LogEntry.EntryBuilder logBuilder = new LogEntry.EntryBuilder(
-                    title, date, duration, category, feeling);
+            // LogEntry.EntryBuilder logBuilder = new LogEntry.EntryBuilder(
+            //         title, date, duration, category, feeling);
 
             // adds maxHeartRate if value is present.
             try {
-                maxHeartRate = Integer.parseInt(heartRate.getText());
-                if (maxHeartRate < LogEntry.MINHEARTRATEHUMAN) {
+                maxHeartRate = (heartRate.getText());
+                int intMaxHeartRate = Integer.parseInt(maxHeartRate);
+                if (intMaxHeartRate < MIN_HEARTRATE) {
                     throw new IllegalArgumentException(
                             "Heart rate must be more than "
-                                    + LogEntry.MINHEARTRATEHUMAN);
+                                    + MIN_HEARTRATE);
+                } else if (intMaxHeartRate > MAX_HEARTRATE) {
+                    throw new IllegalArgumentException(
+                            "Heart rate must be less than "
+                                    + MAX_HEARTRATE);
                 }
-                logBuilder = logBuilder.maxHeartRate(maxHeartRate);
             } catch (NumberFormatException ignored) {
             }
 
             // adds comment if value is present.
-            if (!comment.isEmpty()) {
-                logBuilder = logBuilder.comment(comment);
+            if (comment.isEmpty()) {
+                comment = "null";
             }
 
             // returns null if nothing is selected.
             String subCategoryString = tags.getValue();
-
-            switch (category) {
-                // special cases
-                case STRENGTH -> {
-                    // adds subcategory if value is present.
-                    try {
-                        subCategory = LogEntry.STRENGTHSUBCATEGORIES.valueOf(
-                                subCategoryString);
-                        logBuilder =
-                                logBuilder.exerciseSubcategory(subCategory);
-                    } catch (NullPointerException ignored) {
-                    }
-                }
-                case SWIMMING, RUNNING, CYCLING -> {
-                    // adds distance if value is present.
-                    try {
-                        distanceValue =
-                                Integer.parseInt(distance.getText());
-                        logBuilder =
-                                logBuilder.distance((double) distanceValue);
-                    } catch (NumberFormatException ignored) {
-                    }
-                    // adds subcategory if value is present.
-                    try {
-                        subCategory = LogEntry.CARDIOSUBCATEGORIES.valueOf(
-                                subCategoryString);
-                        logBuilder =
-                                logBuilder.exerciseSubcategory(subCategory);
-                    } catch (NullPointerException ignored) {
-                    }
-                }
-                default -> {
-                }
+            if (subCategoryString == null) {
+                subCategory = "null";
+            } else {
+                subCategory = subCategoryString;
             }
 
-            // add and save newly created LogEntry.
-            App.entryManager.addEntry(logBuilder.build());
-            EntrySaverJson.save(App.entryManager);
+            String distanceString = distance.getText();
+            if (distanceString == "") {
+                distanceValue = "null";
+            }
 
-            goToStartPage(event);
+            HashMap<String, String> entryMap = new HashMap<>();
+
+            entryMap.put("title", title);
+            entryMap.put("date", date);
+            entryMap.put("duration", duration);
+            entryMap.put("category", category);
+            entryMap.put("feeling", feeling);
+            entryMap.put("maxHeartRate", maxHeartRate);
+            entryMap.put("subCategory", subCategory);
+            entryMap.put("distance", distanceValue);
+            entryMap.put("comment", comment);
+
+
+
+
+            // add and save newly created LogEntry.
+            try {
+                this.client.addLogEntry(entryMap);
+                goToStartPage(event);
+            } catch (URISyntaxException | InterruptedException | ExecutionException e) {
+                // TODO: Inform user of error
+                e.printStackTrace();
+            }
+
 
         } catch (IllegalArgumentException e) {
             if (title.isEmpty()) {
@@ -309,20 +314,8 @@ public class AddNewSessionController {
     @FXML
     public void handleTagsSelector(final ActionEvent event) {
 
-        LogEntry.EXERCISECATEGORY mainCategory = LogEntry.EXERCISECATEGORY
-                .valueOf(exerciseType.getSelectionModel().getSelectedItem());
-        switch (mainCategory) {
-            case STRENGTH -> {
-                tags.setItems(getSubcategoryStringObservableList(mainCategory));
-                setCardio(false);
-            }
-            case CYCLING, RUNNING, SWIMMING -> {
-                tags.setItems(getSubcategoryStringObservableList(mainCategory));
-                setCardio(true);
-            }
-            default -> {
-            }
-        }
+        String mainCategory = exerciseType.getSelectionModel().getSelectedItem();
+        tags.setItems(this.getSubcategoryStringObservableList(mainCategory));
     }
 
     private void setCardio(final boolean isCardio) {
@@ -365,6 +358,18 @@ public class AddNewSessionController {
         });
     }
 
+    private void retreiveCategories() {
+        try {
+            this.categories = client.getExerciseCategories();
+        } catch (ExecutionException e) {
+            // May lead to recursive depth limit
+            this.retreiveCategories();
+        } catch (URISyntaxException | InterruptedException e) {
+            // Can't really happen so idk
+            e.printStackTrace();
+        }
+    }
+
     /**
      * Initializes the controller.
      *
@@ -372,11 +377,8 @@ public class AddNewSessionController {
      */
     @FXML
     private void initialize() throws NumberFormatException {
-        try {
-            categories = client.getExerciseCategories();
-        } catch (Exception e) {
-            // TODO: handle exception
-        }
+        retreiveCategories();
+            
         Set<String> exerciseCategories = categories.keySet(); 
 
         // generate an ObservableList of exercise category names.
