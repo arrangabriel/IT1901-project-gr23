@@ -20,7 +20,6 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.time.Duration;
 import java.time.LocalDate;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
@@ -33,25 +32,28 @@ public class AddNewSessionController {
     /**
      * Slightly arbitrary maximum hour limit for duration.
      */
-    private static final int maxHours = 99;
+    private static final int MAX_HOURS = 99;
     /**
      * Maximum minute limit.
      */
-    private static final int maxMinutes = 59;
+    private static final int MAX_MINUTES = 59;
     /**
      * Maximum distance limit.
      */
-    private static final int maxDistance = 200;
+    private static final int MAX_DISTANCE = 200;
     /**
      * Maximum heart rate limit.
      */
-    private static final int maxHeartRate = 300;
-    
-    private LogClient client = new LogClient.LogClientBuilder()
-        .url("localhost")
-        .port(8080)
-        .build();
+    private static final int MAX_HEARTRATE = 300;
 
+    /**
+     * Session log client.
+     */
+    private final LogClient client = new LogClient("localhost", 8080);
+
+    /**
+     * Exercise categories and subcategories.
+     */
     private HashMap<String, List<String>> categories;
 
     /**
@@ -392,9 +394,9 @@ public class AddNewSessionController {
         sessionDatePicker.setValue(LocalDate.now());
 
         // validation of fields when they are changed.
-        validateIntegerInput(hour, maxHours);
-        validateIntegerInput(min, maxMinutes);
-        validateIntegerInput(heartRate, maxHeartRate);
-        validateIntegerInput(distance, maxDistance);
+        validateIntegerInput(hour, MAX_HOURS);
+        validateIntegerInput(min, MAX_MINUTES);
+        validateIntegerInput(heartRate, MAX_HEARTRATE);
+        validateIntegerInput(distance, MAX_DISTANCE);
     }
 }
