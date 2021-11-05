@@ -168,6 +168,41 @@ public class LogClient{
     }
 
     /**
+     * Adds a log entry on the server.
+     * @param entry HashMap representing the log entry to add.
+     * @return The id of the added log entry.
+     * @throws ExecutionException
+     * @throws InterruptedException
+     * @throws IOException
+     * @throws URISyntaxException
+     */
+    public String addLogEntry(HashMap<String,String> entry) throws URISyntaxException, IOException, InterruptedException, ExecutionException {
+        JSONObject payload = new JSONObject(entry);
+
+        HttpResponse<String> response = this.post("/api/v1/entries/add", payload.toString());
+
+        return new JSONObject(response.body()).getString("id");
+    }
+
+    /**
+     * Updates a log entry on the server.
+     * @param id The id of the log entry to update.
+     * @param entry HashMap representing the log entry to update.
+     * @return The id of the updated log entry.
+     * @throws ExecutionException
+     * @throws InterruptedException
+     * @throws IOException
+     * @throws URISyntaxException
+     */
+    public String updateLogEntry(String id, HashMap<String,String> entry) throws URISyntaxException, IOException, InterruptedException, ExecutionException {
+        JSONObject payload = new JSONObject(entry);
+
+        HttpResponse<String> response = this.post("/api/v1/entries/edit/"+id, payload.toString());
+
+        return new JSONObject(response.body()).getString("id");
+    }
+
+    /**
      * Elementary asynchronous get request.
      * @param endpoint Where to send the request to.
      * @return The Http response promise.
