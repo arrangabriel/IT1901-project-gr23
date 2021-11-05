@@ -1,20 +1,28 @@
 package restapi;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
+import org.json.JSONObject;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import core.EntryManager;
 import core.LogEntry;
 import core.LogEntry.EXERCISECATEGORY;
+import localpersistence.EntrySaverJson;
 
 //localhost:8080/api/v1/entries
 //Run: mvn spring-boot:run
@@ -84,6 +92,76 @@ public class EntryManagerController {
 
         return returnList;
     }
-    
+
+    @PostMapping("/add")
+
+    public String addLogEntry(@RequestBody String logEntry){
+
+        entryManager.addEntry(stringToEntry(logEntry));
+        save(entryManager);
+        return "{\"id\":\""  + entryManager.addEntry(stringToEntry(logEntry)) + "\" }";
+    }
+
+
+    @PostMapping("edit/{entryId}")
+    public void editLogEntry(@PathVariable("entryId") 
+    String id, @RequestBody String logEntry){
+        
+        entryManager.swapEntry(id, stringToEntry(logEntry));
+        save(entryManager);
+    }
+
+
+    @PostMapping("remove/{entryId}")
+    public void removeLogEntry(@PathVariable("entryId") String id){
+        entryManager.removeEntry(id);
+        save(entryManager);
+
+    }
+
+    private LogEntry stringToEntry(String logEntry){
+
+        JSONObject jsonObject = new JSONObject(logEntry);
+        HashMap<String, String> entryHash = new HashMap<>();
+
+        entryHash.put("title", jsonObject.getString("title"));
+        entryHash.put("comment", jsonObject.getString("comment"));
+        entryHash.put("date", jsonObject.getString("date"));
+        entryHash.put("feeling", jsonObject.getString("feeling"));
+        entryHash.put("distance", jsonObject.getString("distance"));
+        entryHash.put("duration", jsonObject.getString("duration"));
+        entryHash.put("maxHeartRate", jsonObject.getString("maxHeartRate"));
+        entryHash.put("exerciseCategory", jsonObject.getString("exerciseCategory"));
+        entryHash.put("exerciseSubCategory", jsonObject.getString("exerciseSubCategory"));
+        return LogEntry.fromHash(entryHash);
+
+    }
+
+    private void save(EntryManager entrymanager){
+        try{
+            EntrySaverJson.save(entryManager);
+        }catch(IllegalArgumentException ia) {
+        }catch(IOException io){
+        }
+    }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    @ResponseStatus(value = HttpStatus.BAD_REQUEST )
+    @ResponseBody
+    public String handleIllegalArgumentException(IllegalAccessException ia){
+        return ia.getMessage();
+    }
+
+    @ExceptionHandler(IOException.class)
+    @ResponseStatus(value = HttpStatus.BAD_REQUEST)
+    @ResponseBody
+    public String handleIOException(IOException io){
+        return io.getMessage();
+    }
+
+
+
+
+
 
 }

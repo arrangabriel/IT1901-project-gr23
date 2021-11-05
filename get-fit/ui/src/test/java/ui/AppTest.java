@@ -11,7 +11,8 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import localpersistence.EntrySaverJson;
-import org.junit.AfterClass;
+
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -46,7 +47,7 @@ public class AppTest extends ApplicationTest {
         saveEntryManager();
     }
 
-    @AfterClass
+    @AfterAll
     public static void teardown() {
         clearEntryManager();
     }
