@@ -21,3 +21,4 @@ org.eclipse.*
 /git-fit/localpersistence/modules-local-persistence.iml
 /get-fit/client/modules-client.iml
 /get-fit/rest/modules-rest.iml
+*.key
