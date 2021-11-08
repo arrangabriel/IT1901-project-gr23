@@ -193,8 +193,8 @@ public class AddNewSessionController {
         String title = titleField.getText();
         String date = sessionDatePicker.getValue().toString();
         String duration = "null";
-        String category = exerciseType.getValue();
-        String feeling = String.valueOf(feelingSlider.getValue());
+        String category = exerciseType.getValue().toUpperCase();
+        String feeling = String.valueOf((int) (feelingSlider.getValue()));
         String maxHeartRate = "null";
         String subCategory = "null";
         String distanceValue = "null";
@@ -205,10 +205,8 @@ public class AddNewSessionController {
             try {
                 duration = String.valueOf(
                         Duration.ofHours(Integer.parseInt(hour.getText()))
-                                .plusSeconds(Duration.ofMinutes(
-                                                Integer.parseInt(min.getText()))
-                                        .getSeconds()));
-
+                                .plusMinutes(Integer.parseInt(min.getText()))
+                                .getSeconds());
             } catch (NumberFormatException e) {
                 throw new IllegalArgumentException("Duration must be set.");
             }
@@ -231,6 +229,7 @@ public class AddNewSessionController {
                                     + MAX_HEARTRATE);
                 }
             } catch (NumberFormatException ignored) {
+                maxHeartRate = "null";
             }
 
             // adds comment if value is present.
@@ -243,11 +242,11 @@ public class AddNewSessionController {
             if (subCategoryString == null) {
                 subCategory = "null";
             } else {
-                subCategory = subCategoryString;
+                subCategory = subCategoryString.toUpperCase();
             }
 
             String distanceString = distance.getText();
-            if (distanceString == "") {
+            if (distanceString.equals("")) {
                 distanceValue = "null";
             }
 
@@ -256,10 +255,10 @@ public class AddNewSessionController {
             entryMap.put("title", title);
             entryMap.put("date", date);
             entryMap.put("duration", duration);
-            entryMap.put("category", category);
+            entryMap.put("exerciseCategory", category);
             entryMap.put("feeling", feeling);
             entryMap.put("maxHeartRate", maxHeartRate);
-            entryMap.put("subCategory", subCategory);
+            entryMap.put("exerciseSubCategory", subCategory);
             entryMap.put("distance", distanceValue);
             entryMap.put("comment", comment);
 
@@ -267,12 +266,17 @@ public class AddNewSessionController {
             try {
                 this.client.addLogEntry(entryMap);
                 goToStartPage(event);
-            } catch (URISyntaxException | InterruptedException | ExecutionException e) {
+            } catch (URISyntaxException
+                    | InterruptedException
+                    | ExecutionException e) {
                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
                 alert.setTitle("Connection error");
                 alert.setHeaderText("Could not connect to server");
                 alert.setContentText(
-                        "Could not establish a connection to the server.\nPress OK to retry.\nPress Cancel to quit");
+                        """
+                                Could not establish a connection to the server.
+                                Press OK to retry.
+                                Press Cancel to quit""");
                 errorLabel.setText("Could not connect to server");
                 Optional<ButtonType> result = alert.showAndWait();
                 if (result.get() == ButtonType.OK) {

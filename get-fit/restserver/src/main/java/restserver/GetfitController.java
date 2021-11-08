@@ -35,8 +35,9 @@ public class GetfitController {
     private final GetfitService getfitService = new GetfitService();
 
     @GetMapping("/{entryId}")
-    public LogEntry getLogEntry(final @PathVariable("entryId") String id) {
-        return getfitService.getEntryManager().getEntry(id);
+    public String getLogEntry(final @PathVariable("entryId") String id) {
+        JSONObject returnObject = new JSONObject(getfitService.getEntryManager().getEntry(id).toHashMap());
+        return returnObject.toString();
     }
 
     @GetMapping("/filters")
@@ -154,6 +155,8 @@ public class GetfitController {
 
         JSONObject jsonObject = new JSONObject(logEntry);
         HashMap<String, String> entryHash = new HashMap<>();
+
+        System.out.println(logEntry);
 
         entryHash.put("title", jsonObject.getString("title"));
         entryHash.put("comment", jsonObject.getString("comment"));

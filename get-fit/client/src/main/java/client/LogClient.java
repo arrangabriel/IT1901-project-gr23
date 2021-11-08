@@ -12,7 +12,6 @@ import java.net.http.HttpResponse.BodyHandlers;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map.Entry;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
@@ -34,7 +33,7 @@ public class LogClient {
     /**
      * Constructs a LogClient from a builder.
      *
-     * @param serverUrl server base url.
+     * @param serverUrl  server base url.
      * @param serverPort server port.
      */
     public LogClient(final String serverUrl, final int serverPort) {
@@ -47,10 +46,9 @@ public class LogClient {
      *
      * @param id The id of the LogEntry to retrieve.
      * @return The LogEntry represented by a hash map.
-     * @throws URISyntaxException If the id ruins the URI syntax.
-     * @throws InterruptedException
-     * If the request was interrupted before retreiving the http response.
-     * @throws ExecutionException If the request completed exceptionally.
+     * @throws URISyntaxException   If the id ruins the URI syntax.
+     * @throws InterruptedException If the request was interrupted before retreiving the http response.
+     * @throws ExecutionException   If the request completed exceptionally.
      */
     public HashMap<String, String> getLogEntry(final String id)
             throws URISyntaxException, InterruptedException,
@@ -63,6 +61,7 @@ public class LogClient {
 
         HashMap<String, String> responseHash = new HashMap<>();
 
+        System.out.println(jsonObject);
         for (String key : jsonObject.keySet()) {
             responseHash.put(key, jsonObject.getString(key));
         }
@@ -71,55 +70,12 @@ public class LogClient {
     }
 
     /**
-     * Asynchronously requests details for every id.
-     *
-     * @param ids the ids to request details for.
-     * @return The hash map of hash maps representing the LogEntries
-     * @throws URISyntaxException If any of the ids ruin the URI syntax.
-     * @throws InterruptedException
-     * If the requests were interrupted before retreiving the http responses.
-     * @throws ExecutionException If the requests were completed exceptionally.
-     */
-    public HashMap<String, HashMap<String, String>> getLogEntryDetailedList(
-            final String... ids)
-            throws URISyntaxException, InterruptedException,
-            ExecutionException {
-
-        HashMap<String, CompletableFuture<HttpResponse<String>>> futures =
-                new HashMap<>();
-
-        for (String id : ids) {
-            futures.put(id, this.getAsync("/api/v1/entries/" + id));
-        }
-
-        HashMap<String, HashMap<String, String>> responses = new HashMap<>();
-
-        for (Entry<String, CompletableFuture<HttpResponse<String>>> futureEntry
-                : futures.entrySet()) {
-
-            JSONObject jsonObject =
-                    new JSONObject(futureEntry.getValue().get().body());
-            HashMap<String, String> entryHash = new HashMap<>();
-
-            for (String key : jsonObject.keySet()) {
-                entryHash.put(key, jsonObject.getString(key));
-            }
-
-            responses.put(futureEntry.getKey(), entryHash);
-        }
-
-        return responses;
-    }
-
-    /**
      * Get a list of log entries from the server without sorting or filtering.
      *
      * @return A list of log entries from the server represented as a hash map.
-     * @throws URISyntaxException
-     * If the hardcoded URI no longer matches the servers expectations.
-     * @throws InterruptedException
-     * If the request was interrupted before retreiving the http response.
-     * @throws ExecutionException If the request completed exceptionally.
+     * @throws URISyntaxException   If the hardcoded URI no longer matches the servers expectations.
+     * @throws InterruptedException If the request was interrupted before retreiving the http response.
+     * @throws ExecutionException   If the request completed exceptionally.
      */
     public List<HashMap<String, String>> getLogEntryList()
             throws URISyntaxException, InterruptedException,
@@ -130,15 +86,12 @@ public class LogClient {
     /**
      * Get a list of log entries from the server.
      *
-     * @param builder
-     * The query string builder to generate a query string
-     * for filtering and sorting.
+     * @param builder The query string builder to generate a query string
+     *                for filtering and sorting.
      * @return A list of log entries from the server represented as a hash map.
-     * @throws URISyntaxException
-     * If the query entries ruin the query string syntax.
-     * @throws InterruptedException
-     * If the request was interrupted before retreiving the http response.
-     * @throws ExecutionException If the request completed exceptionally.
+     * @throws URISyntaxException   If the query entries ruin the query string syntax.
+     * @throws InterruptedException If the request was interrupted before retreiving the http response.
+     * @throws ExecutionException   If the request completed exceptionally.
      */
     public List<HashMap<String, String>> getLogEntryList(
             final ListBuilder builder)
@@ -168,9 +121,8 @@ public class LogClient {
 
         HttpResponse<String> response =
                 this.get("/api/v1/entries/list" + queryString);
-        String jsonString = response.body();
 
-        JSONObject jsonObject = new JSONObject(jsonString);
+        JSONObject jsonObject = new JSONObject(response.body());
 
         List<HashMap<String, String>> responseList =
                 new ArrayList<>();
@@ -179,8 +131,9 @@ public class LogClient {
         for (int i = 0; i < array.length(); i++) {
             HashMap<String, String> innerMap = new HashMap<>();
 
-            innerMap.put("id", array.getJSONObject(i).getString("id"));
-            innerMap.put("name", array.getJSONObject(i).getString("name"));
+            for (String field : array.getJSONObject(i).keySet()) {
+                innerMap.put(field, array.getJSONObject(i).getString(field));
+            }
 
             responseList.add(innerMap);
         }
@@ -302,11 +255,9 @@ public class LogClient {
      *
      * @param endpoint Where to send the request to.
      * @return The Http response.
-     * @throws URISyntaxException If the URI syntax is incorrect.
-     * @throws InterruptedException
-     * If the underlying asynchronous request was interrupted before retreival.
-     * @throws ExecutionException
-     * If the underlying asynchronous request completed exceptionally.
+     * @throws URISyntaxException   If the URI syntax is incorrect.
+     * @throws InterruptedException If the underlying asynchronous request was interrupted before retreival.
+     * @throws ExecutionException   If the underlying asynchronous request completed exceptionally.
      */
     private HttpResponse<String> get(final String endpoint)
             throws URISyntaxException, InterruptedException,

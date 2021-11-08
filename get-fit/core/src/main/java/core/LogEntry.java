@@ -328,6 +328,7 @@ public final class LogEntry {
             map.put("comment", "null");
         }
 
+        map.put("id", this.getId());
         map.put("date", this.getDate().toString());
         map.put("feeling", Integer.toString(this.getFeeling()));
         map.put("duration", Long.toString(this.getDuration().toSeconds()));

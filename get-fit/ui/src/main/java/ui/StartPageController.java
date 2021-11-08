@@ -207,7 +207,7 @@ public class StartPageController {
      * the dropdown menus.
      */
     public void updateList() {
-
+        listOfEntries.getItems().clear();
         // Gather query information
         String sort = sortConfig.getValue();
         String categoryFilter = sortCategory.getValue();
@@ -240,16 +240,9 @@ public class StartPageController {
 
     }
 
-    private VBox createListEntry(final HashMap<String, String> entryId) {
+    private VBox createListEntry(final HashMap<String, String> entry) {
 
-        HashMap<String, String> response;
-        try {
-            response = this.client.getLogEntry(entryId.get("id"));
-        } catch (URISyntaxException | InterruptedException | ExecutionException e2) {
-            this.retry("createListEntry", entryId.get("id"));
-            return null;
-        }
-        final HashMap<String, String> entry = response;
+
 
         VBox vBox = new VBox();
         GridPane grid = new GridPane();
@@ -324,7 +317,7 @@ public class StartPageController {
         grid.add(delete, 3, 0);
 
         vBox.getChildren().add(grid);
-        vBox.setId(entryId.get("id"));
+        vBox.setId(entry.get("id"));
 
         return vBox;
     }
