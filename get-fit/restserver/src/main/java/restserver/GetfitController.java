@@ -31,7 +31,7 @@ import localpersistence.EntrySaverJson;
 
 @RestController
 @RequestMapping("/api/v1/entries")
-public class EntryManagerController {
+public class GetfitController {
 
     @Autowired
     private final EntryManager entryManager = new EntryManager();
