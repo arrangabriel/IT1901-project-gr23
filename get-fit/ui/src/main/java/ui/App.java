@@ -1,6 +1,5 @@
 package ui;
 
-import core.EntryManager;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -13,10 +12,6 @@ import java.io.IOException;
  * JavaFX App.
  */
 public class App extends Application {
-    /**
-     * EntryManager is the brains of the operation.
-     */
-    protected static final EntryManager entryManager = new EntryManager();
 
     /**
      * Starts the app.
