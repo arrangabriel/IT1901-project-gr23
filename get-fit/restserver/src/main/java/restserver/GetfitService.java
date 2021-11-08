@@ -7,6 +7,10 @@ import org.springframework.stereotype.Service;
 import core.EntryManager;
 import localpersistence.EntrySaverJson;
 
+/**
+ * Gives the server access 
+ * to methods from core and localpersistence.
+ */
 @Service
 public class GetfitService {
 
