@@ -15,6 +15,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
@@ -40,6 +41,10 @@ public class StartPageController {
      * Session log client.
      */
     private final LogClient client = new LogClient("http://localhost", 8080);
+
+    /***/
+    @FXML
+    private CheckBox reverseBox;
     /***/
     @FXML
     private Text distanceLabel;
@@ -129,7 +134,7 @@ public class StartPageController {
      */
     private boolean reverse;
 
-    private void retry(String func, String... args) {
+    private void retry(final String func, final String... args) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Connection error");
         alert.setHeaderText("Could not connect to server");
@@ -213,11 +218,9 @@ public class StartPageController {
                 new ListBuilder().sort(sort).category(categoryFilter)
                         .subCategory(subFilter);
 
-        /*
-        if (reverse) {
+        if (reverseBox.isSelected()) {
             builder.reverse();
         }
-        */
 
         List<HashMap<String, String>> entries;
         try {
@@ -231,6 +234,7 @@ public class StartPageController {
             e.printStackTrace();
         } catch (SecurityException e) {
             // Can't happen
+            // lol stefan
             e.printStackTrace();
         }
 
@@ -351,12 +355,12 @@ public class StartPageController {
             sortSubcategory.setVisible(false);
         } else {
             switch (sortCategory.getValue()) {
-                case "STRENGTH" -> {
+                case "strength" -> {
                     sortSubcategory.setItems(sortStrengthSubcategories);
                     sortSubcategory.getSelectionModel().selectFirst();
                     sortSubcategory.setVisible(true);
                 }
-                case "SWIMMING", "CYCLING", "RUNNING" -> {
+                case "swimming", "cycling", "running" -> {
                     sortSubcategory.setItems(sortCardioSubcategories);
                     sortSubcategory.getSelectionModel().selectFirst();
                     sortSubcategory.setVisible(true);
@@ -378,7 +382,6 @@ public class StartPageController {
      * Initializes the controller.
      *
      * @throws SecurityException
-     * @throws NoSuchMethodException
      */
     @FXML
     private void initialize() {
@@ -392,7 +395,6 @@ public class StartPageController {
         sortCardioSubcategories = FXCollections.observableArrayList();
         sortCardioSubcategories.add("ANY");
 
-        // TODO: make dynamic
         sortConfigs.add("title");
         sortConfigs.add("date");
         sortConfigs.add("duration");
@@ -400,7 +402,6 @@ public class StartPageController {
         HashMap<String, List<String>> filters;
         try {
             filters = this.client.getExerciseCategories();
-            // TODO: Lacks flexibility
             sortCategories.addAll(filters.keySet());
             sortStrengthSubcategories.addAll(filters.get("strength"));
             sortCardioSubcategories.addAll(filters.get("running"));
@@ -414,11 +415,7 @@ public class StartPageController {
         } catch (ExecutionException e) {
             this.retry("initialize");
 
-        } catch (URISyntaxException e) {
-            // Unknown exception
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            // Unknown exception
+        } catch (URISyntaxException | InterruptedException e) {
             e.printStackTrace();
         }
 

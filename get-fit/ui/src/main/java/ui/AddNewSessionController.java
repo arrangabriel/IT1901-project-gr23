@@ -263,7 +263,6 @@ public class AddNewSessionController {
             entryMap.put("distance", distanceValue);
             entryMap.put("comment", comment);
 
-
             // add and save newly created LogEntry.
             try {
                 this.client.addLogEntry(entryMap);
