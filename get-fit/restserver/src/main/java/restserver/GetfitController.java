@@ -19,28 +19,28 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.beans.factory.annotation.Autowired;
 
 import core.EntryManager;
 import core.LogEntry;
 import core.LogEntry.EXERCISECATEGORY;
-import localpersistence.EntrySaverJson;
 
 //localhost:8080/api/v1/entries
 //Run: mvn spring-boot:run
 
 @RestController
 @RequestMapping("/api/v1/entries")
+
 public class GetfitController {
 
-    @Autowired
-    private final EntryManager entryManager = new EntryManager();
-    
+    //@Autowired
+    private GetfitService getfitService;
+
     
     
     @GetMapping("/{entryId}")
     public LogEntry getLogEntry(@PathVariable("entryId") String id) {
-        return entryManager.getEntry(id);
+        return getfitService.getEntryManager().getEntry(id);
     }
 
     @GetMapping("/filters")
@@ -68,7 +68,8 @@ public class GetfitController {
             sortConfiguration = LogEntry.SORTCONFIGURATIONS.valueOf(sortType);
         } catch (IllegalArgumentException IA) {
         }
-        EntryManager.SortedIteratorBuilder iteratorBuilder = new EntryManager.SortedIteratorBuilder(entryManager,
+        EntryManager.SortedIteratorBuilder iteratorBuilder = 
+        new EntryManager.SortedIteratorBuilder(getfitService.getEntryManager(),
                 sortConfiguration);
         try {
             LogEntry.EXERCISECATEGORY categories = LogEntry.EXERCISECATEGORY.valueOf(category);
@@ -102,9 +103,10 @@ public class GetfitController {
 
     public String addLogEntry(@RequestBody String logEntry){
 
-        entryManager.addEntry(stringToEntry(logEntry));
-        save(entryManager);
-        return "{\"id\":\""  + entryManager.addEntry(stringToEntry(logEntry)) + "\" }";
+        getfitService.getEntryManager().addEntry(stringToEntry(logEntry));
+        getfitService.save();
+        return "{\"id\":\""  + getfitService.getEntryManager()
+        .addEntry(stringToEntry(logEntry)) + "\" }";
     }
 
 
@@ -112,15 +114,15 @@ public class GetfitController {
     public void editLogEntry(@PathVariable("entryId") 
     String id, @RequestBody String logEntry){
         
-        entryManager.swapEntry(id, stringToEntry(logEntry));
-        save(entryManager);
+        getfitService.getEntryManager().swapEntry(id, stringToEntry(logEntry));
+        getfitService.save();
     }
 
 
     @PostMapping("remove/{entryId}")
     public void removeLogEntry(@PathVariable("entryId") String id){
-        entryManager.removeEntry(id);
-        save(entryManager);
+        getfitService.getEntryManager().removeEntry(id);
+        getfitService.save();
 
     }
 
@@ -142,14 +144,7 @@ public class GetfitController {
 
     }
 
-    private void save(EntryManager entrymanager){
-        try{
-            EntrySaverJson.save(entryManager);
-        }catch(IllegalArgumentException ia) {
-        }catch(IOException io){
-        }
-    }
-
+    
 
     @ExceptionHandler(IllegalArgumentException.class)
     @ResponseStatus(value = HttpStatus.BAD_REQUEST )
