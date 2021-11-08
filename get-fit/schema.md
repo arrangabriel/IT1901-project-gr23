@@ -50,15 +50,39 @@ Response:
     "entries": [
         {
             "id": 0,
-            "title": "Example title 0"
+            "title": "Example title",
+            "comment": "Example comment",
+            "date": "Example date",
+            "feeling": "Example feeling",
+            "duration": "Example duration",
+            "distance": "Example distance",
+            "maxHeartRate": "Example heart rate",
+            "exerciseCategory": "Example category",
+            "exerciseSubCategory": "Example subcategory"
         },
         {
             "id": 1,
-            "title": "Example title 1"
+            "title": "Example title",
+            "comment": "Example comment",
+            "date": "Example date",
+            "feeling": "Example feeling",
+            "duration": "Example duration",
+            "distance": "Example distance",
+            "maxHeartRate": "Example heart rate",
+            "exerciseCategory": "Example category",
+            "exerciseSubCategory": "Example subcategory"
         },
         {
             "id": 2,
-            "title": "Example title 2"
+            "title": "Example title",
+            "comment": "Example comment",
+            "date": "Example date",
+            "feeling": "Example feeling",
+            "duration": "Example duration",
+            "distance": "Example distance",
+            "maxHeartRate": "Example heart rate",
+            "exerciseCategory": "Example category",
+            "exerciseSubCategory": "Example subcategory"
         },
     ]
     
