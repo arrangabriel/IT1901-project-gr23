@@ -36,6 +36,7 @@ public class App extends Application {
             stage.setScene(new Scene(parent));
             stage.show();
         } catch (IOException e) {
+            e.printStackTrace();
             System.out.println("Missing StartPage.fxml file.");
         }
     }

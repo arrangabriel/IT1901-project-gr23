@@ -29,7 +29,7 @@
                   prefWidth="130.0" promptText="Category"/>
         <ComboBox fx:id="sortSubcategory" layoutX="252.0" layoutY="17.0" onHidden="#sort" prefHeight="26.0"
                   prefWidth="130.0" promptText="Subcategory"/>
-        <Button fx:id="sortReverse" mnemonicParsing="false" onAction="#reverse" text="Reverse"/>
+        <!--<Button fx:id="sortReverse" mnemonicParsing="false" onAction="#reverse" text="Reverse"/>-->
     </HBox>
 
     <Pane layoutX="28.0" layoutY="116.0" prefHeight="211.0" prefWidth="542.0">

@@ -1,5 +1,6 @@
 package ui;
 
+import client.LogClient;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -8,7 +9,9 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
@@ -23,11 +26,10 @@ import java.time.Duration;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
-
-import client.LogClient;
 
 public class AddNewSessionController {
 
@@ -201,9 +203,11 @@ public class AddNewSessionController {
         try {
             // checks if duration fields have values.
             try {
-                duration = String.valueOf(Duration.ofHours(Integer.parseInt(hour.getText()))
-                        .plusSeconds(Duration.ofMinutes(
-                                Integer.parseInt(min.getText())).getSeconds()));
+                duration = String.valueOf(
+                        Duration.ofHours(Integer.parseInt(hour.getText()))
+                                .plusSeconds(Duration.ofMinutes(
+                                                Integer.parseInt(min.getText()))
+                                        .getSeconds()));
 
             } catch (NumberFormatException e) {
                 throw new IllegalArgumentException("Duration must be set.");
@@ -260,15 +264,23 @@ public class AddNewSessionController {
             entryMap.put("comment", comment);
 
 
-
-
             // add and save newly created LogEntry.
             try {
                 this.client.addLogEntry(entryMap);
                 goToStartPage(event);
             } catch (URISyntaxException | InterruptedException | ExecutionException e) {
-                errorLabel.setText("Could not connect to server.");
-                e.printStackTrace();
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                alert.setTitle("Connection error");
+                alert.setHeaderText("Could not connect to server");
+                alert.setContentText(
+                        "Could not establish a connection to the server.\nPress OK to retry.\nPress Cancel to quit");
+                errorLabel.setText("Could not connect to server");
+                Optional<ButtonType> result = alert.showAndWait();
+                if (result.get() == ButtonType.OK) {
+                    this.createSessionButtonPushed(null);
+                } else {
+                    System.exit(0);
+                }
             }
 
 
@@ -314,7 +326,8 @@ public class AddNewSessionController {
     @FXML
     public void handleTagsSelector(final ActionEvent event) {
 
-        String mainCategory = exerciseType.getSelectionModel().getSelectedItem();
+        String mainCategory =
+                exerciseType.getSelectionModel().getSelectedItem();
         tags.setItems(this.getSubcategoryStringObservableList(mainCategory));
     }
 
@@ -366,7 +379,7 @@ public class AddNewSessionController {
      */
     @FXML
     private void initialize() throws NumberFormatException {
-            
+
 
         try {
             this.categories = client.getExerciseCategories();
@@ -378,7 +391,7 @@ public class AddNewSessionController {
             e.printStackTrace();
         }
 
-        Set<String> exerciseCategories = this.categories.keySet(); 
+        Set<String> exerciseCategories = this.categories.keySet();
 
         // generate an ObservableList of exercise category names.
         ObservableList<String> exerciseCategoryNames = exerciseCategories
