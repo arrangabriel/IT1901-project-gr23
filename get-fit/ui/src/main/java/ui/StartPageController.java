@@ -15,7 +15,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
-import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
@@ -96,8 +95,7 @@ public class StartPageController {
     /***/
     @FXML
     private Button sortReverse;
-    /***/
-    private CheckBox reverseBox;
+    //private CheckBox reverseBox;
     /***/
     @FXML
     private Button goToStatistics;
@@ -209,15 +207,17 @@ public class StartPageController {
         String sort = sortConfig.getValue();
         String categoryFilter = sortCategory.getValue();
         String subFilter = sortSubcategory.getValue();
-        boolean reverse = reverseBox.isSelected();
+        //boolean reverse = reverseBox.isSelected();
 
         ListBuilder builder =
                 new ListBuilder().sort(sort).category(categoryFilter)
                         .subCategory(subFilter);
 
+        /*
         if (reverse) {
             builder.reverse();
         }
+        */
 
         List<HashMap<String, String>> entries;
         try {

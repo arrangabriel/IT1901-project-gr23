@@ -19,10 +19,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 
 import localpersistence.EntrySaverJson;
-import restserver.EntryManagerController;
+import restserver.GetfitController;
 import restserver.GetfitApplication;
 
-@SpringBootTest(classes = EntryManagerController.class)
+@SpringBootTest(classes = GetfitController.class)
 @AutoConfigureMockMvc
 public class GetfitApplicationTest {
 
@@ -31,7 +31,7 @@ public class GetfitApplicationTest {
 
 
     @Autowired
-    private EntryManagerController controller;
+    private GetfitController controller;
 
     private final static String path = "/api/v1/entries";
 

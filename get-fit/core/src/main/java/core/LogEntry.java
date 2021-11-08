@@ -27,10 +27,6 @@ public final class LogEntry {
      */
     public static final int MINHEARTRATEHUMAN = 40;
     /**
-     * ID of the LogEntry.
-     */
-    private String id;
-    /**
      * Title of LogEntry.
      */
     private final String title;
@@ -66,6 +62,10 @@ public final class LogEntry {
      * Maximum heart rate of LogEntry.
      */
     private final Integer maxHeartRate;
+    /**
+     * ID of the LogEntry.
+     */
+    private String id;
 
     // it is paramount that all sorting configurations are
     // supported by all possible LogEntries.
@@ -223,6 +223,73 @@ public final class LogEntry {
     // expand these in the future
 
     /**
+     * Converts a string representation of a subcategory into a subcategory.
+     *
+     * @param category The string representation of the subcategory.
+     * @return The actual subcategory or null if no match.
+     */
+    public static Subcategory stringToSubcategory(
+            final String category) {
+
+        Subcategory subCategory = null;
+        outerLoop:
+        for (EXERCISECATEGORY exCategory : EXERCISECATEGORY.values()) {
+            for (Subcategory sub : exCategory.getSubcategories()) {
+                try {
+                    subCategory = sub.getValueOf(category);
+                    if (subCategory != null) {
+                        break outerLoop;
+                    }
+                } catch (Exception e) {
+                    // NEQ
+                }
+            }
+        }
+        return subCategory;
+    }
+
+    public static LogEntry fromHash(final HashMap<String, String> map) {
+        String title = map.get("title");
+        LocalDate date = LocalDate.parse(map.get("date"));
+        String comment = null;
+        Double distance = null;
+        Integer maxHeartRate = null;
+        int feeling = Integer.parseInt(map.get("feeling"));
+
+        if (!map.get("distance").equals("null")) {
+            distance = Double.parseDouble(
+                    map.get("distance"));
+        }
+        if (!map.get("maxHeartRate").equals("null")) {
+            maxHeartRate = Integer.parseInt(
+                    map.get("maxHeartRate"));
+        }
+        if (!map.get("comment").equals("null")) {
+            comment = map.get("comment");
+        }
+
+        Duration duration = Duration.ofSeconds(
+                Long.parseLong(map.get("duration")));
+
+        EXERCISECATEGORY category = EXERCISECATEGORY.valueOf(
+                map.get("exerciseCategory"));
+
+        Subcategory subCategory = stringToSubcategory(
+                map.get("exerciseSubcategory"));
+
+
+        LogEntry entry = new EntryBuilder(
+                title, date, duration, category, feeling)
+                .comment(comment)
+                .distance(distance)
+                .exerciseSubcategory(subCategory)
+                .maxHeartRate(maxHeartRate)
+                .build();
+
+        return entry;
+    }
+
+    /**
      * Returns the id field of this logEntry.
      *
      * @return the id field as a string.
@@ -247,6 +314,7 @@ public final class LogEntry {
 
     /**
      * Represents this LogEntry as a hashmap with values converted to strings.
+     *
      * @return The hasmap representing this LogEntry.
      */
     public HashMap<String, String> toHashMap() {
@@ -279,79 +347,13 @@ public final class LogEntry {
         map.put("exerciseCategory", this.getExerciseCategory().toString());
 
         if (this.getExerciseSubCategory() != null) {
-            map.put("exerciseSubcategory", this.getExerciseSubCategory().toString());
+            map.put("exerciseSubcategory",
+                    this.getExerciseSubCategory().toString());
         } else {
             map.put("exerciseSubcategory", "null");
         }
 
         return map;
-    }
-
-    /**
-     * Converts a string representation of a subcategory into a subcategory.
-     *
-     * @param category The string representation of the subcategory.
-     * @return The actual subcategory or null if no match.
-     */
-    public static Subcategory stringToSubcategory(
-            final String category) {
-
-        Subcategory subCategory = null;
-        outerLoop:
-        for (EXERCISECATEGORY exCategory : EXERCISECATEGORY.values()) {
-            for (Subcategory sub : exCategory.getSubcategories()) {
-                try {
-                    subCategory = sub.getValueOf(category);
-                    if (subCategory != null) {
-                        break outerLoop;
-                    }
-                } catch (Exception e) {
-                    // NEQ
-                }
-            }
-        }
-        return subCategory;
-    }
-
-    public static LogEntry fromHash(HashMap<String, String> map) {
-        String title = map.get("title");
-        LocalDate date = LocalDate.parse(map.get("date"));
-        String comment = null;
-        Double distance = null;
-        Integer maxHeartRate = null;
-        int feeling = Integer.parseInt(map.get("feeling"));
-
-        if (!map.get("distance").equals("null")) {
-            distance = Double.parseDouble(
-                    map.get("distance"));
-        }
-        if (!map.get("maxHeartRate").equals("null")) {
-            maxHeartRate = Integer.parseInt(
-                    map.get("maxHeartRate"));
-        }
-        if (!map.get("comment").equals("null")) {
-            comment = map.get("comment");
-        }
-
-        Duration duration = Duration.ofSeconds(
-                Long.parseLong(map.get("duration")));
-
-        EXERCISECATEGORY category = EXERCISECATEGORY.valueOf(
-                map.get("exerciseCategory"));
-
-        Subcategory subCategory = stringToSubcategory(
-                map.get("exerciseSubcategory"));
-
-
-        LogEntry entry = new EntryBuilder(
-            title, date, duration, category, feeling)
-            .comment(comment)
-            .distance(distance)
-            .exerciseSubcategory(subCategory)
-            .maxHeartRate(maxHeartRate)
-            .build();
-        
-            return entry;
     }
 
     /**
