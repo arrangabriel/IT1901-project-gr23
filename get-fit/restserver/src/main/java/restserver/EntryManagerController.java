@@ -1,4 +1,4 @@
-package restapi;
+package restserver;
 
 import java.io.IOException;
 import java.util.ArrayList;

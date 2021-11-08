@@ -11,6 +11,6 @@ open module rest {
     requires localpersistence;
     requires transitive org.json;
 
-    exports restapi;
+    exports restserver;
     
 }
