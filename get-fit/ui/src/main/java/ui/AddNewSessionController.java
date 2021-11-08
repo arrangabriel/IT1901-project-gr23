@@ -267,7 +267,7 @@ public class AddNewSessionController {
                 this.client.addLogEntry(entryMap);
                 goToStartPage(event);
             } catch (URISyntaxException | InterruptedException | ExecutionException e) {
-                // TODO: Inform user of error
+                errorLabel.setText("Could not connect to server.");
                 e.printStackTrace();
             }
 
@@ -358,17 +358,6 @@ public class AddNewSessionController {
         });
     }
 
-    private void retreiveCategories() {
-        try {
-            this.categories = client.getExerciseCategories();
-        } catch (ExecutionException e) {
-            // May lead to recursive depth limit
-            this.retreiveCategories();
-        } catch (URISyntaxException | InterruptedException e) {
-            // Can't really happen so idk
-            e.printStackTrace();
-        }
-    }
 
     /**
      * Initializes the controller.
@@ -377,9 +366,19 @@ public class AddNewSessionController {
      */
     @FXML
     private void initialize() throws NumberFormatException {
-        retreiveCategories();
             
-        Set<String> exerciseCategories = categories.keySet(); 
+
+        try {
+            this.categories = client.getExerciseCategories();
+        } catch (ExecutionException e) {
+            errorLabel.setText("Could not connect to server.");
+            return;
+        } catch (URISyntaxException | InterruptedException e) {
+            // Can't really happen
+            e.printStackTrace();
+        }
+
+        Set<String> exerciseCategories = this.categories.keySet(); 
 
         // generate an ObservableList of exercise category names.
         ObservableList<String> exerciseCategoryNames = exerciseCategories

@@ -27,7 +27,6 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.time.Duration;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
@@ -203,7 +202,7 @@ public class StartPageController {
                 this.listOfEntries.getItems().add(createListEntry(entry));        
         }
         } catch (URISyntaxException | InterruptedException | ExecutionException e) {
-            // TODO Auto-generated catch block
+            errorLabel.setText("Could not connect to server");
             e.printStackTrace();
         }
 
@@ -242,7 +241,7 @@ public class StartPageController {
         try {
             response = this.client.getLogEntry(entryId.get("id"));
         } catch (URISyntaxException | InterruptedException | ExecutionException e2) {
-            // TODO Auto-generated catch block
+            errorLabel.setText("Could not connect to server");
             e2.printStackTrace();
             response = null;
         }
@@ -301,7 +300,7 @@ public class StartPageController {
             try {
                 this.client.deleteLogEntry(entry.get("id"));
             } catch (URISyntaxException | InterruptedException | ExecutionException e1) {
-                // TODO Auto-generated catch block
+                errorLabel.setText("Could not connect to server");
                 e1.printStackTrace();
             }
             this.updateList();
@@ -428,7 +427,7 @@ public class StartPageController {
             sortSubcategory.setVisible(false);
 
         } catch (URISyntaxException | InterruptedException | ExecutionException e) {
-            // TODO Auto-generated catch block
+            errorLabel.setText("Could not connect to server");
             e.printStackTrace();
         }
 
