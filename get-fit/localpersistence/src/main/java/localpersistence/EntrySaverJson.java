@@ -1,10 +1,6 @@
 package localpersistence;
 
 import core.EntryManager;
-import core.LogEntry;
-import core.LogEntry.EXERCISECATEGORY;
-import core.LogEntry.EntryBuilder;
-import core.LogEntry.Subcategory;
 
 import org.json.JSONException;
 import org.json.JSONObject;
