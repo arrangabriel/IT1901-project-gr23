@@ -1,11 +1,10 @@
 package restserver;
 
-import java.io.IOException;
-
-import org.springframework.stereotype.Service;
-
 import core.EntryManager;
 import localpersistence.EntrySaverJson;
+import org.springframework.stereotype.Service;
+
+import java.io.IOException;
 
 /**
  * Gives the server access 
@@ -14,10 +13,7 @@ import localpersistence.EntrySaverJson;
 @Service
 public class GetfitService {
 
-    /**
-     * an EntryManager object from core
-     */
-    private EntryManager entryManager;
+    private final EntryManager entryManager;
 
     /**
      * Create a new EntryManager object on initialization
@@ -33,24 +29,23 @@ public class GetfitService {
      * the content of the save file to the entryManager.
      * 
      */
-    public void load(){
-        try{
+    public void load() {
+        try {
             EntrySaverJson.load(this.entryManager);
-        }catch(IllegalArgumentException ia) {
-        }catch(IOException io){
+        } catch (IllegalArgumentException ia) {
+        } catch (IOException io) {
         }
     }
-
     /**
      * Use EntrySaverJson from localpersistance to save
-     * the content of the EntryManager to file.
+     * the state of the EntryManager to file.
      * 
      */
-    public void save(){
-        try{
+    public void save() {
+        try {
             EntrySaverJson.save(this.entryManager);
-        }catch(IllegalArgumentException ia) {
-        }catch(IOException io){
+        } catch (IllegalArgumentException ia) {
+        } catch (IOException io) {
         }
     }
 
@@ -63,6 +58,4 @@ public class GetfitService {
     public EntryManager getEntryManager() {
         return this.entryManager;
     }
-
-
 }

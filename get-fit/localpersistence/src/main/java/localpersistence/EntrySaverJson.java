@@ -1,10 +1,6 @@
 package localpersistence;
 
 import core.EntryManager;
-import core.LogEntry;
-import core.LogEntry.EXERCISECATEGORY;
-import core.LogEntry.EntryBuilder;
-import core.LogEntry.Subcategory;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -13,12 +9,8 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.time.Duration;
-import java.time.LocalDate;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.Scanner;
-import java.util.Set;
 
 /**
  * Class for saving and loading entryManagers to and from JSON files.
@@ -150,10 +142,10 @@ public final class EntrySaverJson {
                 entryHash.put("date", jsonObject.getJSONObject(key).getString("date"));
                 entryHash.put("feeling", jsonObject.getJSONObject(key).getString("feeling"));
                 entryHash.put("duration", jsonObject.getJSONObject(key).getString("duration"));
-                entryHash.put("distance", jsonObject.getString("distance"));
+                entryHash.put("distance", jsonObject.getJSONObject(key).getString("distance"));
                 entryHash.put("maxHeartRate", jsonObject.getJSONObject(key).getString("maxHeartRate"));
                 entryHash.put("exerciseCategory", jsonObject.getJSONObject(key).getString("exerciseCategory"));
-                entryHash.put("exerciseSubCategory", jsonObject.getJSONObject(key).getString("exerciseSubCategory"));
+                entryHash.put("exerciseSubcategory", jsonObject.getJSONObject(key).getString("exerciseSubcategory"));
 
                 jsonHash.put(key, entryHash);
 
