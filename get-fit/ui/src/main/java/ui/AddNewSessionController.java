@@ -1,5 +1,6 @@
 package ui;
 
+import client.LogClient;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -29,8 +30,6 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
-
-import client.LogClient;
 
 public class AddNewSessionController {
 
@@ -204,9 +203,11 @@ public class AddNewSessionController {
         try {
             // checks if duration fields have values.
             try {
-                duration = String.valueOf(Duration.ofHours(Integer.parseInt(hour.getText()))
-                        .plusSeconds(Duration.ofMinutes(
-                                Integer.parseInt(min.getText())).getSeconds()));
+                duration = String.valueOf(
+                        Duration.ofHours(Integer.parseInt(hour.getText()))
+                                .plusSeconds(Duration.ofMinutes(
+                                                Integer.parseInt(min.getText()))
+                                        .getSeconds()));
 
             } catch (NumberFormatException e) {
                 throw new IllegalArgumentException("Duration must be set.");
@@ -261,8 +262,6 @@ public class AddNewSessionController {
             entryMap.put("subCategory", subCategory);
             entryMap.put("distance", distanceValue);
             entryMap.put("comment", comment);
-
-
 
 
             // add and save newly created LogEntry.
@@ -327,7 +326,8 @@ public class AddNewSessionController {
     @FXML
     public void handleTagsSelector(final ActionEvent event) {
 
-        String mainCategory = exerciseType.getSelectionModel().getSelectedItem();
+        String mainCategory =
+                exerciseType.getSelectionModel().getSelectedItem();
         tags.setItems(this.getSubcategoryStringObservableList(mainCategory));
     }
 
@@ -379,7 +379,7 @@ public class AddNewSessionController {
      */
     @FXML
     private void initialize() throws NumberFormatException {
-            
+
 
         try {
             this.categories = client.getExerciseCategories();
@@ -391,7 +391,7 @@ public class AddNewSessionController {
             e.printStackTrace();
         }
 
-        Set<String> exerciseCategories = this.categories.keySet(); 
+        Set<String> exerciseCategories = this.categories.keySet();
 
         // generate an ObservableList of exercise category names.
         ObservableList<String> exerciseCategoryNames = exerciseCategories

@@ -149,9 +149,8 @@ public class LogClient {
 
         List<String> queries = new ArrayList<>();
 
-        if (builder.reverseVal != null) {
-            queries.add("r=" + builder.reverseVal);
-        }
+        queries.add("r=" + builder.reverseVal);
+
         if (builder.sortVal != null) {
             queries.add("s=" + builder.sortVal);
         }

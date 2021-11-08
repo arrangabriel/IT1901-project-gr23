@@ -8,6 +8,7 @@ import java.util.List;
 
 
 import org.json.JSONObject;
+import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,10 +34,9 @@ import localpersistence.EntrySaverJson;
 @RequestMapping("/api/v1/entries")
 public class EntryManagerController {
 
-    @Autowired
+    //@Autowired
     private final EntryManager entryManager = new EntryManager();
-    
-    
+
     
     @GetMapping("/{entryId}")
     public LogEntry getLogEntry(@PathVariable("entryId") String id) {

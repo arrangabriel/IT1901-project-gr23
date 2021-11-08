@@ -1,5 +1,7 @@
 package ui;
 
+import client.LogClient;
+import client.LogClient.ListBuilder;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -26,21 +28,19 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.net.URISyntaxException;
 import java.time.Duration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.ExecutionException;
-import java.util.function.Function;
-
-import client.LogClient;
-import client.LogClient.ListBuilder;
 
 public class StartPageController {
 
+    /**
+     * Session log client.
+     */
+    private final LogClient client = new LogClient("http://localhost", 8080);
     /***/
     @FXML
     private Text distanceLabel;
@@ -92,10 +92,10 @@ public class StartPageController {
     /***/
     @FXML
     private ComboBox<String> sortSubcategory;
+    // TODO: Add this box to fxml
     /***/
     @FXML
     private Button sortReverse;
-    // TODO: Add this box to fxml
     /***/
     private CheckBox reverseBox;
     /***/
@@ -110,12 +110,6 @@ public class StartPageController {
     /***/
     @FXML
     private Label errorLabel;
-
-    /**
-     * Session log client.
-     */
-    private final LogClient client = new LogClient("localhost", 8080);
-
     /**
      * String-names of sort configurations.
      */
@@ -137,7 +131,7 @@ public class StartPageController {
      */
     private boolean reverse;
 
-    private void retry(String func, String... args){
+    private void retry(String func, String... args) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Connection error");
         alert.setHeaderText("Could not connect to server");
@@ -147,19 +141,19 @@ public class StartPageController {
         Optional<ButtonType> result = alert.showAndWait();
         if (result.get() == ButtonType.OK) {
             switch (func) {
-            case "initialize":
-                this.initialize();
-                break;
-            case "updateList":
-                this.updateList();
-                break;
-            case "createListEntry":
-                HashMap<String, String> entry = new HashMap<>();
-                entry.put(args[0], args[1]);
-                this.createListEntry(entry);
-                break;
-            default:
-                break;
+                case "initialize":
+                    this.initialize();
+                    break;
+                case "updateList":
+                    this.updateList();
+                    break;
+                case "createListEntry":
+                    HashMap<String, String> entry = new HashMap<>();
+                    entry.put(args[0], args[1]);
+                    this.createListEntry(entry);
+                    break;
+                default:
+                    break;
             }
         } else {
             System.exit(0);
@@ -173,12 +167,14 @@ public class StartPageController {
      * @throws IOException if .FXML file could not be found.
      */
     @FXML
-    public void addSessionButtonPushed(final ActionEvent event) throws IOException {
+    public void addSessionButtonPushed(final ActionEvent event)
+            throws IOException {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("AddNewSession.fxml"));
         Parent p = loader.load();
         Scene s = new Scene(p);
-        Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        Stage window =
+                (Stage) ((Node) event.getSource()).getScene().getWindow();
         window.setTitle("Add new session");
         window.setScene(s);
         window.show();
@@ -194,10 +190,18 @@ public class StartPageController {
         entryView.setVisible(false);
     }
 
+
+    /**
+     * FXML wrapper method.
+     */
+    @FXML
+    public void sort() {
+        updateList();
+    }
+
     /**
      * Updates the log entry list by querying the server using selected params from
-     * the dropdown menues
-     * 
+     * the dropdown menus.
      */
     public void updateList() {
 
@@ -207,7 +211,9 @@ public class StartPageController {
         String subFilter = sortSubcategory.getValue();
         boolean reverse = reverseBox.isSelected();
 
-        ListBuilder builder = new ListBuilder().sort(sort).category(categoryFilter).subCategory(subFilter);
+        ListBuilder builder =
+                new ListBuilder().sort(sort).category(categoryFilter)
+                        .subCategory(subFilter);
 
         if (reverse) {
             builder.reverse();
@@ -246,7 +252,9 @@ public class StartPageController {
 
         ColumnConstraints colConstraint = new ColumnConstraints();
         colConstraint.setPercentWidth(25);
-        grid.getColumnConstraints().addAll(colConstraint, colConstraint, colConstraint, colConstraint);
+        grid.getColumnConstraints()
+                .addAll(colConstraint, colConstraint, colConstraint,
+                        colConstraint);
 
         Text title = new Text(entry.get("title"));
         Text date = new Text(entry.get("date"));
@@ -265,7 +273,8 @@ public class StartPageController {
             // feeling
             feelingView.setText(String.valueOf(entry.get("feeling")));
             // duration
-            durationView.setText(durationToHours(Duration.ofSeconds(Long.parseLong(entry.get("duration")))));
+            durationView.setText(durationToHours(
+                    Duration.ofSeconds(Long.parseLong(entry.get("duration")))));
             // subcategory optional
             String subcategory = entry.get("exerciseSubcategory");
             setOptionalField(subcategory, subcategoryView, subcategoryLabel);
@@ -316,7 +325,8 @@ public class StartPageController {
         return vBox;
     }
 
-    private void setOptionalField(final String data, final Text textField, final Text textLabel) {
+    private void setOptionalField(final String data, final Text textField,
+                                  final Text textLabel) {
         if (data != null) {
             textField.setText(data);
             textField.setVisible(true);
@@ -341,18 +351,18 @@ public class StartPageController {
             sortSubcategory.setVisible(false);
         } else {
             switch (sortCategory.getValue()) {
-            case "STRENGTH" -> {
-                sortSubcategory.setItems(sortStrengthSubcategories);
-                sortSubcategory.getSelectionModel().selectFirst();
-                sortSubcategory.setVisible(true);
-            }
-            case "SWIMMING", "CYCLING", "RUNNING" -> {
-                sortSubcategory.setItems(sortCardioSubcategories);
-                sortSubcategory.getSelectionModel().selectFirst();
-                sortSubcategory.setVisible(true);
-            }
-            default -> {
-            }
+                case "STRENGTH" -> {
+                    sortSubcategory.setItems(sortStrengthSubcategories);
+                    sortSubcategory.getSelectionModel().selectFirst();
+                    sortSubcategory.setVisible(true);
+                }
+                case "SWIMMING", "CYCLING", "RUNNING" -> {
+                    sortSubcategory.setItems(sortCardioSubcategories);
+                    sortSubcategory.getSelectionModel().selectFirst();
+                    sortSubcategory.setVisible(true);
+                }
+                default -> {
+                }
             }
         }
         updateList();
@@ -366,7 +376,7 @@ public class StartPageController {
 
     /**
      * Initializes the controller.
-     * 
+     *
      * @throws SecurityException
      * @throws NoSuchMethodException
      */
