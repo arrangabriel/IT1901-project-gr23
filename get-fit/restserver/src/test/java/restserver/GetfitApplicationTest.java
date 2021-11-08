@@ -1,4 +1,4 @@
-package restapi;
+package restserver;
 
 import static org.hamcrest.Matchers.containsString;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -19,6 +19,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 
 import localpersistence.EntrySaverJson;
+import restserver.EntryManagerController;
+import restserver.GetfitApplication;
 
 @SpringBootTest(classes = EntryManagerController.class)
 @AutoConfigureMockMvc

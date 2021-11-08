@@ -1,10 +1,11 @@
-package restapi;
+package restserver;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+
 
 import org.json.JSONObject;
 import org.springframework.http.HttpStatus;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import core.EntryManager;
 import core.LogEntry;
@@ -31,8 +33,11 @@ import localpersistence.EntrySaverJson;
 @RequestMapping("/api/v1/entries")
 public class EntryManagerController {
 
+    @Autowired
     private final EntryManager entryManager = new EntryManager();
-
+    
+    
+    
     @GetMapping("/{entryId}")
     public LogEntry getLogEntry(@PathVariable("entryId") String id) {
         return entryManager.getEntry(id);
@@ -46,7 +51,7 @@ public class EntryManagerController {
             filters.put(categories.toString().toLowerCase(),
                     Arrays.toString(categories.getSubcategories()).toLowerCase());
         }
-        return "categories: " + filters.toString().replace("=", ": ");
+        return "{categories: " + filters.toString().replace("=", ": ") + "}";
     }
 
     @GetMapping("/list")
@@ -144,6 +149,7 @@ public class EntryManagerController {
         }catch(IOException io){
         }
     }
+
 
     @ExceptionHandler(IllegalArgumentException.class)
     @ResponseStatus(value = HttpStatus.BAD_REQUEST )
