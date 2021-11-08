@@ -247,6 +247,7 @@ public class LogClient {
         HttpResponse<String> response = this.get("/api/v1/entries/filters");
 
         JSONObject jsonObject = new JSONObject(response.body());
+        jsonObject = jsonObject.getJSONObject("categories");
         HashMap<String, List<String>> categories =
                 new HashMap<>();
 

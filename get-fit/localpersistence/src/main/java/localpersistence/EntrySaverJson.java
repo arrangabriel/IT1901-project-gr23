@@ -13,12 +13,8 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.time.Duration;
-import java.time.LocalDate;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.Scanner;
-import java.util.Set;
 
 /**
  * Class for saving and loading entryManagers to and from JSON files.

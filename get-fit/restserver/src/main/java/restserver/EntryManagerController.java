@@ -1,14 +1,10 @@
 package restserver;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-
-
+import core.EntryManager;
+import core.LogEntry;
+import core.LogEntry.EXERCISECATEGORY;
+import localpersistence.EntrySaverJson;
 import org.json.JSONObject;
-import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,12 +16,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.beans.factory.annotation.Autowired;
 
-import core.EntryManager;
-import core.LogEntry;
-import core.LogEntry.EXERCISECATEGORY;
-import localpersistence.EntrySaverJson;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
 
 //localhost:8080/api/v1/entries
 //Run: mvn spring-boot:run
@@ -37,7 +33,6 @@ public class EntryManagerController {
     //@Autowired
     private final EntryManager entryManager = new EntryManager();
 
-    
     @GetMapping("/{entryId}")
     public LogEntry getLogEntry(@PathVariable("entryId") String id) {
         return entryManager.getEntry(id);
@@ -49,14 +44,16 @@ public class EntryManagerController {
 
         for (EXERCISECATEGORY categories : EXERCISECATEGORY.values()) {
             filters.put(categories.toString().toLowerCase(),
-                    Arrays.toString(categories.getSubcategories()).toLowerCase());
+                    Arrays.toString(categories.getSubcategories())
+                            .toLowerCase());
         }
         return "{categories: " + filters.toString().replace("=", ": ") + "}";
     }
 
     @GetMapping("/list")
     @ResponseBody
-    public List<LogEntry> getListOfLogEntries(@RequestParam(value = "s") String sortType,
+    public String getListOfLogEntries(
+            @RequestParam(value = "s", defaultValue = "date") String sortType,
             @RequestParam(value = "r", defaultValue = "false") String reverse,
             @RequestParam(value = "c", required = false) String category,
             @RequestParam(value = "cd", required = false) String subcategory,
@@ -65,66 +62,80 @@ public class EntryManagerController {
         LogEntry.SORTCONFIGURATIONS sortConfiguration = null;
 
         try {
-            sortConfiguration = LogEntry.SORTCONFIGURATIONS.valueOf(sortType);
+            sortConfiguration =
+                    LogEntry.SORTCONFIGURATIONS.valueOf(sortType.toUpperCase());
         } catch (IllegalArgumentException IA) {
+            // TODO: handle bad request
         }
-        EntryManager.SortedIteratorBuilder iteratorBuilder = new EntryManager.SortedIteratorBuilder(entryManager,
-                sortConfiguration);
-        try {
-            LogEntry.EXERCISECATEGORY categories = LogEntry.EXERCISECATEGORY.valueOf(category);
-            iteratorBuilder = iteratorBuilder.filterExerciseCategory(categories);
+        EntryManager.SortedIteratorBuilder iteratorBuilder =
+                new EntryManager.SortedIteratorBuilder(entryManager,
+                        sortConfiguration);
+        if (category != null) {
+            try {
+                LogEntry.EXERCISECATEGORY categories =
+                        LogEntry.EXERCISECATEGORY.valueOf(category);
+                iteratorBuilder =
+                        iteratorBuilder.filterExerciseCategory(categories);
 
-            LogEntry.Subcategory subcategories = null;
+                LogEntry.Subcategory subcategories = null;
 
-            switch (category) {
-            case "STRENGTH":
-                 subcategories = LogEntry.STRENGTHSUBCATEGORIES.valueOf(category);
-                 break;
-
-            case "SWIMMING", "CYCLING", "RUNNING":
-                 subcategories = LogEntry.STRENGTHSUBCATEGORIES.valueOf(category);
-                break;
-            default:
-                 break;
+                switch (category) {
+                    case "STRENGTH" -> {
+                        subcategories =
+                                LogEntry.STRENGTHSUBCATEGORIES.valueOf(
+                                        category);
+                    }
+                    case "SWIMMING", "CYCLING", "RUNNING" -> {
+                        subcategories =
+                                LogEntry.CARDIOSUBCATEGORIES.valueOf(
+                                        category);
+                    }
+                    default -> {
+                    }
+                }
+                iteratorBuilder =
+                        iteratorBuilder.filterSubCategory(subcategories);
+            } catch (IllegalArgumentException IA) {
             }
-            iteratorBuilder = iteratorBuilder.filterSubCategory(subcategories);
-        } catch (IllegalArgumentException IA) {
-            
         }
 
-        List<LogEntry> returnList = new ArrayList<LogEntry>();
-        iteratorBuilder.iterator(Boolean.valueOf(reverse)).forEachRemaining(returnList :: add);
+        List<LogEntry> returnList = new ArrayList<>();
+        iteratorBuilder.iterator(Boolean.parseBoolean(reverse))
+                .forEachRemaining(returnList::add);
 
-        return returnList;
+        JSONObject returnObject = new JSONObject(returnList);
+
+        return returnObject.toString();
     }
 
     @PostMapping("/add")
-
-    public String addLogEntry(@RequestBody String logEntry){
+    public String addLogEntry(final @RequestBody String logEntry) {
 
         entryManager.addEntry(stringToEntry(logEntry));
-        save(entryManager);
-        return "{\"id\":\""  + entryManager.addEntry(stringToEntry(logEntry)) + "\" }";
+        save();
+        return "{\"id\":\"" + entryManager.addEntry(stringToEntry(logEntry))
+                + "\" }";
     }
 
 
     @PostMapping("edit/{entryId}")
-    public void editLogEntry(@PathVariable("entryId") 
-    String id, @RequestBody String logEntry){
-        
+    public void editLogEntry(final @PathVariable("entryId")
+                                     String id,
+                             final @RequestBody String logEntry) {
+
         entryManager.swapEntry(id, stringToEntry(logEntry));
-        save(entryManager);
+        save();
     }
 
 
     @PostMapping("remove/{entryId}")
-    public void removeLogEntry(@PathVariable("entryId") String id){
+    public void removeLogEntry(final @PathVariable("entryId") String id) {
         entryManager.removeEntry(id);
-        save(entryManager);
+        save();
 
     }
 
-    private LogEntry stringToEntry(String logEntry){
+    private LogEntry stringToEntry(final String logEntry) {
 
         JSONObject jsonObject = new JSONObject(logEntry);
         HashMap<String, String> entryHash = new HashMap<>();
@@ -136,38 +147,33 @@ public class EntryManagerController {
         entryHash.put("distance", jsonObject.getString("distance"));
         entryHash.put("duration", jsonObject.getString("duration"));
         entryHash.put("maxHeartRate", jsonObject.getString("maxHeartRate"));
-        entryHash.put("exerciseCategory", jsonObject.getString("exerciseCategory"));
-        entryHash.put("exerciseSubCategory", jsonObject.getString("exerciseSubCategory"));
+        entryHash.put("exerciseCategory",
+                jsonObject.getString("exerciseCategory"));
+        entryHash.put("exerciseSubCategory",
+                jsonObject.getString("exerciseSubCategory"));
         return LogEntry.fromHash(entryHash);
-
     }
 
-    private void save(EntryManager entrymanager){
-        try{
+    private void save() {
+        try {
             EntrySaverJson.save(entryManager);
-        }catch(IllegalArgumentException ia) {
-        }catch(IOException io){
+        } catch (IllegalArgumentException ia) {
+        } catch (IOException io) {
         }
     }
 
-
     @ExceptionHandler(IllegalArgumentException.class)
-    @ResponseStatus(value = HttpStatus.BAD_REQUEST )
+    @ResponseStatus(value = HttpStatus.BAD_REQUEST)
     @ResponseBody
-    public String handleIllegalArgumentException(IllegalAccessException ia){
+    public String handleIllegalArgumentException(
+            final IllegalAccessException ia) {
         return ia.getMessage();
     }
 
     @ExceptionHandler(IOException.class)
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
     @ResponseBody
-    public String handleIOException(IOException io){
+    public String handleIOException(final IOException io) {
         return io.getMessage();
     }
-
-
-
-
-
-
 }
