@@ -57,7 +57,7 @@ public class AddNewSessionController {
     /**
      * Session log client.
      */
-    private final LogClient client = new LogClient("localhost", 8080);
+    private final LogClient client = new LogClient("http://localhost", 8080);
 
     /**
      * Exercise categories and subcategories.
@@ -379,8 +379,6 @@ public class AddNewSessionController {
      */
     @FXML
     private void initialize() throws NumberFormatException {
-
-
         try {
             this.categories = client.getExerciseCategories();
         } catch (ExecutionException e) {

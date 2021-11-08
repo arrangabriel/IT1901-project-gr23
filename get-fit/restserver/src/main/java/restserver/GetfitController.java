@@ -3,6 +3,7 @@ package restserver;
 import core.EntryManager;
 import core.LogEntry;
 import core.LogEntry.EXERCISECATEGORY;
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -40,20 +41,27 @@ public class GetfitController {
 
     @GetMapping("/filters")
     public String getFilters() {
-        HashMap<String, String> filters = new HashMap<>();
+        //HashMap<String, String> filters = new HashMap<>();
+        JSONObject filters = new JSONObject();
+        JSONObject categories = new JSONObject();
 
-        for (EXERCISECATEGORY categories : EXERCISECATEGORY.values()) {
-            filters.put(categories.toString().toLowerCase(),
-                    Arrays.toString(categories.getSubcategories())
-                            .toLowerCase());
+        for (EXERCISECATEGORY category : EXERCISECATEGORY.values()) {
+            JSONArray subCategories = new JSONArray();
+            for (LogEntry.Subcategory subcategory : category.getSubcategories()) {
+                subCategories.put(subcategory.toString().toLowerCase());
+            }
+            categories.put(category.toString().toLowerCase(),
+                    subCategories);
         }
-        return "{categories: " + filters.toString().replace("=", ": ") + "}";
+        filters.put("categories", categories);
+        return filters.toString();
     }
 
     @GetMapping("/list")
     @ResponseBody
-    public List<LogEntry> getListOfLogEntries(
-            final @RequestParam(value = "s") String sortType,
+    public String getListOfLogEntries(
+            final @RequestParam(value = "s", defaultValue = "date")
+                    String sortType,
             final @RequestParam(value = "r", defaultValue = "false")
                     String reverse,
             final @RequestParam(value = "c", required = false) String category,
@@ -64,7 +72,8 @@ public class GetfitController {
         LogEntry.SORTCONFIGURATIONS sortConfiguration = null;
 
         try {
-            sortConfiguration = LogEntry.SORTCONFIGURATIONS.valueOf(sortType);
+            sortConfiguration =
+                    LogEntry.SORTCONFIGURATIONS.valueOf(sortType.toUpperCase());
         } catch (IllegalArgumentException IA) {
         }
 
@@ -72,36 +81,48 @@ public class GetfitController {
                 new EntryManager.SortedIteratorBuilder(
                         getfitService.getEntryManager(),
                         sortConfiguration);
-        try {
-            LogEntry.EXERCISECATEGORY categories =
-                    LogEntry.EXERCISECATEGORY.valueOf(category);
-            iteratorBuilder =
-                    iteratorBuilder.filterExerciseCategory(categories);
+        if (category != null) {
+            try {
+                LogEntry.EXERCISECATEGORY categories =
+                        LogEntry.EXERCISECATEGORY.valueOf(category);
+                iteratorBuilder =
+                        iteratorBuilder.filterExerciseCategory(categories);
 
-            LogEntry.Subcategory subcategories = null;
+                LogEntry.Subcategory subcategories = null;
 
-            switch (category) {
-                case "STRENGTH" -> {
-                    subcategories =
-                            LogEntry.STRENGTHSUBCATEGORIES.valueOf(category);
+                switch (category) {
+                    case "STRENGTH" -> {
+                        subcategories =
+                                LogEntry.STRENGTHSUBCATEGORIES.valueOf(
+                                        category);
+                    }
+                    case "SWIMMING", "CYCLING", "RUNNING" -> {
+                        subcategories =
+                                LogEntry.CARDIOSUBCATEGORIES.valueOf(category);
+                    }
+                    default -> {
+                    }
                 }
-                case "SWIMMING", "CYCLING", "RUNNING" -> {
-                    subcategories =
-                            LogEntry.CARDIOSUBCATEGORIES.valueOf(category);
-                }
-                default -> {
-                }
+                iteratorBuilder =
+                        iteratorBuilder.filterSubCategory(subcategories);
+            } catch (IllegalArgumentException IA) {
             }
-            iteratorBuilder = iteratorBuilder.filterSubCategory(subcategories);
-        } catch (IllegalArgumentException IA) {
         }
 
         List<LogEntry> returnList = new ArrayList<>();
         iteratorBuilder.iterator(Boolean.parseBoolean(reverse))
                 .forEachRemaining(returnList::add);
 
+        JSONObject returnJSON = new JSONObject();
+        JSONArray entryArray = new JSONArray();
 
-        return returnList;
+        for (LogEntry entry : returnList) {
+            entryArray.put(entry.toHashMap());
+        }
+
+        returnJSON.put("entries", entryArray);
+
+        return returnJSON.toString();
     }
 
     @PostMapping("/add")
