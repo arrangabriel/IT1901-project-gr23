@@ -10,7 +10,9 @@ import javafx.geometry.HPos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
@@ -24,11 +26,15 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.net.URISyntaxException;
 import java.time.Duration;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.ExecutionException;
+import java.util.function.Function;
 
 import client.LogClient;
 import client.LogClient.ListBuilder;
@@ -131,6 +137,25 @@ public class StartPageController {
      */
     private boolean reverse;
 
+    private void retry(Method func) {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Connection error");
+        alert.setHeaderText("Could not connect to server");
+        alert.setContentText("Could not establish a connection to the server.\nPress OK to retry.\nPress Cancel to quit");
+        errorLabel.setText("Could not connect to server");
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.get() == ButtonType.OK) {
+            try {
+                func.invoke(this);
+            } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+                // At this point I don't even know
+                e.printStackTrace();
+            }
+        } else {
+            System.exit(0);
+        }
+    }
+
     /**
      * Switches the view to AddNewSession.
      *
@@ -150,19 +175,6 @@ public class StartPageController {
         window.setScene(s);
         window.show();
     }
-
-    /* Easter egg for future release
-    public void handleViewStatisticsButton(
-    ActionEvent event) throws IOException{
-        FXMLLoader Loader = new FXMLLoader();
-        Loader.setLocation(getClass().getResource("Statistics.fxml"));
-        Parent p = Loader.load();
-        Scene  s = new Scene(p);
-        Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
-        window.setScene(s);
-        window.show();
-    }
-    */
 
     /**
      * Hides entry view.
@@ -204,45 +216,25 @@ public class StartPageController {
         } catch (URISyntaxException | InterruptedException | ExecutionException e) {
             errorLabel.setText("Could not connect to server");
             e.printStackTrace();
+        } catch (NoSuchMethodException e) {
+            // Can't happen
+            e.printStackTrace();
+        } catch (SecurityException e) {
+            // Can't happen
+            e.printStackTrace();
         }
 
         
 
     }
 
-    // /**
-    //  * Fill list with entries according to sort parameters.
-    //  *
-    //  * @param event a JavaFX event.
-    //  */
-    // @FXML
-    // public void sort(final Event event) {
-    //     List<HashMap<String, String>> entries = this.client.getLogEntryList();
-
-    //     addIteratorToView(entries.iterator());
-    // }
-
-    // /**
-    //  * Places an iterator of entries in the view.
-    //  *
-    //  * @param entries an iterator of entries.
-    //  */
-    // public void addIteratorToView(final Iterator<HashMap<String, String>> entries) {
-    //     listOfEntries.getItems().clear();
-    //     while (entries.hasNext()) {
-    //         HashMap<String, String> entry = entries.next();
-    //         listOfEntries.getItems().add(createListEntry(entry));
-    //     }
-    // }
-
-    private VBox createListEntry(final HashMap<String, String> entryId) {
+    private VBox createListEntry(final HashMap<String, String> entryId) throws NoSuchMethodException, SecurityException {
 
         HashMap<String, String> response;
         try {
             response = this.client.getLogEntry(entryId.get("id"));
         } catch (URISyntaxException | InterruptedException | ExecutionException e2) {
-            errorLabel.setText("Could not connect to server");
-            e2.printStackTrace();
+            this.retry(this.getClass().getMethod("createListEntry"));
             response = null;
         }
         final HashMap<String, String> entry = response;
@@ -374,25 +366,13 @@ public class StartPageController {
         return (double) Math.round((hours + minutes) * 10) / 10 + "h";
     }
 
-    // /**
-    //  * Updates ui sort with reversal.
-    //  *
-    //  * @param event a JavaFX event.
-    //  */
-    // @FXML
-    // public void reverse(final ActionEvent event) {
-    //     reverse = !reverse;
-    //     //if (reverse) {
-    //     //    set symbol here at a later date
-    //     //}
-    //     sort(event);
-    // }
-
     /**
      * Initializes the controller.
+     * @throws SecurityException
+     * @throws NoSuchMethodException
      */
     @FXML
-    private void initialize() {
+    private void initialize() throws NoSuchMethodException, SecurityException {
         entryView.setVisible(false);
         //populate sorting selectors
         sortConfigs =
@@ -426,8 +406,14 @@ public class StartPageController {
             sortCategory.getSelectionModel().selectFirst();
             sortSubcategory.setVisible(false);
 
-        } catch (URISyntaxException | InterruptedException | ExecutionException e) {
-            errorLabel.setText("Could not connect to server");
+        } catch (ExecutionException e) {
+            this.retry(this.getClass().getMethod("initialize"));
+
+        } catch (URISyntaxException e) {
+            // Unknown exception
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            // Unknown exception
             e.printStackTrace();
         }
 
