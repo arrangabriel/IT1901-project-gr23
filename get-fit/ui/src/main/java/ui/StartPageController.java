@@ -137,19 +137,29 @@ public class StartPageController {
      */
     private boolean reverse;
 
-    private void retry(Method func) {
+    private void retry(String func, String... args){
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Connection error");
         alert.setHeaderText("Could not connect to server");
-        alert.setContentText("Could not establish a connection to the server.\nPress OK to retry.\nPress Cancel to quit");
+        alert.setContentText(
+                "Could not establish a connection to the server.\nPress OK to retry.\nPress Cancel to quit");
         errorLabel.setText("Could not connect to server");
         Optional<ButtonType> result = alert.showAndWait();
         if (result.get() == ButtonType.OK) {
-            try {
-                func.invoke(this);
-            } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-                // At this point I don't even know
-                e.printStackTrace();
+            switch (func) {
+            case "initialize":
+                this.initialize();
+                break;
+            case "updateList":
+                this.updateList();
+                break;
+            case "createListEntry":
+                HashMap<String, String> entry = new HashMap<>();
+                entry.put(args[0], args[1]);
+                this.createListEntry(entry);
+                break;
+            default:
+                break;
             }
         } else {
             System.exit(0);
@@ -163,14 +173,12 @@ public class StartPageController {
      * @throws IOException if .FXML file could not be found.
      */
     @FXML
-    public void addSessionButtonPushed(final ActionEvent event)
-            throws IOException {
+    public void addSessionButtonPushed(final ActionEvent event) throws IOException {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("AddNewSession.fxml"));
         Parent p = loader.load();
         Scene s = new Scene(p);
-        Stage window =
-                (Stage) ((Node) event.getSource()).getScene().getWindow();
+        Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
         window.setTitle("Add new session");
         window.setScene(s);
         window.show();
@@ -187,7 +195,8 @@ public class StartPageController {
     }
 
     /**
-     * Updates the log entry list by querying the server using selected params from the dropdown menues
+     * Updates the log entry list by querying the server using selected params from
+     * the dropdown menues
      * 
      */
     public void updateList() {
@@ -198,10 +207,7 @@ public class StartPageController {
         String subFilter = sortSubcategory.getValue();
         boolean reverse = reverseBox.isSelected();
 
-        ListBuilder builder = new ListBuilder()
-            .sort(sort)
-            .category(categoryFilter)
-            .subCategory(subFilter);
+        ListBuilder builder = new ListBuilder().sort(sort).category(categoryFilter).subCategory(subFilter);
 
         if (reverse) {
             builder.reverse();
@@ -210,32 +216,28 @@ public class StartPageController {
         List<HashMap<String, String>> entries;
         try {
             entries = this.client.getLogEntryList(builder);
-            for (HashMap<String, String> entry: entries) {
-                this.listOfEntries.getItems().add(createListEntry(entry));        
-        }
+            for (HashMap<String, String> entry : entries) {
+                this.listOfEntries.getItems().add(createListEntry(entry));
+            }
         } catch (URISyntaxException | InterruptedException | ExecutionException e) {
+            retry("updateList");
             errorLabel.setText("Could not connect to server");
-            e.printStackTrace();
-        } catch (NoSuchMethodException e) {
-            // Can't happen
             e.printStackTrace();
         } catch (SecurityException e) {
             // Can't happen
             e.printStackTrace();
         }
 
-        
-
     }
 
-    private VBox createListEntry(final HashMap<String, String> entryId) throws NoSuchMethodException, SecurityException {
+    private VBox createListEntry(final HashMap<String, String> entryId) {
 
         HashMap<String, String> response;
         try {
             response = this.client.getLogEntry(entryId.get("id"));
         } catch (URISyntaxException | InterruptedException | ExecutionException e2) {
-            this.retry(this.getClass().getMethod("createListEntry"));
-            response = null;
+            this.retry("createListEntry", entryId.get("id"));
+            return null;
         }
         final HashMap<String, String> entry = response;
 
@@ -244,9 +246,7 @@ public class StartPageController {
 
         ColumnConstraints colConstraint = new ColumnConstraints();
         colConstraint.setPercentWidth(25);
-        grid.getColumnConstraints()
-                .addAll(colConstraint, colConstraint, colConstraint,
-                        colConstraint);
+        grid.getColumnConstraints().addAll(colConstraint, colConstraint, colConstraint, colConstraint);
 
         Text title = new Text(entry.get("title"));
         Text date = new Text(entry.get("date"));
@@ -316,8 +316,7 @@ public class StartPageController {
         return vBox;
     }
 
-    private void setOptionalField(final String data, final Text textField,
-                                  final Text textLabel) {
+    private void setOptionalField(final String data, final Text textField, final Text textLabel) {
         if (data != null) {
             textField.setText(data);
             textField.setVisible(true);
@@ -330,8 +329,7 @@ public class StartPageController {
     }
 
     /**
-     * Updates ui when main category is selected.
-     * Also updates the current sort.
+     * Updates ui when main category is selected. Also updates the current sort.
      *
      * @param event a JavaFX event.
      */
@@ -343,18 +341,18 @@ public class StartPageController {
             sortSubcategory.setVisible(false);
         } else {
             switch (sortCategory.getValue()) {
-                case "STRENGTH" -> {
-                    sortSubcategory.setItems(sortStrengthSubcategories);
-                    sortSubcategory.getSelectionModel().selectFirst();
-                    sortSubcategory.setVisible(true);
-                }
-                case "SWIMMING", "CYCLING", "RUNNING" -> {
-                    sortSubcategory.setItems(sortCardioSubcategories);
-                    sortSubcategory.getSelectionModel().selectFirst();
-                    sortSubcategory.setVisible(true);
-                }
-                default -> {
-                }
+            case "STRENGTH" -> {
+                sortSubcategory.setItems(sortStrengthSubcategories);
+                sortSubcategory.getSelectionModel().selectFirst();
+                sortSubcategory.setVisible(true);
+            }
+            case "SWIMMING", "CYCLING", "RUNNING" -> {
+                sortSubcategory.setItems(sortCardioSubcategories);
+                sortSubcategory.getSelectionModel().selectFirst();
+                sortSubcategory.setVisible(true);
+            }
+            default -> {
+            }
             }
         }
         updateList();
@@ -368,23 +366,20 @@ public class StartPageController {
 
     /**
      * Initializes the controller.
+     * 
      * @throws SecurityException
      * @throws NoSuchMethodException
      */
     @FXML
-    private void initialize() throws NoSuchMethodException, SecurityException {
+    private void initialize() {
         entryView.setVisible(false);
-        //populate sorting selectors
-        sortConfigs =
-                FXCollections.observableArrayList();
-        sortCategories =
-                FXCollections.observableArrayList();
+        // populate sorting selectors
+        sortConfigs = FXCollections.observableArrayList();
+        sortCategories = FXCollections.observableArrayList();
         sortCategories.add("ANY");
-        sortStrengthSubcategories =
-                FXCollections.observableArrayList();
+        sortStrengthSubcategories = FXCollections.observableArrayList();
         sortStrengthSubcategories.add("ANY");
-        sortCardioSubcategories =
-                FXCollections.observableArrayList();
+        sortCardioSubcategories = FXCollections.observableArrayList();
         sortCardioSubcategories.add("ANY");
 
         // TODO: make dynamic
@@ -407,7 +402,7 @@ public class StartPageController {
             sortSubcategory.setVisible(false);
 
         } catch (ExecutionException e) {
-            this.retry(this.getClass().getMethod("initialize"));
+            this.retry("initialize");
 
         } catch (URISyntaxException e) {
             // Unknown exception
