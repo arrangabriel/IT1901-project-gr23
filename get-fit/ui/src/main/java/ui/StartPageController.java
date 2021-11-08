@@ -1,7 +1,5 @@
 package ui;
 
-import core.EntryManager;
-import core.LogEntry;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -13,6 +11,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
@@ -23,11 +22,17 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import localpersistence.EntrySaverJson;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.time.Duration;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
+import java.util.concurrent.ExecutionException;
+
+import client.LogClient;
+import client.LogClient.ListBuilder;
 
 public class StartPageController {
 
@@ -85,6 +90,9 @@ public class StartPageController {
     /***/
     @FXML
     private Button sortReverse;
+    // TODO: Add this box to fxml
+    /***/
+    private CheckBox reverseBox;
     /***/
     @FXML
     private Button goToStatistics;
@@ -97,6 +105,11 @@ public class StartPageController {
     /***/
     @FXML
     private Label errorLabel;
+
+    /**
+     * Session log client.
+     */
+    private final LogClient client = new LogClient("localhost", 8080);
 
     /**
      * String-names of sort configurations.
@@ -163,56 +176,78 @@ public class StartPageController {
     }
 
     /**
-     * Fill list with entries according to sort parameters.
-     *
-     * @param event a JavaFX event.
+     * Updates the log entry list by querying the server using selected params from the dropdown menues
+     * 
      */
-    @FXML
-    public void sort(final Event event) {
-        LogEntry.SORTCONFIGURATIONS config =
-                LogEntry.SORTCONFIGURATIONS.valueOf(sortConfig.getValue());
-        EntryManager.SortedIteratorBuilder iteratorBuilder =
-                new EntryManager.SortedIteratorBuilder(App.entryManager,
-                        config);
+    public void updateList() {
+
+        // Gather query information
+        String sort = sortConfig.getValue();
+        String categoryFilter = sortCategory.getValue();
+        String subFilter = sortSubcategory.getValue();
+        boolean reverse = reverseBox.isSelected();
+
+        ListBuilder builder = new ListBuilder()
+            .sort(sort)
+            .category(categoryFilter)
+            .subCategory(subFilter);
+
+        if (reverse) {
+            builder.reverse();
+        }
+
+        List<HashMap<String, String>> entries;
         try {
-            // throws IllegalArgumentException if value is ANY.
-            LogEntry.EXERCISECATEGORY category =
-                    LogEntry.EXERCISECATEGORY.valueOf(sortCategory.getValue());
-            iteratorBuilder = iteratorBuilder.filterExerciseCategory(category);
-            LogEntry.Subcategory subcategory = null;
-            switch (category) {
-                case STRENGTH:
-                    subcategory = LogEntry.STRENGTHSUBCATEGORIES.valueOf(
-                            sortSubcategory.getValue());
-                    break;
-                case SWIMMING, CYCLING, RUNNING:
-                    subcategory = LogEntry.CARDIOSUBCATEGORIES.valueOf(
-                            sortSubcategory.getValue());
-                    break;
-                default:
-                    break;
-            }
-            iteratorBuilder = iteratorBuilder.filterSubCategory(subcategory);
-        } catch (IllegalArgumentException ignored1) {
-            // reaching this part short circuits filtering, order matters.
+            entries = this.client.getLogEntryList(builder);
+            for (HashMap<String, String> entry: entries) {
+                this.listOfEntries.getItems().add(createListEntry(entry));        
         }
-        addIteratorToView(iteratorBuilder.iterator(reverse));
+        } catch (URISyntaxException | InterruptedException | ExecutionException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+        
+
     }
 
-    /**
-     * Places an iterator of entries in the view.
-     *
-     * @param entries an iterator of entries.
-     */
-    public void addIteratorToView(final Iterator<LogEntry> entries) {
-        listOfEntries.getItems().clear();
-        while (entries.hasNext()) {
-            LogEntry entry = entries.next();
-            listOfEntries.getItems().add(createListEntry(entry));
-        }
-    }
+    // /**
+    //  * Fill list with entries according to sort parameters.
+    //  *
+    //  * @param event a JavaFX event.
+    //  */
+    // @FXML
+    // public void sort(final Event event) {
+    //     List<HashMap<String, String>> entries = this.client.getLogEntryList();
 
-    private VBox createListEntry(final LogEntry entry) {
+    //     addIteratorToView(entries.iterator());
+    // }
+
+    // /**
+    //  * Places an iterator of entries in the view.
+    //  *
+    //  * @param entries an iterator of entries.
+    //  */
+    // public void addIteratorToView(final Iterator<HashMap<String, String>> entries) {
+    //     listOfEntries.getItems().clear();
+    //     while (entries.hasNext()) {
+    //         HashMap<String, String> entry = entries.next();
+    //         listOfEntries.getItems().add(createListEntry(entry));
+    //     }
+    // }
+
+    private VBox createListEntry(final HashMap<String, String> entryId) {
+
+        HashMap<String, String> response;
+        try {
+            response = this.client.getLogEntry(entryId.get("id"));
+        } catch (URISyntaxException | InterruptedException | ExecutionException e2) {
+            // TODO Auto-generated catch block
+            e2.printStackTrace();
+            response = null;
+        }
+        final HashMap<String, String> entry = response;
+
         VBox vBox = new VBox();
         GridPane grid = new GridPane();
 
@@ -222,35 +257,35 @@ public class StartPageController {
                 .addAll(colConstraint, colConstraint, colConstraint,
                         colConstraint);
 
-        Text title = new Text(entry.getTitle());
-        Text date = new Text(entry.getDate().toString());
-        Text category = new Text(entry.getExerciseCategory().toString());
+        Text title = new Text(entry.get("title"));
+        Text date = new Text(entry.get("date"));
+        Text category = new Text(entry.get("ExerciseCategory"));
 
         Button open = new Button();
         open.setText("Show");
 
         open.setOnAction(e -> {
             // title
-            titleView.setText(entry.getTitle());
+            titleView.setText(entry.get("title"));
             // date
-            dateView.setText(entry.getDate().toString());
+            dateView.setText(entry.get("date"));
             // category
-            categoryView.setText(entry.getExerciseCategory().toString());
+            categoryView.setText(entry.get("exerciseCategory"));
             // feeling
-            feelingView.setText(String.valueOf(entry.getFeeling()));
+            feelingView.setText(String.valueOf(entry.get("feeling")));
             // duration
-            durationView.setText(durationToHours(entry.getDuration()));
+            durationView.setText(durationToHours(Duration.ofSeconds(Long.parseLong(entry.get("duration")))));
             // subcategory optional
-            LogEntry.Subcategory subcategory = entry.getExerciseSubCategory();
+            String subcategory = entry.get("exerciseSubcategory");
             setOptionalField(subcategory, subcategoryView, subcategoryLabel);
             // maxHeartRate optional
-            Integer maxHeartRate = entry.getMaxHeartRate();
+            String maxHeartRate = entry.get("maxHeartRate");
             setOptionalField(maxHeartRate, heartRateView, heartRateLabel);
             // distance
-            Double distance = entry.getDistance();
+            String distance = entry.get("distance");
             setOptionalField(distance, distanceView, distanceLabel);
             // comment
-            String comment = entry.getComment();
+            String comment = entry.get("comment");
             if (comment != null) {
                 commentView.setText(comment);
             } else {
@@ -263,13 +298,13 @@ public class StartPageController {
         delete.setText("Delete");
 
         delete.setOnAction(e -> {
-            App.entryManager.removeEntry(entry.getId());
             try {
-                EntrySaverJson.save(App.entryManager);
-            } catch (IOException exc) {
-                errorLabel.setText(exc.getMessage());
+                this.client.deleteLogEntry(entry.get("id"));
+            } catch (URISyntaxException | InterruptedException | ExecutionException e1) {
+                // TODO Auto-generated catch block
+                e1.printStackTrace();
             }
-            sort(null);
+            this.updateList();
         });
 
         GridPane.setHalignment(title, HPos.LEFT);
@@ -285,15 +320,15 @@ public class StartPageController {
         grid.add(delete, 3, 0);
 
         vBox.getChildren().add(grid);
-        vBox.setId(entry.getId());
+        vBox.setId(entryId.get("id"));
 
         return vBox;
     }
 
-    private void setOptionalField(final Object data, final Text textField,
+    private void setOptionalField(final String data, final Text textField,
                                   final Text textLabel) {
         if (data != null) {
-            textField.setText(data.toString());
+            textField.setText(data);
             textField.setVisible(true);
             textLabel.setVisible(true);
         } else {
@@ -316,14 +351,13 @@ public class StartPageController {
             sortSubcategory.setItems(FXCollections.observableArrayList());
             sortSubcategory.setVisible(false);
         } else {
-            switch (LogEntry.EXERCISECATEGORY.valueOf(
-                    sortCategory.getValue())) {
-                case STRENGTH -> {
+            switch (sortCategory.getValue()) {
+                case "STRENGTH" -> {
                     sortSubcategory.setItems(sortStrengthSubcategories);
                     sortSubcategory.getSelectionModel().selectFirst();
                     sortSubcategory.setVisible(true);
                 }
-                case SWIMMING, CYCLING, RUNNING -> {
+                case "SWIMMING", "CYCLING", "RUNNING" -> {
                     sortSubcategory.setItems(sortCardioSubcategories);
                     sortSubcategory.getSelectionModel().selectFirst();
                     sortSubcategory.setVisible(true);
@@ -332,7 +366,7 @@ public class StartPageController {
                 }
             }
         }
-        sort(event);
+        updateList();
     }
 
     private String durationToHours(final Duration duration) {
@@ -341,19 +375,19 @@ public class StartPageController {
         return (double) Math.round((hours + minutes) * 10) / 10 + "h";
     }
 
-    /**
-     * Updates ui sort with reversal.
-     *
-     * @param event a JavaFX event.
-     */
-    @FXML
-    public void reverse(final ActionEvent event) {
-        reverse = !reverse;
-        //if (reverse) {
-        //    set symbol here at a later date
-        //}
-        sort(event);
-    }
+    // /**
+    //  * Updates ui sort with reversal.
+    //  *
+    //  * @param event a JavaFX event.
+    //  */
+    // @FXML
+    // public void reverse(final ActionEvent event) {
+    //     reverse = !reverse;
+    //     //if (reverse) {
+    //     //    set symbol here at a later date
+    //     //}
+    //     sort(event);
+    // }
 
     /**
      * Initializes the controller.
@@ -374,40 +408,30 @@ public class StartPageController {
                 FXCollections.observableArrayList();
         sortCardioSubcategories.add("ANY");
 
-        for (LogEntry.SORTCONFIGURATIONS sortConfiguration
-                : LogEntry.SORTCONFIGURATIONS.values()) {
-            sortConfigs.add(sortConfiguration.name());
-        }
-        for (LogEntry.EXERCISECATEGORY exerciseCategory
-                : LogEntry.EXERCISECATEGORY.values()) {
-            sortCategories.add(exerciseCategory.name());
-        }
-        for (LogEntry.STRENGTHSUBCATEGORIES strengthSubcategory
-                : LogEntry.STRENGTHSUBCATEGORIES.values()) {
-            sortStrengthSubcategories.add(strengthSubcategory.name());
-        }
-        for (LogEntry.CARDIOSUBCATEGORIES cardioSubcategory
-                : LogEntry.CARDIOSUBCATEGORIES.values()) {
-            sortCardioSubcategories.add(cardioSubcategory.name());
+        // TODO: make dynamic
+        sortConfigs.add("title");
+        sortConfigs.add("date");
+        sortConfigs.add("duration");
+
+        HashMap<String, List<String>> filters;
+        try {
+            filters = this.client.getExerciseCategories();
+            // TODO: Lacks flexibility
+            sortCategories.addAll(filters.keySet());
+            sortStrengthSubcategories.addAll(filters.get("strength"));
+            sortCardioSubcategories.addAll(filters.get("running"));
+
+            sortConfig.setItems(sortConfigs);
+            sortConfig.getSelectionModel().selectFirst();
+            sortCategory.setItems(sortCategories);
+            sortCategory.getSelectionModel().selectFirst();
+            sortSubcategory.setVisible(false);
+
+        } catch (URISyntaxException | InterruptedException | ExecutionException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
         }
 
-        sortConfig.setItems(sortConfigs);
-        sortConfig.getSelectionModel().selectFirst();
-        sortCategory.setItems(sortCategories);
-        sortCategory.getSelectionModel().selectFirst();
-        sortSubcategory.setVisible(false);
-
-        if (App.entryManager.entryCount() == 0) {
-            try {
-                EntrySaverJson.load(App.entryManager);
-            } catch (IOException e) {
-                System.out.println("SaveData.json could not be found.");
-                errorLabel.setText("The file was not found.");
-            }
-        }
-        Iterator<LogEntry> entries =
-                new EntryManager.SortedIteratorBuilder(App.entryManager,
-                        LogEntry.SORTCONFIGURATIONS.DATE).iterator(false);
-        this.addIteratorToView(entries);
+        this.updateList();
     }
 }
