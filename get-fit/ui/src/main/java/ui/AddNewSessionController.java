@@ -1,6 +1,7 @@
 package ui;
 
 import client.LogClient;
+import client.ServerResponseException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -281,9 +282,12 @@ public class AddNewSessionController {
                 Optional<ButtonType> result = alert.showAndWait();
                 if (result.get() == ButtonType.OK) {
                     this.createSessionButtonPushed(null);
+                    errorLabel.setText("");
                 } else {
                     System.exit(0);
                 }
+            } catch (ServerResponseException e) {
+                errorLabel.setText(e.getMessage());
             }
 
 
@@ -390,6 +394,8 @@ public class AddNewSessionController {
         } catch (URISyntaxException | InterruptedException e) {
             // Can't really happen
             e.printStackTrace();
+        } catch (ServerResponseException e) {
+            errorLabel.setText(e.getMessage());
         }
 
         Set<String> exerciseCategories = this.categories.keySet();

@@ -1,6 +1,7 @@
 package ui;
 
 import client.LogClient;
+import client.ServerResponseException;
 import client.LogClient.ListBuilder;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -129,10 +130,6 @@ public class StartPageController {
      * String-names of cardio-subcategories.
      */
     private ObservableList<String> sortCardioSubcategories;
-    /**
-     * Sort order.
-     */
-    private boolean reverse;
 
     private void retry(final String func, final String... args) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -158,6 +155,7 @@ public class StartPageController {
                 default:
                     break;
             }
+            errorLabel.setText("");
         } else {
             System.exit(0);
         }
@@ -207,6 +205,8 @@ public class StartPageController {
      * the dropdown menus.
      */
     public void updateList() {
+        errorLabel.setText("");
+
         listOfEntries.getItems().clear();
         // Gather query information
         String sort = sortConfig.getValue();
@@ -232,10 +232,8 @@ public class StartPageController {
             retry("updateList");
             errorLabel.setText("Could not connect to server");
             e.printStackTrace();
-        } catch (SecurityException e) {
-            // Can't happen
-            // lol stefan
-            e.printStackTrace();
+        } catch (ServerResponseException e) {
+            errorLabel.setText(e.getMessage());
         }
 
     }
@@ -243,6 +241,7 @@ public class StartPageController {
     private VBox createListEntry(final HashMap<String, String> entry) {
 
 
+        errorLabel.setText("");
 
         VBox vBox = new VBox();
         GridPane grid = new GridPane();
@@ -300,6 +299,8 @@ public class StartPageController {
             } catch (URISyntaxException | InterruptedException | ExecutionException e1) {
                 errorLabel.setText("Could not connect to server");
                 e1.printStackTrace();
+            } catch (ServerResponseException e1) {
+                errorLabel.setText("");
             }
             this.updateList();
         });
@@ -410,6 +411,8 @@ public class StartPageController {
 
         } catch (URISyntaxException | InterruptedException e) {
             e.printStackTrace();
+        } catch (ServerResponseException e) {
+            this.errorLabel.setText(e.getMessage());
         }
 
         this.updateList();
