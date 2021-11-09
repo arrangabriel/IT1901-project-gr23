@@ -100,8 +100,9 @@ public class TestEntryManager {
         EntryManager manager = genValidManager();
         int entryAmount = manager.entryCount();
         int counter = 0;
-        for (LogEntry ignored : manager) {
-            counter++;
+        for (LogEntry entry : manager) {
+                Assertions.assertNotEquals(null, entry);
+                counter++;
         }
         Assertions.assertEquals(entryAmount, counter);
     }
@@ -119,13 +120,19 @@ public class TestEntryManager {
         EntryBuilder builder3 =
                 genValidBuilder(LogEntry.EXERCISECATEGORY.CYCLING,
                         LogEntry.CARDIOSUBCATEGORIES.HIGHINTENSITY);
+        EntryBuilder builder4 = new EntryBuilder(
+                "Test",
+                LocalDate.now().minusDays(3),
+                Duration.ofSeconds(hour),
+                LogEntry.EXERCISECATEGORY.STRENGTH,
+                4);
 
         manager.addEntry(builder1.build());
         manager.addEntry(builder2.build());
         manager.addEntry(builder3.build());
+        manager.addEntry(builder4.build());
 
         int entryAmount = manager.entryCount();
-        int counter = 0;
 
         EntryManager.SortedIteratorBuilder itrbld1 =
                 new EntryManager.SortedIteratorBuilder(manager,
@@ -140,11 +147,15 @@ public class TestEntryManager {
         itrbld2.filterExerciseCategory(LogEntry.EXERCISECATEGORY.STRENGTH);
         int c1 = 0;
         int c2 = 0;
+        int c3 = 0;
         for (Iterator<LogEntry> itr = itrbld1.iterator(false);
              itr.hasNext(); ) {
             itr.next();
             c1++;
         }
+
+        Assertions.assertEquals(entryAmount, c1);
+
         for (Iterator<LogEntry> itr = itrbld2.iterator(false);
              itr.hasNext(); ) {
             itr.next();
@@ -159,6 +170,13 @@ public class TestEntryManager {
                 LocalDate.now());
 
         Assertions.assertTrue(c1 > c2);
-        Iterator<LogEntry> itr3 = itrbld3.iterator(false);
+
+        for (Iterator<LogEntry> itr3 = itrbld3.iterator(false);
+             itr3.hasNext(); ) {
+            itr3.next();
+            c3++;
+        }
+
+        Assertions.assertTrue(c1 > c3);
     }
 }
