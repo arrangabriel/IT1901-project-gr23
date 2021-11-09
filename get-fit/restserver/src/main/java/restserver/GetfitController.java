@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -37,7 +38,12 @@ public class GetfitController {
 
     @GetMapping(value="/{entryId}", produces = "application/json")
     public String getLogEntry(final @PathVariable("entryId") String id) {
-        JSONObject returnObject = new JSONObject(getfitService.getEntryManager().getEntry(id).toHashMap());
+        JSONObject returnObject;
+        try {
+            returnObject = new JSONObject(getfitService.getEntryManager().getEntry(id).toHashMap());
+        } catch (IllegalArgumentException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Entry not found", e);
+        }
         return returnObject.toString();
     }
 
@@ -190,5 +196,11 @@ public class GetfitController {
         return io.getMessage();
     }
 
-
+    @ExceptionHandler(ResponseStatusException.class)
+    @ResponseStatus(value = HttpStatus.NOT_FOUND)
+    @ResponseBody
+    public String handleResponseStatusException(
+            final ResponseStatusException rse) {
+        return "";
+    }
 }
