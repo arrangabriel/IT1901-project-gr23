@@ -49,12 +49,13 @@ public class LogClient {
      * @throws URISyntaxException   If the id ruins the URI syntax.
      * @throws InterruptedException If the request was interrupted before retreiving the http response.
      * @throws ExecutionException   If the request completed exceptionally.
+     * @throws ServerResponseException
      */
     public HashMap<String, String> getLogEntry(final String id)
             throws URISyntaxException, InterruptedException,
-            ExecutionException {
+            ExecutionException, ServerResponseException {
 
-        HttpResponse<String> response = this.get("/api/v1/entries/" + id);
+        HttpResponse<String> response = this.get("/api/v1/entries/" + id); 
         String jsonString = response.body();
 
         JSONObject jsonObject = new JSONObject(jsonString);
@@ -76,10 +77,11 @@ public class LogClient {
      * @throws URISyntaxException   If the hardcoded URI no longer matches the servers expectations.
      * @throws InterruptedException If the request was interrupted before retreiving the http response.
      * @throws ExecutionException   If the request completed exceptionally.
+     * @throws ServerResponseException
      */
     public List<HashMap<String, String>> getLogEntryList()
             throws URISyntaxException, InterruptedException,
-            ExecutionException {
+            ExecutionException, ServerResponseException {
         return this.getLogEntryList(new ListBuilder());
     }
 
@@ -92,11 +94,12 @@ public class LogClient {
      * @throws URISyntaxException   If the query entries ruin the query string syntax.
      * @throws InterruptedException If the request was interrupted before retreiving the http response.
      * @throws ExecutionException   If the request completed exceptionally.
+     * @throws ServerResponseException
      */
     public List<HashMap<String, String>> getLogEntryList(
             final ListBuilder builder)
             throws URISyntaxException, InterruptedException,
-            ExecutionException {
+            ExecutionException, ServerResponseException {
 
         String queryString = "?";
 
@@ -150,10 +153,11 @@ public class LogClient {
      * @throws ExecutionException
      * @throws InterruptedException
      * @throws URISyntaxException
+     * @throws ServerResponseException
      */
     public void addLogEntry(final HashMap<String, String> entry)
             throws URISyntaxException, InterruptedException,
-            ExecutionException {
+            ExecutionException, ServerResponseException {
         JSONObject payload = new JSONObject(entry);
         this.post("/api/v1/entries/add", payload.toString());
     }
@@ -167,12 +171,13 @@ public class LogClient {
      * @throws ExecutionException
      * @throws InterruptedException
      * @throws URISyntaxException
+     * @throws ServerResponseException
      */
     public String updateLogEntry(
             final String id,
             final HashMap<String, String> entry)
             throws URISyntaxException, InterruptedException,
-            ExecutionException {
+            ExecutionException, ServerResponseException {
         JSONObject payload = new JSONObject(entry);
 
         HttpResponse<String> response =
@@ -189,10 +194,11 @@ public class LogClient {
      * @throws ExecutionException
      * @throws InterruptedException
      * @throws URISyntaxException
+     * @throws ServerResponseException
      */
     public HashMap<String, List<String>> getExerciseCategories()
             throws URISyntaxException, InterruptedException,
-            ExecutionException {
+            ExecutionException, ServerResponseException {
         HttpResponse<String> response = this.get("/api/v1/entries/filters");
 
         JSONObject jsonObject = new JSONObject(response.body());
@@ -220,10 +226,11 @@ public class LogClient {
      * @throws ExecutionException
      * @throws InterruptedException
      * @throws URISyntaxException
+     * @throws ServerResponseException
      */
     public void deleteLogEntry(final String id)
             throws URISyntaxException, InterruptedException,
-            ExecutionException {
+            ExecutionException, ServerResponseException {
         this.post("/api/v1/entries/remove/" + id, "");
     }
 
@@ -258,12 +265,17 @@ public class LogClient {
      * @throws URISyntaxException   If the URI syntax is incorrect.
      * @throws InterruptedException If the underlying asynchronous request was interrupted before retreival.
      * @throws ExecutionException   If the underlying asynchronous request completed exceptionally.
+     * @throws ServerResponseException
      */
     private HttpResponse<String> get(final String endpoint)
             throws URISyntaxException, InterruptedException,
-            ExecutionException {
+            ExecutionException, ServerResponseException {
 
-        return this.getAsync(endpoint).get();
+        HttpResponse<String> response = this.getAsync(endpoint).get();
+        if (response.statusCode() != 200) {
+            throw new ServerResponseException(HttpResponses.getResponseText(response.statusCode()), response.statusCode());
+        }
+        return response;
     }
 
     /**
@@ -302,14 +314,19 @@ public class LogClient {
      * If the underlying asynchronous request was interrupted before retreival.
      * @throws ExecutionException
      * If the underlying asynchronous request completed exceptionally.
+     * @throws ServerResponseException
      */
     private HttpResponse<String> post(
             final String endpoint,
             final String payload)
             throws URISyntaxException, InterruptedException,
-            ExecutionException {
+            ExecutionException, ServerResponseException {
 
-        return this.postAsync(endpoint, payload).get();
+        HttpResponse<String> response = this.postAsync(endpoint, payload).get();
+        if (response.statusCode() != 200) {
+            throw new ServerResponseException(HttpResponses.getResponseText(response.statusCode()), response.statusCode());
+        }
+        return response;
     }
 
     /**
