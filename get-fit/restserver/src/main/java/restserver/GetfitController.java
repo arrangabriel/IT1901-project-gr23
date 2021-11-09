@@ -23,6 +23,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
+
 //localhost:8080/api/v1/entries
 //Run: mvn spring-boot:run
 
@@ -34,13 +35,13 @@ public class GetfitController {
     //@Autowired
     private final GetfitService getfitService = new GetfitService();
 
-    @GetMapping("/{entryId}")
+    @GetMapping(value="/{entryId}", produces = "application/json")
     public String getLogEntry(final @PathVariable("entryId") String id) {
         JSONObject returnObject = new JSONObject(getfitService.getEntryManager().getEntry(id).toHashMap());
         return returnObject.toString();
     }
 
-    @GetMapping("/filters")
+    @GetMapping(value="/filters", produces="application/json")
     public String getFilters() {
         //HashMap<String, String> filters = new HashMap<>();
         JSONObject filters = new JSONObject();
@@ -58,7 +59,7 @@ public class GetfitController {
         return filters.toString();
     }
 
-    @GetMapping("/list")
+    @GetMapping(value="/list", produces = "application/json")
     @ResponseBody
     public String getListOfLogEntries(
             final @RequestParam(value = "s", defaultValue = "date")
@@ -126,7 +127,7 @@ public class GetfitController {
         return returnJSON.toString();
     }
 
-    @PostMapping("/add")
+    @PostMapping(value="/add", produces = "application/json")
     public String addLogEntry(final @RequestBody String logEntry) {
 
         getfitService.getEntryManager().addEntry(stringToEntry(logEntry));
@@ -136,7 +137,7 @@ public class GetfitController {
     }
 
 
-    @PostMapping("edit/{entryId}")
+    @PostMapping(value="edit/{entryId}", produces = "application/json")
     public void editLogEntry(final @PathVariable("entryId") String id,
                              final @RequestBody String logEntry) {
         getfitService.getEntryManager().swapEntry(id, stringToEntry(logEntry));
@@ -144,7 +145,7 @@ public class GetfitController {
     }
 
 
-    @PostMapping("remove/{entryId}")
+    @PostMapping(value="remove/{entryId}", produces = "application/json")
     public void removeLogEntry(final @PathVariable("entryId") String id) {
         getfitService.getEntryManager().removeEntry(id);
         getfitService.save();
