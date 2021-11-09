@@ -349,7 +349,9 @@ public class AddNewSessionController {
 
     private ObservableList<String> getSubcategoryStringObservableList(
             final String mainCategory) {
-        return categories.get(mainCategory).stream()
+        //System.out.println(categories);
+        //System.out.println(mainCategory);
+        return categories.get(mainCategory.toLowerCase()).stream()
                 .map(this::capitalize)
                 .collect(Collectors
                         .toCollection(FXCollections::observableArrayList));
@@ -413,6 +415,8 @@ public class AddNewSessionController {
         tags.setItems(exerciseCategoryNames);
         setCardio(false);
         sessionDatePicker.setValue(LocalDate.now());
+
+        handleTagsSelector(null);
 
         // validation of fields when they are changed.
         validateIntegerInput(hour, MAX_HOURS);
