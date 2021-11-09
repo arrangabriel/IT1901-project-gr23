@@ -123,9 +123,9 @@ Type: <span style="color:#28b463">GET</span>
 Endpoint: `/api/v1/entries/filters`
 
 Arguments:
--s: start date
--e: end date
--c: exercise category
+- s: start date
+- e: end date
+- c: exercise category
 
 Response:
 
