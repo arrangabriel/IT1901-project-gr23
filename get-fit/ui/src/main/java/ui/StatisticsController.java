@@ -22,6 +22,8 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collection;
 
+import client.LogClient;
+
 /*
 ---------------------------------------
 This component is for a future release.
@@ -29,36 +31,54 @@ This component is for a future release.
  */
 
 public class StatisticsController {
+
     private final ToggleGroup toggleGroup = new ToggleGroup();
-    //fxml component attributes
+
+    /**
+     * Labels for different statistics.
+     */
     @FXML
-    private Label totalDuration;
-    @FXML
-    private Label numberOfSessions;
-    @FXML
-    private Label averageFeeling;
-    @FXML
-    private Label maximumHr;
-    @FXML
-    private Label averageSpeed;
-    @FXML
-    private Label speed;
+    private Label totalDuration, speed, numberOfSessions,
+    averageFeeling, averageSpeed, maximumHr;
+   
+    /**
+     * Button to press for returning to start page.
+     */
     @FXML
     private Button returnToStartPage;
+
+    /**
+     * Choosing which exercise type to display.
+     */
     @FXML
     private ComboBox<String> exerciseType;
+
+    /**
+     * The duration for each pole in the diagram.
+     */
     @FXML
-    private RadioButton weeks;
-    @FXML
-    private RadioButton months;
-    @FXML
-    private RadioButton years;
+    private RadioButton weeks, months, years;
+    
+    /**
+     * The bar chart.
+     */
     @FXML
     private StackedBarChart<String, Number> statisticsChart;
+
+    /**
+     * x-axis for the bar chart.
+     */
     @FXML
     private CategoryAxis xAxis;
+
+    /**
+     * y-axis for the bar chart.
+     */
     @FXML
     private NumberAxis yAxis;
+
+    
+    private final LogClient client = new LogClient("http://localhost", 8080);
 
     private ObservableList<String> exerciseTypeSelecter =
             FXCollections.observableArrayList("Cardio", "Endurance",
