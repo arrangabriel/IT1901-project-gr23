@@ -116,6 +116,32 @@ Response:
 }
 ```
 
+## Get Statistics data
+
+Type: <span style="color:#28b463">GET</span>
+
+Endpoint: `/api/v1/entries/filters`
+
+Arguments:
+-s: start date
+-e: end date
+-c: exercise category
+
+Response:
+
+```json
+{
+    "count": "5"
+    "totalDuration": "60000"
+    "averageDuration": "6000"
+    "averageSpeed": "7"
+    "averageFeeling": "3"
+    "maximumHeartrate": "180"
+
+}
+```
+
+
 ## Add a LogEntry
 
 Type: <span style="color:#2e86c1">POST</span>
@@ -183,5 +209,6 @@ Payload:
     "id": "0"
 }
 ```
+
 
 
