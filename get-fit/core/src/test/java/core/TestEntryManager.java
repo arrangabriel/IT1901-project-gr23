@@ -20,7 +20,6 @@ public class TestEntryManager {
 
     private EntryBuilder genValidBuilder(LogEntry.EXERCISECATEGORY category,
                                          LogEntry.Subcategory subCategory) {
-        String id = "0";
         String title = "Tets";
         String comment = "This is a test";
         LocalDate date = LocalDate.now().minusDays(1);
@@ -39,7 +38,7 @@ public class TestEntryManager {
 
     @Test
     public void testEntryManager() {
-        EntryManager manager = new EntryManager();
+        new EntryManager();
     }
 
     @Test
