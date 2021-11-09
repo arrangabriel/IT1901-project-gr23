@@ -80,5 +80,25 @@ public final class Statistics {
         }
         return time / distance;
     }
+
+    public static double getAverageFeeling(final EntryManager entryManager) {
+        double sum = 0;
+        for (LogEntry logEntry : entryManager) {
+            sum += logEntry.getFeeling();
+        }
+        double average = sum/entryManager.entryCount();
+        return average;
+    }
+
+    public static double getMaximumHr(final EntryManager entryManager) {
+        double maxHr = 0;
+        for (LogEntry logEntry : entryManager) {
+            if (logEntry.getMaxHeartRate() > maxHr) {
+                maxHr = logEntry.getMaxHeartRate();
+            }
+        }
+        return maxHr;
+    }
+
 }
 
