@@ -135,7 +135,7 @@ Response:
     "averageDuration": "6000"
     "averageSpeed": "7"
     "averageFeeling": "3"
-    "maximumHeartrate": "180"
+    "maximumHr": "180"
 
 }
 ```
