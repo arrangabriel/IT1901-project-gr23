@@ -81,6 +81,11 @@ public final class Statistics {
         return time / distance;
     }
 
+    /**
+    * Returns the average feeling of all LogEntries in the EntryManager.
+    * @param entryManager the entryManager to calculate average feeling from.
+    * @return the average feeling.
+    */
     public static double getAverageFeeling(final EntryManager entryManager) {
         double sum = 0;
         for (LogEntry logEntry : entryManager) {
@@ -90,6 +95,11 @@ public final class Statistics {
         return average;
     }
 
+     /**
+    * Returns the maximum heart rate across all LogEntries in the EntryManager.
+    * @param entryManager the entryManager to get the maximum heart rate from.
+    * @return the maximum heart rate.
+    */
     public static double getMaximumHr(final EntryManager entryManager) {
         double maxHr = 0;
         for (LogEntry logEntry : entryManager) {
