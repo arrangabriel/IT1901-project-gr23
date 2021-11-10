@@ -12,6 +12,7 @@ import java.net.http.HttpResponse.BodyHandlers;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
@@ -143,6 +144,36 @@ public class LogClient {
 
         return responseList;
 
+    }
+
+    public HashMap<String, String> getStatistics(
+        final ListBuilder builder) 
+        throws URISyntaxException, InterruptedException,
+        ExecutionException, ServerResponseException {
+        
+        String queryString = "?";
+
+        List<String> queries = new ArrayList<>();
+
+        queries.add("d=" + builder.dateVal);
+
+        if (builder.categoryVal != null) {
+            queries.add("c=" + builder.categoryVal);
+        }
+
+        queryString += String.join("&", queries);
+
+        HttpResponse<String> response =
+                this.get("/api/v1/entries/stats" + queryString);
+        
+        JSONObject jsonObject = new JSONObject(response.body());
+
+        HashMap<String, String> responseHash = new HashMap<>();
+
+        for (String key : jsonObject.keySet()) {
+            responseHash.put(key, jsonObject.getString(key));
+        }
+        return responseHash;
     }
 
     /**
