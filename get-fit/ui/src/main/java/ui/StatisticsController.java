@@ -13,16 +13,18 @@ import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.StackedBarChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.Collection;
+import java.time.LocalDate;
+import java.util.HashMap;
 
 import client.LogClient;
+import client.LogClient.ListBuilder;
 
 /*
 ---------------------------------------
@@ -39,13 +41,13 @@ public class StatisticsController {
      */
     @FXML
     private Label totalDuration, speed, numberOfSessions,
-    averageFeeling, averageSpeed, maximumHr;
+    averageFeeling, averageSpeed, maximumHr, averageDuration, errorLabel;
    
     /**
      * Button to press for returning to start page.
      */
     @FXML
-    private Button returnToStartPage;
+    private Button returnToStartPage, showData;
 
     /**
      * Choosing which exercise type to display.
@@ -65,6 +67,8 @@ public class StatisticsController {
     @FXML
     private StackedBarChart<String, Number> statisticsChart;
 
+    @FXML
+    private DatePicker start, end;
     /**
      * x-axis for the bar chart.
      */
@@ -76,6 +80,7 @@ public class StatisticsController {
      */
     @FXML
     private NumberAxis yAxis;
+
 
     
     private final LogClient client = new LogClient("http://localhost", 8080);
@@ -90,6 +95,11 @@ public class StatisticsController {
         weeks.setToggleGroup(toggleGroup);
         months.setToggleGroup(toggleGroup);
         years.setToggleGroup(toggleGroup);
+
+        //Default values for dates are today and one year from now.
+        start.setValue(LocalDate.now());
+        end.setValue(LocalDate.now().plusYears(-1));
+
     }
 
     /**
@@ -110,7 +120,67 @@ public class StatisticsController {
         window.show();
     }
 
+    @FXML
+    public void onHandleData() {
+        ListBuilder listBuilder = new ListBuilder();
+        if (exerciseType.getValue() != null) {
+            listBuilder.category(exerciseType.getValue());
+        }
+        listBuilder.date(start.getValue().toString()+'-'+end.getValue());
+        HashMap<String, String> dataEntries;
+
+        try {
+            dataEntries = this.client.getStatistics(listBuilder);
+            for (String dataEntry : dataEntries.keySet()) {
+                switch (dataEntry) {
+
+                    case "count" :
+                        numberOfSessions.setText(
+                            dataEntries.get(dataEntry));
+                        break;
+                    case "totalDuration" :
+                        totalDuration.setText(
+                            dataEntries.get(dataEntry));
+                        break;
+                    
+                    case "averageDuration" :
+                        averageDuration.setText(
+                            dataEntries.get(dataEntry));
+                        break;
+
+                    case "averageSpeed" :
+                        averageSpeed.setText(
+                            dataEntries.get(dataEntry));
+                        break;
+                    
+                    case "averageFeeling" :
+                        averageFeeling.setText(
+                            dataEntries.get(dataEntry));
+                        break;
+                    
+                    case "maximumHr" :
+                        maximumHr.setText(
+                            dataEntries.get(dataEntry));
+                        break;
+                    
+                    default:
+                        throw new IllegalArgumentException("Not according to Schema");
+
+                    }
+                }
+            } catch (Exception e) {
+                //Should catch URISyntaxException | InterruptedException | ExecutionException but
+                //it would not work?
+                errorLabel.setText(e.getMessage());
+            }
+        }
+    }
+        
+
+
+
     //Unfinished function:
+    /*
     private void createStackedBarChart(final String xLabel,
                                        final Collection<String> category) {
 
@@ -124,5 +194,5 @@ public class StatisticsController {
         statisticsChart = new StackedBarChart<>(xAxis, yAxis);
         //for (LogEntry entry : App.entryManager) {
         //final XYChart.Series<String, Number> series = new XYChart.Series<>();
-    }
-}
+    }*/
+
