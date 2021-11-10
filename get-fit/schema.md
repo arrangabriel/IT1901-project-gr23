@@ -120,7 +120,7 @@ Response:
 
 Type: <span style="color:#28b463">GET</span>
 
-Endpoint: `/api/v1/entries/filters`
+Endpoint: `/api/v1/entries/stats`
 
 Arguments:
 - s: start date
