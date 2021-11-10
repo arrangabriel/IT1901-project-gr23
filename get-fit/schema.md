@@ -123,9 +123,8 @@ Type: <span style="color:#28b463">GET</span>
 Endpoint: `/api/v1/entries/stats`
 
 Arguments:
-- s: start date
-- e: end date
-- c: exercise category
+- date: Filter by date `d={start yyyy-mm-dd}-{end yyyy-mm-dd}`
+- category: Filter by category `c={category}`
 
 Response:
 
