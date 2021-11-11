@@ -34,11 +34,11 @@
         <Label layoutX="395.0" layoutY="248.0" prefHeight="17.0" prefWidth="113.0" text="Maximum heart rate" />
         <Label fx:id="speed" layoutX="398.0" layoutY="277.0" prefHeight="17.0" prefWidth="111.0" text="AvSp" />
         <Label layoutX="397.0" layoutY="186.0" text="Number of sessions" />
-        <Label fx:id="numberOfSessions" layoutX="532.0" layoutY="186.0" text="Label" />
-        <Label fx:id="totalDuration" layoutX="532.0" layoutY="154.0" text="Label" />
-        <Label fx:id="averageFeeling" layoutX="532.0" layoutY="219.0" text="Label" />
-        <Label fx:id="maximumHr" layoutX="531.0" layoutY="248.0" text="Label" />
-        <Label fx:id="averageSpeed" layoutX="532.0" layoutY="276.0" text="Label" />
+        <Label fx:id="numberOfSessions" layoutX="532.0" layoutY="186.0" />
+        <Label fx:id="totalDuration" layoutX="532.0" layoutY="154.0" />
+        <Label fx:id="averageFeeling" layoutX="532.0" layoutY="219.0" />
+        <Label fx:id="maximumHr" layoutX="531.0" layoutY="248.0" />
+        <Label fx:id="averageSpeed" layoutX="532.0" layoutY="276.0" />
         <Label layoutX="466.0" layoutY="110.0" text="Data">
             <font>
                 <Font size="24.0" />
@@ -55,6 +55,6 @@
       <Button layoutX="321.0" layoutY="81.0" mnemonicParsing="false" onAction="#onHandleData" prefHeight="29.0" prefWidth="61.0" text="Show" />
       <Label fx:id="errorLabel" layoutX="322.0" layoutY="28.0" prefHeight="17.0" prefWidth="97.0" />
       <Label layoutX="396.0" layoutY="305.0" text="Average Duration" />
-      <Label fx:id="averageDuration" layoutX="530.0" layoutY="307.0" text="Label" />
+      <Label fx:id="averageDuration" layoutX="530.0" layoutY="307.0" />
     </children>
 </AnchorPane>
