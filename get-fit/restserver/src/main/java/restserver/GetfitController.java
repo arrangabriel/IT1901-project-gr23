@@ -140,8 +140,7 @@ public class GetfitController {
     @GetMapping("/stats")
     @ResponseBody
     public String getStatisticsData(
-            final @RequestParam(value = "s") String startDate,
-            final @RequestParam(value = "e") String endDate,
+            final @RequestParam(value = "d", required = false) String date,
             final @RequestParam(value = "c", required = false) String eCategory){
 
         HashMap<String, String> map = new HashMap<>();
@@ -151,7 +150,7 @@ public class GetfitController {
             getfitService.getEntryManager())));
         map.put("averageDuration",Double.toString(Statistics.getAverageDuration(
             getfitService.getEntryManager())));
-            if(eCategory != null){
+            if(eCategory == "CARDIO"){
                 map.put("averageSpeed", Double.toString(Statistics.getAverageSpeed(
                     getfitService.getEntryManager(), LogEntry.EXERCISECATEGORY.valueOf(eCategory))));
             }
