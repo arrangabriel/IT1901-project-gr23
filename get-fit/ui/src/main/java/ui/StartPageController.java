@@ -182,6 +182,26 @@ public class StartPageController {
     }
 
     /**
+     * Switches the view to Statics.
+     *
+     * @param event event data from pushed button.
+     * @throws IOException if .FXML file could not be found.
+     */
+    @FXML
+    public void onStatisticsPage(final ActionEvent event)
+        throws IOException {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource("Statistics.fxml"));
+            Parent p = loader.load();
+            Scene s = new Scene(p);
+            Stage window =
+                    (Stage) ((Node) event.getSource()).getScene().getWindow();
+            window.setTitle("Statistics");
+            window.setScene(s);
+            window.show();
+    }
+
+    /**
      * Hides entry view.
      *
      * @param event ignored.

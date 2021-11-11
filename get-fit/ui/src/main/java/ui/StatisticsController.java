@@ -47,7 +47,7 @@ public class StatisticsController {
      * Button to press for returning to start page.
      */
     @FXML
-    private Button returnToStartPage, showData;
+    private Button showData;
 
     /**
      * Choosing which exercise type to display.
@@ -103,19 +103,21 @@ public class StatisticsController {
     }
 
     /**
-     * Switches the view to AddNewSession.
+     * Switches the view to start page.
      *
      * @param event event data from pushed button.
      * @throws IOException if .FXML file could not be found.
      */
     @FXML
-    public void returnToStartPagePushed(ActionEvent event) throws IOException {
-        FXMLLoader Loader = new FXMLLoader();
-        Loader.setLocation(getClass().getResource("StartPage.fxml"));
-        Parent p = Loader.load();
+    public void onReturn(final ActionEvent event)
+            throws IOException {
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("StartPage.fxml"));
+        Parent p = loader.load();
         Scene s = new Scene(p);
         Stage window =
                 (Stage) ((Node) event.getSource()).getScene().getWindow();
+        window.setTitle("Start page");
         window.setScene(s);
         window.show();
     }
@@ -168,7 +170,7 @@ public class StatisticsController {
 
                     }
                 }
-            } catch (Exception e) {
+            } catch (URISyntaxException | InterruptedException | ExecutionException e) {
                 //Should catch URISyntaxException | InterruptedException | ExecutionException but
                 //it would not work?
                 errorLabel.setText(e.getMessage());
