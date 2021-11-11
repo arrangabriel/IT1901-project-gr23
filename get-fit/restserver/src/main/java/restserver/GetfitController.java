@@ -20,7 +20,6 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -136,10 +135,9 @@ public class GetfitController {
     @PostMapping(value="/add", produces = "application/json")
     public String addLogEntry(final @RequestBody String logEntry) {
 
-        getfitService.getEntryManager().addEntry(stringToEntry(logEntry));
+        String id = getfitService.getEntryManager().addEntry(stringToEntry(logEntry));
         getfitService.save();
-        return "{\"id\":\"" + getfitService.getEntryManager()
-                .addEntry(stringToEntry(logEntry)) + "\" }";
+        return "{\"id\":\"" + id + "\" }";
     }
 
 
