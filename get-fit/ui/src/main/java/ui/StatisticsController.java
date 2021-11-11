@@ -133,6 +133,7 @@ public class StatisticsController {
 
         try {
             dataEntries = this.client.getStatistics(listBuilder);
+            
             for (String dataEntry : dataEntries.keySet()) {
                 switch (dataEntry) {
 
@@ -141,6 +142,8 @@ public class StatisticsController {
                             dataEntries.get(dataEntry));
                         break;
                     case "totalDuration" :
+                        double time = Double.parseDouble(dataEntries.get(dataEntry));
+                        //time = round(time/3600, 2);
                         totalDuration.setText(
                             dataEntries.get(dataEntry));
                         break;
@@ -166,14 +169,19 @@ public class StatisticsController {
                         break;
                     
                     default:
-                        throw new IllegalArgumentException("Not according to Schema");
+                        throw new IllegalArgumentException("The hashmap is empty");
 
                     }
                 }
-            } catch (URISyntaxException | InterruptedException | ExecutionException e) {
-                //Should catch URISyntaxException | InterruptedException | ExecutionException but
-                //it would not work?
+            /*} catch (URISyntaxException | InterruptedException | ExecutionException e) {
+                errorLabel.setText("Could not connect to server");
+                e.printStackTrace();
+            } catch (ServerResponseException e) {
                 errorLabel.setText(e.getMessage());
+            } catch (IllegalArgumentException eae) {
+                errorLabel.setText("There are no sessions saved");*/
+            } catch (Exception e) {
+                errorLabel.setText("This is not working that well :/");
             }
         }
     }
