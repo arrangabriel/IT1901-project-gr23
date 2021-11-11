@@ -41,7 +41,7 @@ public class GetfitController {
         try {
             returnObject = new JSONObject(getfitService.getEntryManager().getEntry(id).toHashMap());
         } catch (IllegalArgumentException e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Entry not found", e);
+            throw new IllegalArgumentException(HttpStatus.NOT_FOUND + "Entry not found" + e);
         }
         return returnObject.toString();
     }
@@ -194,11 +194,11 @@ public class GetfitController {
         return io.getMessage();
     }
 
-    @ExceptionHandler(ResponseStatusException.class)
+    @ExceptionHandler(IllegalArgumentException.class)
     @ResponseStatus(value = HttpStatus.NOT_FOUND)
     @ResponseBody
-    public String handleResponseStatusException(
-            final ResponseStatusException rse) {
+    public String handleIllegalArgumentException(
+            final IllegalArgumentException rse) {
         return "";
     }
 }
