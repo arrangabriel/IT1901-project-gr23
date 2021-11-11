@@ -3,6 +3,7 @@ package math;
 import core.EntryManager;
 import core.LogEntry;
 import java.util.Iterator;
+
 import core.EntryManager.SortedIteratorBuilder;
 
 /** Statistics class. */
@@ -10,6 +11,7 @@ public final class Statistics {
 
     /** Hidden constructor. */
     private Statistics() { }
+    
 
     /**
      * Returns the count of entries in the entryManager.
@@ -109,6 +111,7 @@ public final class Statistics {
         }
         return maxHr;
     }
+
 
 }
 
