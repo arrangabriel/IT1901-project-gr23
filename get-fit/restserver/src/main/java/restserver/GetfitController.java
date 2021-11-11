@@ -3,6 +3,7 @@ package restserver;
 import core.EntryManager;
 import core.LogEntry;
 import core.LogEntry.EXERCISECATEGORY;
+import math.Statistics;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.http.HttpStatus;
@@ -22,6 +23,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.time.LocalDate;
 
 //localhost:8080/api/v1/entries
 //Run: mvn spring-boot:run
@@ -108,6 +110,15 @@ public class GetfitController {
                         iteratorBuilder.filterSubCategory(subcategories);
             } catch (IllegalArgumentException IA) {
             }
+
+            try{
+                if(date != null){
+                    iteratorBuilder = iteratorBuilder.filterTimeInterval(
+                    LocalDate.parse(date.substring(0,10)),LocalDate.parse(date.substring(11)));
+                }
+            }catch(IllegalArgumentException IA){
+
+            }  
         }
 
         List<LogEntry> returnList = new ArrayList<>();
@@ -125,6 +136,39 @@ public class GetfitController {
 
         return returnJSON.toString();
     }
+
+    @GetMapping("/stats")
+    @ResponseBody
+    public String getStatisticsData(
+            final @RequestParam(value = "s") String startDate,
+            final @RequestParam(value = "e") String endDate,
+            final @RequestParam(value = "c", required = false) String eCategory){
+
+        HashMap<String, String> map = new HashMap<>();
+        map.put("count", Integer.toString(Statistics.getCount(
+            getfitService.getEntryManager())));
+        map.put("totalDuration", Double.toString(Statistics.getTotalDuration(
+            getfitService.getEntryManager())));
+        map.put("averageDuration",Double.toString(Statistics.getAverageDuration(
+            getfitService.getEntryManager())));
+            if(eCategory != null){
+                map.put("averageSpeed", Double.toString(Statistics.getAverageSpeed(
+                    getfitService.getEntryManager(), LogEntry.EXERCISECATEGORY.valueOf(eCategory))));
+            }
+        map.put("averageFeeling", Double.toString(Statistics.getAverageFeeling(
+            getfitService.getEntryManager())));
+        map.put("maximumHr", Double.toString(Statistics.getMaximumHr(
+            getfitService.getEntryManager())));
+
+        System.out.println(map);
+        JSONObject JSONreturn = new JSONObject(map);
+
+  
+        return JSONreturn.toString();
+}
+
+        
+
 
     @PostMapping("/add")
     public String addLogEntry(final @RequestBody String logEntry) {
