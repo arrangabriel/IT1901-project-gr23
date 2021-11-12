@@ -2,11 +2,16 @@ package math;
 
 import core.EntryManager;
 import core.LogEntry;
+
+
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 import core.EntryManager.SortedIteratorBuilder;
 
-/** Statistics class. */
+/** Statistics class.*/
 public final class Statistics {
 
     /** Hidden constructor. */
@@ -18,8 +23,13 @@ public final class Statistics {
      * @param entryManager the entry manager to count over.
      * @return the count of entries.
      */
-    public static int getCount(final EntryManager entryManager) {
-        return entryManager.entryCount();
+    public static int getCount(
+        final EntryManager entryManager,
+        final String date) {
+        
+        List<LogEntry> entries = listFilteredByDates(entryManager, date);
+        
+        return entries.size();
     }
 
     /**
@@ -27,9 +37,13 @@ public final class Statistics {
      * @param entryManager the entryManager to total.
      * @return the total duration.
      */
-    public static double getTotalDuration(final EntryManager entryManager) {
+    public static double getTotalDuration(
+        final EntryManager entryManager,
+        final String date) {
+        
+        List<LogEntry> entries = listFilteredByDates(entryManager, date);
         double sum = 0;
-        for (LogEntry logEntry : entryManager) {
+        for (LogEntry logEntry : entries) {
             sum += logEntry.getDuration().toSeconds();
         }
 
@@ -41,9 +55,14 @@ public final class Statistics {
      * @param entryManager the entryManager to average.
      * @return the average duration.
      */
-    public static double getAverageDuration(final EntryManager entryManager) {
-        double sum = getTotalDuration(entryManager);
-        double average = sum / entryManager.entryCount();
+    public static double getAverageDuration(
+        final EntryManager entryManager,
+        final String date) {
+        
+        List<LogEntry> entries = listFilteredByDates(entryManager, date);
+        
+        double sum = getTotalDuration(entryManager, date);
+        double average = sum / entries.size();
 
         return average;
     }
@@ -52,18 +71,25 @@ public final class Statistics {
     * Returns the average speed across all LogEntries in the EntryManager.
     * @param entryManager the entryManager to calculate average speed from.
     * @param category the exercise category to sort average speed from.
+    * @param date the date to filter by
     * @return the average speed of the sessions in min/km.
     * @throws IllegalStateException if distance is not positive.
     */
     public static double getAverageSpeed(
         final EntryManager entryManager,
-        final LogEntry.EXERCISECATEGORY category)
+        final LogEntry.EXERCISECATEGORY category, 
+        final String date)
         throws IllegalStateException {
 
 
         Iterator<LogEntry> entries = new SortedIteratorBuilder(entryManager,
-            LogEntry.SORTCONFIGURATIONS.DATE).filterExerciseCategory(
-                category).iterator(false);
+            LogEntry.SORTCONFIGURATIONS.DATE).
+                filterExerciseCategory(
+                category).
+                filterTimeInterval(
+                LocalDate.parse(date.substring(0,10)),
+                LocalDate.parse(date.substring(11))).
+                iterator(false);
 
         double time = 0;
         double distance = 0;
@@ -88,9 +114,10 @@ public final class Statistics {
     * @param entryManager the entryManager to calculate average feeling from.
     * @return the average feeling.
     */
-    public static double getAverageFeeling(final EntryManager entryManager) {
+    public static double getAverageFeeling(final EntryManager entryManager, final String date) {
+        List<LogEntry> entries = listFilteredByDates(entryManager, date);
         double sum = 0;
-        for (LogEntry logEntry : entryManager) {
+        for (LogEntry logEntry : entries) {
             sum += logEntry.getFeeling();
         }
         double average = sum/entryManager.entryCount();
@@ -100,11 +127,17 @@ public final class Statistics {
      /**
     * Returns the maximum heart rate across all LogEntries in the EntryManager.
     * @param entryManager the entryManager to get the maximum heart rate from.
+    * @param date the date to filter by.
     * @return the maximum heart rate.
     */
-    public static double getMaximumHr(final EntryManager entryManager) {
+    public static double getMaximumHr(
+        final EntryManager entryManager, 
+        final String date) {
+        
+        List<LogEntry> entries = listFilteredByDates(entryManager, date);
+
         double maxHr = 0;
-        for (LogEntry logEntry : entryManager) {
+        for (LogEntry logEntry : entries) {
             if (logEntry.getMaxHeartRate() > maxHr) {
                 maxHr = logEntry.getMaxHeartRate();
             }
@@ -112,6 +145,27 @@ public final class Statistics {
         return maxHr;
     }
 
+    private static List<LogEntry> listFilteredByDates(
+        final EntryManager entryManager, 
+        final String date) {
+
+        LogEntry.SORTCONFIGURATIONS sortConfiguration = LogEntry.
+        SORTCONFIGURATIONS.DATE;       
+
+        EntryManager.SortedIteratorBuilder iteratorBuilder =
+            new EntryManager.SortedIteratorBuilder(
+                entryManager,sortConfiguration);
+
+        Iterator<LogEntry> iterator = iteratorBuilder.filterTimeInterval(
+            LocalDate.parse(date.substring(0,10)),
+            LocalDate.parse(date.substring(11))).
+            iterator(false);
+        
+        List<LogEntry> entries = new ArrayList<>();
+        iterator.forEachRemaining(entries::add);
+
+        return entries;
+    }
 
 }
 
