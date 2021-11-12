@@ -34,6 +34,7 @@ import java.util.stream.Collectors;
 
 public class AddNewSessionController {
 
+    // region Constants
     /**
      * Slightly arbitrary maximum hour limit for duration.
      */
@@ -45,7 +46,7 @@ public class AddNewSessionController {
     /**
      * Maximum distance limit.
      */
-    private static final int MAX_DISTANCE = 200;
+    private static final double MAX_DISTANCE = 200;
     /**
      * Maximum heart rate limit.
      */
@@ -59,12 +60,9 @@ public class AddNewSessionController {
      * Session log client.
      */
     private final LogClient client = new LogClient("http://localhost", 8080);
+    //endregion
 
-    /**
-     * Exercise categories and subcategories.
-     */
-    private HashMap<String, List<String>> categories;
-
+    //region JavaFX elements
     /**
      * Label for duration input.
      */
@@ -180,6 +178,12 @@ public class AddNewSessionController {
      */
     @FXML
     private Button createSession;
+    //endregion
+
+    /**
+     * Exercise categories and subcategories.
+     */
+    private HashMap<String, List<String>> categories;
 
     /**
      * Adds an entry to the app EntryManager and switches the view to StartPage.
@@ -249,6 +253,13 @@ public class AddNewSessionController {
             String distanceString = distance.getText();
             if (distanceString.equals("")) {
                 distanceValue = "null";
+            } else {
+                try {
+                    Double.parseDouble(distanceString);
+                } catch (NumberFormatException e) {
+                    throw new IllegalArgumentException(
+                            "Malformed distance value.");
+                }
             }
 
             HashMap<String, String> entryMap = new HashMap<>();
@@ -302,20 +313,8 @@ public class AddNewSessionController {
         }
     }
 
-    private void goToStartPage(final ActionEvent event) throws IOException {
-        FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource("StartPage.fxml"));
-        Parent p = loader.load();
-        Scene s = new Scene(p);
-        Stage window =
-                (Stage) ((Node) event.getSource()).getScene().getWindow();
-        window.setTitle("Get fit");
-        window.setScene(s);
-        window.show();
-    }
-
     /**
-     * This function handles going back too main page when fired.
+     * Handles going back too main page when fired.
      *
      * @param event an ActionEvent from the observed change.
      * @throws IOException if StartPage could not be found.
@@ -328,16 +327,24 @@ public class AddNewSessionController {
     /**
      * Changes ui according to the selected exercise category.
      *
-     * @param event an ActionEvent from the observed change.
+     * @param ignored an ActionEvent from the observed change.
      */
     @FXML
-    public void handleTagsSelector(final ActionEvent event) {
+    public void handleTagsSelector(final ActionEvent ignored) {
 
         String mainCategory =
-                exerciseType.getSelectionModel().getSelectedItem();
+                exerciseType.getSelectionModel().getSelectedItem()
+                        .toLowerCase();
         tags.setItems(this.getSubcategoryStringObservableList(mainCategory));
+
+
+        switch (mainCategory) {
+            case "running", "swimming", "cycling" -> setCardio(true);
+            default -> setCardio(false);
+        }
     }
 
+    //region Helper functions
     private void setCardio(final boolean isCardio) {
         distance.setVisible(isCardio);
         distanceLabel.setVisible(isCardio);
@@ -349,12 +356,13 @@ public class AddNewSessionController {
 
     private ObservableList<String> getSubcategoryStringObservableList(
             final String mainCategory) {
-        return categories.get(mainCategory.toLowerCase()).stream()
+        return categories.get(mainCategory).stream()
                 .map(this::capitalize)
                 .collect(Collectors
                         .toCollection(FXCollections::observableArrayList));
     }
 
+    // Makes sure a field can only accept integers in a certain range.
     private void validateIntegerInput(final TextField field,
                                       final int maxValue) {
         field.textProperty().addListener((obs, oldValue, newValue) -> {
@@ -378,6 +386,55 @@ public class AddNewSessionController {
         });
     }
 
+    // Makes sure a field can only accept doubles in a certain range.
+    private void validateFloatInput(final TextField field,
+                                    final double maxValue) {
+        field.textProperty().addListener((obs, oldValue, newValue) -> {
+            if (!newValue.isEmpty()) {
+                if (newValue.charAt(newValue.length() - 1) == '.') {
+                    if ((oldValue.contains(".")
+                            && oldValue.length() < newValue.length())
+                            || oldValue.isEmpty()) {
+                        field.setText(oldValue);
+                    }
+                } else {
+                    try {
+                        double value = Double.parseDouble(newValue);
+                        if (value < 0 || value > maxValue) {
+                            throw new NumberFormatException(
+                                    "Input out of allowed range.");
+                        }
+                        // Check if input is multiple zeros.
+                        if (value == 0) {
+                            // This is slightly suboptimal,
+                            // will auto-format 0.0 to 0.
+                            field.setText("0");
+                        }
+                        // Make sure value fits in field.
+                        if (newValue.length() > 4) {
+                            field.setText(oldValue);
+                        }
+                    } catch (NumberFormatException e) {
+                        field.setText(oldValue);
+                    }
+                }
+            }
+        });
+    }
+
+    // Sends ui to start page.
+    private void goToStartPage(final ActionEvent event) throws IOException {
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("StartPage.fxml"));
+        Parent p = loader.load();
+        Scene s = new Scene(p);
+        Stage window =
+                (Stage) ((Node) event.getSource()).getScene().getWindow();
+        window.setTitle("Get fit");
+        window.setScene(s);
+        window.show();
+    }
+    //endregion
 
     /**
      * Initializes the controller.
@@ -420,6 +477,6 @@ public class AddNewSessionController {
         validateIntegerInput(hour, MAX_HOURS);
         validateIntegerInput(min, MAX_MINUTES);
         validateIntegerInput(heartRate, MAX_HEARTRATE);
-        validateIntegerInput(distance, MAX_DISTANCE);
+        validateFloatInput(distance, MAX_DISTANCE);
     }
 }
