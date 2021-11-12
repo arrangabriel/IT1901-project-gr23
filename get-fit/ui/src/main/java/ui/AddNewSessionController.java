@@ -349,8 +349,6 @@ public class AddNewSessionController {
 
     private ObservableList<String> getSubcategoryStringObservableList(
             final String mainCategory) {
-        //System.out.println(categories);
-        //System.out.println(mainCategory);
         return categories.get(mainCategory.toLowerCase()).stream()
                 .map(this::capitalize)
                 .collect(Collectors

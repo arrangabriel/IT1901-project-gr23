@@ -62,7 +62,6 @@ public class LogClient {
 
         HashMap<String, String> responseHash = new HashMap<>();
 
-        System.out.println(jsonObject);
         for (String key : jsonObject.keySet()) {
             responseHash.put(key, jsonObject.getString(key));
         }

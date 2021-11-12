@@ -101,7 +101,7 @@ public class StartPageController {
     /***/
     @FXML
     private Button sortReverse;
-    //private CheckBox reverseBox;
+    // private CheckBox reverseBox;
     /***/
     @FXML
     private Button goToStatistics;
@@ -141,19 +141,19 @@ public class StartPageController {
         Optional<ButtonType> result = alert.showAndWait();
         if (result.get() == ButtonType.OK) {
             switch (func) {
-                case "initialize":
-                    this.initialize();
-                    break;
-                case "updateList":
-                    this.updateList();
-                    break;
-                case "createListEntry":
-                    HashMap<String, String> entry = new HashMap<>();
-                    entry.put(args[0], args[1]);
-                    this.createListEntry(entry);
-                    break;
-                default:
-                    break;
+            case "initialize":
+                this.initialize();
+                break;
+            case "updateList":
+                this.updateList();
+                break;
+            case "createListEntry":
+                HashMap<String, String> entry = new HashMap<>();
+                entry.put(args[0], args[1]);
+                this.createListEntry(entry);
+                break;
+            default:
+                break;
             }
             errorLabel.setText("");
         } else {
@@ -168,14 +168,12 @@ public class StartPageController {
      * @throws IOException if .FXML file could not be found.
      */
     @FXML
-    public void addSessionButtonPushed(final ActionEvent event)
-            throws IOException {
+    public void addSessionButtonPushed(final ActionEvent event) throws IOException {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("AddNewSession.fxml"));
         Parent p = loader.load();
         Scene s = new Scene(p);
-        Stage window =
-                (Stage) ((Node) event.getSource()).getScene().getWindow();
+        Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
         window.setTitle("Add new session");
         window.setScene(s);
         window.show();
@@ -190,7 +188,6 @@ public class StartPageController {
     public void closeView(final ActionEvent event) {
         entryView.setVisible(false);
     }
-
 
     /**
      * FXML wrapper method.
@@ -212,11 +209,9 @@ public class StartPageController {
         String sort = sortConfig.getValue();
         String categoryFilter = sortCategory.getValue();
         String subFilter = sortSubcategory.getValue();
-        //boolean reverse = reverseBox.isSelected();
+        // boolean reverse = reverseBox.isSelected();
 
-        ListBuilder builder =
-                new ListBuilder().sort(sort).category(categoryFilter)
-                        .subCategory(subFilter);
+        ListBuilder builder = new ListBuilder().sort(sort).category(categoryFilter).subCategory(subFilter);
 
         if (reverseBox.isSelected()) {
             builder.reverse();
@@ -240,7 +235,6 @@ public class StartPageController {
 
     private VBox createListEntry(final HashMap<String, String> entry) {
 
-
         errorLabel.setText("");
 
         VBox vBox = new VBox();
@@ -248,9 +242,7 @@ public class StartPageController {
 
         ColumnConstraints colConstraint = new ColumnConstraints();
         colConstraint.setPercentWidth(25);
-        grid.getColumnConstraints()
-                .addAll(colConstraint, colConstraint, colConstraint,
-                        colConstraint);
+        grid.getColumnConstraints().addAll(colConstraint, colConstraint, colConstraint, colConstraint);
 
         Text title = new Text(entry.get("title"));
         Text date = new Text(entry.get("date"));
@@ -269,10 +261,9 @@ public class StartPageController {
             // feeling
             feelingView.setText(String.valueOf(entry.get("feeling")));
             // duration
-            durationView.setText(durationToHours(
-                    Duration.ofSeconds(Long.parseLong(entry.get("duration")))));
+            durationView.setText(durationToHours(Duration.ofSeconds(Long.parseLong(entry.get("duration")))));
             // subcategory optional
-            String subcategory = entry.get("exerciseSubcategory");
+            String subcategory = entry.get("exerciseSubCategory");
             setOptionalField(subcategory, subcategoryView, subcategoryLabel);
             // maxHeartRate optional
             String maxHeartRate = entry.get("maxHeartRate");
@@ -323,8 +314,7 @@ public class StartPageController {
         return vBox;
     }
 
-    private void setOptionalField(final String data, final Text textField,
-                                  final Text textLabel) {
+    private void setOptionalField(final String data, final Text textField, final Text textLabel) {
         if (data != null) {
             textField.setText(data);
             textField.setVisible(true);
@@ -349,18 +339,18 @@ public class StartPageController {
             sortSubcategory.setVisible(false);
         } else {
             switch (sortCategory.getValue()) {
-                case "strength" -> {
-                    sortSubcategory.setItems(sortStrengthSubcategories);
-                    sortSubcategory.getSelectionModel().selectFirst();
-                    sortSubcategory.setVisible(true);
-                }
-                case "swimming", "cycling", "running" -> {
-                    sortSubcategory.setItems(sortCardioSubcategories);
-                    sortSubcategory.getSelectionModel().selectFirst();
-                    sortSubcategory.setVisible(true);
-                }
-                default -> {
-                }
+            case "strength" -> {
+                sortSubcategory.setItems(sortStrengthSubcategories);
+                sortSubcategory.getSelectionModel().selectFirst();
+                sortSubcategory.setVisible(true);
+            }
+            case "swimming", "cycling", "running" -> {
+                sortSubcategory.setItems(sortCardioSubcategories);
+                sortSubcategory.getSelectionModel().selectFirst();
+                sortSubcategory.setVisible(true);
+            }
+            default -> {
+            }
             }
         }
         updateList();
