@@ -46,7 +46,7 @@ public class AddNewSessionController {
     /**
      * Maximum distance limit.
      */
-    private static final int MAX_DISTANCE = 200;
+    private static final double MAX_DISTANCE = 200;
     /**
      * Maximum heart rate limit.
      */
@@ -253,6 +253,13 @@ public class AddNewSessionController {
             String distanceString = distance.getText();
             if (distanceString.equals("")) {
                 distanceValue = "null";
+            } else {
+                try {
+                    Double.parseDouble(distanceString);
+                } catch (NumberFormatException e) {
+                    throw new IllegalArgumentException(
+                            "Malformed distance value.");
+                }
             }
 
             HashMap<String, String> entryMap = new HashMap<>();
@@ -366,6 +373,7 @@ public class AddNewSessionController {
                         .toCollection(FXCollections::observableArrayList));
     }
 
+    // Makes sure a field can only accept integers in a certain range.
     private void validateIntegerInput(final TextField field,
                                       final int maxValue) {
         field.textProperty().addListener((obs, oldValue, newValue) -> {
@@ -389,6 +397,41 @@ public class AddNewSessionController {
         });
     }
 
+    // Makes sure a field can only accept doubles in a certain range.
+    private void validateFloatInput(final TextField field,
+                                    final double maxValue) {
+        field.textProperty().addListener((obs, oldValue, newValue) -> {
+            if (!newValue.isEmpty()) {
+                if (newValue.charAt(newValue.length() - 1) == '.') {
+                    if ((oldValue.contains(".")
+                            && oldValue.length() < newValue.length())
+                            || oldValue.isEmpty()) {
+                        field.setText(oldValue);
+                    }
+                } else {
+                    try {
+                        double value = Double.parseDouble(newValue);
+                        if (value < 0 || value > maxValue) {
+                            throw new NumberFormatException(
+                                    "Input out of allowed range.");
+                        }
+                        // Check if input is multiple zeros.
+                        if (value == 0) {
+                            // This is slightly suboptimal,
+                            // will auto-format 0.0 to 0.
+                            field.setText("0");
+                        }
+                        // Make sure value fits in field.
+                        if (newValue.length() > 4) {
+                            field.setText(oldValue);
+                        }
+                    } catch (NumberFormatException e) {
+                        field.setText(oldValue);
+                    }
+                }
+            }
+        });
+    }
 
     /**
      * Initializes the controller.
@@ -431,6 +474,6 @@ public class AddNewSessionController {
         validateIntegerInput(hour, MAX_HOURS);
         validateIntegerInput(min, MAX_MINUTES);
         validateIntegerInput(heartRate, MAX_HEARTRATE);
-        validateIntegerInput(distance, MAX_DISTANCE);
+        validateFloatInput(distance, MAX_DISTANCE);
     }
 }
