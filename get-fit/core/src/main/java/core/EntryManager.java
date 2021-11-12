@@ -73,6 +73,7 @@ public final class EntryManager implements Iterable<LogEntry> {
 
         entry.setId(id);
         this.entryMap.put(id, entry);
+        updateHashPosition(Integer.parseInt(id));
     }
 
     /**

@@ -24,35 +24,28 @@ public final class EntrySaverJson {
     }
 
     /**
-     * Iterates over every entry in the provided EntryManager
-     * and adds their data as a string to a hashmap.
-     * Saves the hashmap to SavedData.json.
+     * Iterates over every entry in the provided EntryManager and adds their data as
+     * a string to a hashmap. Saves the hashmap to SavedData.json.
      *
      * @param entryManager the EntryManager instance to be saved.
      * @throws IOException              if there was an issue during write.
      * @throws IllegalArgumentException if entryManager is null.
      */
-    public static void save(
-            final EntryManager entryManager)
-            throws IOException, IllegalArgumentException {
+    public static void save(final EntryManager entryManager) throws IOException, IllegalArgumentException {
 
         save(entryManager, "SavedData.json");
     }
 
-
     /**
-     * Iterates over every entry in the provided EntryManager
-     * and adds their data as a string to a hashmap.
-     * Saves the hashmap to the specified JSON file.
+     * Iterates over every entry in the provided EntryManager and adds their data as
+     * a string to a hashmap. Saves the hashmap to the specified JSON file.
      *
      * @param entryManager the EntryManager instance to be saved.
      * @param saveFile     path to the file being written to.
      * @throws IOException              if there was an issue during write.
      * @throws IllegalArgumentException if entryManager or saveFile is null.
      */
-    public static void save(
-            final EntryManager entryManager,
-            final String saveFile)
+    public static void save(final EntryManager entryManager, final String saveFile)
             throws IOException, IllegalArgumentException {
 
         if (entryManager == null || saveFile == null) {
@@ -88,28 +81,21 @@ public final class EntrySaverJson {
      * @throws IOException              if SavedData.JSON could not be found.
      * @throws IllegalArgumentException if entryManager is null.
      */
-    public static void load(
-            final EntryManager entryManager)
-            throws IOException, IllegalArgumentException {
+    public static void load(final EntryManager entryManager) throws IOException, IllegalArgumentException {
 
         load(entryManager, "SavedData.json");
     }
 
-
-
     /**
-     * Loads a specified JSON file and constructs
-     * LogEntries which it appends to the provided EntryManager.
+     * Loads a specified JSON file and constructs LogEntries which it appends to the
+     * provided EntryManager.
      *
      * @param entryManager the EntryManager to load data into.
      * @param saveFile     the path of the JSON file to load from.
-     * @throws IOException
-     * if the specified path could not be found.
+     * @throws IOException              if the specified path could not be found.
      * @throws IllegalArgumentException if the entryManager or saveFile is null.
      */
-    public static void load(
-            final EntryManager entryManager,
-            final String saveFile)
+    public static void load(final EntryManager entryManager, final String saveFile)
             throws IOException, IllegalArgumentException {
 
         if (entryManager == null || saveFile == null) {
@@ -131,8 +117,7 @@ public final class EntrySaverJson {
 
         try {
             JSONObject jsonObject = new JSONObject(dataString);
-            HashMap<String,HashMap<String, String>> jsonHash = new HashMap<>();
-
+            HashMap<String, HashMap<String, String>> jsonHash = new HashMap<>();
 
             for (String key : jsonObject.keySet()) {
                 HashMap<String, String> entryHash = new HashMap<>();
@@ -145,14 +130,13 @@ public final class EntrySaverJson {
                 entryHash.put("distance", jsonObject.getJSONObject(key).getString("distance"));
                 entryHash.put("maxHeartRate", jsonObject.getJSONObject(key).getString("maxHeartRate"));
                 entryHash.put("exerciseCategory", jsonObject.getJSONObject(key).getString("exerciseCategory"));
-                entryHash.put("exerciseSubcategory", jsonObject.getJSONObject(key).getString("exerciseSubcategory"));
+                entryHash.put("exerciseSubCategory", jsonObject.getJSONObject(key).getString("exerciseSubCategory"));
 
                 jsonHash.put(key, entryHash);
 
             }
 
             EntryManager.fromHash(jsonHash, entryManager);
-
 
         } catch (JSONException pException) {
             throw new IllegalStateException("Could not load data from file");
