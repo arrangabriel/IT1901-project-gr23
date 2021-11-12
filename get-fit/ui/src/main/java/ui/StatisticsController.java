@@ -128,7 +128,7 @@ public class StatisticsController {
         if (exerciseType.getValue() != null) {
             listBuilder.category(exerciseType.getValue());
         }
-        listBuilder.date(end.getValue().toString()+'-'+start.getValue());
+        listBuilder.date(start.getValue().toString() + "-" + end.getValue().toString());
         HashMap<String, String> dataEntries;
 
         try {

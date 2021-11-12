@@ -47,8 +47,8 @@
         <Button layoutX="488.0" layoutY="345.0" mnemonicParsing="false" onAction="#onReturn" prefHeight="33.0" prefWidth="82.0" text="Return" />
         <DatePicker fx:id="start" editable="false" layoutX="22.0" layoutY="81.0" prefHeight="27.0" prefWidth="97.0" promptText="dd:mm:yyyy" />
         <DatePicker fx:id="end" editable="false" layoutX="129.0" layoutY="81.0" prefHeight="27.0" prefWidth="90.0" promptText="dd:mm:yyyy" />
-        <Label layoutX="24.0" layoutY="67.0" text="From" />
-        <Label layoutX="129.0" layoutY="66.0" text="To" />
+        <Label layoutX="24.0" layoutY="67.0" text="Start" />
+        <Label layoutX="129.0" layoutY="66.0" text="End" />
         <RadioButton fx:id="years" layoutX="240.0" layoutY="346.0" mnemonicParsing="false" text="Years" />
         <RadioButton fx:id="months" layoutX="158.0" layoutY="347.0" mnemonicParsing="false" text="Months" />
         <RadioButton fx:id="weeks" layoutX="75.0" layoutY="347.0" mnemonicParsing="false" text="Weeks" />
