@@ -34,6 +34,7 @@ import java.util.stream.Collectors;
 
 public class AddNewSessionController {
 
+    // region Constants
     /**
      * Slightly arbitrary maximum hour limit for duration.
      */
@@ -59,12 +60,9 @@ public class AddNewSessionController {
      * Session log client.
      */
     private final LogClient client = new LogClient("http://localhost", 8080);
+    //endregion
 
-    /**
-     * Exercise categories and subcategories.
-     */
-    private HashMap<String, List<String>> categories;
-
+    //region JavaFX elements
     /**
      * Label for duration input.
      */
@@ -180,6 +178,12 @@ public class AddNewSessionController {
      */
     @FXML
     private Button createSession;
+    //endregion
+
+    /**
+     * Exercise categories and subcategories.
+     */
+    private HashMap<String, List<String>> categories;
 
     /**
      * Adds an entry to the app EntryManager and switches the view to StartPage.
@@ -328,10 +332,10 @@ public class AddNewSessionController {
     /**
      * Changes ui according to the selected exercise category.
      *
-     * @param event an ActionEvent from the observed change.
+     * @param ignored an ActionEvent from the observed change.
      */
     @FXML
-    public void handleTagsSelector(final ActionEvent event) {
+    public void handleTagsSelector(final ActionEvent ignored) {
 
         String mainCategory =
                 exerciseType.getSelectionModel().getSelectedItem()
@@ -340,12 +344,8 @@ public class AddNewSessionController {
 
 
         switch (mainCategory) {
-            case "running", "swimming", "cycling" -> {
-                setCardio(true);
-            }
-            default -> {
-                setCardio(false);
-            }
+            case "running", "swimming", "cycling" -> setCardio(true);
+            default -> setCardio(false);
         }
     }
 
@@ -360,8 +360,6 @@ public class AddNewSessionController {
 
     private ObservableList<String> getSubcategoryStringObservableList(
             final String mainCategory) {
-        //System.out.println(categories);
-        //System.out.println(mainCategory);
         return categories.get(mainCategory).stream()
                 .map(this::capitalize)
                 .collect(Collectors
