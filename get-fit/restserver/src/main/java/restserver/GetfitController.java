@@ -143,6 +143,13 @@ public class GetfitController {
             final @RequestParam(value = "d", required = false) String date,
             final @RequestParam(value = "c", required = false) String eCategory){
 
+        LogEntry.SORTCONFIGURATIONS sortConfiguration = null;       
+
+        EntryManager.SortedIteratorBuilder iteratorBuilder =
+            new EntryManager.SortedIteratorBuilder(
+                getfitService.getEntryManager(),sortConfiguration);
+
+                
         iteratorBuilder = iteratorBuilder.filterTimeInterval(
             LocalDate.parse(date.substring(0,10)),LocalDate.parse(date.substring(11)));
 
