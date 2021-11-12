@@ -149,7 +149,7 @@ public class LogClient {
         final ListBuilder builder) 
         throws URISyntaxException, InterruptedException,
         ExecutionException, ServerResponseException {
-        
+
         String queryString = "?";
 
         List<String> queries = new ArrayList<>();
@@ -159,7 +159,6 @@ public class LogClient {
         if (builder.categoryVal != null) {
             queries.add("c=" + builder.categoryVal);
         }
-
         queryString += String.join("&", queries);
 
         HttpResponse<String> response =

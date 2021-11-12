@@ -97,8 +97,8 @@ public class StatisticsController {
         years.setToggleGroup(toggleGroup);
 
         //Default values for dates are today and one year from now.
-        start.setValue(LocalDate.now());
-        end.setValue(LocalDate.now().plusYears(-1));
+        start.setValue(LocalDate.now().plusYears(-1));
+        end.setValue(LocalDate.now());
 
     }
 
@@ -133,7 +133,8 @@ public class StatisticsController {
 
         try {
             dataEntries = this.client.getStatistics(listBuilder);
-            
+            System.out.println(dataEntries);
+
             for (String dataEntry : dataEntries.keySet()) {
                 switch (dataEntry) {
 
@@ -179,6 +180,7 @@ public class StatisticsController {
             } catch (IllegalArgumentException eae) {
                 errorLabel.setText("There are no sessions saved");*/
             } catch (Exception e) {
+                e.printStackTrace();
                 errorLabel.setText("This is not working that well :/");
             }
         }
