@@ -313,20 +313,8 @@ public class AddNewSessionController {
         }
     }
 
-    private void goToStartPage(final ActionEvent event) throws IOException {
-        FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource("StartPage.fxml"));
-        Parent p = loader.load();
-        Scene s = new Scene(p);
-        Stage window =
-                (Stage) ((Node) event.getSource()).getScene().getWindow();
-        window.setTitle("Get fit");
-        window.setScene(s);
-        window.show();
-    }
-
     /**
-     * This function handles going back too main page when fired.
+     * Handles going back too main page when fired.
      *
      * @param event an ActionEvent from the observed change.
      * @throws IOException if StartPage could not be found.
@@ -356,6 +344,7 @@ public class AddNewSessionController {
         }
     }
 
+    //region Helper functions
     private void setCardio(final boolean isCardio) {
         distance.setVisible(isCardio);
         distanceLabel.setVisible(isCardio);
@@ -432,6 +421,20 @@ public class AddNewSessionController {
             }
         });
     }
+
+    // Sends ui to start page.
+    private void goToStartPage(final ActionEvent event) throws IOException {
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("StartPage.fxml"));
+        Parent p = loader.load();
+        Scene s = new Scene(p);
+        Stage window =
+                (Stage) ((Node) event.getSource()).getScene().getWindow();
+        window.setTitle("Get fit");
+        window.setScene(s);
+        window.show();
+    }
+    //endregion
 
     /**
      * Initializes the controller.
