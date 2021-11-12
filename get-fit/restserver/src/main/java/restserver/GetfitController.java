@@ -143,6 +143,9 @@ public class GetfitController {
             final @RequestParam(value = "d", required = false) String date,
             final @RequestParam(value = "c", required = false) String eCategory){
 
+        iteratorBuilder = iteratorBuilder.filterTimeInterval(
+            LocalDate.parse(date.substring(0,10)),LocalDate.parse(date.substring(11)));
+
         HashMap<String, String> map = new HashMap<>();
         map.put("count", Integer.toString(Statistics.getCount(
             getfitService.getEntryManager())));
@@ -159,7 +162,6 @@ public class GetfitController {
         map.put("maximumHr", Double.toString(Statistics.getMaximumHr(
             getfitService.getEntryManager())));
 
-        System.out.println(map);
         JSONObject JSONreturn = new JSONObject(map);
 
   
