@@ -334,8 +334,19 @@ public class AddNewSessionController {
     public void handleTagsSelector(final ActionEvent event) {
 
         String mainCategory =
-                exerciseType.getSelectionModel().getSelectedItem();
+                exerciseType.getSelectionModel().getSelectedItem()
+                        .toLowerCase();
         tags.setItems(this.getSubcategoryStringObservableList(mainCategory));
+
+
+        switch (mainCategory) {
+            case "running", "swimming", "cycling" -> {
+                setCardio(true);
+            }
+            default -> {
+                setCardio(false);
+            }
+        }
     }
 
     private void setCardio(final boolean isCardio) {
@@ -351,7 +362,7 @@ public class AddNewSessionController {
             final String mainCategory) {
         //System.out.println(categories);
         //System.out.println(mainCategory);
-        return categories.get(mainCategory.toLowerCase()).stream()
+        return categories.get(mainCategory).stream()
                 .map(this::capitalize)
                 .collect(Collectors
                         .toCollection(FXCollections::observableArrayList));
