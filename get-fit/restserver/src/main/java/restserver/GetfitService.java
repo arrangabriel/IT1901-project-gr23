@@ -58,4 +58,11 @@ public class GetfitService {
     public EntryManager getEntryManager() {
         return this.entryManager;
     }
+
+    public String convertFromSecondsToHours(final double sec) {
+        double hr = sec / 3600;
+        double remainder = sec - hr * 3600;
+        double min = remainder / 60;
+        return String.valueOf(hr) + "h : " + String.valueOf(min) + "min";
+    }
 }

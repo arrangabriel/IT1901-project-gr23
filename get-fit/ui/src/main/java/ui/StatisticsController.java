@@ -128,7 +128,7 @@ public class StatisticsController {
         if (exerciseType.getValue() != null) {
             listBuilder.category(exerciseType.getValue());
         }
-        listBuilder.date(start.getValue().toString()+'-'+end.getValue());
+        listBuilder.date(end.getValue().toString()+'-'+start.getValue());
         HashMap<String, String> dataEntries;
 
         try {
@@ -142,8 +142,6 @@ public class StatisticsController {
                             dataEntries.get(dataEntry));
                         break;
                     case "totalDuration" :
-                        double time = Double.parseDouble(dataEntries.get(dataEntry));
-                        //time = round(time/3600, 2);
                         totalDuration.setText(
                             dataEntries.get(dataEntry));
                         break;

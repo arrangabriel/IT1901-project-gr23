@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.time.LocalDate;
@@ -140,34 +139,33 @@ public class GetfitController {
     @GetMapping("/stats")
     @ResponseBody
     public String getStatisticsData(
-            final @RequestParam(value = "d", required = false) String date,
+            final @RequestParam(value = "d") String date,
             final @RequestParam(value = "c", required = false) String eCategory){
 
-        LogEntry.SORTCONFIGURATIONS sortConfiguration = null;       
-
-        EntryManager.SortedIteratorBuilder iteratorBuilder =
-            new EntryManager.SortedIteratorBuilder(
-                getfitService.getEntryManager(),sortConfiguration);
-
-                
-        iteratorBuilder = iteratorBuilder.filterTimeInterval(
-            LocalDate.parse(date.substring(0,10)),LocalDate.parse(date.substring(11)));
-
+        
         HashMap<String, String> map = new HashMap<>();
+        
+
+
         map.put("count", Integer.toString(Statistics.getCount(
-            getfitService.getEntryManager())));
-        map.put("totalDuration", Double.toString(Statistics.getTotalDuration(
-            getfitService.getEntryManager())));
-        map.put("averageDuration",Double.toString(Statistics.getAverageDuration(
-            getfitService.getEntryManager())));
-            if(eCategory == "CARDIO"){
+            getfitService.getEntryManager(), date)));
+
+        map.put("totalDuration", getfitService.convertFromSecondsToHours(
+            Statistics.getTotalDuration(
+                getfitService.getEntryManager(), date)));
+
+        map.put("averageDuration",getfitService.convertFromSecondsToHours(
+            Statistics.getAverageDuration(
+                getfitService.getEntryManager(), date)));
+            
+                if(eCategory == "CARDIO"){
                 map.put("averageSpeed", Double.toString(Statistics.getAverageSpeed(
-                    getfitService.getEntryManager(), LogEntry.EXERCISECATEGORY.valueOf(eCategory))));
+                    getfitService.getEntryManager(), LogEntry.EXERCISECATEGORY.valueOf(eCategory), date)));
             }
         map.put("averageFeeling", Double.toString(Statistics.getAverageFeeling(
-            getfitService.getEntryManager())));
+            getfitService.getEntryManager(), date)));
         map.put("maximumHr", Double.toString(Statistics.getMaximumHr(
-            getfitService.getEntryManager())));
+            getfitService.getEntryManager(), date)));
 
         JSONObject JSONreturn = new JSONObject(map);
 
