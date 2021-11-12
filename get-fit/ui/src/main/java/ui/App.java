@@ -7,6 +7,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.Objects;
 
 /**
  * JavaFX App.
@@ -31,7 +32,8 @@ public class App extends Application {
     public void start(final Stage stage) {
         try {
             Parent parent =
-                    FXMLLoader.load(getClass().getResource("StartPage.fxml"));
+                    FXMLLoader.load(Objects.requireNonNull(
+                            getClass().getResource("StartPage.fxml")));
             stage.setTitle("Get fit");
             stage.setScene(new Scene(parent));
             stage.show();
