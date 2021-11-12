@@ -1,8 +1,8 @@
 package ui;
 
 import client.LogClient;
-import client.ServerResponseException;
 import client.LogClient.ListBuilder;
+import client.ServerResponseException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -43,6 +43,7 @@ public class StartPageController {
      */
     private final LogClient client = new LogClient("http://localhost", 8080);
 
+    //region FXML-elements
     /***/
     @FXML
     private CheckBox reverseBox;
@@ -97,11 +98,6 @@ public class StartPageController {
     /***/
     @FXML
     private ComboBox<String> sortSubcategory;
-    // TODO: Add this box to fxml
-    /***/
-    @FXML
-    private Button sortReverse;
-    //private CheckBox reverseBox;
     /***/
     @FXML
     private Button goToStatistics;
@@ -114,14 +110,8 @@ public class StartPageController {
     /***/
     @FXML
     private Label errorLabel;
-    /**
-     * String-names of sort configurations.
-     */
-    private ObservableList<String> sortConfigs;
-    /**
-     * String-names of exercise categories.
-     */
-    private ObservableList<String> sortCategories;
+    //endregion
+
     /**
      * String-names of strength-subcategories.
      */
@@ -136,24 +126,24 @@ public class StartPageController {
         alert.setTitle("Connection error");
         alert.setHeaderText("Could not connect to server");
         alert.setContentText(
-                "Could not establish a connection to the server.\nPress OK to retry.\nPress Cancel to quit");
+                """
+                        Could not establish a connection to the server.
+                        Press OK to retry.
+                        Press Cancel to quit"""
+        );
         errorLabel.setText("Could not connect to server");
         Optional<ButtonType> result = alert.showAndWait();
         if (result.get() == ButtonType.OK) {
             switch (func) {
-                case "initialize":
-                    this.initialize();
-                    break;
-                case "updateList":
-                    this.updateList();
-                    break;
-                case "createListEntry":
+                case "initialize" -> this.initialize();
+                case "updateList" -> this.updateList();
+                case "createListEntry" -> {
                     HashMap<String, String> entry = new HashMap<>();
                     entry.put(args[0], args[1]);
                     this.createListEntry(entry);
-                    break;
-                default:
-                    break;
+                }
+                default -> {
+                }
             }
             errorLabel.setText("");
         } else {
@@ -191,7 +181,6 @@ public class StartPageController {
         entryView.setVisible(false);
     }
 
-
     /**
      * FXML wrapper method.
      */
@@ -201,8 +190,8 @@ public class StartPageController {
     }
 
     /**
-     * Updates the log entry list by querying the server using selected params from
-     * the dropdown menus.
+     * Updates the log entry list by querying the server using selected params
+     * from the dropdown menus.
      */
     public void updateList() {
         errorLabel.setText("");
@@ -228,7 +217,9 @@ public class StartPageController {
             for (HashMap<String, String> entry : entries) {
                 this.listOfEntries.getItems().add(createListEntry(entry));
             }
-        } catch (URISyntaxException | InterruptedException | ExecutionException e) {
+        } catch (URISyntaxException
+                | InterruptedException
+                | ExecutionException e) {
             retry("updateList");
             errorLabel.setText("Could not connect to server");
             e.printStackTrace();
@@ -296,7 +287,9 @@ public class StartPageController {
         delete.setOnAction(e -> {
             try {
                 this.client.deleteLogEntry(entry.get("id"));
-            } catch (URISyntaxException | InterruptedException | ExecutionException e1) {
+            } catch (URISyntaxException
+                    | InterruptedException
+                    | ExecutionException e1) {
                 errorLabel.setText("Could not connect to server");
                 e1.printStackTrace();
             } catch (ServerResponseException e1) {
@@ -375,14 +368,17 @@ public class StartPageController {
     /**
      * Initializes the controller.
      *
-     * @throws SecurityException
+     * @throws SecurityException if security is violated.
      */
     @FXML
     private void initialize() {
         entryView.setVisible(false);
         // populate sorting selectors
-        sortConfigs = FXCollections.observableArrayList();
-        sortCategories = FXCollections.observableArrayList();
+        ObservableList<String> sortConfigs =
+                FXCollections.observableArrayList();
+
+        ObservableList<String> sortCategories =
+                FXCollections.observableArrayList();
         sortCategories.add("ANY");
         sortStrengthSubcategories = FXCollections.observableArrayList();
         sortStrengthSubcategories.add("ANY");
