@@ -130,11 +130,12 @@ Response:
 
 ```json
 {
+    "empty": "False"
     "count": "5"
-    "totalDuration": "60000"
-    "averageDuration": "6000"
-    "averageSpeed": "7"
-    "averageFeeling": "3"
+    "totalDuration": "20h:10min"
+    "averageDuration": "2h:10min"
+    "averageSpeed": "7.0"
+    "averageFeeling": "3.3"
     "maximumHr": "180"
 
 }
