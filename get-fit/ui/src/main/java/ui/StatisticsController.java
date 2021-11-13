@@ -20,10 +20,13 @@ import javafx.scene.control.ToggleGroup;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.time.LocalDate;
 import java.util.HashMap;
+import java.util.concurrent.ExecutionException;
 
 import client.LogClient;
+import client.ServerResponseException;
 import client.LogClient.ListBuilder;
 
 /*
@@ -172,16 +175,13 @@ public class StatisticsController {
 
                     }
                 }
-            /*} catch (URISyntaxException | InterruptedException | ExecutionException e) {
+            } catch (URISyntaxException | InterruptedException | ExecutionException e) {
                 errorLabel.setText("Could not connect to server");
                 e.printStackTrace();
             } catch (ServerResponseException e) {
                 errorLabel.setText(e.getMessage());
             } catch (IllegalArgumentException eae) {
-                errorLabel.setText("There are no sessions saved");*/
-            } catch (Exception e) {
-                e.printStackTrace();
-                errorLabel.setText("This is not working that well :/");
+                errorLabel.setText("There are no sessions saved");
             }
         }
     }
