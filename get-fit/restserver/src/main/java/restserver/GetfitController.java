@@ -162,10 +162,13 @@ public class GetfitController {
 
         // TODO - these are not always present in a logentry
         if (eCategory == "CARDIO") {
-            map.put("averageSpeed", Double.toString(Statistics.getAverageSpeed(
-                    getfitService.getEntryManager(),
-                    LogEntry.EXERCISECATEGORY.valueOf(eCategory), date)));
+                Double speed = Statistics.getAverageSpeed(
+                        getfitService.getEntryManager(),
+                        LogEntry.EXERCISECATEGORY.valueOf(eCategory), date);
+
+                map.put("averageSpeed", Double.toString(speed));
         }
+
         map.put("maximumHr", Double.toString(Statistics.getMaximumHr(
                 getfitService.getEntryManager(), date)));
 

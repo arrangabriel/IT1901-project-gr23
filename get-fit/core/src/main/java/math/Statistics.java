@@ -80,13 +80,11 @@ public final class Statistics {
      * @param category     the exercise category to sort average speed from.
      * @param date         the date to filter by
      * @return the average speed of the sessions in min/km.
-     * @throws IllegalStateException if distance is not positive.
      */
     public static double getAverageSpeed(
             final EntryManager entryManager,
             final LogEntry.EXERCISECATEGORY category,
-            final String date)
-            throws IllegalStateException {
+            final String date) {
 
 
         Iterator<LogEntry> entries = new SortedIteratorBuilder(entryManager,
@@ -111,7 +109,7 @@ public final class Statistics {
         }
 
         if (distance == 0) {
-            throw new IllegalStateException("The distance must be over 0");
+            return 0.0;
         }
         return time / distance;
     }
@@ -148,8 +146,10 @@ public final class Statistics {
 
         double maxHr = 0;
         for (LogEntry logEntry : entries) {
-            if (logEntry.getMaxHeartRate() > maxHr) {
-                maxHr = logEntry.getMaxHeartRate();
+            if (logEntry.getMaxHeartRate() != null){
+                if (logEntry.getMaxHeartRate() > maxHr) {
+                    maxHr = logEntry.getMaxHeartRate();
+                }
             }
         }
         return maxHr;

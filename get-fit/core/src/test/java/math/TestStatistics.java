@@ -83,16 +83,6 @@ public class TestStatistics {
 
         Assertions.assertEquals(12, Statistics.getAverageSpeed(manager, LogEntry.EXERCISECATEGORY.RUNNING, date));
         Assertions.assertEquals(4.5, Statistics.getAverageSpeed(manager, LogEntry.EXERCISECATEGORY.CYCLING, date));
-
-
-    }
-
-    @Test
-    public void testIllegalGetAverageSpeed() {
-        EntryManager manager = genValidEntryManager();
-        EntryBuilder builder = genValidEntryBuilder(Duration.ofSeconds(hour), null, LogEntry.EXERCISECATEGORY.RUNNING, 1);
-        manager.addEntry(builder.build());
-        Assertions.assertThrows(IllegalStateException.class, () -> Statistics.getAverageSpeed(manager, LogEntry.EXERCISECATEGORY.RUNNING, date));
     }
 
     @Test
