@@ -166,7 +166,6 @@ public final class Statistics {
                 new EntryManager.SortedIteratorBuilder(
                         entryManager, sortConfiguration);
 
-        System.out.println(date);
         Iterator<LogEntry> iterator = iteratorBuilder.filterTimeInterval(
                         LocalDate.parse(date.substring(0, 10)),
                         LocalDate.parse(date.substring(11))).

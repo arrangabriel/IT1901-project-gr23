@@ -146,6 +146,14 @@ public class GetfitController {
 
         HashMap<String, String> map = new HashMap<>();
 
+        if (getfitService.getEntryManager().entryCount() == 0) {
+                map.put("empty", "True");
+        }
+
+        else {
+                map.put("empty", "False");
+        }
+
         map.put("count", Integer.toString(Statistics.getCount(
                 getfitService.getEntryManager(), date)));
 
@@ -160,7 +168,7 @@ public class GetfitController {
         map.put("averageFeeling", Double.toString(Statistics.getAverageFeeling(
                 getfitService.getEntryManager(), date)));
 
-        // TODO - these are not always present in a logentry
+
         if (eCategory == "CARDIO") {
                 Double speed = Statistics.getAverageSpeed(
                         getfitService.getEntryManager(),

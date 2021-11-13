@@ -138,6 +138,13 @@ public class StatisticsController {
             dataEntries = this.client.getStatistics(listBuilder);
             System.out.println(dataEntries);
 
+            if (dataEntries.containsKey("empty")) {
+                if(dataEntries.get("empty").equals("True")) {
+                throw new IllegalStateException(
+                    "There are no entries");
+                }
+            }
+
             for (String dataEntry : dataEntries.keySet()) {
                 switch (dataEntry) {
 
@@ -169,9 +176,6 @@ public class StatisticsController {
                         maximumHr.setText(
                             dataEntries.get(dataEntry));
                         break;
-                    
-                    default:
-                        throw new IllegalArgumentException("The hashmap is empty");
 
                     }
                 }
@@ -180,7 +184,7 @@ public class StatisticsController {
                 e.printStackTrace();
             } catch (ServerResponseException e) {
                 errorLabel.setText(e.getMessage());
-            } catch (IllegalArgumentException eae) {
+            } catch (IllegalStateException eae) {
                 errorLabel.setText("There are no sessions saved");
             }
         }
