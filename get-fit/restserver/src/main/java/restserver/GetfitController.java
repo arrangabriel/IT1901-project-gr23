@@ -6,6 +6,7 @@ import core.LogEntry.EXERCISECATEGORY;
 import math.Statistics;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,7 +33,7 @@ import java.util.List;
 
 public class GetfitController {
 
-    //@Autowired
+    @Autowired
     private final GetfitService getfitService = new GetfitService();
 
     @GetMapping("/{entryId}")
