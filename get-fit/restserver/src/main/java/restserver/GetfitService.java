@@ -59,10 +59,9 @@ public class GetfitService {
         return this.entryManager;
     }
 
+    //Change to just hours.
     public static String convertFromSecondsToHours(final double sec) {
-        double hr = sec / 3600;
-        double remainder = sec - hr * 3600;
-        double min = remainder / 60;
-        return String.valueOf(hr) + "h : " + String.valueOf(min) + "min";
+        double h = Math.round((sec/3600) * 100)/100;
+        return String.valueOf(h) + "h";
     }
 }
