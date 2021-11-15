@@ -22,23 +22,23 @@
                 <NumberAxis fx:id="yAxis" side="LEFT" />
             </yAxis>
         </StackedBarChart>
-        <ComboBox fx:id="exerciseType" layoutX="229.0" layoutY="82.0" prefHeight="27.0" prefWidth="82.0" promptText="Type" />
+        <ComboBox fx:id="exerciseType" layoutX="225.0" layoutY="82.0" prefHeight="27.0" prefWidth="108.0" promptText="ANY" />
         <Label fx:id="header" layoutX="31.0" layoutY="14.0" prefHeight="44.0" prefWidth="160.0" text="Statistics">
             <font>
                 <Font size="36.0" />
             </font>
         </Label>
-        <Label layoutX="394.0" layoutY="154.0" prefHeight="17.0" prefWidth="85.0" text="Total duration" />
-        <Separator layoutX="380.0" layoutY="127.0" orientation="VERTICAL" prefHeight="229.0" prefWidth="7.0" />
-        <Label layoutX="397.0" layoutY="218.0" prefHeight="17.0" prefWidth="90.0" text="Average feeling" />
-        <Label layoutX="395.0" layoutY="248.0" prefHeight="17.0" prefWidth="113.0" text="Maximum heart rate" />
-        <Label fx:id="speed" layoutX="398.0" layoutY="277.0" prefHeight="17.0" prefWidth="111.0" text="AvSp" />
-        <Label layoutX="397.0" layoutY="186.0" text="Number of sessions" />
-        <Label fx:id="numberOfSessions" layoutX="521.0" layoutY="186.0" prefHeight="17.0" prefWidth="64.0" />
+        <Label layoutX="408.0" layoutY="154.0" prefHeight="17.0" prefWidth="85.0" text="Total duration" />
+        <Separator layoutX="396.0" layoutY="127.0" orientation="VERTICAL" prefHeight="229.0" prefWidth="7.0" />
+        <Label layoutX="406.0" layoutY="218.0" prefHeight="17.0" prefWidth="90.0" text="Average feeling" />
+        <Label layoutX="406.0" layoutY="248.0" prefHeight="17.0" prefWidth="113.0" text="Maximum heart rate" />
+        <Label fx:id="speed" layoutX="405.0" layoutY="277.0" prefHeight="17.0" prefWidth="111.0" text="Average speed" />
+        <Label layoutX="408.0" layoutY="186.0" text="Number of sessions" />
+        <Label fx:id="numberOfSessions" layoutX="526.0" layoutY="186.0" prefHeight="17.0" prefWidth="64.0" />
         <Label fx:id="totalDuration" layoutX="524.0" layoutY="154.0" prefHeight="17.0" prefWidth="66.0" />
-        <Label fx:id="averageFeeling" layoutX="520.0" layoutY="219.0" prefHeight="17.0" prefWidth="64.0" />
-        <Label fx:id="maximumHr" layoutX="513.0" layoutY="248.0" prefHeight="17.0" prefWidth="72.0" />
-        <Label fx:id="averageSpeed" layoutX="512.0" layoutY="276.0" prefHeight="17.0" prefWidth="73.0" />
+        <Label fx:id="averageFeeling" layoutX="526.0" layoutY="219.0" prefHeight="17.0" prefWidth="64.0" />
+        <Label fx:id="maximumHr" layoutX="524.0" layoutY="248.0" prefHeight="17.0" prefWidth="72.0" />
+        <Label fx:id="averageSpeed" layoutX="518.0" layoutY="276.0" prefHeight="17.0" prefWidth="73.0" />
         <Label layoutX="466.0" layoutY="110.0" text="Data">
             <font>
                 <Font size="24.0" />
@@ -52,12 +52,12 @@
         <RadioButton fx:id="years" layoutX="240.0" layoutY="346.0" mnemonicParsing="false" text="Years" />
         <RadioButton fx:id="months" layoutX="158.0" layoutY="347.0" mnemonicParsing="false" text="Months" />
         <RadioButton fx:id="weeks" layoutX="75.0" layoutY="347.0" mnemonicParsing="false" text="Weeks" />
-      <Button layoutX="321.0" layoutY="81.0" mnemonicParsing="false" onAction="#onHandleData" prefHeight="29.0" prefWidth="61.0" text="Show" />
+      <Button layoutX="338.0" layoutY="81.0" mnemonicParsing="false" onAction="#onHandleData" prefHeight="29.0" prefWidth="61.0" text="Show" />
       <Label fx:id="errorLabel" layoutX="403.0" layoutY="86.0" prefHeight="17.0" prefWidth="184.0" textFill="#eb0b0b">
          <font>
             <Font size="10.0" />
          </font></Label>
-      <Label layoutX="396.0" layoutY="305.0" text="Average Duration" />
-      <Label fx:id="averageDuration" layoutX="511.0" layoutY="307.0" prefHeight="17.0" prefWidth="75.0" />
+      <Label layoutX="405.0" layoutY="305.0" text="Average Duration" />
+      <Label fx:id="averageDuration" layoutX="516.0" layoutY="307.0" prefHeight="17.0" prefWidth="75.0" />
     </children>
 </AnchorPane>
