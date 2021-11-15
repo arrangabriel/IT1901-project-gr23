@@ -165,31 +165,38 @@ public class GetfitController {
         }
 
         map.put("count", Integer.toString(Statistics.getCount(
-                getfitService.getEntryManager(), date)));
+                getfitService.getEntryManager(), 
+                eCategory,
+                date)));
 
         map.put("totalDuration", GetfitService.convertFromSecondsToHours(
                 Statistics.getTotalDuration(
-                        getfitService.getEntryManager(), date)));
+                getfitService.getEntryManager(), 
+                eCategory, 
+                date)));
 
         map.put("averageDuration", GetfitService.convertFromSecondsToHours(
                 Statistics.getAverageDuration(
-                        getfitService.getEntryManager(), date)));
+                getfitService.getEntryManager(), 
+                eCategory, 
+                date)));
         
 
         map.put("averageFeeling", Double.toString(Statistics.getAverageFeeling(
-                getfitService.getEntryManager(), date)));
+                getfitService.getEntryManager(), 
+                eCategory, 
+                date)));
+        
+        double speed = Statistics.getAverageSpeed(
+                getfitService.getEntryManager(),
+                eCategory, date);
 
-
-        if (eCategory == "CARDIO") {
-                Double speed = Statistics.getAverageSpeed(
-                        getfitService.getEntryManager(),
-                        LogEntry.EXERCISECATEGORY.valueOf(eCategory), date);
-
-                map.put("averageSpeed", Double.toString(speed));
-        }
+        map.put("averageSpeed", Double.toString(speed));
 
         map.put("maximumHr", Double.toString(Statistics.getMaximumHr(
-                getfitService.getEntryManager(), date)));
+                getfitService.getEntryManager(), 
+                eCategory, 
+                date)));
 
         JSONObject JSONreturn = new JSONObject(map);
 
