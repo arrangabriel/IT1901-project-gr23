@@ -1,14 +1,12 @@
 package core;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -32,6 +30,26 @@ public final class EntryManager implements Iterable<LogEntry> {
      * Functions as the API interface for the core-module.
      */
     public EntryManager() {
+    }
+
+    /**
+     * Updates a provided EntryManager with the LogEntries represented
+     * in the HashMap.
+     *
+     * @param map          The map representing the LogEntries to add.
+     * @param entryManager The EntryManager to update.
+     */
+    public static void fromHash(
+            final HashMap<String, HashMap<String, String>> map,
+            final EntryManager entryManager) {
+
+        for (String entryId : map.keySet()) {
+            entryManager.updateHashPosition(
+                    Integer.parseInt(entryId));
+            LogEntry entry = LogEntry.fromHash(map.get(entryId));
+            entryManager.addEntry(entryId, entry);
+        }
+
     }
 
     /**
@@ -131,15 +149,6 @@ public final class EntryManager implements Iterable<LogEntry> {
     }
 
     /**
-     * Returns a set of all ids in the entry manager.
-     *
-     * @return the set of ids.
-     */
-    public Set<String> entryIds() {
-        return this.entryMap.keySet();
-    }
-
-    /**
      * Removes a LogEntry with the specified id,
      * and replaces it with the provided entry.
      *
@@ -158,24 +167,8 @@ public final class EntryManager implements Iterable<LogEntry> {
     }
 
     /**
-     * Represents this EntryManager as a List of LogEntries,
-     * represented as HashMaps.
-     *
-     * @return The List representing this EntryManager.
-     * @see LogEntry#toHashMap()
-     */
-    public List<HashMap<String, String>> toListHashMap() {
-
-        List<HashMap<String, String>> list = new ArrayList<>();
-        for (LogEntry entry : this) {
-            list.add(entry.toHashMap());
-        }
-
-        return list;
-    }
-
-    /**
-     * Represents this EntryManager as a HashMap with LogEntries also represented as HashMaps.
+     * Represents this EntryManager as a HashMap with LogEntries,
+     * also represented as HashMaps.
      *
      * @return The HashMap representing this EntryManager.
      * @see LogEntry#toHashMap()
@@ -184,47 +177,9 @@ public final class EntryManager implements Iterable<LogEntry> {
 
         HashMap<String, HashMap<String, String>> map = new HashMap<>();
 
-        for (LogEntry entry : this) {
-            map.put(entry.getId(), entry.toHashMap());
-        }
+        this.forEach((entry) -> map.put(entry.getId(), entry.toHashMap()));
 
         return map;
-    }
-
-    /**
-     * Updates a provided EntryManager with the LogEntries represented in the HashMap
-     *
-     * @param map          The map representing the LogEntries to add.
-     * @param entryManager The EntryManager to update.
-     */
-    public static void fromHash(
-            final HashMap<String, HashMap<String, String>> map,
-            final EntryManager entryManager) {
-
-        for (String entryId : map.keySet()) {
-            entryManager.updateHashPosition(
-                    Integer.parseInt(entryId));
-            LogEntry entry = LogEntry.fromHash(map.get(entryId));
-            entryManager.addEntry(entryId, entry);
-        }
-
-    }
-
-    /**
-     * Constructs and populates an EntryManager from a HashMap repersentation of a EntryManager.
-     *
-     * @param map The map representing the EntryManager.
-     * @return The constructed EntryManager.
-     * @see #toHashMap
-     */
-    public static EntryManager fromHash(
-            final HashMap<String, HashMap<String, String>> map) {
-
-        EntryManager entryManager = new EntryManager();
-
-        fromHash(map, entryManager);
-
-        return entryManager;
     }
 
     /**
@@ -367,6 +322,7 @@ public final class EntryManager implements Iterable<LogEntry> {
 
             List<LogEntry> entryList = this.logEntryStream
                     .collect(Collectors.toList());
+
             if (reverse) {
                 Collections.reverse(entryList);
             }

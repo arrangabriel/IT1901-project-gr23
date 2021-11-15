@@ -80,11 +80,6 @@ public final class LogEntry {
      */
     public LogEntry(final EntryBuilder builder) throws IllegalArgumentException {
 
-        Validity validity = validate(builder);
-        if (validity.invalid()) {
-            throw new IllegalArgumentException(validity.reason());
-        }
-
         this.title = builder.ctitle;
         this.comment = builder.ccomment;
         this.date = builder.cdate;
@@ -137,7 +132,7 @@ public final class LogEntry {
      * @param builder the builder to validate.
      * @return true if builder is valid, otherwise false.
      */
-    public static Validity validate(final EntryBuilder builder) {
+    private static Validity validate(final EntryBuilder builder) {
 
         /* Required fields. */
         if (builder.ctitle == null || builder.ctitle.length() < 1) {
@@ -401,50 +396,7 @@ public final class LogEntry {
 
     // #endregion getters
 
-    /**
-     * Validity of a EntryBuilder.
-     */
-    public static class Validity {
-
-        /**
-         * Whether the builder is valid.
-         */
-        private final boolean isValid;
-
-        /**
-         * The reason for the validity of the builder.
-         */
-        private final String validityReason;
-
-        /**
-         * Object representing the validity of an EntryBuilder.
-         *
-         * @param valid  whether the builder is valid.
-         * @param reason "ok" if valid, otherwise the reason the builder is not valid.
-         */
-        public Validity(final boolean valid, final String reason) {
-            this.isValid = valid;
-            this.validityReason = reason;
-        }
-
-        /**
-         * Whether the builder is valid.
-         *
-         * @return the validity
-         */
-        public boolean invalid() {
-            return !this.isValid;
-        }
-
-        /**
-         * The reason for the validity of the builder.
-         *
-         * @return the reason.
-         */
-        public String reason() {
-            return this.validityReason;
-        }
-    }
+    
 
     /**
      * Builder class for LogEntry.
@@ -512,7 +464,6 @@ public final class LogEntry {
          * @param duration         the duration for the LogEntry.
          * @param exerciseCategory the exercise category for the LogEntry.
          * @param feeling          the feeling for the LogEntry
-         * @throws IllegalArgumentException if any of the input is invalid.
          * @see #validate
          */
         public EntryBuilder(final String title, final LocalDate date, final Duration duration,
@@ -524,11 +475,6 @@ public final class LogEntry {
             this.cexerciseCategory = exerciseCategory;
             this.cfeeling = feeling;
 
-            Validity validity = validate(this);
-            if (validity.invalid()) {
-                throw new IllegalArgumentException(validity.reason());
-            }
-
         }
 
         /**
@@ -536,19 +482,10 @@ public final class LogEntry {
          *
          * @param comment the comment to set.
          * @return this builder.
-         * @throws IllegalArgumentException if the comment is illegal.
          */
-        public EntryBuilder comment(final String comment) throws IllegalArgumentException {
+        public EntryBuilder comment(final String comment) {
 
-            String old = this.ccomment;
             this.ccomment = comment;
-
-            Validity validity = validate(this);
-            if (validity.invalid()) {
-                this.ccomment = old;
-                throw new IllegalArgumentException(validity.reason());
-            }
-
             return this;
         }
 
@@ -557,19 +494,10 @@ public final class LogEntry {
          *
          * @param exerciseSubCategory the subcategory to set.
          * @return this builder.
-         * @throws IllegalArgumentException if the subcategory is illegal.
          */
-        public EntryBuilder exerciseSubCategory(final Subcategory exerciseSubCategory) throws IllegalArgumentException {
+        public EntryBuilder exerciseSubCategory(final Subcategory exerciseSubCategory) {
 
-            Subcategory old = this.cexerciseSubCategory;
             this.cexerciseSubCategory = exerciseSubCategory;
-
-            Validity validity = validate(this);
-            if (validity.invalid()) {
-                this.cexerciseSubCategory = old;
-                throw new IllegalArgumentException(validity.reason());
-            }
-
             return this;
         }
 
@@ -578,19 +506,10 @@ public final class LogEntry {
          *
          * @param distance the distance to set.
          * @return this builder.
-         * @throws IllegalArgumentException if the distance is illegal.
          */
-        public EntryBuilder distance(final Double distance) throws IllegalArgumentException {
+        public EntryBuilder distance(final Double distance) {
 
-            Double old = this.cdistance;
             this.cdistance = distance;
-
-            Validity validity = validate(this);
-            if (validity.invalid()) {
-                this.cdistance = old;
-                throw new IllegalArgumentException(validity.reason());
-            }
-
             return this;
         }
 
@@ -599,19 +518,10 @@ public final class LogEntry {
          *
          * @param maxHeartRate the heart rate to set.
          * @return this builder.
-         * @throws IllegalArgumentException if the heart rate is illegal
          */
-        public EntryBuilder maxHeartRate(final Integer maxHeartRate) throws IllegalArgumentException {
+        public EntryBuilder maxHeartRate(final Integer maxHeartRate) {
 
-            Integer old = this.cmaxHeartRate;
             this.cmaxHeartRate = maxHeartRate;
-
-            Validity validity = validate(this);
-            if (validity.invalid()) {
-                this.cmaxHeartRate = old;
-                throw new IllegalArgumentException(validity.reason());
-            }
-
             return this;
         }
 
@@ -623,6 +533,7 @@ public final class LogEntry {
          * @see #validate
          */
         public LogEntry build() throws IllegalArgumentException {
+            validate(this);
             return new LogEntry(this);
         }
     }
