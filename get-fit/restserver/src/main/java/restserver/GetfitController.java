@@ -158,13 +158,14 @@ public class GetfitController {
         map.put("count", Integer.toString(Statistics.getCount(
                 getfitService.getEntryManager(), date)));
 
-        map.put("totalDuration", getfitService.convertFromSecondsToHours(
+        map.put("totalDuration", GetfitService.convertFromSecondsToHours(
                 Statistics.getTotalDuration(
                         getfitService.getEntryManager(), date)));
 
-        map.put("averageDuration", getfitService.convertFromSecondsToHours(
+        map.put("averageDuration", GetfitService.convertFromSecondsToHours(
                 Statistics.getAverageDuration(
                         getfitService.getEntryManager(), date)));
+        
 
         map.put("averageFeeling", Double.toString(Statistics.getAverageFeeling(
                 getfitService.getEntryManager(), date)));
