@@ -2,7 +2,7 @@ package restserver;
 
 import core.EntryManager;
 import core.LogEntry;
-import core.LogEntry.EXERCISECATEGORY;
+import core.LogEntry.ExerciseCategory;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.http.HttpStatus;
@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -53,7 +52,7 @@ public class GetfitController {
         JSONObject filters = new JSONObject();
         JSONObject categories = new JSONObject();
 
-        for (EXERCISECATEGORY category : EXERCISECATEGORY.values()) {
+        for (ExerciseCategory category : ExerciseCategory.values()) {
             JSONArray subCategories = new JSONArray();
             for (LogEntry.Subcategory subcategory : category.getSubcategories()) {
                 subCategories.put(subcategory.toString().toLowerCase());
@@ -77,11 +76,11 @@ public class GetfitController {
                     String subcategory,
             final @RequestParam(value = "d", required = false) String date) {
 
-        LogEntry.SORTCONFIGURATIONS sortConfiguration = null;
+        LogEntry.SortConfiguration sortConfiguration = null;
 
         try {
             sortConfiguration =
-                    LogEntry.SORTCONFIGURATIONS.valueOf(sortType.toUpperCase());
+                    LogEntry.SortConfiguration.valueOf(sortType.toUpperCase());
         } catch (IllegalArgumentException IA) {
         }
 
@@ -92,8 +91,8 @@ public class GetfitController {
         if (category != null) {
             category = category.toUpperCase();
             try {
-                LogEntry.EXERCISECATEGORY categories =
-                        LogEntry.EXERCISECATEGORY.valueOf(category);
+                ExerciseCategory categories =
+                        ExerciseCategory.valueOf(category);
                 iteratorBuilder =
                         iteratorBuilder.filterExerciseCategory(categories);
 
@@ -102,12 +101,12 @@ public class GetfitController {
                 switch (category) {
                     case "STRENGTH" -> {
                         subcategories =
-                                LogEntry.STRENGTHSUBCATEGORIES.valueOf(
+                                LogEntry.StrengthSubCategory.valueOf(
                                         category);
                     }
                     case "SWIMMING", "CYCLING", "RUNNING" -> {
                         subcategories =
-                                LogEntry.CARDIOSUBCATEGORIES.valueOf(category);
+                                LogEntry.CardioSubCategory.valueOf(category);
                     }
                     default -> {
                     }

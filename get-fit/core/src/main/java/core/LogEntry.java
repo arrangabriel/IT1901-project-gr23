@@ -45,7 +45,7 @@ public final class LogEntry {
     /**
      * Category of LogEntry.
      */
-    private final EXERCISECATEGORY exerciseCategory;
+    private final ExerciseCategory exerciseCategory;
     /**
      * Subcategory of LogEntry.
      */
@@ -208,7 +208,7 @@ public final class LogEntry {
     public static Subcategory stringToSubcategory(final String category) {
 
         Subcategory subCategory = null;
-        outerLoop: for (EXERCISECATEGORY exCategory : EXERCISECATEGORY.values()) {
+        outerLoop: for (ExerciseCategory exCategory : ExerciseCategory.values()) {
             for (Subcategory sub : exCategory.getSubcategories()) {
                 try {
                     subCategory = sub.getValueOf(category);
@@ -243,7 +243,7 @@ public final class LogEntry {
 
         Duration duration = Duration.ofSeconds(Long.parseLong(map.get("duration")));
 
-        EXERCISECATEGORY category = EXERCISECATEGORY.valueOf(map.get("exerciseCategory"));
+        ExerciseCategory category = ExerciseCategory.valueOf(map.get("exerciseCategory"));
 
         Subcategory subCategory = stringToSubcategory(map.get("exerciseSubCategory"));
 
@@ -390,7 +390,7 @@ public final class LogEntry {
      *
      * @return the EXERCISE_CATEGORIES for the category.
      */
-    public EXERCISECATEGORY getExerciseCategory() {
+    public ExerciseCategory getExerciseCategory() {
         return exerciseCategory;
     }
 
@@ -415,7 +415,7 @@ public final class LogEntry {
     /**
      * Configurations by which to sort LogEntries.
      */
-    public enum SORTCONFIGURATIONS {
+    public enum SortConfiguration {
         /**
          * Sort by Date.
          */
@@ -433,23 +433,23 @@ public final class LogEntry {
     /**
      * The categories an exercise can fall under.
      */
-    public enum EXERCISECATEGORY {
+    public enum ExerciseCategory {
         /**
          * Represents strength exercise.
          */
-        STRENGTH(STRENGTHSUBCATEGORIES.values()),
+        STRENGTH(StrengthSubCategory.values()),
         /**
          * Represents a running exercise.
          */
-        RUNNING(CARDIOSUBCATEGORIES.values()),
+        RUNNING(CardioSubCategory.values()),
         /**
          * Represents a cycling exercise.
          */
-        CYCLING(CARDIOSUBCATEGORIES.values()),
+        CYCLING(CardioSubCategory.values()),
         /**
          * Represents a swimming exercise.
          */
-        SWIMMING(CARDIOSUBCATEGORIES.values());
+        SWIMMING(CardioSubCategory.values());
 
         /**
          * Array of Subcategories.
@@ -461,7 +461,7 @@ public final class LogEntry {
          *
          * @param subcategoriesArray The subcategories to populate with.
          */
-        EXERCISECATEGORY(final Subcategory[] subcategoriesArray) {
+        ExerciseCategory(final Subcategory[] subcategoriesArray) {
             this.subcategories = subcategoriesArray;
         }
 
@@ -478,7 +478,7 @@ public final class LogEntry {
     /**
      * Subcategories for the Strength category.
      */
-    public enum STRENGTHSUBCATEGORIES implements Subcategory {
+    public enum StrengthSubCategory implements Subcategory {
         /**
          * Push exercises.
          */
@@ -498,7 +498,7 @@ public final class LogEntry {
 
         @Override
         public Subcategory getValueOf(final String name) {
-            return STRENGTHSUBCATEGORIES.valueOf(name);
+            return StrengthSubCategory.valueOf(name);
         }
 
     }
@@ -506,7 +506,7 @@ public final class LogEntry {
     /**
      * Subcategories for the Cardio category.
      */
-    public enum CARDIOSUBCATEGORIES implements Subcategory {
+    public enum CardioSubCategory implements Subcategory {
         /**
          * Short exercises.
          */
@@ -526,7 +526,7 @@ public final class LogEntry {
 
         @Override
         public Subcategory getValueOf(final String name) {
-            return CARDIOSUBCATEGORIES.valueOf(name);
+            return CardioSubCategory.valueOf(name);
         }
 
     }
@@ -620,7 +620,7 @@ public final class LogEntry {
         /**
          * Exercise category to be built.
          */
-        private final EXERCISECATEGORY cexerciseCategory;
+        private final ExerciseCategory cexerciseCategory;
 
         /**
          * Feeling of the exercise.
@@ -663,7 +663,7 @@ public final class LogEntry {
          * @see #validate
          */
         public EntryBuilder(final String title, final LocalDate date, final Duration duration,
-                final EXERCISECATEGORY exerciseCategory, final int feeling) throws IllegalArgumentException {
+                            final ExerciseCategory exerciseCategory, final int feeling) throws IllegalArgumentException {
 
             this.ctitle = title;
             this.cdate = date;

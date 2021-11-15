@@ -257,7 +257,7 @@ public final class EntryManager implements Iterable<LogEntry> {
          */
         public SortedIteratorBuilder(
                 final EntryManager entryManager,
-                final LogEntry.SORTCONFIGURATIONS sortConfiguration)
+                final LogEntry.SortConfiguration sortConfiguration)
                 throws IllegalArgumentException {
 
             if (sortConfiguration == null) {
@@ -285,7 +285,7 @@ public final class EntryManager implements Iterable<LogEntry> {
          * @throws IllegalArgumentException if category is null.
          */
         public SortedIteratorBuilder filterExerciseCategory(
-                final LogEntry.EXERCISECATEGORY category)
+                final LogEntry.ExerciseCategory category)
                 throws IllegalArgumentException {
 
             if (category == null) {

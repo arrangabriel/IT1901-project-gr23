@@ -29,8 +29,8 @@ public class TestEntrySaverJson {
         double distance = 1;
         Integer maxHeartRate = 80;
 
-        LogEntry.EXERCISECATEGORY exerciseCategory = LogEntry.EXERCISECATEGORY.STRENGTH;
-        LogEntry.Subcategory subcategory = LogEntry.STRENGTHSUBCATEGORIES.PULL;
+        LogEntry.ExerciseCategory exerciseCategory = LogEntry.ExerciseCategory.STRENGTH;
+        LogEntry.Subcategory subcategory = LogEntry.StrengthSubCategory.PULL;
 
         EntryBuilder builder = new EntryBuilder(title, date, duration, exerciseCategory, feeling).comment(comment)
                 .exerciseSubCategory(subcategory).distance(distance).maxHeartRate(maxHeartRate);

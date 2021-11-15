@@ -22,8 +22,8 @@ public class TestLogEntry {
         double distance = 1;
         Integer maxHeartRate = 80;
 
-        LogEntry.EXERCISECATEGORY exerciseCategory = LogEntry.EXERCISECATEGORY.STRENGTH;
-        LogEntry.Subcategory subcategory = LogEntry.STRENGTHSUBCATEGORIES.PULL;
+        LogEntry.ExerciseCategory exerciseCategory = LogEntry.ExerciseCategory.STRENGTH;
+        LogEntry.Subcategory subcategory = LogEntry.StrengthSubCategory.PULL;
 
         EntryBuilder builder = new EntryBuilder(title, date, duration, exerciseCategory, feeling).comment(comment)
                 .exerciseSubCategory(subcategory).distance(distance).maxHeartRate(maxHeartRate);
@@ -42,8 +42,8 @@ public class TestLogEntry {
         double distance = 7.0;
         Integer maxHeartRate = 183;
 
-        LogEntry.EXERCISECATEGORY exerciseCategory = LogEntry.EXERCISECATEGORY.RUNNING;
-        LogEntry.Subcategory subcategory = LogEntry.CARDIOSUBCATEGORIES.HIGHINTENSITY;
+        LogEntry.ExerciseCategory exerciseCategory = LogEntry.ExerciseCategory.RUNNING;
+        LogEntry.Subcategory subcategory = LogEntry.CardioSubCategory.HIGHINTENSITY;
 
         EntryBuilder builder = new EntryBuilder(title, date, duration, exerciseCategory, feeling).comment(comment)
                 .exerciseSubCategory(subcategory).distance(distance).maxHeartRate(maxHeartRate);
@@ -61,7 +61,7 @@ public class TestLogEntry {
     @Test
     public void illegalId() {
         LogEntry entry = new EntryBuilder("Test", LocalDate.now().minusDays(1), Duration.ofSeconds(hour),
-                LogEntry.EXERCISECATEGORY.STRENGTH, 1).build();
+                LogEntry.ExerciseCategory.STRENGTH, 1).build();
         entry.setId("0");
         Assertions.assertThrows(IllegalStateException.class, () -> entry.setId("0"));
     }
@@ -69,27 +69,27 @@ public class TestLogEntry {
     @Test
     public void illegalTitle() {
         Assertions.assertThrows(IllegalArgumentException.class, () -> new EntryBuilder("", LocalDate.now().minusDays(1),
-                Duration.ofSeconds(hour), LogEntry.EXERCISECATEGORY.STRENGTH, 1));
+                Duration.ofSeconds(hour), LogEntry.ExerciseCategory.STRENGTH, 1));
     }
 
     @Test
     public void illegalDate() {
         Assertions.assertThrows(IllegalArgumentException.class, () -> new EntryBuilder("Test",
-                LocalDate.now().plusDays(1), Duration.ofSeconds(hour), LogEntry.EXERCISECATEGORY.STRENGTH, 1));
+                LocalDate.now().plusDays(1), Duration.ofSeconds(hour), LogEntry.ExerciseCategory.STRENGTH, 1));
     }
 
     @Test
     public void illegalDuration() {
         Assertions.assertThrows(IllegalArgumentException.class, () -> new EntryBuilder("Test",
-                LocalDate.now().minusDays(1), Duration.ofSeconds(-hour), LogEntry.EXERCISECATEGORY.STRENGTH, 1));
+                LocalDate.now().minusDays(1), Duration.ofSeconds(-hour), LogEntry.ExerciseCategory.STRENGTH, 1));
     }
 
     @Test
     public void illegalFeeling() {
         Assertions.assertThrows(IllegalArgumentException.class, () -> new EntryBuilder("Test",
-                LocalDate.now().minusDays(1), Duration.ofSeconds(hour), LogEntry.EXERCISECATEGORY.STRENGTH, 11));
+                LocalDate.now().minusDays(1), Duration.ofSeconds(hour), LogEntry.ExerciseCategory.STRENGTH, 11));
         Assertions.assertThrows(IllegalArgumentException.class, () -> new EntryBuilder("Test",
-                LocalDate.now().minusDays(1), Duration.ofSeconds(hour), LogEntry.EXERCISECATEGORY.STRENGTH, 0));
+                LocalDate.now().minusDays(1), Duration.ofSeconds(hour), LogEntry.ExerciseCategory.STRENGTH, 0));
     }
 
     @Test

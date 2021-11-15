@@ -17,7 +17,7 @@ public class TestEntryManager {
                 return new EntryManager();
         }
 
-        private EntryBuilder genValidBuilder(LogEntry.EXERCISECATEGORY category, LogEntry.Subcategory subCategory) {
+        private EntryBuilder genValidBuilder(LogEntry.ExerciseCategory category, LogEntry.Subcategory subCategory) {
                 String title = "Tets";
                 String comment = "This is a test";
                 LocalDate date = LocalDate.now().minusDays(1);
@@ -39,8 +39,9 @@ public class TestEntryManager {
         public void testAddEntry() {
                 EntryManager manager = genValidManager();
                 Assertions.assertEquals(0, manager.entryCount());
-                EntryBuilder builder = genValidBuilder(LogEntry.EXERCISECATEGORY.STRENGTH,
-                                LogEntry.STRENGTHSUBCATEGORIES.PUSH);
+                EntryBuilder builder = genValidBuilder(
+                        LogEntry.ExerciseCategory.STRENGTH,
+                                LogEntry.StrengthSubCategory.PUSH);
                 String id = manager.addEntry(builder.build());
                 Assertions.assertEquals(1, manager.entryCount());
                 Assertions.assertThrows(IllegalArgumentException.class, () -> manager.addEntry(id, builder.build()));
@@ -49,8 +50,9 @@ public class TestEntryManager {
         @Test
         public void testRemoveEntry() {
                 EntryManager manager = genValidManager();
-                EntryBuilder builder = genValidBuilder(LogEntry.EXERCISECATEGORY.STRENGTH,
-                                LogEntry.STRENGTHSUBCATEGORIES.PUSH);
+                EntryBuilder builder = genValidBuilder(
+                        LogEntry.ExerciseCategory.STRENGTH,
+                                LogEntry.StrengthSubCategory.PUSH);
                 String id = manager.addEntry(builder.build());
                 Assertions.assertEquals(1, manager.entryCount());
                 boolean result1 = manager.removeEntry(id);
@@ -64,8 +66,9 @@ public class TestEntryManager {
         @Test
         public void testGetEntry() {
                 EntryManager manager = genValidManager();
-                EntryBuilder builder = genValidBuilder(LogEntry.EXERCISECATEGORY.STRENGTH,
-                                LogEntry.STRENGTHSUBCATEGORIES.PUSH);
+                EntryBuilder builder = genValidBuilder(
+                        LogEntry.ExerciseCategory.STRENGTH,
+                                LogEntry.StrengthSubCategory.PUSH);
                 manager.addEntry("0", builder.build());
                 Assertions.assertThrows(IllegalArgumentException.class, () -> manager.getEntry("1"));
                 Assertions.assertThrows(IllegalArgumentException.class, () -> manager.getEntry(null));
@@ -74,8 +77,9 @@ public class TestEntryManager {
         @Test
         public void testEntryCount() {
                 EntryManager manager = genValidManager();
-                EntryBuilder builder = genValidBuilder(LogEntry.EXERCISECATEGORY.STRENGTH,
-                                LogEntry.STRENGTHSUBCATEGORIES.PUSH);
+                EntryBuilder builder = genValidBuilder(
+                        LogEntry.ExerciseCategory.STRENGTH,
+                                LogEntry.StrengthSubCategory.PUSH);
                 Assertions.assertEquals(0, manager.entryCount());
                 manager.addEntry(builder.build());
                 Assertions.assertEquals(1, manager.entryCount());
@@ -96,14 +100,17 @@ public class TestEntryManager {
         @Test
         public void testSortedIteratorBuilder() {
                 EntryManager manager = genValidManager();
-                EntryBuilder builder1 = genValidBuilder(LogEntry.EXERCISECATEGORY.STRENGTH,
-                                LogEntry.STRENGTHSUBCATEGORIES.PUSH);
-                EntryBuilder builder2 = genValidBuilder(LogEntry.EXERCISECATEGORY.STRENGTH,
-                                LogEntry.STRENGTHSUBCATEGORIES.PUSH);
-                EntryBuilder builder3 = genValidBuilder(LogEntry.EXERCISECATEGORY.CYCLING,
-                                LogEntry.CARDIOSUBCATEGORIES.HIGHINTENSITY);
+                EntryBuilder builder1 = genValidBuilder(
+                        LogEntry.ExerciseCategory.STRENGTH,
+                                LogEntry.StrengthSubCategory.PUSH);
+                EntryBuilder builder2 = genValidBuilder(
+                        LogEntry.ExerciseCategory.STRENGTH,
+                                LogEntry.StrengthSubCategory.PUSH);
+                EntryBuilder builder3 = genValidBuilder(
+                        LogEntry.ExerciseCategory.CYCLING,
+                                LogEntry.CardioSubCategory.HIGHINTENSITY);
                 EntryBuilder builder4 = new EntryBuilder("Test", LocalDate.now().minusDays(3), Duration.ofSeconds(hour),
-                                LogEntry.EXERCISECATEGORY.STRENGTH, 4);
+                                LogEntry.ExerciseCategory.STRENGTH, 4);
 
                 manager.addEntry(builder1.build());
                 manager.addEntry(builder2.build());
@@ -113,13 +120,13 @@ public class TestEntryManager {
                 int entryAmount = manager.entryCount();
 
                 EntryManager.SortedIteratorBuilder itrbld1 = new EntryManager.SortedIteratorBuilder(manager,
-                                LogEntry.SORTCONFIGURATIONS.DATE);
+                                LogEntry.SortConfiguration.DATE);
                 EntryManager.SortedIteratorBuilder itrbld2 = new EntryManager.SortedIteratorBuilder(manager,
-                                LogEntry.SORTCONFIGURATIONS.DURATION);
+                                LogEntry.SortConfiguration.DURATION);
                 EntryManager.SortedIteratorBuilder itrbld3 = new EntryManager.SortedIteratorBuilder(manager,
-                                LogEntry.SORTCONFIGURATIONS.TITLE);
+                                LogEntry.SortConfiguration.TITLE);
 
-                itrbld2.filterExerciseCategory(LogEntry.EXERCISECATEGORY.STRENGTH);
+                itrbld2.filterExerciseCategory(LogEntry.ExerciseCategory.STRENGTH);
                 int c1 = 0;
                 int c2 = 0;
                 int c3 = 0;
