@@ -177,9 +177,7 @@ public final class EntryManager implements Iterable<LogEntry> {
 
         HashMap<String, HashMap<String, String>> map = new HashMap<>();
 
-        for (LogEntry entry : this) {
-            map.put(entry.getId(), entry.toHashMap());
-        }
+        this.forEach((entry) -> map.put(entry.getId(), entry.toHashMap()));
 
         return map;
     }
@@ -324,6 +322,7 @@ public final class EntryManager implements Iterable<LogEntry> {
 
             List<LogEntry> entryList = this.logEntryStream
                     .collect(Collectors.toList());
+
             if (reverse) {
                 Collections.reverse(entryList);
             }
