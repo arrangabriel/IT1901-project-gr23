@@ -89,8 +89,8 @@ public class StatisticsController {
     private final LogClient client = new LogClient("http://localhost", 8080);
 
     private ObservableList<String> exerciseTypeSelecter =
-            FXCollections.observableArrayList("Cardio", "Endurance",
-                    "Not selected");
+            FXCollections.observableArrayList("running", "swimming",
+                    "strength", "cycling");
 
     @FXML
     private void initialize() {
@@ -129,7 +129,7 @@ public class StatisticsController {
     public void onHandleData() {
         ListBuilder listBuilder = new ListBuilder();
         if (exerciseType.getValue() != null) {
-            listBuilder.category(exerciseType.getValue());
+            listBuilder.category(exerciseType.getValue().toUpperCase());
         }
         listBuilder.date(start.getValue().toString() + "-" + end.getValue().toString());
         HashMap<String, String> dataEntries;
