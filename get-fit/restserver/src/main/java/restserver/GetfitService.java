@@ -61,7 +61,7 @@ public class GetfitService {
 
     //Change to just hours.
     public static String convertFromSecondsToHours(final double sec) {
-        double h = Math.round((sec/3600) * 100)/100;
-        return String.valueOf(h) + "h";
+        double h = (double) Math.round((sec/3600) * 10);
+        return String.valueOf(h/10) + "h";
     }
 }

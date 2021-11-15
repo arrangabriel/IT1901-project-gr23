@@ -380,9 +380,9 @@ public class StartPageController {
     }
 
     private String durationToHours(final Duration duration) {
-        double hours = (double) duration.toHours();
-        double minutes = (double) duration.toMinutes() / 60;
-        return (double) Math.round((hours + minutes) * 10) / 10 + "h";
+        double sec = (double) duration.toSeconds();
+        double h = (double) Math.round((sec/3600) * 10);
+        return String.valueOf(h/10) + "h";
     }
 
     /**
