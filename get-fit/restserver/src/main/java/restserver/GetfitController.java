@@ -1,8 +1,13 @@
 package restserver;
 
+import core.CardioSubCategory;
 import core.EntryManager;
+import core.ExerciseCategory;
 import core.LogEntry;
-import core.LogEntry.ExerciseCategory;
+import core.SortConfiguration;
+import core.StrengthSubCategory;
+import core.Subcategory;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.http.HttpStatus;
@@ -52,9 +57,9 @@ public class GetfitController {
         JSONObject filters = new JSONObject();
         JSONObject categories = new JSONObject();
 
-        for (ExerciseCategory category : ExerciseCategory.values()) {
+        for (core.ExerciseCategory category : core.ExerciseCategory.values()) {
             JSONArray subCategories = new JSONArray();
-            for (LogEntry.Subcategory subcategory : category.getSubcategories()) {
+            for (core.Subcategory subcategory : category.getSubcategories()) {
                 subCategories.put(subcategory.toString().toLowerCase());
             }
             categories.put(category.toString().toLowerCase(),
@@ -76,11 +81,11 @@ public class GetfitController {
                     String subcategory,
             final @RequestParam(value = "d", required = false) String date) {
 
-        LogEntry.SortConfiguration sortConfiguration = null;
+        SortConfiguration sortConfiguration = null;
 
         try {
             sortConfiguration =
-                    LogEntry.SortConfiguration.valueOf(sortType.toUpperCase());
+                    SortConfiguration.valueOf(sortType.toUpperCase());
         } catch (IllegalArgumentException IA) {
         }
 
@@ -96,17 +101,17 @@ public class GetfitController {
                 iteratorBuilder =
                         iteratorBuilder.filterExerciseCategory(categories);
 
-                LogEntry.Subcategory subcategories = null;
+                Subcategory subcategories = null;
 
                 switch (category) {
                     case "STRENGTH" -> {
                         subcategories =
-                                LogEntry.StrengthSubCategory.valueOf(
+                                StrengthSubCategory.valueOf(
                                         category);
                     }
                     case "SWIMMING", "CYCLING", "RUNNING" -> {
                         subcategories =
-                                LogEntry.CardioSubCategory.valueOf(category);
+                                CardioSubCategory.valueOf(category);
                     }
                     default -> {
                     }
