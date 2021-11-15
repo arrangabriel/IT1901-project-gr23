@@ -18,7 +18,7 @@ import core.LogEntry.EntryBuilder;
 public class TestEntrySaverJson {
 
     static int minute = 60;
-    static int hour = minute*60;
+    static int hour = minute * 60;
 
     private static final String saveFile = "SavedTestData.json";
 
@@ -32,15 +32,10 @@ public class TestEntrySaverJson {
         LogEntry.EXERCISECATEGORY exerciseCategory = LogEntry.EXERCISECATEGORY.STRENGTH;
         LogEntry.Subcategory subcategory = LogEntry.STRENGTHSUBCATEGORIES.PULL;
 
-        EntryBuilder builder = new EntryBuilder(
-            title, date, duration, exerciseCategory, feeling)
-            .comment(comment)
-            .exerciseSubcategory(subcategory)
-            .distance(distance)
-            .maxHeartRate(maxHeartRate);
+        EntryBuilder builder = new EntryBuilder(title, date, duration, exerciseCategory, feeling).comment(comment)
+                .exerciseSubCategory(subcategory).distance(distance).maxHeartRate(maxHeartRate);
         return builder;
     }
- 
 
     private EntryManager genValidManager() {
         EntryManager manager = new EntryManager();
@@ -81,6 +76,27 @@ public class TestEntrySaverJson {
             Assertions.assertEquals(entry.getDuration(), entry.getDuration());
 
         }
+    }
+
+    @Test
+    public void testAddAfterSaveAndLoad() {
+        EntryManager manager = genValidManager();
+        int len = manager.entryCount();
+        try {
+            EntrySaverJson.save(manager, saveFile);
+        } catch (IOException e) {
+            Assertions.fail();
+        }
+        EntryManager newManager = new EntryManager();
+        Assertions.assertEquals(0, newManager.entryCount());
+        try {
+            EntrySaverJson.load(newManager, saveFile);
+        } catch (IOException e) {
+            Assertions.fail();
+        }
+        Assertions.assertEquals(len, newManager.entryCount());
+        newManager.addEntry(genValidBuilder("New Title", "New Comment").build());
+        Assertions.assertEquals(len + 1, newManager.entryCount());
     }
 
     @Test

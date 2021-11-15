@@ -18,12 +18,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.NoSuchElementException;
+
 
 //localhost:8080/api/v1/entries
 //Run: mvn spring-boot:run
@@ -36,13 +39,18 @@ public class GetfitController {
     @Autowired
     private final GetfitService getfitService = new GetfitService();
 
-    @GetMapping("/{entryId}")
+    @GetMapping(value="/{entryId}", produces = "application/json")
     public String getLogEntry(final @PathVariable("entryId") String id) {
-        JSONObject returnObject = new JSONObject(getfitService.getEntryManager().getEntry(id).toHashMap());
+        JSONObject returnObject;
+        try {
+            returnObject = new JSONObject(getfitService.getEntryManager().getEntry(id).toHashMap());
+        } catch (IllegalArgumentException e) {
+            throw new NoSuchElementException(HttpStatus.NOT_FOUND + "Entry not found" + e);
+        }
         return returnObject.toString();
     }
 
-    @GetMapping("/filters")
+    @GetMapping(value="/filters", produces="application/json")
     public String getFilters() {
         //HashMap<String, String> filters = new HashMap<>();
         JSONObject filters = new JSONObject();
@@ -60,14 +68,14 @@ public class GetfitController {
         return filters.toString();
     }
 
-    @GetMapping("/list")
+    @GetMapping(value="/list", produces = "application/json")
     @ResponseBody
     public String getListOfLogEntries(
             final @RequestParam(value = "s", defaultValue = "date")
                     String sortType,
             final @RequestParam(value = "r", defaultValue = "false")
                     String reverse,
-            final @RequestParam(value = "c", required = false) String category,
+            @RequestParam(value = "c", required = false) String category,
             final @RequestParam(value = "cd", required = false)
                     String subcategory,
             final @RequestParam(value = "d", required = false) String date) {
@@ -85,6 +93,7 @@ public class GetfitController {
                         getfitService.getEntryManager(),
                         sortConfiguration);
         if (category != null) {
+            category = category.toUpperCase();
             try {
                 LogEntry.EXERCISECATEGORY categories =
                         LogEntry.EXERCISECATEGORY.valueOf(category);
@@ -189,17 +198,16 @@ public class GetfitController {
     }
 
 
-    @PostMapping("/add")
+    @PostMapping(value="/add", produces = "application/json")
     public String addLogEntry(final @RequestBody String logEntry) {
 
-        getfitService.getEntryManager().addEntry(stringToEntry(logEntry));
+        String id = getfitService.getEntryManager().addEntry(stringToEntry(logEntry));
         getfitService.save();
-        return "{\"id\":\"" + getfitService.getEntryManager()
-                .addEntry(stringToEntry(logEntry)) + "\" }";
+        return "{\"id\":\"" + id + "\" }";
     }
 
 
-    @PostMapping("edit/{entryId}")
+    @PostMapping(value="edit/{entryId}", produces = "application/json")
     public void editLogEntry(final @PathVariable("entryId") String id,
                              final @RequestBody String logEntry) {
         getfitService.getEntryManager().swapEntry(id, stringToEntry(logEntry));
@@ -207,10 +215,13 @@ public class GetfitController {
     }
 
 
-    @PostMapping("remove/{entryId}")
+    @PostMapping(value="remove/{entryId}", produces = "application/json")
     public void removeLogEntry(final @PathVariable("entryId") String id) {
-        getfitService.getEntryManager().removeEntry(id);
-        getfitService.save();
+        if (getfitService.getEntryManager().removeEntry(id)) {
+            getfitService.save();
+        } else {
+            throw new NoSuchElementException(HttpStatus.NOT_FOUND + "Entry not found");
+        }
 
     }
 
@@ -218,8 +229,6 @@ public class GetfitController {
 
         JSONObject jsonObject = new JSONObject(logEntry);
         HashMap<String, String> entryHash = new HashMap<>();
-
-        System.out.println(logEntry);
 
         entryHash.put("title", jsonObject.getString("title"));
         entryHash.put("comment", jsonObject.getString("comment"));
@@ -252,5 +261,11 @@ public class GetfitController {
         return io.getMessage();
     }
 
-
+    @ExceptionHandler(NoSuchElementException.class)
+    @ResponseStatus(value = HttpStatus.NOT_FOUND)
+    @ResponseBody
+    public String handleIllegalArgumentException(
+            final NoSuchElementException rse) {
+        return rse.getMessage();
+    }
 }

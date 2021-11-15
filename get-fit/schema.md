@@ -49,7 +49,7 @@ Response:
 {
     "entries": [
         {
-            "id": 0,
+            "id": "0",
             "title": "Example title",
             "comment": "Example comment",
             "date": "Example date",
@@ -61,7 +61,7 @@ Response:
             "exerciseSubCategory": "Example subcategory"
         },
         {
-            "id": 1,
+            "id": "1",
             "title": "Example title",
             "comment": "Example comment",
             "date": "Example date",
@@ -73,7 +73,7 @@ Response:
             "exerciseSubCategory": "Example subcategory"
         },
         {
-            "id": 2,
+            "id": "2",
             "title": "Example title",
             "comment": "Example comment",
             "date": "Example date",

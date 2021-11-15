@@ -55,7 +55,7 @@
         <Label fx:id="distanceLabel" layoutX="304.0" layoutY="128.0" prefHeight="17.0" prefWidth="55.0"
                text="Distance"/>
         <TextField fx:id="distance" alignment="CENTER" layoutX="304.0" layoutY="146.0" prefHeight="22.0"
-                   prefWidth="36.0" promptText="km"/>
+                   prefWidth="45.0" promptText="km"/>
 
         <Label fx:id="commentLabel" layoutX="307.0" layoutY="182.0" prefHeight="24.0" prefWidth="105.0" text="Comment"/>
         <TextArea fx:id="commentField" layoutX="308.0" layoutY="205.0" prefHeight="76.0" prefWidth="232.0"

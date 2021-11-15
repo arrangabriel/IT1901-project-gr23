@@ -62,7 +62,6 @@ public class LogClient {
 
         HashMap<String, String> responseHash = new HashMap<>();
 
-        System.out.println(jsonObject);
         for (String key : jsonObject.keySet()) {
             responseHash.put(key, jsonObject.getString(key));
         }
@@ -350,7 +349,7 @@ public class LogClient {
             final String payload)
             throws URISyntaxException, InterruptedException,
             ExecutionException, ServerResponseException {
-
+      
         HttpResponse<String> response = this.postAsync(endpoint, payload).get();
         if (response.statusCode() != 200) {
             throw new ServerResponseException(HttpResponses.getResponseText(response.statusCode()), response.statusCode());
