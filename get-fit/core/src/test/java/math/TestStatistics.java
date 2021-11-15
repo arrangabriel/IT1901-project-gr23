@@ -21,7 +21,12 @@ public class TestStatistics {
         return new EntryManager();
     }
 
-    private EntryBuilder genValidEntryBuilder(Duration duration, Double distance, LogEntry.EXERCISECATEGORY exerciseCategory, Integer feeling) {
+    private EntryBuilder genValidEntryBuilder(
+        Duration duration,
+         Double distance,
+          LogEntry.EXERCISECATEGORY exerciseCategory,
+           Integer feeling) {
+        
         String title = "Test";
         String comment = "This is a test";
         LocalDate date = LocalDate.now().minusDays(1);
@@ -38,13 +43,16 @@ public class TestStatistics {
     @Test
     public void testGetCount() {
         EntryManager manager = genValidEntryManager();
-        EntryBuilder builder = genValidEntryBuilder(Duration.ofSeconds(hour), 10.0, LogEntry.EXERCISECATEGORY.RUNNING, 1);
+        EntryBuilder builder = genValidEntryBuilder(
+            Duration.ofSeconds(hour),
+             10.0, LogEntry.EXERCISECATEGORY.RUNNING, 1);
+
         String id = manager.addEntry(builder.build());
-        Assertions.assertEquals(1, Statistics.getCount(manager, date));
+        Assertions.assertEquals(1, Statistics.getCount(manager,"RUNNING", date));
         manager.addEntry(builder.build());
-        Assertions.assertEquals(2, Statistics.getCount(manager, date));
+        Assertions.assertEquals(2, Statistics.getCount(manager,"RUNNING", date));
         manager.removeEntry(id);
-        Assertions.assertEquals(1, Statistics.getCount(manager, date));
+        Assertions.assertEquals(1, Statistics.getCount(manager, "RUNNING", date));
     }
 
     @Test
@@ -55,7 +63,7 @@ public class TestStatistics {
         manager.addEntry(builder1.build());
         manager.addEntry(builder2.build());
         //Compares with 3 hours which equals 10800 seconds. 
-        Assertions.assertEquals(10800, Statistics.getTotalDuration(manager, date));
+        Assertions.assertEquals(10800, Statistics.getTotalDuration(manager, "RUNNING", date));
     }
 
     @Test
@@ -66,7 +74,7 @@ public class TestStatistics {
         manager.addEntry(builder1.build());
         manager.addEntry(builder2.build());
         //Compares with 1.5 hours which is equal to  
-        Assertions.assertEquals(5400, Statistics.getAverageDuration(manager, date));
+        Assertions.assertEquals(5400, Statistics.getAverageDuration(manager, "RUNNING", date));
     }
 
     @Test
@@ -81,8 +89,8 @@ public class TestStatistics {
         manager.addEntry(builder3.build());
         manager.addEntry(builder4.build());
 
-        Assertions.assertEquals(12, Statistics.getAverageSpeed(manager, LogEntry.EXERCISECATEGORY.RUNNING, date));
-        Assertions.assertEquals(4.5, Statistics.getAverageSpeed(manager, LogEntry.EXERCISECATEGORY.CYCLING, date));
+        Assertions.assertEquals(12.0, Statistics.getAverageSpeed(manager, "RUNNING", date));
+        Assertions.assertEquals(4.5, Statistics.getAverageSpeed(manager, "CYCLING", date));
     }
 
     @Test
@@ -96,7 +104,7 @@ public class TestStatistics {
         manager.addEntry(builder2.build());
         manager.addEntry(builder3.build());
 
-        Assertions.assertEquals(6, Statistics.getAverageFeeling(manager, date));
+        Assertions.assertEquals(6, Statistics.getAverageFeeling(manager, "RUNNING", date));
     }
 
     @Test
@@ -114,6 +122,6 @@ public class TestStatistics {
         manager.addEntry(builder2.build());
         manager.addEntry(builder3.build());
 
-        Assertions.assertEquals(200, Statistics.getMaximumHr(manager, date));
+        Assertions.assertEquals(200, Statistics.getMaximumHr(manager, "RUNNING", date));
     }
 }
