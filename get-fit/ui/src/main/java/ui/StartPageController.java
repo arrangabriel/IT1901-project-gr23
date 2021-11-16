@@ -35,6 +35,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.ExecutionException;
+import java.util.stream.Collectors;
 
 public class StartPageController {
 
@@ -327,12 +328,12 @@ public class StartPageController {
             sortSubcategory.setVisible(false);
         } else {
             switch (sortCategory.getValue()) {
-            case "strength" -> {
+            case "Strength" -> {
                 sortSubcategory.setItems(sortStrengthSubcategories);
                 sortSubcategory.getSelectionModel().selectFirst();
                 sortSubcategory.setVisible(true);
             }
-            case "swimming", "cycling", "running" -> {
+            case "Swimming", "Cycling", "Running" -> {
                 sortSubcategory.setItems(sortCardioSubcategories);
                 sortSubcategory.getSelectionModel().selectFirst();
                 sortSubcategory.setVisible(true);
@@ -348,6 +349,10 @@ public class StartPageController {
         double hours = (double) duration.toHours();
         double minutes = (double) duration.toMinutes() / 60;
         return (double) Math.round((hours + minutes) * 10) / 10 + "h";
+    }
+
+    private String capitalize(final String string) {
+        return string.substring(0, 1).toUpperCase() + string.substring(1);
     }
 
     /**
@@ -375,9 +380,9 @@ public class StartPageController {
         HashMap<String, List<String>> filters;
         try {
             filters = this.client.getExerciseCategories();
-            sortCategories.addAll(filters.keySet());
-            sortStrengthSubcategories.addAll(filters.get("strength"));
-            sortCardioSubcategories.addAll(filters.get("running"));
+            sortCategories.addAll(filters.keySet().stream().map(this::capitalize).collect(Collectors.toList()));
+            sortStrengthSubcategories.addAll(filters.get("Strength").stream().map(this::capitalize).collect(Collectors.toList()));
+            sortCardioSubcategories.addAll(filters.get("Running").stream().map(this::capitalize).collect(Collectors.toList()));
 
             sortConfig.setItems(sortConfigs);
             sortConfig.getSelectionModel().selectFirst();
