@@ -259,7 +259,6 @@ public class StartPageController {
             durationView.setText(durationToHours(
                     Duration.ofSeconds(Long.parseLong(entry.get("duration")))));
             feelingView.setText(String.valueOf(entry.get("feeling")));
-            System.out.println(entry.get("distance"));
             setOptionalField(entry.get("distance"), distanceView,
                     distanceLabel);
             setOptionalField(entry.get("maxHeartRate"), heartRateView,
