@@ -134,15 +134,15 @@ public class StartPageController {
         Optional<ButtonType> result = alert.showAndWait();
         if (result.get() == ButtonType.OK) {
             switch (func) {
-            case "initialize" -> this.initialize();
-            case "updateList" -> this.updateList();
-            case "createListEntry" -> {
-                HashMap<String, String> entry = new HashMap<>();
-                entry.put(args[0], args[1]);
-                this.createListEntry(entry);
-            }
-            default -> {
-            }
+                case "initialize" -> this.initialize();
+                case "updateList" -> this.updateList();
+                case "createListEntry" -> {
+                    HashMap<String, String> entry = new HashMap<>();
+                    entry.put(args[0], args[1]);
+                    this.createListEntry(entry);
+                }
+                default -> {
+                }
             }
             errorLabel.setText("");
         } else {
@@ -157,12 +157,14 @@ public class StartPageController {
      * @throws IOException if .FXML file could not be found.
      */
     @FXML
-    public void addSessionButtonPushed(final ActionEvent event) throws IOException {
+    public void addSessionButtonPushed(final ActionEvent event)
+            throws IOException {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("AddNewSession.fxml"));
         Parent p = loader.load();
         Scene s = new Scene(p);
-        Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        Stage window =
+                (Stage) ((Node) event.getSource()).getScene().getWindow();
         window.setTitle("Add new session");
         window.setScene(s);
         window.show();
@@ -195,12 +197,16 @@ public class StartPageController {
 
         listOfEntries.getItems().clear();
         // Gather query information
-        String sort = sortConfig.getValue();
-        String categoryFilter = sortCategory.getValue();
+        String sort = sortConfig.getValue().toLowerCase();
+        String categoryFilter = sortCategory.getValue().toLowerCase();
         String subFilter = sortSubcategory.getValue();
-        // boolean reverse = reverseBox.isSelected();
+        if (subFilter != null) {
+            subFilter = subFilter.toLowerCase();
+        }
 
-        ListBuilder builder = new ListBuilder().sort(sort).category(categoryFilter).subCategory(subFilter);
+        ListBuilder builder =
+                new ListBuilder().sort(sort).category(categoryFilter)
+                        .subCategory(subFilter);
 
         if (reverseBox.isSelected()) {
             builder.reverse();
@@ -231,7 +237,9 @@ public class StartPageController {
 
         ColumnConstraints colConstraint = new ColumnConstraints();
         colConstraint.setPercentWidth(25);
-        grid.getColumnConstraints().addAll(colConstraint, colConstraint, colConstraint, colConstraint);
+        grid.getColumnConstraints()
+                .addAll(colConstraint, colConstraint, colConstraint,
+                        colConstraint);
 
         Text title = new Text(entry.get("title"));
         Text date = new Text(entry.get("date"));
@@ -240,29 +248,23 @@ public class StartPageController {
         Button open = new Button();
         open.setText("Show");
 
-        open.setOnAction(e -> {
-            // title
+        open.setOnAction(event -> {
             titleView.setText(entry.get("title"));
-            // date
             dateView.setText(entry.get("date"));
-            // category
-            categoryView.setText(entry.get("exerciseCategory"));
-            // feeling
+            categoryView.setText(capitalize(entry.get("exerciseCategory")));
+            setOptionalField(entry.get("exerciseSubCategory"), subcategoryView,
+                    subcategoryLabel);
+            durationView.setText(durationToHours(
+                    Duration.ofSeconds(Long.parseLong(entry.get("duration")))));
             feelingView.setText(String.valueOf(entry.get("feeling")));
-            // duration
-            durationView.setText(durationToHours(Duration.ofSeconds(Long.parseLong(entry.get("duration")))));
-            // subcategory optional
-            String subcategory = entry.get("exerciseSubCategory");
-            setOptionalField(subcategory, subcategoryView, subcategoryLabel);
-            // maxHeartRate optional
-            String maxHeartRate = entry.get("maxHeartRate");
-            setOptionalField(maxHeartRate, heartRateView, heartRateLabel);
-            // distance
-            String distance = entry.get("distance");
-            setOptionalField(distance, distanceView, distanceLabel);
-            // comment
+            System.out.println(entry.get("distance"));
+            setOptionalField(entry.get("distance"), distanceView,
+                    distanceLabel);
+            setOptionalField(entry.get("maxHeartRate"), heartRateView,
+                    heartRateLabel);
+
             String comment = entry.get("comment");
-            if (comment != null) {
+            if (!comment.equals("null")) {
                 commentView.setText(comment);
             } else {
                 commentView.clear();
@@ -303,8 +305,9 @@ public class StartPageController {
         return vBox;
     }
 
-    private void setOptionalField(final String data, final Text textField, final Text textLabel) {
-        if (data != null) {
+    private void setOptionalField(final String data, final Text textField,
+                                  final Text textLabel) {
+        if (!data.equals("null")) {
             textField.setText(data);
             textField.setVisible(true);
             textLabel.setVisible(true);
@@ -323,23 +326,23 @@ public class StartPageController {
     @FXML
     public void replaceSubcategories(final Event event) {
         // hide and clear subcategories when there should be none.
-        if (sortCategory.getValue().equals("ANY")) {
+        if (sortCategory.getValue().equals("Any")) {
             sortSubcategory.setItems(FXCollections.observableArrayList());
             sortSubcategory.setVisible(false);
         } else {
             switch (sortCategory.getValue()) {
-            case "Strength" -> {
-                sortSubcategory.setItems(sortStrengthSubcategories);
-                sortSubcategory.getSelectionModel().selectFirst();
-                sortSubcategory.setVisible(true);
-            }
-            case "Swimming", "Cycling", "Running" -> {
-                sortSubcategory.setItems(sortCardioSubcategories);
-                sortSubcategory.getSelectionModel().selectFirst();
-                sortSubcategory.setVisible(true);
-            }
-            default -> {
-            }
+                case "Strength" -> {
+                    sortSubcategory.setItems(sortStrengthSubcategories);
+                    sortSubcategory.getSelectionModel().selectFirst();
+                    sortSubcategory.setVisible(true);
+                }
+                case "Swimming", "Cycling", "Running" -> {
+                    sortSubcategory.setItems(sortCardioSubcategories);
+                    sortSubcategory.getSelectionModel().selectFirst();
+                    sortSubcategory.setVisible(true);
+                }
+                default -> {
+                }
             }
         }
         updateList();
@@ -355,6 +358,10 @@ public class StartPageController {
         return string.substring(0, 1).toUpperCase() + string.substring(1);
     }
 
+    private void bindVisibility(final Node node) {
+        node.managedProperty().bind(node.visibleProperty());
+    }
+
     /**
      * Initializes the controller.
      *
@@ -364,25 +371,33 @@ public class StartPageController {
     private void initialize() {
         entryView.setVisible(false);
         // populate sorting selectors
-        ObservableList<String> sortConfigs = FXCollections.observableArrayList();
+        ObservableList<String> sortConfigs =
+                FXCollections.observableArrayList();
 
-        ObservableList<String> sortCategories = FXCollections.observableArrayList();
-        sortCategories.add("ANY");
+        ObservableList<String> sortCategories =
+                FXCollections.observableArrayList();
+        sortCategories.add("Any");
         sortStrengthSubcategories = FXCollections.observableArrayList();
-        sortStrengthSubcategories.add("ANY");
+        sortStrengthSubcategories.add("Any");
         sortCardioSubcategories = FXCollections.observableArrayList();
-        sortCardioSubcategories.add("ANY");
+        sortCardioSubcategories.add("Any");
 
-        sortConfigs.add("title");
-        sortConfigs.add("date");
-        sortConfigs.add("duration");
+        sortConfigs.add("Title");
+        sortConfigs.add("Date");
+        sortConfigs.add("Duration");
 
         HashMap<String, List<String>> filters;
         try {
             filters = this.client.getExerciseCategories();
-            sortCategories.addAll(filters.keySet().stream().map(this::capitalize).collect(Collectors.toList()));
-            sortStrengthSubcategories.addAll(filters.get("Strength").stream().map(this::capitalize).collect(Collectors.toList()));
-            sortCardioSubcategories.addAll(filters.get("Running").stream().map(this::capitalize).collect(Collectors.toList()));
+            sortCategories.addAll(
+                    filters.keySet().stream().map(this::capitalize)
+                            .collect(Collectors.toList()));
+            sortStrengthSubcategories.addAll(
+                    filters.get("strength").stream().map(this::capitalize)
+                            .collect(Collectors.toList()));
+            sortCardioSubcategories.addAll(
+                    filters.get("running").stream().map(this::capitalize)
+                            .collect(Collectors.toList()));
 
             sortConfig.setItems(sortConfigs);
             sortConfig.getSelectionModel().selectFirst();
@@ -398,6 +413,13 @@ public class StartPageController {
         } catch (ServerResponseException e) {
             this.errorLabel.setText(e.getMessage());
         }
+
+        bindVisibility(heartRateLabel);
+        bindVisibility(heartRateView);
+        bindVisibility(distanceLabel);
+        bindVisibility(distanceView);
+        bindVisibility(subcategoryLabel);
+        bindVisibility(subcategoryView);
 
         this.updateList();
     }
