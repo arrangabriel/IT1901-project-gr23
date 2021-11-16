@@ -12,15 +12,11 @@ import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
 import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
 import static com.github.tomakehurst.wiremock.client.WireMock.post;
-import static com.github.tomakehurst.wiremock.client.WireMock.equalTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
-import static com.github.tomakehurst.wiremock.client.WireMock.matchingJsonPath;
 import static com.github.tomakehurst.wiremock.client.WireMock.containing;
 
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -51,6 +47,15 @@ public class TestClient {
         try {
             HashMap<String, String> entry = logClient.getLogEntry("0");
             assertEquals("Example title", entry.get("title"));
+            assertEquals("Example comment", entry.get("comment"));
+            assertEquals("2021-10-25", entry.get("date"));
+            assertEquals("7", entry.get("feeling"));
+            assertEquals("3600", entry.get("duration"));
+            assertEquals("3", entry.get("distance"));
+            assertEquals("150", entry.get("maxHeartRate"));
+            assertEquals("STRENGTH", entry.get("exerciseCategory"));
+            assertEquals("PULL", entry.get("exerciseSubCategory"));
+            
         } catch (URISyntaxException | InterruptedException | ExecutionException | ServerResponseException e) {
             e.printStackTrace();
         }
@@ -74,17 +79,17 @@ public class TestClient {
 
         String body = "{\"id\": \"0\"}";
         stubFor(post(urlEqualTo("/api/v1/entries/add"))
-                /*
-                 * .withRequestBody(containing("title=Example title"))
-                 * .withRequestBody(containing("comment=Example comment"))
-                 * .withRequestBody(containing("date=2021-10-25"))
-                 * .withRequestBody(containing("feeling=7"))
-                 * .withRequestBody(containing("duration=3600"))
-                 * .withRequestBody(containing("distance=3"))
-                 * .withRequestBody(containing("maxHeartRate=150"))
-                 * .withRequestBody(containing("exerciseCategory=STRENGTH"))
-                 * .withRequestBody(containing("exerciseSubCategory=PULL"))
-                 */
+                
+                 .withRequestBody(containing("title=Example title"))
+                 .withRequestBody(containing("comment=Example comment"))
+                 .withRequestBody(containing("date=2021-10-25"))
+                 .withRequestBody(containing("feeling=7"))
+                 .withRequestBody(containing("duration=3600"))
+                 .withRequestBody(containing("distance=3"))
+                 .withRequestBody(containing("maxHeartRate=150"))
+                 .withRequestBody(containing("exerciseCategory=STRENGTH"))
+                 .withRequestBody(containing("exerciseSubCategory=PULL"))
+                 
                 // \"title\": \"Example title\",\"comment\": \"Example comment\",\"date\":
                 // \"2021-10-25\",\"feeling\": \"7\",\"duration\": \"3600\",\"distance\":
                 // \"3\",\"maxHeartRate\": \"150\",\"exerciseCategory\":
@@ -98,10 +103,10 @@ public class TestClient {
 
     }
 
-    @Test
-    public void testUpdateLogEntry() {
+    // @Test
+    // public void testUpdateLogEntry() {
 
-    }
+    // }
 
     @Test
     public void testGetExerciseCategory() {
