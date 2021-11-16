@@ -230,6 +230,8 @@ public class StartPageController {
 
     }
 
+
+    @SuppressWarnings("checkstyle:MagicNumber")
     private VBox createListEntry(final HashMap<String, String> entry) {
 
         errorLabel.setText("");
@@ -351,6 +353,7 @@ public class StartPageController {
         updateList();
     }
 
+    @SuppressWarnings("checkstyle:MagicNumber")
     private String durationToHours(final Duration duration) {
         double hours = (double) duration.toHours();
         double minutes = (double) duration.toMinutes() / 60;
