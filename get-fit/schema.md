@@ -141,6 +141,27 @@ Response:
 }
 ```
 
+## Get Chart Data
+
+Type: <span style="color:#28b463">GET</span>
+
+Endpoint: `/api/v1/entries/chart`
+
+Arguments:
+- date: Filter by date `d={start yyyy-mm-dd}-{end yyyy-mm-dd}`
+
+Response:
+
+```json
+{
+    "swimming": "2"
+    "running": "3"
+    "strength": "0"
+    "cycling": "2"
+}
+```
+
+
 
 ## Add a LogEntry
 
