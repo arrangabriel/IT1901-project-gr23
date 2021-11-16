@@ -248,23 +248,24 @@ public class StartPageController {
             // date
             dateView.setText(entry.get("date"));
             // category
-            categoryView.setText(entry.get("exerciseCategory"));
+            categoryView.setText(capitalize(entry.get("exerciseCategory")));
+            // subcategory optional
+            String subcategory = entry.get("exerciseSubCategory");
+            setOptionalField(subcategory, subcategoryView, subcategoryLabel);
             // feeling
             feelingView.setText(String.valueOf(entry.get("feeling")));
             // duration
             durationView.setText(durationToHours(Duration.ofSeconds(Long.parseLong(entry.get("duration")))));
-            // subcategory optional
-            String subcategory = entry.get("exerciseSubCategory");
-            setOptionalField(subcategory, subcategoryView, subcategoryLabel);
-            // maxHeartRate optional
-            String maxHeartRate = entry.get("maxHeartRate");
-            setOptionalField(maxHeartRate, heartRateView, heartRateLabel);
             // distance
             String distance = entry.get("distance");
             setOptionalField(distance, distanceView, distanceLabel);
+            // maxHeartRate optional
+            String maxHeartRate = entry.get("maxHeartRate");
+            setOptionalField(maxHeartRate, heartRateView, heartRateLabel);
             // comment
             String comment = entry.get("comment");
-            if (comment != null) {
+            System.out.println(comment);
+            if (!comment.equals("null")) {
                 commentView.setText(comment);
             } else {
                 commentView.clear();
@@ -306,7 +307,7 @@ public class StartPageController {
     }
 
     private void setOptionalField(final String data, final Text textField, final Text textLabel) {
-        if (data != "null") {
+        if (!data.equals("null")) {
             textField.setText(data);
             textField.setVisible(true);
             textLabel.setVisible(true);
