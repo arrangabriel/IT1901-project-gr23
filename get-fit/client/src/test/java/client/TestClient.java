@@ -90,10 +90,6 @@ public class TestClient {
                  .withRequestBody(containing("exerciseCategory=STRENGTH"))
                  .withRequestBody(containing("exerciseSubCategory=PULL"))
                  
-                // \"title\": \"Example title\",\"comment\": \"Example comment\",\"date\":
-                // \"2021-10-25\",\"feeling\": \"7\",\"duration\": \"3600\",\"distance\":
-                // \"3\",\"maxHeartRate\": \"150\",\"exerciseCategory\":
-                // \"STRENGTH\",\"exerciseSubCategory\": \"PULL\"}
                 .willReturn(aResponse().withStatus(200).withHeader("Content-Type", "aplication/json").withBody(body)));
         try {
             logClient.addLogEntry(entryHash);
