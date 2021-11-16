@@ -14,6 +14,7 @@ import static com.github.tomakehurst.wiremock.client.WireMock.get;
 import static com.github.tomakehurst.wiremock.client.WireMock.post;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
+import static com.github.tomakehurst.wiremock.client.WireMock.containing;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -78,17 +79,17 @@ public class TestClient {
 
         String body = "{\"id\": \"0\"}";
         stubFor(post(urlEqualTo("/api/v1/entries/add"))
-                /*
-                 * .withRequestBody(containing("title=Example title"))
-                 * .withRequestBody(containing("comment=Example comment"))
-                 * .withRequestBody(containing("date=2021-10-25"))
-                 * .withRequestBody(containing("feeling=7"))
-                 * .withRequestBody(containing("duration=3600"))
-                 * .withRequestBody(containing("distance=3"))
-                 * .withRequestBody(containing("maxHeartRate=150"))
-                 * .withRequestBody(containing("exerciseCategory=STRENGTH"))
-                 * .withRequestBody(containing("exerciseSubCategory=PULL"))
-                 */
+                
+                 .withRequestBody(containing("title=Example title"))
+                 .withRequestBody(containing("comment=Example comment"))
+                 .withRequestBody(containing("date=2021-10-25"))
+                 .withRequestBody(containing("feeling=7"))
+                 .withRequestBody(containing("duration=3600"))
+                 .withRequestBody(containing("distance=3"))
+                 .withRequestBody(containing("maxHeartRate=150"))
+                 .withRequestBody(containing("exerciseCategory=STRENGTH"))
+                 .withRequestBody(containing("exerciseSubCategory=PULL"))
+                 
                 // \"title\": \"Example title\",\"comment\": \"Example comment\",\"date\":
                 // \"2021-10-25\",\"feeling\": \"7\",\"duration\": \"3600\",\"distance\":
                 // \"3\",\"maxHeartRate\": \"150\",\"exerciseCategory\":
