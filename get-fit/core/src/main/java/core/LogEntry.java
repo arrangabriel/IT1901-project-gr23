@@ -73,10 +73,6 @@ public final class LogEntry {
      * that should be mutable.
      *
      * @param builder the EntryBuilder used to build this LogEntry.
-     * @throws IllegalArgumentException if any of the arguments are null, duration
-     *                                  is zero or negative, the date is ahead of
-     *                                  now, or the title is empty.
-     * @see #validate
      */
     public LogEntry(final EntryBuilder builder) throws IllegalArgumentException {
 
@@ -533,8 +529,12 @@ public final class LogEntry {
          * @see #validate
          */
         public LogEntry build() throws IllegalArgumentException {
-            validate(this);
-            return new LogEntry(this);
+            Validity valid = validate(this);
+            if (valid.invalid()) {
+                throw new IllegalArgumentException(valid.reason());
+            } else {
+                return new LogEntry(this);
+            }
         }
     }
 }

@@ -69,38 +69,38 @@ public class TestLogEntry {
     @Test
     public void illegalTitle() {
         Assertions.assertThrows(IllegalArgumentException.class, () -> new EntryBuilder("", LocalDate.now().minusDays(1),
-                Duration.ofSeconds(hour), ExerciseCategory.STRENGTH, 1));
+                Duration.ofSeconds(hour), ExerciseCategory.STRENGTH, 1).build());
     }
 
     @Test
     public void illegalDate() {
         Assertions.assertThrows(IllegalArgumentException.class, () -> new EntryBuilder("Test",
-                LocalDate.now().plusDays(1), Duration.ofSeconds(hour), ExerciseCategory.STRENGTH, 1));
+                LocalDate.now().plusDays(1), Duration.ofSeconds(hour), ExerciseCategory.STRENGTH, 1).build());
     }
 
     @Test
     public void illegalDuration() {
         Assertions.assertThrows(IllegalArgumentException.class, () -> new EntryBuilder("Test",
-                LocalDate.now().minusDays(1), Duration.ofSeconds(-hour), ExerciseCategory.STRENGTH, 1));
+                LocalDate.now().minusDays(1), Duration.ofSeconds(-hour), ExerciseCategory.STRENGTH, 1).build());
     }
 
     @Test
     public void illegalFeeling() {
         Assertions.assertThrows(IllegalArgumentException.class, () -> new EntryBuilder("Test",
-                LocalDate.now().minusDays(1), Duration.ofSeconds(hour), ExerciseCategory.STRENGTH, 11));
+                LocalDate.now().minusDays(1), Duration.ofSeconds(hour), ExerciseCategory.STRENGTH, 11).build());
         Assertions.assertThrows(IllegalArgumentException.class, () -> new EntryBuilder("Test",
-                LocalDate.now().minusDays(1), Duration.ofSeconds(hour), ExerciseCategory.STRENGTH, 0));
+                LocalDate.now().minusDays(1), Duration.ofSeconds(hour), ExerciseCategory.STRENGTH, 0).build());
     }
 
     @Test
     public void illegalDistance() {
-        Assertions.assertThrows(IllegalArgumentException.class, () -> genValid().distance(-10.0));
-        Assertions.assertThrows(IllegalArgumentException.class, () -> genValid().distance(0.0));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> genValid().distance(-10.0).build());
+        Assertions.assertThrows(IllegalArgumentException.class, () -> genValid().distance(0.0).build());
     }
 
     @Test
     public void illegalMaxHeartRate() {
-        Assertions.assertThrows(IllegalArgumentException.class, () -> genValid().maxHeartRate(10));
-        Assertions.assertThrows(IllegalArgumentException.class, () -> genValid().maxHeartRate(700));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> genValid().maxHeartRate(10).build());
+        Assertions.assertThrows(IllegalArgumentException.class, () -> genValid().maxHeartRate(700).build());
     }
 }
