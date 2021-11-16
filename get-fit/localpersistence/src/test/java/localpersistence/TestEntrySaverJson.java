@@ -124,6 +124,23 @@ public class TestEntrySaverJson {
         Assertions.assertThrows(IllegalArgumentException.class, () -> EntrySaverJson.save(null, saveFile));
     }
 
+    @Test
+    public void testAbsolutePathSaving() {
+        EntryManager manager = genValidManager();
+        try {
+            EntrySaverJson.save(manager);
+        } catch (IllegalArgumentException | IOException e) {
+            Assertions.fail("Failed to save data");
+        }
+        try {
+            EntrySaverJson.load(new EntryManager());
+        } catch (IllegalArgumentException | IOException e) {
+            Assertions.fail("Failed to load data");
+        }
+        File f = new File(EntrySaverJson.SYSTEM_SAVE_LOCATION);
+        f.delete();
+    }
+
     @AfterAll
     public static void teardown() {
         File f = new File(saveFile);

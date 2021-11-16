@@ -9,13 +9,17 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Scanner;
+
 
 /**
  * Class for saving and loading entryManagers to and from JSON files.
  */
 public final class EntrySaverJson {
+
+    public static final String SYSTEM_SAVE_LOCATION = System.getProperty("user.home")+System.getProperty("file.separator")+"getfit"+System.getProperty("file.separator")+"SavedData.json";
 
     /**
      * Hidden constructor.
@@ -33,7 +37,7 @@ public final class EntrySaverJson {
      */
     public static void save(final EntryManager entryManager) throws IOException, IllegalArgumentException {
 
-        save(entryManager, "SavedData.json");
+        save(entryManager, SYSTEM_SAVE_LOCATION);
     }
 
     /**
@@ -47,6 +51,7 @@ public final class EntrySaverJson {
      */
     public static void save(final EntryManager entryManager, final String saveFile)
             throws IOException, IllegalArgumentException {
+        System.out.println();
 
         if (entryManager == null || saveFile == null) {
             throw new IllegalArgumentException("Arguments cannot be null");
@@ -57,6 +62,16 @@ public final class EntrySaverJson {
         HashMap<String, HashMap<String, String>> map = entryManager.toHashMap();
         for (String entryId : map.keySet()) {
             json.put(entryId, map.get(entryId));
+        }
+
+        //String folderName = saveFile.split(System.getProperty("file.separator"))[0];
+        String[] split = saveFile.split(System.getProperty("file.separator"));
+        String folderPath = String.join(System.getProperty("file.separator"), Arrays.copyOfRange(split, 0, split.length - 1));
+        
+        File folder = new File(folderPath);
+
+        if (!folder.exists()) {
+            folder.mkdirs();
         }
 
         File file = new File(saveFile);
@@ -83,7 +98,7 @@ public final class EntrySaverJson {
      */
     public static void load(final EntryManager entryManager) throws IOException, IllegalArgumentException {
 
-        load(entryManager, "SavedData.json");
+        load(entryManager, SYSTEM_SAVE_LOCATION);
     }
 
     /**
