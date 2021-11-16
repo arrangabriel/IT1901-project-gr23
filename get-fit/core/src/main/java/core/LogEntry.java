@@ -45,7 +45,7 @@ public final class LogEntry {
     /**
      * Category of LogEntry.
      */
-    private final EXERCISECATEGORY exerciseCategory;
+    private final ExerciseCategory exerciseCategory;
     /**
      * Subcategory of LogEntry.
      */
@@ -66,10 +66,6 @@ public final class LogEntry {
      * ID of the LogEntry.
      */
     private String id;
-
-    // it is paramount that all sorting configurations are
-    // supported by all possible LogEntries.
-    // Keep in mind when some LogEntry fields become optional.
 
     /**
      * A logEntry instance represents a single workout-entry internally. Has fields
@@ -203,7 +199,7 @@ public final class LogEntry {
     public static Subcategory stringToSubcategory(final String category) {
 
         Subcategory subCategory = null;
-        outerLoop: for (EXERCISECATEGORY exCategory : EXERCISECATEGORY.values()) {
+        outerLoop: for (ExerciseCategory exCategory : ExerciseCategory.values()) {
             for (Subcategory sub : exCategory.getSubcategories()) {
                 try {
                     subCategory = sub.getValueOf(category);
@@ -238,7 +234,7 @@ public final class LogEntry {
 
         Duration duration = Duration.ofSeconds(Long.parseLong(map.get("duration")));
 
-        EXERCISECATEGORY category = EXERCISECATEGORY.valueOf(map.get("exerciseCategory"));
+        ExerciseCategory category = ExerciseCategory.valueOf(map.get("exerciseCategory"));
 
         Subcategory subCategory = stringToSubcategory(map.get("exerciseSubCategory"));
 
@@ -385,7 +381,7 @@ public final class LogEntry {
      *
      * @return the EXERCISE_CATEGORIES for the category.
      */
-    public EXERCISECATEGORY getExerciseCategory() {
+    public ExerciseCategory getExerciseCategory() {
         return exerciseCategory;
     }
 
@@ -396,149 +392,6 @@ public final class LogEntry {
      */
     public Subcategory getExerciseSubCategory() {
         return exerciseSubCategory;
-    }
-
-    /**
-     * Returns the subcategories for the logEntry's main category.
-     *
-     * @return an array of Subcategories
-     */
-    public Subcategory[] getExerciseSubCategories() {
-        return exerciseCategory.getSubcategories();
-    }
-
-    /**
-     * Configurations by which to sort LogEntries.
-     */
-    public enum SORTCONFIGURATIONS {
-        /**
-         * Sort by Date.
-         */
-        DATE,
-        /**
-         * Sort by Duration.
-         */
-        DURATION,
-        /**
-         * Sort by Title.
-         */
-        TITLE
-    }
-
-    /**
-     * The categories an exercise can fall under.
-     */
-    public enum EXERCISECATEGORY {
-        /**
-         * Represents strength exercise.
-         */
-        STRENGTH(STRENGTHSUBCATEGORIES.values()),
-        /**
-         * Represents a running exercise.
-         */
-        RUNNING(CARDIOSUBCATEGORIES.values()),
-        /**
-         * Represents a cycling exercise.
-         */
-        CYCLING(CARDIOSUBCATEGORIES.values()),
-        /**
-         * Represents a swimming exercise.
-         */
-        SWIMMING(CARDIOSUBCATEGORIES.values());
-
-        /**
-         * Array of Subcategories.
-         */
-        private final Subcategory[] subcategories;
-
-        /**
-         * Populates the subcategories array.
-         *
-         * @param subcategoriesArray The subcategories to populate with.
-         */
-        EXERCISECATEGORY(final Subcategory[] subcategoriesArray) {
-            this.subcategories = subcategoriesArray;
-        }
-
-        /**
-         * Returns the subcategories.
-         *
-         * @return the subcategories.
-         */
-        public Subcategory[] getSubcategories() {
-            return this.subcategories.clone();
-        }
-    }
-
-    /**
-     * Subcategories for the Strength category.
-     */
-    public enum STRENGTHSUBCATEGORIES implements Subcategory {
-        /**
-         * Push exercises.
-         */
-        PUSH,
-        /**
-         * Pull exercises.
-         */
-        PULL,
-        /**
-         * Legs exercises.
-         */
-        LEGS,
-        /**
-         * Full body exercises.
-         */
-        FULLBODY;
-
-        @Override
-        public Subcategory getValueOf(final String name) {
-            return STRENGTHSUBCATEGORIES.valueOf(name);
-        }
-
-    }
-
-    /**
-     * Subcategories for the Cardio category.
-     */
-    public enum CARDIOSUBCATEGORIES implements Subcategory {
-        /**
-         * Short exercises.
-         */
-        SHORT,
-        /**
-         * Long exercises.
-         */
-        LONG,
-        /**
-         * High intensity exercises.
-         */
-        HIGHINTENSITY,
-        /**
-         * Low intensity exercises.
-         */
-        LOWINTENSITY;
-
-        @Override
-        public Subcategory getValueOf(final String name) {
-            return CARDIOSUBCATEGORIES.valueOf(name);
-        }
-
-    }
-
-    /**
-     * Exercise Subcategory.
-     */
-    public interface Subcategory /* extends Category */ {
-
-        /**
-         * Get the Subcategory value of a String.
-         *
-         * @param name The name of the Subcategory to retrieve
-         * @return the Subcategory represented by the String
-         */
-        Subcategory getValueOf(String name);
-
     }
 
     // #endregion getters
@@ -572,7 +425,7 @@ public final class LogEntry {
         /**
          * Exercise category to be built.
          */
-        private final EXERCISECATEGORY cexerciseCategory;
+        private final ExerciseCategory cexerciseCategory;
 
         /**
          * Feeling of the exercise.
@@ -614,7 +467,7 @@ public final class LogEntry {
          * @see #validate
          */
         public EntryBuilder(final String title, final LocalDate date, final Duration duration,
-                final EXERCISECATEGORY exerciseCategory, final int feeling) {
+                            final ExerciseCategory exerciseCategory, final int feeling) throws IllegalArgumentException {
 
             this.ctitle = title;
             this.cdate = date;

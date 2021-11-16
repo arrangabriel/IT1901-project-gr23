@@ -11,6 +11,9 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
 
+import core.Subcategory;
+import core.StrengthSubCategory;
+import core.ExerciseCategory;
 import core.EntryManager;
 import core.LogEntry;
 import core.LogEntry.EntryBuilder;
@@ -29,8 +32,8 @@ public class TestEntrySaverJson {
         double distance = 1;
         Integer maxHeartRate = 80;
 
-        LogEntry.EXERCISECATEGORY exerciseCategory = LogEntry.EXERCISECATEGORY.STRENGTH;
-        LogEntry.Subcategory subcategory = LogEntry.STRENGTHSUBCATEGORIES.PULL;
+        ExerciseCategory exerciseCategory = ExerciseCategory.STRENGTH;
+        Subcategory subcategory = StrengthSubCategory.PULL;
 
         EntryBuilder builder = new EntryBuilder(title, date, duration, exerciseCategory, feeling).comment(comment)
                 .exerciseSubCategory(subcategory).distance(distance).maxHeartRate(maxHeartRate);

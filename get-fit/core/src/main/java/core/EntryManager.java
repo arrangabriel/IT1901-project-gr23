@@ -212,7 +212,7 @@ public final class EntryManager implements Iterable<LogEntry> {
          */
         public SortedIteratorBuilder(
                 final EntryManager entryManager,
-                final LogEntry.SORTCONFIGURATIONS sortConfiguration)
+                final SortConfiguration sortConfiguration)
                 throws IllegalArgumentException {
 
             if (sortConfiguration == null) {
@@ -240,7 +240,7 @@ public final class EntryManager implements Iterable<LogEntry> {
          * @throws IllegalArgumentException if category is null.
          */
         public SortedIteratorBuilder filterExerciseCategory(
-                final LogEntry.EXERCISECATEGORY category)
+                final ExerciseCategory category)
                 throws IllegalArgumentException {
 
             if (category == null) {
@@ -262,7 +262,7 @@ public final class EntryManager implements Iterable<LogEntry> {
          * @throws IllegalArgumentException if Subcategory is null.
          */
         public SortedIteratorBuilder filterSubCategory(
-                final LogEntry.Subcategory subcategory)
+                final Subcategory subcategory)
                 throws IllegalArgumentException {
 
             if (subcategory == null) {
@@ -272,7 +272,7 @@ public final class EntryManager implements Iterable<LogEntry> {
 
             this.logEntryStream = this.logEntryStream
                     .filter((entry) -> {
-                        LogEntry.Subcategory entrySubcategory =
+                        Subcategory entrySubcategory =
                                 entry.getExerciseSubCategory();
                         if (entrySubcategory != null) {
                             return entrySubcategory.equals(subcategory);
