@@ -273,7 +273,6 @@ public class AddNewSessionController {
 
             // add and save newly created LogEntry.
             try {
-                System.out.println(entryMap);
                 this.client.addLogEntry(entryMap);
                 goToStartPage(event);
             } catch (URISyntaxException

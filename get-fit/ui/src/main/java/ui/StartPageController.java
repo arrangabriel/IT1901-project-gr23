@@ -255,14 +255,28 @@ public class StartPageController {
         open.setOnAction(event -> {
             titleView.setText(entry.get("title"));
             dateView.setText(entry.get("date"));
-            categoryView.setText(capitalize(entry.get("exerciseCategory")));
-            setOptionalField(entry.get("exerciseSubCategory"), subcategoryView,
+            categoryView.setText(
+                    capitalize(entry.get("exerciseCategory")));
+
+            String subCategory = entry.get("exerciseSubCategory");
+            if (!subCategory.equals("null")) {
+                subCategory = capitalize(subCategory);
+            }
+            setOptionalField(subCategory,
+                    subcategoryView,
                     subcategoryLabel);
+
             durationView.setText(durationToHours(
                     Duration.ofSeconds(Long.parseLong(entry.get("duration")))));
             feelingView.setText(String.valueOf(entry.get("feeling")));
-            setOptionalField(entry.get("distance"), distanceView,
+
+            String distance = entry.get("distance");
+            if (!distance.equals("null")) {
+                distance = distance.concat("km");
+            }
+            setOptionalField(distance, distanceView,
                     distanceLabel);
+
             setOptionalField(entry.get("maxHeartRate"), heartRateView,
                     heartRateLabel);
 
@@ -361,7 +375,12 @@ public class StartPageController {
     }
 
     private String capitalize(final String string) {
-        return string.substring(0, 1).toUpperCase() + string.substring(1);
+        if (string.length() > 0) {
+            return string.substring(0, 1).toUpperCase()
+                    + string.substring(1).toLowerCase();
+        } else {
+            return "";
+        }
     }
 
     private void bindVisibility(final Node node) {
