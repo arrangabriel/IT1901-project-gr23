@@ -46,6 +46,15 @@ public class TestClient {
         try {
             HashMap<String, String> entry = logClient.getLogEntry("0");
             assertEquals("Example title", entry.get("title"));
+            assertEquals("Example comment", entry.get("comment"));
+            assertEquals("2021-10-25", entry.get("date"));
+            assertEquals("7", entry.get("feeling"));
+            assertEquals("3600", entry.get("duration"));
+            assertEquals("3", entry.get("distance"));
+            assertEquals("150", entry.get("maxHeartRate"));
+            assertEquals("STRENGTH", entry.get("exerciseCategory"));
+            assertEquals("PULL", entry.get("exerciseSubCategory"));
+            
         } catch (URISyntaxException | InterruptedException | ExecutionException | ServerResponseException e) {
             e.printStackTrace();
         }
