@@ -216,10 +216,6 @@ public class AddNewSessionController {
                 throw new IllegalArgumentException("Duration must be set.");
             }
 
-            // tries to build with required values.
-            // LogEntry.EntryBuilder logBuilder = new LogEntry.EntryBuilder(
-            //         title, date, duration, category, feeling);
-
             // adds maxHeartRate if value is present.
             try {
                 maxHeartRate = (heartRate.getText());
@@ -251,11 +247,12 @@ public class AddNewSessionController {
             }
 
             String distanceString = distance.getText();
-            if (distanceString.equals("")) {
+            if (distanceString.isEmpty()) {
                 distanceValue = "null";
             } else {
                 try {
                     Double.parseDouble(distanceString);
+                    distanceValue = distanceString;
                 } catch (NumberFormatException e) {
                     throw new IllegalArgumentException(
                             "Malformed distance value.");
@@ -276,6 +273,7 @@ public class AddNewSessionController {
 
             // add and save newly created LogEntry.
             try {
+                System.out.println(entryMap);
                 this.client.addLogEntry(entryMap);
                 goToStartPage(event);
             } catch (URISyntaxException
@@ -387,6 +385,7 @@ public class AddNewSessionController {
     }
 
     // Makes sure a field can only accept doubles in a certain range.
+    @SuppressWarnings("checkstyle:MagicNumber")
     private void validateFloatInput(final TextField field,
                                     final double maxValue) {
         field.textProperty().addListener((obs, oldValue, newValue) -> {
