@@ -10,15 +10,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.CategoryAxis;
-<<<<<<< HEAD
 import javafx.scene.chart.XYChart;
 import javafx.scene.chart.XYChart.Series;
-=======
-import javafx.scene.chart.LineChart;
-import javafx.scene.chart.NumberAxis;
-import javafx.scene.chart.StackedBarChart;
-import javafx.scene.chart.XYChart;
->>>>>>> 275a0394a7801ab5d102e10584433f0e71e89fcd
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
@@ -67,11 +60,8 @@ public class StatisticsController {
      * The bar chart.
      */
     @FXML
-<<<<<<< HEAD
     private BarChart<String, Number> statisticsChart;
-=======
-    private LineChart<String, Number> statisticsChart;
->>>>>>> 275a0394a7801ab5d102e10584433f0e71e89fcd
+
 
     @FXML
     private CategoryAxis xAxis;
@@ -87,7 +77,7 @@ public class StatisticsController {
     private final LogClient client = new LogClient("http://localhost", 8080);
 
     private ObservableList<String> exerciseTypeSelecter =
-            FXCollections.observableArrayList("running", "swimming",
+            FXCollections.observableArrayList("ANY", "running", "swimming",
                     "strength", "cycling");
 
     @FXML
@@ -123,9 +113,10 @@ public class StatisticsController {
     @FXML
     public void onHandleData() {
         ListBuilder listBuilder = new ListBuilder();
-        if (exerciseType.getValue() != null) {
+        if ((exerciseType.getValue() != null) && (exerciseType.getValue() != "ANY")) {
             listBuilder.category(exerciseType.getValue().toUpperCase());
         }
+
         listBuilder.date(start.getValue().toString() + "-" + end.getValue().toString());
         HashMap<String, String> dataEntries;
 
@@ -182,13 +173,10 @@ public class StatisticsController {
             } catch (IllegalStateException eae) {
                 errorLabel.setText("There are no sessions saved");
         }
-<<<<<<< HEAD
+
         this.createBarChart();
     }
-=======
 
-        
->>>>>>> 275a0394a7801ab5d102e10584433f0e71e89fcd
 
 
     @SuppressWarnings("Unchecked")
@@ -207,7 +195,6 @@ public class StatisticsController {
             dataEntries = this.client.getChartData(listBuilder);
             System.out.println(dataEntries);
 
-<<<<<<< HEAD
             for (String dataEntry : dataEntries.keySet()) {
                 switch (dataEntry) {
 
