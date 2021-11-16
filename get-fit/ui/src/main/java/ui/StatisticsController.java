@@ -9,8 +9,10 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.chart.CategoryAxis;
+import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.StackedBarChart;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
@@ -68,7 +70,7 @@ public class StatisticsController {
      * The bar chart.
      */
     @FXML
-    private StackedBarChart<String, Number> statisticsChart;
+    private LineChart<String, Number> statisticsChart;
 
     @FXML
     private DatePicker start, end;
@@ -188,25 +190,44 @@ public class StatisticsController {
                 errorLabel.setText("There are no sessions saved");
             }
         }
-    }
+
         
 
 
 
     //Unfinished function:
-    /*
-    private void createStackedBarChart(final String xLabel,
-                                       final Collection<String> category) {
+    
+    private void createStackedLineChart(final String xLabel,
+            final Collection<String> category) {
 
-        xAxis.setCategories(FXCollections.<String>observableArrayList(
+                dateEntries 
+
+                yAxis.setLabel("Hours");
+                RadioButton selectedRadioButton = (RadioButton) toggleGroup.getSelectedToggle();
+                if(selectedRadioButton.getText().equals("weeks")){
+                    xAxis.setLabel("weeks");
+                }
+                if(selectedRadioButton.getText().equals("months")){
+                    xAxis.setLabel("months");
+                }
+                if(selectedRadioButton.getText().equals("years")){
+                    xAxis.setLabel("years");
+                }
+                
+
+                    
+                };
+                                
+
+        /*xAxis.setCategories(FXCollections.<String>observableArrayList(
                 (Arrays.asList("test1", "test2"))));
         xAxis.setLabel(xLabel);
 
-        yAxis.setLabel("Hours");
 
         //Create chart when core is finished
         statisticsChart = new StackedBarChart<>(xAxis, yAxis);
         //for (LogEntry entry : App.entryManager) {
-        //final XYChart.Series<String, Number> series = new XYChart.Series<>();
-    }*/
+        //final XYChart.Series<String, Number> series = new XYChart.Series<>();*/
+    }
+}
 
