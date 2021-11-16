@@ -171,13 +171,13 @@ public final class EntryManager implements Iterable<LogEntry> {
      * also represented as HashMaps.
      *
      * @return The HashMap representing this EntryManager.
-     * @see LogEntry#toHashMap()
+     * @see LogEntry#toHash()
      */
     public HashMap<String, HashMap<String, String>> toHashMap() {
 
         HashMap<String, HashMap<String, String>> map = new HashMap<>();
 
-        this.forEach((entry) -> map.put(entry.getId(), entry.toHashMap()));
+        this.forEach((entry) -> map.put(entry.getId(), entry.toHash()));
 
         return map;
     }

@@ -1,6 +1,7 @@
 package core;
 
 import java.time.LocalDate;
+import java.util.HashMap;
 import java.time.Duration;
 
 import org.junit.jupiter.api.Assertions;
@@ -56,6 +57,49 @@ public class TestLogEntry {
         Assertions.assertEquals(feeling, entry.getFeeling());
         Assertions.assertEquals(distance, entry.getDistance());
         Assertions.assertEquals(maxHeartRate, entry.getMaxHeartRate());
+    }
+
+    @Test
+    public void teststringToSubcategory() {
+        for (CardioSubCategory subcategory : CardioSubCategory.values()) {
+            Assertions.assertEquals(subcategory, LogEntry.stringToSubcategory(subcategory.toString()));
+        }
+        for (StrengthSubCategory subcategory : StrengthSubCategory.values()) {
+            Assertions.assertEquals(subcategory, LogEntry.stringToSubcategory(subcategory.toString()));
+        }
+    }
+
+    @Test
+    public void testToHash() {
+        EntryBuilder builder = genValid();
+        LogEntry entry = new LogEntry(builder);
+        HashMap<String, String> hash = entry.toHash();
+        Assertions.assertEquals(entry.getTitle(), hash.get("title"));
+        Assertions.assertEquals(entry.getComment(), hash.get("comment"));
+        Assertions.assertEquals(entry.getDate().toString(), hash.get("date"));
+        Assertions.assertEquals(String.valueOf(entry.getDuration().toSeconds()), hash.get("duration"));
+        Assertions.assertEquals(entry.getFeeling(), Integer.parseInt(hash.get("feeling")));
+        Assertions.assertEquals(entry.getDistance(), Double.parseDouble(hash.get("distance")));
+        Assertions.assertEquals(entry.getMaxHeartRate(), Integer.parseInt(hash.get("maxHeartRate")));
+        Assertions.assertEquals(entry.getExerciseCategory().toString(), hash.get("exerciseCategory"));
+        Assertions.assertEquals(entry.getExerciseSubCategory().toString(), hash.get("exerciseSubCategory"));
+    }
+
+    @Test
+    public void testFromHash() {
+        EntryBuilder builder = genValid();
+        LogEntry entry = new LogEntry(builder);
+        HashMap<String, String> hash = entry.toHash();
+        LogEntry entry2 = LogEntry.fromHash(hash);
+        Assertions.assertEquals(entry.getTitle(), entry2.getTitle());
+        Assertions.assertEquals(entry.getComment(), entry2.getComment());
+        Assertions.assertEquals(entry.getDate(), entry2.getDate());
+        Assertions.assertEquals(entry.getDuration(), entry2.getDuration());
+        Assertions.assertEquals(entry.getFeeling(), entry2.getFeeling());
+        Assertions.assertEquals(entry.getDistance(), entry2.getDistance());
+        Assertions.assertEquals(entry.getMaxHeartRate(), entry2.getMaxHeartRate());
+        Assertions.assertEquals(entry.getExerciseCategory(), entry2.getExerciseCategory());
+        Assertions.assertEquals(entry.getExerciseSubCategory(), entry2.getExerciseSubCategory());
     }
 
     @Test

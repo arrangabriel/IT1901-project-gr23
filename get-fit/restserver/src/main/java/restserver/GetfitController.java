@@ -44,7 +44,7 @@ public class GetfitController {
     public String getLogEntry(final @PathVariable("entryId") String id) {
         JSONObject returnObject;
         try {
-            returnObject = new JSONObject(getfitService.getEntryManager().getEntry(id).toHashMap());
+            returnObject = new JSONObject(getfitService.getEntryManager().getEntry(id).toHash());
         } catch (IllegalArgumentException e) {
             throw new NoSuchElementException(HttpStatus.NOT_FOUND + "Entry not found" + e);
         }
@@ -130,7 +130,7 @@ public class GetfitController {
         JSONArray entryArray = new JSONArray();
 
         for (LogEntry entry : returnList) {
-            entryArray.put(entry.toHashMap());
+            entryArray.put(entry.toHash());
         }
 
         returnJSON.put("entries", entryArray);

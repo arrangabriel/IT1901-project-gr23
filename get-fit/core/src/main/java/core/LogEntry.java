@@ -268,7 +268,7 @@ public final class LogEntry {
      *
      * @return The hasmap representing this LogEntry.
      */
-    public HashMap<String, String> toHashMap() {
+    public HashMap<String, String> toHash() {
 
         HashMap<String, String> map = new HashMap<>();
 
