@@ -195,10 +195,12 @@ public class StartPageController {
 
         listOfEntries.getItems().clear();
         // Gather query information
-        String sort = sortConfig.getValue();
-        String categoryFilter = sortCategory.getValue();
+        String sort = sortConfig.getValue().toLowerCase();
+        String categoryFilter = sortCategory.getValue().toLowerCase();
         String subFilter = sortSubcategory.getValue();
-        // boolean reverse = reverseBox.isSelected();
+        if (subFilter != null) {
+            subFilter = subFilter.toLowerCase();
+        }
 
         ListBuilder builder = new ListBuilder().sort(sort).category(categoryFilter).subCategory(subFilter);
 
@@ -304,7 +306,7 @@ public class StartPageController {
     }
 
     private void setOptionalField(final String data, final Text textField, final Text textLabel) {
-        if (data != null) {
+        if (data != "null") {
             textField.setText(data);
             textField.setVisible(true);
             textLabel.setVisible(true);
@@ -323,7 +325,7 @@ public class StartPageController {
     @FXML
     public void replaceSubcategories(final Event event) {
         // hide and clear subcategories when there should be none.
-        if (sortCategory.getValue().equals("ANY")) {
+        if (sortCategory.getValue().equals("Any")) {
             sortSubcategory.setItems(FXCollections.observableArrayList());
             sortSubcategory.setVisible(false);
         } else {
@@ -367,22 +369,22 @@ public class StartPageController {
         ObservableList<String> sortConfigs = FXCollections.observableArrayList();
 
         ObservableList<String> sortCategories = FXCollections.observableArrayList();
-        sortCategories.add("ANY");
+        sortCategories.add("Any");
         sortStrengthSubcategories = FXCollections.observableArrayList();
-        sortStrengthSubcategories.add("ANY");
+        sortStrengthSubcategories.add("Any");
         sortCardioSubcategories = FXCollections.observableArrayList();
-        sortCardioSubcategories.add("ANY");
+        sortCardioSubcategories.add("Any");
 
-        sortConfigs.add("title");
-        sortConfigs.add("date");
-        sortConfigs.add("duration");
+        sortConfigs.add("Title");
+        sortConfigs.add("Date");
+        sortConfigs.add("Duration");
 
         HashMap<String, List<String>> filters;
         try {
             filters = this.client.getExerciseCategories();
             sortCategories.addAll(filters.keySet().stream().map(this::capitalize).collect(Collectors.toList()));
-            sortStrengthSubcategories.addAll(filters.get("Strength").stream().map(this::capitalize).collect(Collectors.toList()));
-            sortCardioSubcategories.addAll(filters.get("Running").stream().map(this::capitalize).collect(Collectors.toList()));
+            sortStrengthSubcategories.addAll(filters.get("strength").stream().map(this::capitalize).collect(Collectors.toList()));
+            sortCardioSubcategories.addAll(filters.get("running").stream().map(this::capitalize).collect(Collectors.toList()));
 
             sortConfig.setItems(sortConfigs);
             sortConfig.getSelectionModel().selectFirst();
