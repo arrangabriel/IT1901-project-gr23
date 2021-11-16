@@ -189,8 +189,8 @@ public class StartPageController {
     }
 
     /**
-     * Updates the log entry list by querying the server using selected params from
-     * the dropdown menus.
+     * Updates the log entry list by querying the server
+     * using selected params from the dropdown menus.
      */
     public void updateList() {
         errorLabel.setText("");
@@ -218,7 +218,9 @@ public class StartPageController {
             for (HashMap<String, String> entry : entries) {
                 this.listOfEntries.getItems().add(createListEntry(entry));
             }
-        } catch (URISyntaxException | InterruptedException | ExecutionException e) {
+        } catch (URISyntaxException
+                | InterruptedException
+                | ExecutionException e) {
             retry("updateList");
             errorLabel.setText("Could not connect to server");
             e.printStackTrace();
@@ -257,7 +259,6 @@ public class StartPageController {
             durationView.setText(durationToHours(
                     Duration.ofSeconds(Long.parseLong(entry.get("duration")))));
             feelingView.setText(String.valueOf(entry.get("feeling")));
-            System.out.println(entry.get("distance"));
             setOptionalField(entry.get("distance"), distanceView,
                     distanceLabel);
             setOptionalField(entry.get("maxHeartRate"), heartRateView,
@@ -278,7 +279,9 @@ public class StartPageController {
         delete.setOnAction(e -> {
             try {
                 this.client.deleteLogEntry(entry.get("id"));
-            } catch (URISyntaxException | InterruptedException | ExecutionException e1) {
+            } catch (URISyntaxException
+                    | InterruptedException
+                    | ExecutionException e1) {
                 errorLabel.setText("Could not connect to server");
                 e1.printStackTrace();
             } catch (ServerResponseException e1) {
