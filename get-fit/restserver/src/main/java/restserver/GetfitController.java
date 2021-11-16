@@ -23,6 +23,7 @@ import org.springframework.web.server.ResponseStatusException;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -36,7 +37,7 @@ import java.util.NoSuchElementException;
 
 public class GetfitController {
 
-    @Autowired
+    //@Autowired
     private final GetfitService getfitService = new GetfitService();
 
     @GetMapping(value="/{entryId}", produces = "application/json")
@@ -204,6 +205,26 @@ public class GetfitController {
         return JSONreturn.toString();
     }
 
+    @GetMapping(value="/chart", produces = "application/json")
+    @ResponseBody
+    public String getChartData(
+        final @RequestParam(value = "d") String date) {
+        
+        List<String> categorylist = Arrays.asList(
+            "swimming", "running", "strength", "cycling");
+        
+        HashMap<String, String> map = new HashMap<>();
+
+        for (String category : categorylist) {
+            map.put(category, Integer.toString(Statistics.getCount(
+                getfitService.getEntryManager(), 
+                category.toUpperCase(),
+                date)));
+        }
+        JSONObject JSONreturn = new JSONObject(map);
+
+        return JSONreturn.toString();
+    }
 
     @PostMapping(value="/add", produces = "application/json")
     public String addLogEntry(final @RequestBody String logEntry) {
