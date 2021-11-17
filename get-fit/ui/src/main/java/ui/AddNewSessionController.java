@@ -308,7 +308,7 @@ public class AddNewSessionController {
                 errorLabel.setText("Title is needed.");
             } else {
                 // case 2, durations are empty.
-                errorLabel.setText(e.getMessage());
+                errorLabel.setText("Must train for some time.");
             }
         }
     }
