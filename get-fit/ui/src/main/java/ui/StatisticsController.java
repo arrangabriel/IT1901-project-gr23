@@ -113,7 +113,6 @@ public class StatisticsController {
 
         try {
             dataEntries = this.client.getStatistics(listBuilder);
-            System.out.println(dataEntries);
 
             if (dataEntries.containsKey("empty")) {
                 if(dataEntries.get("empty").equals("True")) {
@@ -184,7 +183,6 @@ public class StatisticsController {
 
         try {
             dataEntries = this.client.getChartData(listBuilder);
-            System.out.println(dataEntries);
 
             for (String dataEntry : dataEntries.keySet()) {
                 switch (dataEntry) {
