@@ -250,11 +250,12 @@ public class AddNewSessionController {
             }
 
             String distanceString = distance.getText();
-            if (distanceString.equals("")) {
+            if (distanceString.isEmpty()) {
                 distanceValue = "null";
             } else {
                 try {
                     Double.parseDouble(distanceString);
+                    distanceValue = distanceString;
                 } catch (NumberFormatException e) {
                     throw new IllegalArgumentException(
                             "Malformed distance value.");
@@ -326,10 +327,9 @@ public class AddNewSessionController {
     /**
      * Changes ui according to the selected exercise category.
      *
-     * @param ignored an ActionEvent from the observed change.
      */
     @FXML
-    public void handleTagsSelector(final ActionEvent ignored) {
+    public void handleTagsSelector() {
 
         String mainCategory =
                 exerciseType.getSelectionModel().getSelectedItem()
@@ -386,6 +386,7 @@ public class AddNewSessionController {
     }
 
     // Makes sure a field can only accept doubles in a certain range.
+    @SuppressWarnings("checkstyle:MagicNumber")
     private void validateFloatInput(final TextField field,
                                     final double maxValue) {
         field.textProperty().addListener((obs, oldValue, newValue) -> {
@@ -470,7 +471,7 @@ public class AddNewSessionController {
         setCardio(false);
         sessionDatePicker.setValue(LocalDate.now());
 
-        handleTagsSelector(null);
+        handleTagsSelector();
 
         // validation of fields when they are changed.
         validateIntegerInput(hour, MAX_HOURS);
