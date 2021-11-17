@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import core.EntryManager;
 import core.LogEntry;
 import core.LogEntry.EntryBuilder;
+import core.ExerciseCategory; 
 
 public class TestStatistics {
 
@@ -24,7 +25,7 @@ public class TestStatistics {
     private EntryBuilder genValidEntryBuilder(
         Duration duration,
          Double distance,
-          LogEntry.EXERCISECATEGORY exerciseCategory,
+         ExerciseCategory exerciseCategory,
            Integer feeling) {
         
         String title = "Test";
@@ -45,7 +46,7 @@ public class TestStatistics {
         EntryManager manager = genValidEntryManager();
         EntryBuilder builder = genValidEntryBuilder(
             Duration.ofSeconds(hour),
-             10.0, LogEntry.EXERCISECATEGORY.RUNNING, 1);
+             10.0, ExerciseCategory.RUNNING, 1);
 
         String id = manager.addEntry(builder.build());
         Assertions.assertEquals(1, Statistics.getCount(manager,"RUNNING", date));
@@ -58,8 +59,8 @@ public class TestStatistics {
     @Test
     public void testGetTotalDuration() {
         EntryManager manager = genValidEntryManager();
-        EntryBuilder builder1 = genValidEntryBuilder(Duration.ofSeconds(hour), 10.0, LogEntry.EXERCISECATEGORY.RUNNING, 1);
-        EntryBuilder builder2 = genValidEntryBuilder(Duration.ofSeconds(2 * hour), 10.0, LogEntry.EXERCISECATEGORY.RUNNING, 1);
+        EntryBuilder builder1 = genValidEntryBuilder(Duration.ofSeconds(hour), 10.0, ExerciseCategory.RUNNING, 1);
+        EntryBuilder builder2 = genValidEntryBuilder(Duration.ofSeconds(2 * hour), 10.0, ExerciseCategory.RUNNING, 1);
         manager.addEntry(builder1.build());
         manager.addEntry(builder2.build());
         //Compares with 3 hours which equals 10800 seconds. 
@@ -69,8 +70,8 @@ public class TestStatistics {
     @Test
     public void testGetAverageDuration() {
         EntryManager manager = genValidEntryManager();
-        EntryBuilder builder1 = genValidEntryBuilder(Duration.ofSeconds(hour), 10.0, LogEntry.EXERCISECATEGORY.RUNNING, 1);
-        EntryBuilder builder2 = genValidEntryBuilder(Duration.ofSeconds(2 * hour), 10.0, LogEntry.EXERCISECATEGORY.RUNNING, 1);
+        EntryBuilder builder1 = genValidEntryBuilder(Duration.ofSeconds(hour), 10.0, ExerciseCategory.RUNNING, 1);
+        EntryBuilder builder2 = genValidEntryBuilder(Duration.ofSeconds(2 * hour), 10.0, ExerciseCategory.RUNNING, 1);
         manager.addEntry(builder1.build());
         manager.addEntry(builder2.build());
         //Compares with 1.5 hours which is equal to  
@@ -80,10 +81,10 @@ public class TestStatistics {
     @Test
     public void testGetAverageSpeed() {
         EntryManager manager = genValidEntryManager();
-        EntryBuilder builder1 = genValidEntryBuilder(Duration.ofSeconds(hour), 5.0, LogEntry.EXERCISECATEGORY.RUNNING, 1);
-        EntryBuilder builder2 = genValidEntryBuilder(Duration.ofSeconds(2 * hour), 10.0, LogEntry.EXERCISECATEGORY.RUNNING, 1);
-        EntryBuilder builder3 = genValidEntryBuilder(Duration.ofSeconds(3 * hour), 15.0, LogEntry.EXERCISECATEGORY.STRENGTH, 1);
-        EntryBuilder builder4 = genValidEntryBuilder(Duration.ofSeconds(3 * hour), 40.0, LogEntry.EXERCISECATEGORY.CYCLING, 1);
+        EntryBuilder builder1 = genValidEntryBuilder(Duration.ofSeconds(hour), 5.0, ExerciseCategory.RUNNING, 1);
+        EntryBuilder builder2 = genValidEntryBuilder(Duration.ofSeconds(2 * hour), 10.0, ExerciseCategory.RUNNING, 1);
+        EntryBuilder builder3 = genValidEntryBuilder(Duration.ofSeconds(3 * hour), 15.0, ExerciseCategory.STRENGTH, 1);
+        EntryBuilder builder4 = genValidEntryBuilder(Duration.ofSeconds(3 * hour), 40.0, ExerciseCategory.CYCLING, 1);
         manager.addEntry(builder1.build());
         manager.addEntry(builder2.build());
         manager.addEntry(builder3.build());
@@ -96,9 +97,9 @@ public class TestStatistics {
     @Test
     public void testGetAverageFeeling() {
         EntryManager manager = genValidEntryManager();
-        EntryBuilder builder1 = genValidEntryBuilder(Duration.ofSeconds(hour), 10.0, LogEntry.EXERCISECATEGORY.RUNNING, 1);
-        EntryBuilder builder2 = genValidEntryBuilder(Duration.ofSeconds(hour), 10.0, LogEntry.EXERCISECATEGORY.RUNNING, 10);
-        EntryBuilder builder3 = genValidEntryBuilder(Duration.ofSeconds(hour), 10.0, LogEntry.EXERCISECATEGORY.RUNNING, 7);
+        EntryBuilder builder1 = genValidEntryBuilder(Duration.ofSeconds(hour), 10.0, ExerciseCategory.RUNNING, 1);
+        EntryBuilder builder2 = genValidEntryBuilder(Duration.ofSeconds(hour), 10.0, ExerciseCategory.RUNNING, 10);
+        EntryBuilder builder3 = genValidEntryBuilder(Duration.ofSeconds(hour), 10.0, ExerciseCategory.RUNNING, 7);
 
         manager.addEntry(builder1.build());
         manager.addEntry(builder2.build());
@@ -110,9 +111,9 @@ public class TestStatistics {
     @Test
     public void testGetMaximumHr() {
         EntryManager manager = genValidEntryManager();
-        EntryBuilder builder1 = genValidEntryBuilder(Duration.ofSeconds(hour), 10.0, LogEntry.EXERCISECATEGORY.RUNNING, 1);
-        EntryBuilder builder2 = genValidEntryBuilder(Duration.ofSeconds(hour), 10.0, LogEntry.EXERCISECATEGORY.RUNNING, 10);
-        EntryBuilder builder3 = genValidEntryBuilder(Duration.ofSeconds(hour), 10.0, LogEntry.EXERCISECATEGORY.RUNNING, 7);
+        EntryBuilder builder1 = genValidEntryBuilder(Duration.ofSeconds(hour), 10.0, ExerciseCategory.RUNNING, 1);
+        EntryBuilder builder2 = genValidEntryBuilder(Duration.ofSeconds(hour), 10.0, ExerciseCategory.RUNNING, 10);
+        EntryBuilder builder3 = genValidEntryBuilder(Duration.ofSeconds(hour), 10.0, ExerciseCategory.RUNNING, 7);
 
         builder1.maxHeartRate(130);
         builder2.maxHeartRate(200);

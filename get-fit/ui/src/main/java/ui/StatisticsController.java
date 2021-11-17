@@ -120,7 +120,7 @@ public class StatisticsController {
         Scene s = new Scene(p);
         Stage window =
                 (Stage) ((Node) event.getSource()).getScene().getWindow();
-        window.setTitle("Start page");
+        window.setTitle("Get fit");
         window.setScene(s);
         window.show();
     }

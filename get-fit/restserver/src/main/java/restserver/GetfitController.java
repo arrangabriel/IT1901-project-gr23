@@ -7,6 +7,7 @@ import core.LogEntry;
 import core.SortConfiguration;
 import core.StrengthSubCategory;
 import core.Subcategory;
+import core.ExerciseCategory; 
 import math.Statistics;
 import org.json.JSONArray;
 import org.json.JSONObject;

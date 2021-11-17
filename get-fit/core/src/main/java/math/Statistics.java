@@ -2,6 +2,8 @@ package math;
 
 import core.EntryManager;
 import core.LogEntry;
+import core.SortConfiguration;
+import core.ExerciseCategory;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -173,8 +175,7 @@ public final class Statistics {
             final String category,
             final String date) {
 
-        LogEntry.SORTCONFIGURATIONS sortConfiguration = LogEntry.
-                SORTCONFIGURATIONS.DATE;
+                SortConfiguration sortConfiguration = SortConfiguration.DATE;
                 
 
         EntryManager.SortedIteratorBuilder iteratorBuilder =
@@ -187,7 +188,7 @@ public final class Statistics {
             LocalDate.parse(date.substring(0, 10)),
             LocalDate.parse(date.substring(11))).
             filterExerciseCategory(
-            LogEntry.EXERCISECATEGORY.valueOf(category)).
+            ExerciseCategory.valueOf(category)).
             iterator(false);
 
             List<LogEntry> entries = new ArrayList<>();
