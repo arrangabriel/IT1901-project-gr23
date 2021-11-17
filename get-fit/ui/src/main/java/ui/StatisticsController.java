@@ -9,8 +9,6 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.chart.BarChart;
-import javafx.scene.chart.CategoryAxis;
-import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.chart.XYChart.Series;
 import javafx.scene.control.Button;
@@ -29,11 +27,6 @@ import client.LogClient;
 import client.ServerResponseException;
 import client.LogClient.ListBuilder;
 
-/*
----------------------------------------
-This component is for a future release.
----------------------------------------
- */
 
 public class StatisticsController {
 
@@ -75,8 +68,8 @@ public class StatisticsController {
     private final LogClient client = new LogClient("http://localhost", 8080);
 
     private ObservableList<String> exerciseTypeSelecter =
-            FXCollections.observableArrayList("ANY", "running", "swimming",
-                    "strength", "cycling");
+            FXCollections.observableArrayList("Any", "Running", "Swimming",
+                    "Strength", "Cycling");
 
     @FXML
     private void initialize() {
@@ -111,7 +104,7 @@ public class StatisticsController {
     @FXML
     public void onHandleData() {
         ListBuilder listBuilder = new ListBuilder();
-        if ((exerciseType.getValue() != null) && (exerciseType.getValue() != "ANY")) {
+        if ((exerciseType.getValue() != null) && (exerciseType.getValue() != "Any")) {
             listBuilder.category(exerciseType.getValue().toUpperCase());
         }
 

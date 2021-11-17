@@ -37,7 +37,7 @@ import java.util.NoSuchElementException;
 
 public class GetfitController {
 
-    //@Autowired
+
     private final GetfitService getfitService = new GetfitService();
 
     @GetMapping(value="/{entryId}", produces = "application/json")
@@ -53,7 +53,7 @@ public class GetfitController {
 
     @GetMapping(value="/filters", produces="application/json")
     public String getFilters() {
-        //HashMap<String, String> filters = new HashMap<>();
+        
         JSONObject filters = new JSONObject();
         JSONObject categories = new JSONObject();
 
