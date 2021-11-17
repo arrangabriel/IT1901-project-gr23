@@ -4,8 +4,9 @@
  * Button                                                                      *
  *                                                                             *
  ******************************************************************************/
-TextField {
+TextField, TextArea, DatePicker, ComboBox, Button {
     -fx-border-color: black;
+    -fx-border-radius: 0px;
 }
 
 .button {
