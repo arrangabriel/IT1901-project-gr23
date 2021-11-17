@@ -40,6 +40,11 @@ public class GetfitController {
     //@Autowired
     private final GetfitService getfitService = new GetfitService();
 
+    /**
+     * Gets the entry given by the inputed id.
+     * @param id the entry id
+     * @return The entry returned as a String.
+     */
     @GetMapping(value="/{entryId}", produces = "application/json")
     public String getLogEntry(final @PathVariable("entryId") String id) {
         JSONObject returnObject;
@@ -51,6 +56,10 @@ public class GetfitController {
         return returnObject.toString();
     }
 
+    /**
+     * Gets the possible ways to filter logEntry as a string.
+     * @return The filters
+     */
     @GetMapping(value="/filters", produces="application/json")
     public String getFilters() {
         //HashMap<String, String> filters = new HashMap<>();
@@ -69,6 +78,16 @@ public class GetfitController {
         return filters.toString();
     }
 
+    /**
+     * Gets the entries which fit into the given filters
+     *  and sorting criteria.
+     * @param sortType Type to sort by (ex: date).
+     * @param reverse Reverse sorting True/False.
+     * @param category Category to filter by.
+     * @param subcategory Subcategory to filter by.
+     * @param date Date to filter by.
+     * @return Sorted entries that matches the filters.
+     */
     @GetMapping(value="/list", produces = "application/json")
     @ResponseBody
     public String getListOfLogEntries(
@@ -138,6 +157,11 @@ public class GetfitController {
         return returnJSON.toString();
     }
 
+    /**
+     * It adds the entry to the entry manager in GetfitService.
+     * @param logEntry the entry to add.
+     * @return The id of the added entry.
+     */
     @PostMapping(value="/add", produces = "application/json")
     public String addLogEntry(final @RequestBody String logEntry) {
 
@@ -146,7 +170,12 @@ public class GetfitController {
         return "{\"id\":\"" + id + "\" }";
     }
 
-
+    /**
+     * Replaces the already existing entry with this entry,
+     *  but keeps the same id.
+     * @param id the id of the entry to swap.
+     * @param logEntry the new entry.
+     */
     @PostMapping(value="edit/{entryId}", produces = "application/json")
     public void editLogEntry(final @PathVariable("entryId") String id,
                              final @RequestBody String logEntry) {
@@ -154,7 +183,11 @@ public class GetfitController {
         getfitService.save();
     }
 
-
+    /**
+     *  The logEntry with the same id as the input,
+     *  is removed from the entryManager.
+     * @param id The id of the entry to remove.
+     */
     @PostMapping(value="remove/{entryId}", produces = "application/json")
     public void removeLogEntry(final @PathVariable("entryId") String id) {
         if (getfitService.getEntryManager().removeEntry(id)) {
@@ -185,7 +218,11 @@ public class GetfitController {
 
     }
 
-
+    /**
+     * Handles IllegalArgumentException
+     * @param ia IllegalAccessException
+     * @return The exception message as a String.
+     */
     @ExceptionHandler(IllegalArgumentException.class)
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
     @ResponseBody
@@ -194,6 +231,11 @@ public class GetfitController {
         return ia.getMessage();
     }
 
+    /**
+     * Handles IOException.
+     * @param io IOException.
+     * @return The exception message as a String.
+     */
     @ExceptionHandler(IOException.class)
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
     @ResponseBody
@@ -201,6 +243,11 @@ public class GetfitController {
         return io.getMessage();
     }
 
+    /**
+     * Handles IllegalArgumentException.
+     * @param rse NoSuchElementException
+     * @return The exception message as a String.
+     */
     @ExceptionHandler(NoSuchElementException.class)
     @ResponseStatus(value = HttpStatus.NOT_FOUND)
     @ResponseBody
