@@ -210,9 +210,9 @@ public class AddNewSessionController {
             try {
                 duration = String.valueOf(
                         Duration.ofHours(Integer.parseInt(
-                                        hour.getText() != "" ? hour.getText() : "0"))
+                                        hour.getText() != null ? hour.getText() : "0"))
                                 .plusMinutes(Integer.parseInt(
-                                        min.getText() != "" ? min.getText() :
+                                        min.getText() != null ? min.getText() :
                                                 "0"))
                                 .getSeconds());
                 if (duration == "0") {
