@@ -2,6 +2,8 @@ package ui;
 
 import client.LogClient;
 import client.ServerResponseException;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -479,6 +481,15 @@ public class AddNewSessionController {
         validateIntegerInput(hour, MAX_HOURS);
         validateIntegerInput(min, MAX_MINUTES);
         validateFloatInput(distance, MAX_DISTANCE);
+
+        Timeline remove = new Timeline(new KeyFrame(javafx.util.Duration.seconds(5),
+                event -> errorLabel.setText("")));
+
+        errorLabel.textProperty().addListener((obs, oldValue, newValue) -> {
+            if (!newValue.equals("")) {
+                remove.play();
+            }
+        });
 
         heartRate.textProperty().addListener((obs, oldVal, newVal) -> {
             if (!newVal.isEmpty()) {
