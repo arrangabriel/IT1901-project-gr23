@@ -324,10 +324,9 @@ public class AddNewSessionController {
     /**
      * Changes ui according to the selected exercise category.
      *
-     * @param ignored an ActionEvent from the observed change.
      */
     @FXML
-    public void handleTagsSelector(final ActionEvent ignored) {
+    public void handleTagsSelector() {
 
         String mainCategory =
                 exerciseType.getSelectionModel().getSelectedItem()
@@ -469,7 +468,7 @@ public class AddNewSessionController {
         setCardio(false);
         sessionDatePicker.setValue(LocalDate.now());
 
-        handleTagsSelector(null);
+        handleTagsSelector();
 
         // validation of fields when they are changed.
         validateIntegerInput(hour, MAX_HOURS);
