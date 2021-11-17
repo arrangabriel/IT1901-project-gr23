@@ -10,6 +10,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.CategoryAxis;
+import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.chart.XYChart.Series;
 import javafx.scene.control.Button;
@@ -61,10 +62,7 @@ public class StatisticsController {
      */
     @FXML
     private BarChart<String, Number> statisticsChart;
-
-
-    @FXML
-    private CategoryAxis xAxis;
+    
 
     @FXML
     private DatePicker start, end;
@@ -221,7 +219,7 @@ public class StatisticsController {
             errorLabel.setText(e.getMessage());
         } catch (IllegalStateException eae) {
             errorLabel.setText("There are no sessions saved");
-        }        
+        }
 
         Series<String, Number> chart = new XYChart.Series<>();
 		

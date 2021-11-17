@@ -2,7 +2,6 @@
 
 <?import javafx.scene.chart.BarChart?>
 <?import javafx.scene.chart.CategoryAxis?>
-<?import javafx.scene.chart.LineChart?>
 <?import javafx.scene.chart.NumberAxis?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
@@ -41,7 +40,7 @@
         <DatePicker fx:id="end" editable="false" layoutX="179.0" layoutY="77.0" prefHeight="27.0" prefWidth="90.0" promptText="dd:mm:yyyy" />
         <Label layoutX="57.0" layoutY="62.0" text="Start" />
         <Label layoutX="184.0" layoutY="61.0" text="End" />
-      <Button layoutX="394.0" layoutY="346.0" mnemonicParsing="false" onAction="#onHandleData" prefHeight="33.0" prefWidth="82.0" text="Show" />
+      <Button layoutX="394.0" layoutY="346.0" mnemonicParsing="false" onAction="#onHandleData" prefHeight="33.0" prefWidth="82.0" text="Enter" />
       <Label fx:id="errorLabel" layoutX="401.0" layoutY="50.0" prefHeight="17.0" prefWidth="184.0" textFill="#eb0b0b">
          <font>
             <Font size="10.0" />
