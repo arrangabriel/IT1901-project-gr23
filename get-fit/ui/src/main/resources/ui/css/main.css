@@ -4,6 +4,9 @@
  * Button                                                                      *
  *                                                                             *
  ******************************************************************************/
+TextField {
+    -fx-border-color: black;
+}
 
 .button {
     -fx-skin: "com.sun.javafx.scene.control.skin.ButtonSkin";
