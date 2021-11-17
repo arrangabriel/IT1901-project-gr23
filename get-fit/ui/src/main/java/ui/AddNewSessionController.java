@@ -209,9 +209,12 @@ public class AddNewSessionController {
             // checks if duration fields have values.
             try {
                 duration = String.valueOf(
-                        Duration.ofHours(Integer.parseInt(hour.getText()))
-                                .plusMinutes(Integer.parseInt(min.getText()))
+                        Duration.ofHours(Integer.parseInt(hour.getText() != "" ? hour.getText() : "0"))
+                                .plusMinutes(Integer.parseInt(min.getText() != "" ? min.getText() : "0"))
                                 .getSeconds());
+                if (duration == "0") {
+                    throw new NumberFormatException(); // Equates to duration being nothing which is not a number.
+                }
             } catch (NumberFormatException e) {
                 throw new IllegalArgumentException("Duration must be set.");
             }
