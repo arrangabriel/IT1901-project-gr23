@@ -3,13 +3,18 @@ package ui;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import com.github.tomakehurst.wiremock.client.WireMock;
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
+import com.github.tomakehurst.wiremock.matching.UrlPattern;
+
 import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
 import static com.github.tomakehurst.wiremock.client.WireMock.post;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
+import static com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo;
+import static com.github.tomakehurst.wiremock.client.WireMock.urlPathMatching;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
+import static com.github.tomakehurst.wiremock.client.WireMock.postRequestedFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.containing;
 
 
@@ -58,7 +63,7 @@ public class AppTest extends ApplicationTest {
 
         stubFor(get(urlEqualTo("/api/v1/entries/list?r=false&s=title&c=any"))
                 .willReturn(aResponse().withStatus(200).withHeader("Content-Type", "aplication/json").withBody(body2)));
-        String body = "{\"categories\": {\"strength\": [\"push\",\"pull\"],\"running\": [\"short\",\"highintensity\"],\"cycling\": [\"short\",\"highintensity\"]}}";
+        String body = "{\"categories\": {\"strength\": [\"Push\",\"pull\",\"fullbody\",\"legs\"],\"running\": [\"short\",\"highintensity\",\"long\",\"lowintensity\"],\"cycling\": [\"short\",\"highintensity\",\"long\",\"lowintensity\"],\"swimming\": [\"short\",\"highintensity\",\"long\",\"lowintensity\"]}}";
         stubFor(get(urlEqualTo("/api/v1/entries/filters"))
                 .willReturn(aResponse().withStatus(200).withHeader("Content-Type", "aplication/json").withBody(body)));
                  
@@ -135,28 +140,16 @@ public class AppTest extends ApplicationTest {
         clickOn("#commentField");
         write(comment);
 
-        String body3 = "{\"id\": \"0\"}";
-        stubFor(post(urlEqualTo("/api/v1/entries/add"))
-                .withRequestBody(containing("title="+title))
-                .withRequestBody(containing("comment="+comment))
-                .withRequestBody(containing(java.util.Calendar.getInstance().getTime().toString()))
-                .withRequestBody(containing("feeling=null"))
-                .withRequestBody(containing("duration=" + 
-                String.valueOf((Integer.parseInt(hour)*60+ Integer.parseInt(min))*60).toString()))
-                .withRequestBody(containing("distance="+distance))
-                .withRequestBody(containing("maxHeartRate="+hr))
-                .withRequestBody(containing("exerciseCategory="+type))
-                .withRequestBody(containing("exerciseSubCategory="+sub))
-                .willReturn(aResponse().withStatus(200).withHeader("Content-Type", "aplication/json").withBody(body3)));
+
 
         click("Create session");
+
     }
 
 
     @Test
     public void testCreateButton() throws IOException {
         updateRoot();
-        int oldCount = getEntriesView().getItems().size();
 
         click("Add workout");
         clickOn("#titleField");
@@ -167,28 +160,22 @@ public class AppTest extends ApplicationTest {
         clickOn("#min");
         write("30");
         clickOn("#exerciseType");
+
         clickOn("#heartRate");
         write("150");
         clickOn("#commentField");
         write("New comment");
-
         String body3 = "{\"id\": \"0\"}";
-        stubFor(post(urlEqualTo("/api/v1/entries/add"))
-                .withRequestBody(containing("title=New new Session"))
-                .withRequestBody(containing("comment=New comment"))
-                .withRequestBody(containing(java.util.Calendar.getInstance().getTime().toString()))
-                .withRequestBody(containing("feeling=null"))
-                .withRequestBody(containing("duration=5400"))
-                .withRequestBody(containing("distance=null"))
-                .withRequestBody(containing("maxHeartRate=150"))
-                .withRequestBody(containing("exerciseCategory=RUNNING"))
-                .withRequestBody(containing("exerciseSubCategory=null"))
-                .willReturn(aResponse().withStatus(200).withHeader("Content-Type", "aplication/json").withBody(body3)));
-        
+
+        UrlPattern externalUrl = urlPathMatching("/api/v1/entries/add");
+        stubFor(post(externalUrl));
+
         click("Create session");
-        sleep(1000);
-                 
-        //Assertions.assertEquals(oldCount + 1, getEntriesView().getItems().size());
+
+        mockServer.verify(1, postRequestedFor(externalUrl)
+        );
+  
+ 
 
     }
 
@@ -215,13 +202,20 @@ public class AppTest extends ApplicationTest {
 
     @Test
     public void varietyCreation() throws IOException {
-        addEntryClicking("Push", "I did bench presses as well as some push-ups",
-                "1", "45", "STRENGTH", "90", "PUSH", null);
-        addEntryClicking("Cardio", "I ran a while",
-                "3", "30", "RUNNING", "200", "LONG", "6");
-        addEntryClicking("Swimming", "Did a couple of laps",
-                "1", "00", "SWIMMING", "220", "HIGHINTENSITY", "10");
 
+        String body3 = "{\"id\": \"0\"}";
+        UrlPattern externalUrl = urlPathMatching("/api/v1/entries/add");
+        stubFor(post(externalUrl).willReturn(aResponse().withBody(body3).withStatus(200)));
+
+
+        addEntryClicking("Gainzz", "I did bench presses as well as some push-ups",
+        "1", "45", "Strength", "90", "Push", null);
+        addEntryClicking("Cardio", "I ran a while",
+        "3", "30", "Running", "200", "Long", "6");
+        addEntryClicking("Laps", "Did a couple of laps",
+        "1", "00", "Swimming", "220", "Highintensity", "10");
+        
+        mockServer.verify(3, postRequestedFor(externalUrl));
 
         //checkView();
     }
@@ -264,18 +258,44 @@ public class AppTest extends ApplicationTest {
                 .willReturn(aResponse().withStatus(200).withHeader("Content-Type", "aplication/json").withBody(body)));
 
         click("Create session");
-        //Assertions.assertEquals("Get fit", this.stageRef.getTitle());
-    }
-
-    @Test
-    public void testDelete() {
-        stubFor(post(urlEqualTo("/api/v1/entries/remove/0"))
-                .willReturn(aResponse().withStatus(200).withHeader("Content-Type", "aplication/json")));
-        click("Delete");
         
     }
 
     @Test
+    public void testDelete() {
+
+        UrlPattern externalUrl = urlPathMatching("/api/v1/entries/remove/0");
+        stubFor(post(externalUrl));
+
+        click("Delete");
+        mockServer.verify(1, postRequestedFor(externalUrl)); 
+    }
+
+    /*@Test
+    public void testFiters(){
+        UrlPattern externalUrl;
+        externalUrl = urlPathMatching("/api/v1/entries/list?r=false&s=date&c=any");
+        stubFor(post(externalUrl));
+        clickOn("#sortConfig");
+        click("date");
+        mockServer.verify(1, postRequestedFor(externalUrl));
+
+        externalUrl = urlPathMatching("/api/v1/entries/list?r=false&s=title&c=any");
+        stubFor(post(externalUrl));
+        clickOn("#sortConfig");
+        click("title");
+        mockServer.verify(1, postRequestedFor(externalUrl));
+
+        externalUrl = urlPathMatching("/api/v1/entries/list?r=false&s=duration&c=any");
+        stubFor(post(externalUrl));
+        clickOn("#sortConfig");
+        click("duration");
+        mockServer.verify(1, postRequestedFor(externalUrl));
+
+
+    }*/
+
+    /*@Test
     public void testShow() {
         try{
             updateRoot();
@@ -289,7 +309,8 @@ public class AppTest extends ApplicationTest {
         click("Show");
         entryView = (AnchorPane) root.lookup("#entryView");
         Assertions.assertTrue(entryView.isVisible());
-   }
+   }*/
+   
 
    @AfterEach
     public void stopWireMockServer() {
