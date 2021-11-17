@@ -288,7 +288,7 @@ public class AddNewSessionController {
                                 Press Cancel to quit""");
                 errorLabel.setText("Could not connect to server");
                 Optional<ButtonType> result = alert.showAndWait();
-                if (result.get() == ButtonType.OK) {
+                if (result.isPresent() && (result.get() == ButtonType.OK)) {
                     this.createSessionButtonPushed(null);
                     errorLabel.setText("");
                 } else {
