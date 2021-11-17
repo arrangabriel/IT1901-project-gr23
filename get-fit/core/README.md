@@ -1,11 +1,24 @@
 # Core
 
-Module for handling log entries. Provides access to the following classes:
+Module for handling log entries. 
 
+Provides access to the following classes:
 - EntryManager
 - LogEntry
+- Validity
+
+Provides access to the following interface:
+- Subcategory
+
+Provides access to the following enums:
+- CardioSubCategory
+- ExerciseCategory
+- SortConfigurations
+- StrengthSubCategory
+
 
 The internal classes are written in bold, with the following methods written under.
+
 
 ## EntryManager
 
@@ -49,15 +62,7 @@ Represents a log entry. It contains a String, LocalDate, Duration, EXERCISECATEG
 
 ### Methods
 
-- enum SORTCONFIGURATIONS: Configuration by which to sort LogEntries. DATE, DURATION, TITLE.
-
 - interface SubCategory: Methods: getValueOf(String) -> Subcategory: Used to get the subcategory value of a String.
-
-- enum EXERCISECATEGORY: The categories that an exercise can fall under: ANY, STRENGTH, RUNNING, CYCLING, SWIMMING.: Method: getSubcategories() -> Subcategory[]. Returns a copy of the Subcategories as an array.
-
-- enum STRENGTHSUBCATEGORIES: The Subcategories for the Strength category: PUSH, PULL, LEGS, FULL BODY. It implements Subcategory: Method: getValueOf(String) -> Subcategory: Return the Subcategory that match the given String.
-
-- enum CARDIOSUBCATEGORIES: The Subcategories for the Cardio categories(RUNNING, CYCLING, SWIMMING). It implements Subcategory: Method: getValueOf(String) -> Subcategory: Return the Subcategory that match with the given String.
 
 - LogEntry(EntryBuilder): The constructor of LogEntry. Validates the EntryBuilder with the validate(EntryBuilder) method by creating a Validity object. If the validity object is valid it sets the internal variables. If it is not valid it throws an IllegalArgumentException.
 
@@ -83,16 +88,6 @@ Represents a log entry. It contains a String, LocalDate, Duration, EXERCISECATEG
 
 - getExerciseSubCategories() -> Subcategory[]: Returns the subcategories for the logEntry's main category as an array.
 
-**class Validity**
-
-Consist of a boolean and String field.
-
-- Validity(boolean, String): Representing the validity of an EntryBuilder.
-
-- valid() -> boolean: Returns wether the builder is valid.
-
-- reason() -> String: Returns the reason for the validity of the builder.
-
 **class EntryBuilder**
 
 The builder class for the LogEntry. Consist of the required fields of type String, LocalDate, Duration, EXERCISECATEGORY, int. It also consist of the optional fields String, Subcategory, Double, Integer.
@@ -108,6 +103,43 @@ The builder class for the LogEntry. Consist of the required fields of type Strin
 - maxHeartRate(Integer) -> EntryBuilder: Sets the maxHeartRate for the builder. It returns itself after the maxHeartRate is set. Throws a new IllegalArgumentException if the maxHeartRate is illegal.
 
 - build() -> LogEntry: Constructs the LogEntry object. It creates a new LogEntry object from the builder and returns it. It throws an IllegalArgumentException if any of the arguments are invalid.
+
+## Validity
+Consist of a boolean and String field.
+
+### Methods
+- Validity(boolean, String): Representing the validity of an EntryBuilder.
+
+- valid() -> boolean: Returns wether the builder is valid.
+
+- reason() -> String: Returns the reason for the validity of the builder.
+
+## interface SubCategory
+Defines a subcategory.
+### Methods
+getValueOf(String) -> Subcategory: Used to get the subcategory value of a String.
+
+## enum SORTCONFIGURATIONS
+Configuration by which to sort LogEntries. DATE, DURATION, TITLE.
+
+## enum EXERCISECATEGORY
+The categories that an exercise can fall under: ANY, STRENGTH, RUNNING, CYCLING, SWIMMING.
+
+### Methods
+getSubcategories() -> Subcategory[]. Returns a copy of the Subcategories as an array.
+
+## enum STRENGTHSUBCATEGORIES
+The Subcategories for the Strength category: PUSH, PULL, LEGS, FULL BODY. It implements Subcategory.
+ 
+### Methods
+getValueOf(String) -> Subcategory: Return the Subcategory that match the given String.
+
+## enum CARDIOSUBCATEGORIES
+The Subcategories for the Cardio categories(RUNNING, CYCLING, SWIMMING). It implements Subcategory. 
+
+### Methods 
+getValueOf(String) -> Subcategory: Return the Subcategory that match with the given String.
+
 
 
 
