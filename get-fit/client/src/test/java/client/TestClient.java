@@ -121,7 +121,6 @@ public class TestClient {
     @Test
     public void testDeleteLogEntry() {
         stubFor(post(urlEqualTo("/api/v1/entries/remove/0"))
-                /* .withRequestBody(containing("id=0")) */
                 .willReturn(aResponse().withStatus(200).withHeader("Content-Type", "aplication/json")));
         try {
             logClient.deleteLogEntry("0");

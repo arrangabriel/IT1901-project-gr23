@@ -7,6 +7,8 @@ import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
 import static com.github.tomakehurst.wiremock.client.WireMock.post;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.containing;
 
@@ -25,6 +27,7 @@ import javafx.stage.Stage;
 import localpersistence.EntrySaverJson;
 
 import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -58,8 +61,7 @@ public class AppTest extends ApplicationTest {
         String body = "{\"categories\": {\"strength\": [\"push\",\"pull\"],\"running\": [\"short\",\"highintensity\"],\"cycling\": [\"short\",\"highintensity\"]}}";
         stubFor(get(urlEqualTo("/api/v1/entries/filters"))
                 .willReturn(aResponse().withStatus(200).withHeader("Content-Type", "aplication/json").withBody(body)));
-       
-                
+                 
     }
 
 
@@ -102,9 +104,17 @@ public class AppTest extends ApplicationTest {
         this.root = Loader.load();
     }
 
+    @Test 
+    public void startApp() throws IOException{
+        updateRoot();
+        assertNotNull(root);
+        
+    }
+
     private void addEntryClicking(String title, String comment, String hour,
                                   String min, String type, String hr,
-                                  String sub, String distance) {
+                                  String sub, String distance) throws IOException {
+        updateRoot();                              
         click("Add workout");
         clickOn("#titleField");
         write(title);
@@ -124,6 +134,21 @@ public class AppTest extends ApplicationTest {
         }
         clickOn("#commentField");
         write(comment);
+
+        String body3 = "{\"id\": \"0\"}";
+        stubFor(post(urlEqualTo("/api/v1/entries/add"))
+                .withRequestBody(containing("title="+title))
+                .withRequestBody(containing("comment="+comment))
+                .withRequestBody(containing(java.util.Calendar.getInstance().getTime().toString()))
+                .withRequestBody(containing("feeling=null"))
+                .withRequestBody(containing("duration=" + 
+                String.valueOf((Integer.parseInt(hour)*60+ Integer.parseInt(min))*60).toString()))
+                .withRequestBody(containing("distance="+distance))
+                .withRequestBody(containing("maxHeartRate="+hr))
+                .withRequestBody(containing("exerciseCategory="+type))
+                .withRequestBody(containing("exerciseSubCategory="+sub))
+                .willReturn(aResponse().withStatus(200).withHeader("Content-Type", "aplication/json").withBody(body3)));
+
         click("Create session");
     }
 
@@ -132,6 +157,7 @@ public class AppTest extends ApplicationTest {
     public void testCreateButton() throws IOException {
         updateRoot();
         int oldCount = getEntriesView().getItems().size();
+
         click("Add workout");
         clickOn("#titleField");
         write("New new Session");
@@ -141,22 +167,27 @@ public class AppTest extends ApplicationTest {
         clickOn("#min");
         write("30");
         clickOn("#exerciseType");
-
         clickOn("#heartRate");
         write("150");
         clickOn("#commentField");
         write("New comment");
 
-        String body = "{\"id\": \"0\"}";
+        String body3 = "{\"id\": \"0\"}";
         stubFor(post(urlEqualTo("/api/v1/entries/add"))
-                 .withRequestBody(containing("title=New new Session"))
-                 .withRequestBody(containing("comment=New comment"))
-                 .withRequestBody(containing("duration=5400"))
-                 .withRequestBody(containing("maxHeartRate=150"))
-                 .willReturn(aResponse().withStatus(200).withHeader("Content-Type", "aplication/json").withBody(body)));
-
+                .withRequestBody(containing("title=New new Session"))
+                .withRequestBody(containing("comment=New comment"))
+                .withRequestBody(containing(java.util.Calendar.getInstance().getTime().toString()))
+                .withRequestBody(containing("feeling=null"))
+                .withRequestBody(containing("duration=5400"))
+                .withRequestBody(containing("distance=null"))
+                .withRequestBody(containing("maxHeartRate=150"))
+                .withRequestBody(containing("exerciseCategory=RUNNING"))
+                .withRequestBody(containing("exerciseSubCategory=null"))
+                .willReturn(aResponse().withStatus(200).withHeader("Content-Type", "aplication/json").withBody(body3)));
+        
         click("Create session");
-
+        sleep(1000);
+                 
         //Assertions.assertEquals(oldCount + 1, getEntriesView().getItems().size());
 
     }
@@ -165,7 +196,7 @@ public class AppTest extends ApplicationTest {
         return (ListView<VBox>) root.lookup("#listOfEntries");
     }
 
-    /*public void checkView() {
+   /*public void checkView() {
         try {
             updateRoot();
         } catch (IOException e) {
@@ -182,8 +213,8 @@ public class AppTest extends ApplicationTest {
                 App.entryManager.entryCount());
     }*/
 
-    /*@Test
-    public void varietyCreation() {
+    @Test
+    public void varietyCreation() throws IOException {
         addEntryClicking("Push", "I did bench presses as well as some push-ups",
                 "1", "45", "STRENGTH", "90", "PUSH", null);
         addEntryClicking("Cardio", "I ran a while",
@@ -193,13 +224,17 @@ public class AppTest extends ApplicationTest {
 
 
         //checkView();
-    }*/
+    }
 
-    /*@Test
+    @Test
     public void goBack() {
         Assertions.assertEquals("Get fit", this.stageRef.getTitle());
         click("Add workout");
         Assertions.assertEquals("Add new session", this.stageRef.getTitle());
+        click("Return");
+        Assertions.assertEquals("Get fit", this.stageRef.getTitle());
+        click("Statistics");
+        Assertions.assertEquals("Statistics", this.stageRef.getTitle());
         click("Return");
         Assertions.assertEquals("Get fit", this.stageRef.getTitle());
         click("Add workout");
@@ -213,20 +248,34 @@ public class AppTest extends ApplicationTest {
         clickOn("#exerciseType");
         clickOn("#heartRate");
         write("60");
+        String body = "{\"id\": \"0\"}";
+        stubFor(post(urlEqualTo("/api/v1/entries/add"))
+                
+                 .withRequestBody(containing("title=New Test"))
+                 .withRequestBody(containing("comment=null"))
+                 .withRequestBody(containing("date="+java.util.Calendar.getInstance().getTime().toString()))
+                 .withRequestBody(containing("feeling=null"))
+                 .withRequestBody(containing("duration=1800"))
+                 .withRequestBody(containing("distance=null"))
+                 .withRequestBody(containing("maxHeartRate=60"))
+                 .withRequestBody(containing("exerciseCategory=null"))
+                 .withRequestBody(containing("exerciseSubCategory=null"))
+                 
+                .willReturn(aResponse().withStatus(200).withHeader("Content-Type", "aplication/json").withBody(body)));
+
         click("Create session");
-        Assertions.assertEquals("Get fit", this.stageRef.getTitle());
-    }*/
+        //Assertions.assertEquals("Get fit", this.stageRef.getTitle());
+    }
 
-    /*@Test
+    @Test
     public void testDelete() {
-        int numberOfEntries = App.entryManager.entryCount();
+        stubFor(post(urlEqualTo("/api/v1/entries/remove/0"))
+                .willReturn(aResponse().withStatus(200).withHeader("Content-Type", "aplication/json")));
         click("Delete");
-        Assertions.assertEquals(numberOfEntries - 1,
-                App.entryManager.entryCount());
-        checkView();
-    }*/
+        
+    }
 
-    /*@Test
+    @Test
     public void testShow() {
         try{
             updateRoot();
@@ -240,6 +289,11 @@ public class AppTest extends ApplicationTest {
         click("Show");
         entryView = (AnchorPane) root.lookup("#entryView");
         Assertions.assertTrue(entryView.isVisible());
-   }*/
+   }
+
+   @AfterEach
+    public void stopWireMockServer() {
+        mockServer.stop();
+    }
  
 }
