@@ -187,6 +187,32 @@ public class LogClient {
         return responseHash;
     }
 
+    public HashMap<String, String> getChartData(
+        final ListBuilder builder) 
+        throws URISyntaxException, InterruptedException,
+        ExecutionException, ServerResponseException {
+
+        String queryString = "?";
+
+        List<String> queries = new ArrayList<>();
+
+        queries.add("d=" + builder.dateVal);
+
+        queryString += String.join("&", queries);
+
+        HttpResponse<String> response =
+                this.get("/api/v1/entries/chart" + queryString);
+        
+        JSONObject jsonObject = new JSONObject(response.body());
+
+        HashMap<String, String> responseHash = new HashMap<>();
+
+        for (String key : jsonObject.keySet()) {
+            responseHash.put(key, jsonObject.getString(key));
+        }
+        return responseHash;
+    }
+
     /**
      * Adds a log entry on the server.
      *
