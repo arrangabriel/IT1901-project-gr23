@@ -8,7 +8,7 @@ Get Fit is an application for storing and logging activity and exercise. The use
 ## Design Documentation
 
 User stories, scenarios and design models can be found here:
-[Design documentation](/DesignDocumentation)
+[Design documentation](/design-documentation)
 
 
 
