@@ -56,6 +56,32 @@ public class TestStatistics {
     }
 
     @Test
+    public void testListFilteredByDates() {
+        EntryManager manager = genValidEntryManager();
+        EntryBuilder builder1 = genValidEntryBuilder(
+            Duration.ofSeconds(hour),
+             10.0, LogEntry.EXERCISECATEGORY.RUNNING, 1);
+        
+        manager.addEntry(builder1.build());
+        Assertions.assertEquals(1, Statistics.getCount(manager,"RUNNING", date));
+        manager.addEntry(builder1.build());
+
+        Assertions.assertEquals(0, Statistics.getCount(
+            manager,"RUNNING",
+             LocalDate.now().toString() + "-" + LocalDate.now().toString()));
+
+        EntryBuilder builder2 = genValidEntryBuilder(
+            Duration.ofSeconds(hour),
+             10.0, LogEntry.EXERCISECATEGORY.SWIMMING, 1);
+        manager.addEntry(builder2.build());
+
+        Assertions.assertEquals(0, Statistics.getCount(manager,"SWIMMING",
+         LocalDate.now().toString() + "-" + LocalDate.now().toString()));
+
+        Assertions.assertEquals(2, Statistics.getCount(manager,"RUNNING", date));
+    }
+
+    @Test
     public void testGetTotalDuration() {
         EntryManager manager = genValidEntryManager();
         EntryBuilder builder1 = genValidEntryBuilder(Duration.ofSeconds(hour), 10.0, LogEntry.EXERCISECATEGORY.RUNNING, 1);
