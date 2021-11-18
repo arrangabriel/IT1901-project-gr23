@@ -296,6 +296,11 @@ public class GetfitController {
 
     }
 
+    /**
+     * Convert a log entry from a string to a LogEntry.
+     * @param logEntry Log entry to convert.
+     * @return LogEntry
+     */
     private LogEntry stringToEntry(final String logEntry) {
 
         JSONObject jsonObject = new JSONObject(logEntry);
