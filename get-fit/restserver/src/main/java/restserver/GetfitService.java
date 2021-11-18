@@ -58,4 +58,10 @@ public class GetfitService {
     public EntryManager getEntryManager() {
         return this.entryManager;
     }
+
+    //Change to just hours.
+    public static String convertFromSecondsToHours(final double sec) {
+        double h = (double) Math.round((sec/3600) * 10);
+        return String.valueOf(h/10) + "h";
+    }
 }

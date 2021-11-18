@@ -10,6 +10,7 @@ import core.Subcategory;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,7 +24,9 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -37,7 +40,7 @@ import java.util.NoSuchElementException;
 
 public class GetfitController {
 
-    //@Autowired
+
     private final GetfitService getfitService = new GetfitService();
 
     @GetMapping(value="/{entryId}", produces = "application/json")
@@ -53,7 +56,7 @@ public class GetfitController {
 
     @GetMapping(value="/filters", produces="application/json")
     public String getFilters() {
-        //HashMap<String, String> filters = new HashMap<>();
+        
         JSONObject filters = new JSONObject();
         JSONObject categories = new JSONObject();
 
@@ -120,6 +123,15 @@ public class GetfitController {
                         iteratorBuilder.filterSubCategory(subcategories);
             } catch (IllegalArgumentException IA) {
             }
+
+            try{
+                if(date != null){
+                    iteratorBuilder = iteratorBuilder.filterTimeInterval(
+                    LocalDate.parse(date.substring(0,10)),LocalDate.parse(date.substring(11)));
+                }
+            }catch(IllegalArgumentException IA){
+
+            }
         }
 
         List<LogEntry> returnList = new ArrayList<>();
@@ -136,6 +148,85 @@ public class GetfitController {
         returnJSON.put("entries", entryArray);
 
         return returnJSON.toString();
+    }
+
+    @GetMapping("/stats")
+    @ResponseBody
+    public String getStatisticsData(
+            final @RequestParam(value = "d") String date,
+            final @RequestParam(value = "c", required = false)
+                    String eCategory) {
+
+
+        HashMap<String, String> map = new HashMap<>();
+
+        if (getfitService.getEntryManager().entryCount() == 0) {
+                map.put("empty", "True");
+        }
+
+        else {
+                map.put("empty", "False");
+        }
+
+        map.put("count", Integer.toString(Statistics.getCount(
+                getfitService.getEntryManager(), 
+                eCategory,
+                date)));
+
+        map.put("totalDuration", GetfitService.convertFromSecondsToHours(
+                Statistics.getTotalDuration(
+                getfitService.getEntryManager(), 
+                eCategory, 
+                date)));
+
+        map.put("averageDuration", GetfitService.convertFromSecondsToHours(
+                Statistics.getAverageDuration(
+                getfitService.getEntryManager(), 
+                eCategory, 
+                date)));
+        
+
+        map.put("averageFeeling", Double.toString(Statistics.getAverageFeeling(
+                getfitService.getEntryManager(), 
+                eCategory, 
+                date)));
+        
+        double speed = Statistics.getAverageSpeed(
+                getfitService.getEntryManager(),
+                eCategory, date);
+
+        map.put("averageSpeed", Double.toString(speed));
+
+        map.put("maximumHr", Double.toString(Statistics.getMaximumHr(
+                getfitService.getEntryManager(), 
+                eCategory, 
+                date)));
+
+        JSONObject JSONreturn = new JSONObject(map);
+
+
+        return JSONreturn.toString();
+    }
+
+    @GetMapping(value="/chart", produces = "application/json")
+    @ResponseBody
+    public String getChartData(
+        final @RequestParam(value = "d") String date) {
+        
+        List<String> categorylist = Arrays.asList(
+            "swimming", "running", "strength", "cycling");
+        
+        HashMap<String, String> map = new HashMap<>();
+
+        for (String category : categorylist) {
+            map.put(category, Integer.toString(Statistics.getCount(
+                getfitService.getEntryManager(), 
+                category.toUpperCase(),
+                date)));
+        }
+        JSONObject JSONreturn = new JSONObject(map);
+
+        return JSONreturn.toString();
     }
 
     @PostMapping(value="/add", produces = "application/json")

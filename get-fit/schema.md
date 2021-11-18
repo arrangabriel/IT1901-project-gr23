@@ -116,6 +116,53 @@ Response:
 }
 ```
 
+## Get Statistics data
+
+Type: <span style="color:#28b463">GET</span>
+
+Endpoint: `/api/v1/entries/stats`
+
+Arguments:
+- date: Filter by date `d={start yyyy-mm-dd}-{end yyyy-mm-dd}`
+- category: Filter by category `c={category}`
+
+Response:
+
+```json
+{
+    "empty": "False"
+    "count": "5"
+    "totalDuration": "20h:10min"
+    "averageDuration": "2h:10min"
+    "averageSpeed": "7.0"
+    "averageFeeling": "3.3"
+    "maximumHr": "180"
+
+}
+```
+
+## Get Chart Data
+
+Type: <span style="color:#28b463">GET</span>
+
+Endpoint: `/api/v1/entries/chart`
+
+Arguments:
+- date: Filter by date `d={start yyyy-mm-dd}-{end yyyy-mm-dd}`
+
+Response:
+
+```json
+{
+    "swimming": "2"
+    "running": "3"
+    "strength": "0"
+    "cycling": "2"
+}
+```
+
+
+
 ## Add a LogEntry
 
 Type: <span style="color:#2e86c1">POST</span>
@@ -183,5 +230,6 @@ Payload:
     "id": "0"
 }
 ```
+
 
 
