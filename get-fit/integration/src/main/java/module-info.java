@@ -1,4 +1,7 @@
 module name {
     requires ui;
-    requires restserver;
+    requires rest;
+    
+    requires javafx.controls;
+    requires javafx.fxml;
 }

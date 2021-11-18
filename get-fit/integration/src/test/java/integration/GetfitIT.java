@@ -1,8 +1,21 @@
 package integration;
 
+import java.io.IOException;
+
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.testfx.framework.junit5.ApplicationTest;
+
+import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
 
 @SpringBootTest(classes = restserver.GetfitController.class)
-public class GetfitIT extends ApplicationTest{
+public class GetfitIT extends ApplicationTest {
     private Parent root;
     private Stage stageRef;
 
