@@ -171,9 +171,9 @@ public class GetfitController {
 
     /**
      * Gets statistics based on the date and the category.
-     * @param date the date to filter by.
-     * @param eCategory the category to filter by.
-     * @return statistics based on the filters.
+     * @param date The date to filter by.
+     * @param eCategory The category to filter by.
+     * @return Statistics based on the filters.
      */
     @GetMapping("/stats")
     @ResponseBody
@@ -233,6 +233,12 @@ public class GetfitController {
         return JSONreturn.toString();
     }
 
+    /**
+     * Get the entry count for the statistics chart.
+     * @param date The date to filter count by.
+     * @return The count for each category 
+     * filter by the given date
+     */
     @GetMapping(value="/chart", produces = "application/json")
     @ResponseBody
     public String getChartData(
