@@ -25,9 +25,11 @@ public final class Statistics {
 
 
     /**
-     * Returns the count of entries in the entryManager.
-     *
-     * @param entryManager the entry manager to count over.
+     * Returns the count of entries in the entryManager
+     * filtered through date and category.
+     * @param entryManager The entry manager to count over.
+     * @param category The category to filter by.
+     * @param date The date to filter by.
      * @return the count of entries.
      */
     public static int getCount(
@@ -35,15 +37,18 @@ public final class Statistics {
             final String category,
             final String date) {
 
-        List<LogEntry> entries = listFilteredByDates(entryManager, category, date);
+        List<LogEntry> entries = listFilteredByDates(
+            entryManager, category, date);
 
         return entries.size();
     }
 
     /**
-     * Returns the total duration of all LogEntries in the EntryManager.
-     *
-     * @param entryManager the entryManager to total.
+     * Returns the total duration of all LogEntries in the EntryManager
+     * filtered by date and category.
+     * @param entryManager The entryManager to total.
+     * @param category The category to filter by.
+     * @param date The date to filter by.
      * @return the total duration.
      */
     public static double getTotalDuration(
@@ -63,9 +68,11 @@ public final class Statistics {
     }
 
     /**
-     * Returns the average duration across all LogEntries in the EntryManager.
-     *
-     * @param entryManager the entryManager to average.
+     * Returns the average duration across all LogEntries in the EntryManager
+     * filtered by date and category.
+     * @param entryManager The entryManager to get from average.
+     * @param category The category to filter by.
+     * @param date The date to filter by.
      * @return the average duration.
      */
     public static double getAverageDuration(
@@ -122,13 +129,15 @@ public final class Statistics {
     }
 
     /**
-     * Returns the average feeling of all LogEntries in the EntryManager.
-     *
-     * @param entryManager the entryManager to calculate average feeling from.
-     * @return the average feeling.
+     * Returns the average feeling of all LogEntries in the EntryManager
+     * filtered by dates and category.
+     * @param entryManager The entryManager to calculate average feeling from.
+     * @param category The category to filter by.
+     * @param date The date to filter by.
+     * @return The average feeling.
      */
     public static double getAverageFeeling(final EntryManager entryManager,
-                                            final String category, 
+                                            final String category,
                                             final String date) {
 
         List<LogEntry> entries = listFilteredByDates(
@@ -144,23 +153,24 @@ public final class Statistics {
     }
 
     /**
-     * Returns the maximum heart rate across all LogEntries in the EntryManager.
-     *
-     * @param entryManager the entryManager to get the maximum heart rate from.
-     * @param date         the date to filter by.
+     * Returns the maximum heart rate across all LogEntries in the EntryManager
+     * filtered by date and category.
+     * @param entryManager The entryManager to get the maximum heart rate from.
+     * @param date The date to filter by.
+     * @param category the category to filter by.
      * @return the maximum heart rate.
      */
     public static double getMaximumHr(
             final EntryManager entryManager,
-            final String category, 
+            final String category,
             final String date) {
-        
+
         List<LogEntry> entries = listFilteredByDates(
             entryManager, category, date);
 
         double maxHr = 0;
         for (LogEntry logEntry : entries) {
-            if (logEntry.getMaxHeartRate() != null){
+            if (logEntry.getMaxHeartRate() != null) {
                 if (logEntry.getMaxHeartRate() > maxHr) {
                     maxHr = logEntry.getMaxHeartRate();
                 }
@@ -169,7 +179,14 @@ public final class Statistics {
         return maxHr;
     }
 
-
+    /**
+     * Filters the entries of the given
+     * entryManger by category and date.
+     * @param entryManager The manager that contains the entries.
+     * @param category The category to filter by.
+     * @param date The date to filter by.
+     * @return The filtered entries in a list.
+     */
     private static List<LogEntry> listFilteredByDates(
             final EntryManager entryManager,
             final String category,
@@ -177,7 +194,7 @@ public final class Statistics {
 
         SortConfiguration sortConfiguration =
                 SortConfiguration.DATE;
-                
+
 
         EntryManager.SortedIteratorBuilder iteratorBuilder =
                 new EntryManager.SortedIteratorBuilder(
