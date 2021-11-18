@@ -8,15 +8,13 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.chart.CategoryAxis;
-import javafx.scene.chart.NumberAxis;
-import javafx.scene.chart.StackedBarChart;
+import javafx.scene.chart.BarChart;
+import javafx.scene.chart.XYChart;
+import javafx.scene.chart.XYChart.Series;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
-import javafx.scene.control.RadioButton;
-import javafx.scene.control.ToggleGroup;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -29,15 +27,9 @@ import client.LogClient;
 import client.ServerResponseException;
 import client.LogClient.ListBuilder;
 
-/*
----------------------------------------
-This component is for a future release.
----------------------------------------
- */
 
 public class StatisticsController {
 
-    private final ToggleGroup toggleGroup = new ToggleGroup();
 
     /**
      * Labels for different statistics.
@@ -57,47 +49,31 @@ public class StatisticsController {
      */
     @FXML
     private ComboBox<String> exerciseType;
-
-    /**
-     * The duration for each pole in the diagram.
-     */
-    @FXML
-    private RadioButton weeks, months, years;
     
     /**
      * The bar chart.
      */
     @FXML
-    private StackedBarChart<String, Number> statisticsChart;
+    private BarChart<String, Number> statisticsChart;
+    
 
     @FXML
     private DatePicker start, end;
     /**
      * x-axis for the bar chart.
      */
-    @FXML
-    private CategoryAxis xAxis;
-
-    /**
-     * y-axis for the bar chart.
-     */
-    @FXML
-    private NumberAxis yAxis;
 
 
     
     private final LogClient client = new LogClient("http://localhost", 8080);
 
     private ObservableList<String> exerciseTypeSelecter =
-            FXCollections.observableArrayList("running", "swimming",
-                    "strength", "cycling");
+            FXCollections.observableArrayList("Any", "Running", "Swimming",
+                    "Strength", "Cycling");
 
     @FXML
     private void initialize() {
         exerciseType.setItems(exerciseTypeSelecter);
-        weeks.setToggleGroup(toggleGroup);
-        months.setToggleGroup(toggleGroup);
-        years.setToggleGroup(toggleGroup);
 
         //Default values for dates are today and one year from now.
         start.setValue(LocalDate.now().plusYears(-1));
@@ -128,15 +104,15 @@ public class StatisticsController {
     @FXML
     public void onHandleData() {
         ListBuilder listBuilder = new ListBuilder();
-        if (exerciseType.getValue() != null) {
+        if ((exerciseType.getValue() != null) && (exerciseType.getValue() != "Any")) {
             listBuilder.category(exerciseType.getValue().toUpperCase());
         }
+
         listBuilder.date(start.getValue().toString() + "-" + end.getValue().toString());
         HashMap<String, String> dataEntries;
 
         try {
             dataEntries = this.client.getStatistics(listBuilder);
-            System.out.println(dataEntries);
 
             if (dataEntries.containsKey("empty")) {
                 if(dataEntries.get("empty").equals("True")) {
@@ -186,27 +162,65 @@ public class StatisticsController {
                 errorLabel.setText(e.getMessage());
             } catch (IllegalStateException eae) {
                 errorLabel.setText("There are no sessions saved");
-            }
         }
+
+        this.createBarChart();
     }
-        
 
 
 
-    //Unfinished function:
-    /*
-    private void createStackedBarChart(final String xLabel,
-                                       final Collection<String> category) {
+    @SuppressWarnings("Unchecked")
+    private void createBarChart() {
+       
+        ListBuilder listBuilder = new ListBuilder();
+        listBuilder.date(start.getValue().toString() + "-" + end.getValue().toString());
+        HashMap<String, String> dataEntries;
 
-        xAxis.setCategories(FXCollections.<String>observableArrayList(
-                (Arrays.asList("test1", "test2"))));
-        xAxis.setLabel(xLabel);
+        int swimming = 0;
+        int running = 0;
+        int strength = 0;
+        int cycling = 0;
 
-        yAxis.setLabel("Hours");
+        try {
+            dataEntries = this.client.getChartData(listBuilder);
 
-        //Create chart when core is finished
-        statisticsChart = new StackedBarChart<>(xAxis, yAxis);
-        //for (LogEntry entry : App.entryManager) {
-        //final XYChart.Series<String, Number> series = new XYChart.Series<>();
-    }*/
+            for (String dataEntry : dataEntries.keySet()) {
+                switch (dataEntry) {
 
+                    case "swimming" :
+                        swimming = Integer.parseInt(dataEntries.get(dataEntry));
+                        break;
+                    case "running" :
+                        running = Integer.parseInt(dataEntries.get(dataEntry));
+                        break;
+                    
+                    case "strength" :
+                        strength = Integer.parseInt(dataEntries.get(dataEntry));
+                        break;
+
+                    case "cycling" :
+                        cycling = Integer.parseInt(dataEntries.get(dataEntry));
+                        break;
+                }
+            }
+        } catch (URISyntaxException | InterruptedException | ExecutionException e) {
+            errorLabel.setText("Could not connect to server");
+            e.printStackTrace();
+        } catch (ServerResponseException e) {
+            errorLabel.setText(e.getMessage());
+        } catch (IllegalStateException eae) {
+            errorLabel.setText("There are no sessions saved");
+        }
+
+        Series<String, Number> chart = new XYChart.Series<>();
+		
+		chart.getData().add(new XYChart.Data<>("Swimming", swimming));
+		chart.getData().add(new XYChart.Data<>("Running", running));
+		chart.getData().add(new XYChart.Data<>("Strength", strength));
+		chart.getData().add(new XYChart.Data<>("Cycling", cycling));
+
+        statisticsChart.setAnimated(false);
+		
+		statisticsChart.getData().setAll(chart);
+    }   
+}
