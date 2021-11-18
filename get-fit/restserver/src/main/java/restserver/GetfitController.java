@@ -154,10 +154,12 @@ public class GetfitController {
     @ResponseBody
     public String getStatisticsData(
             final @RequestParam(value = "d") String date,
-            final @RequestParam(value = "c", required = false)
+            @RequestParam(value = "c", required = false)
                     String eCategory) {
 
-
+        if (eCategory != null) {
+            eCategory = eCategory.toUpperCase();
+        }
         HashMap<String, String> map = new HashMap<>();
 
         if (getfitService.getEntryManager().entryCount() == 0) {
