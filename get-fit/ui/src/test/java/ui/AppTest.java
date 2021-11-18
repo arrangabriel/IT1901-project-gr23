@@ -242,22 +242,13 @@ public class AppTest extends ApplicationTest {
         clickOn("#exerciseType");
         clickOn("#heartRate");
         write("60");
+
         String body = "{\"id\": \"0\"}";
-        stubFor(post(urlEqualTo("/api/v1/entries/add"))
-                
-                 .withRequestBody(containing("title=New Test"))
-                 .withRequestBody(containing("comment=null"))
-                 .withRequestBody(containing("date="+java.util.Calendar.getInstance().getTime().toString()))
-                 .withRequestBody(containing("feeling=null"))
-                 .withRequestBody(containing("duration=1800"))
-                 .withRequestBody(containing("distance=null"))
-                 .withRequestBody(containing("maxHeartRate=60"))
-                 .withRequestBody(containing("exerciseCategory=null"))
-                 .withRequestBody(containing("exerciseSubCategory=null"))
-                 
-                .willReturn(aResponse().withStatus(200).withHeader("Content-Type", "aplication/json").withBody(body)));
+        UrlPattern externalUrl = urlPathMatching("/api/v1/entries/add");
+        stubFor(post(externalUrl).willReturn(aResponse().withBody(body).withStatus(200)));
 
         click("Create session");
+        mockServer.verify(1, postRequestedFor(externalUrl));
         
     }
 
