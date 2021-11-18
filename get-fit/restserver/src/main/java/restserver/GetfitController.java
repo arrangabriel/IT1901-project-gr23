@@ -7,10 +7,10 @@ import core.LogEntry;
 import core.SortConfiguration;
 import core.StrengthSubCategory;
 import core.Subcategory;
+import math.Statistics;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
