@@ -5,6 +5,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
+<?import java.net.URL?>
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.StartPageController">
     <Label layoutX="22.0" layoutY="14.0" prefHeight="58.0" prefWidth="129.0" text="Get Fit">
         <font>
@@ -84,22 +85,24 @@
                <padding>
                   <Insets top="15.0" />
                </padding></VBox>
-            <VBox id="value" prefHeight="200.0" prefWidth="100.0" spacing="24.0" GridPane.columnIndex="1">
-               <padding>
-                  <Insets top="15.0" />
-               </padding>
-               <children>
-                     <Text fx:id="categoryView" strokeType="OUTSIDE" strokeWidth="0.0" text="category" />
-                     <Text fx:id="subcategoryView" strokeType="OUTSIDE" strokeWidth="0.0" text="subcategory" />
-                     <Text fx:id="durationView" strokeType="OUTSIDE" strokeWidth="0.0" text="duration" />
-                     <Text fx:id="feelingView" strokeType="OUTSIDE" strokeWidth="0.0" text="feeling" />
-                     <Text fx:id="distanceView" strokeType="OUTSIDE" strokeWidth="0.0" text="distance" />
-                     <Text fx:id="heartRateView" strokeType="OUTSIDE" strokeWidth="0.0" text="maxHeartRate" />
-               </children></VBox>
+             <VBox id="value" prefHeight="200.0" prefWidth="100.0" spacing="24.0" GridPane.columnIndex="1">
+                 <padding>
+                     <Insets top="15.0"/>
+                 </padding>
+                 <Text fx:id="categoryView" strokeType="OUTSIDE" strokeWidth="0.0" text="category"/>
+                 <Text fx:id="subcategoryView" strokeType="OUTSIDE" strokeWidth="0.0" text="subcategory"/>
+                 <Text fx:id="durationView" strokeType="OUTSIDE" strokeWidth="0.0" text="duration"/>
+                 <Text fx:id="feelingView" strokeType="OUTSIDE" strokeWidth="0.0" text="feeling"/>
+                 <Text fx:id="distanceView" strokeType="OUTSIDE" strokeWidth="0.0" text="distance"/>
+                 <Text fx:id="heartRateView" strokeType="OUTSIDE" strokeWidth="0.0" text="maxHeartRate"/>
+             </VBox>
          </children>
       </GridPane>
         <TextArea fx:id="commentView" editable="false" focusTraversable="false" layoutX="312.0" layoutY="80.0" prefHeight="251.0" prefWidth="232.0" AnchorPane.rightAnchor="20.0" />
         <Separator layoutX="309.0" layoutY="80.0" orientation="VERTICAL" prefHeight="251.0" prefWidth="6.0" />
     </AnchorPane>
-
+    <stylesheets>
+        <URL value="@css/main.css"/>
+        <URL value="@css/StartPage.css"/>
+    </stylesheets>
 </AnchorPane>
