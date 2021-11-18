@@ -26,6 +26,10 @@ The methods are divided into post, get and exception. The tags for the categorie
 
 - getListOfLogEntries(String, String, String, String, String) -> String: It gets the entries which fit into the inputed filters and sorting criteria. The parameters are sorting type (default date), reverse (default false), category (not required), subcategory (not reguired) and date (for filtering, not required). It returns a string with the different entries according to Schema.md.
 
+- getStatisticsData(String, String) -> String: Get statistics based on the date and the category. The parameters are the date to filter by and the category to filter by. The category is not required. 
+
+- getChartData(String) -> String: Get the entry count for the statistics chart. The parameter is date and it returns the count for each category filtered by the given date. 
+
 @Post
 - addLogEntry(String) -> String: It adds the entry to the entry manager in GetfitService.
 
