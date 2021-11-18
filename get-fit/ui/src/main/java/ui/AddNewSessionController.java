@@ -2,6 +2,8 @@ package ui;
 
 import client.LogClient;
 import client.ServerResponseException;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -209,9 +211,15 @@ public class AddNewSessionController {
             // checks if duration fields have values.
             try {
                 duration = String.valueOf(
-                        Duration.ofHours(Integer.parseInt(hour.getText()))
-                                .plusMinutes(Integer.parseInt(min.getText()))
+                        Duration.ofHours(Integer.parseInt(
+                                        hour.getText() != null ? hour.getText() : "0"))
+                                .plusMinutes(Integer.parseInt(
+                                        min.getText() != null ? min.getText() :
+                                                "0"))
                                 .getSeconds());
+                if (duration == "0") {
+                    throw new NumberFormatException(); // Equates to duration being nothing which is not a number.
+                }
             } catch (NumberFormatException e) {
                 throw new IllegalArgumentException("Duration must be set.");
             }
@@ -288,7 +296,7 @@ public class AddNewSessionController {
                                 Press Cancel to quit""");
                 errorLabel.setText("Could not connect to server");
                 Optional<ButtonType> result = alert.showAndWait();
-                if (result.get() == ButtonType.OK) {
+                if (result.isPresent() && (result.get() == ButtonType.OK)) {
                     this.createSessionButtonPushed(null);
                     errorLabel.setText("");
                 } else {
@@ -305,7 +313,7 @@ public class AddNewSessionController {
                 errorLabel.setText("Title is needed.");
             } else {
                 // case 2, durations are empty.
-                errorLabel.setText(e.getMessage());
+                errorLabel.setText("Must train for some time.");
             }
         }
     }
@@ -323,7 +331,6 @@ public class AddNewSessionController {
 
     /**
      * Changes ui according to the selected exercise category.
-     *
      */
     @FXML
     public void handleTagsSelector() {
@@ -473,7 +480,39 @@ public class AddNewSessionController {
         // validation of fields when they are changed.
         validateIntegerInput(hour, MAX_HOURS);
         validateIntegerInput(min, MAX_MINUTES);
-        validateIntegerInput(heartRate, MAX_HEARTRATE);
         validateFloatInput(distance, MAX_DISTANCE);
+
+        Timeline remove = new Timeline(new KeyFrame(javafx.util.Duration.seconds(5),
+                event -> errorLabel.setText("")));
+
+        errorLabel.textProperty().addListener((obs, oldValue, newValue) -> {
+            if (!newValue.equals("")) {
+                remove.play();
+            }
+        });
+
+        heartRate.textProperty().addListener((obs, oldVal, newVal) -> {
+            if (!newVal.isEmpty()) {
+                try {
+                    if (newVal.length() > 3) {
+                        throw new NumberFormatException();
+                    }
+                    int value = Integer.parseInt(newVal);
+                    if (value < MIN_HEARTRATE || value > MAX_HEARTRATE) {
+                        heartRate.setStyle("-fx-border-color: red");
+                        errorLabel.setText(
+                                "Heart rate must be between 20 and 300.");
+                    } else {
+                        heartRate.setStyle("-fx-border-color: green");
+                        errorLabel.setText("");
+                    }
+                } catch (NumberFormatException ignored) {
+                    heartRate.setText(oldVal);
+                }
+            } else {
+                heartRate.setStyle("-fx-border-color: black");
+                errorLabel.setText("");
+            }
+        });
     }
 }

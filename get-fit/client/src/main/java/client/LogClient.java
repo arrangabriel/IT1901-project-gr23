@@ -143,6 +143,75 @@ public class LogClient {
         return responseList;
 
     }
+    /**
+     * Gets a hashmap with statistics data from the server.
+     *
+     * @param builder The query string builder to generate a query string
+     *                for filtering and sorting.
+     * @return
+     * @throws URISyntaxException If the query entries ruin
+     * the query string syntax.
+     * @throws InterruptedException If the request was interrupted
+     * before retreiving the http response.
+     * @throws ExecutionException If the request completed exceptionally.
+     * @throws ServerResponseException
+     * @return A hashmap with the data content.
+     */
+    public HashMap<String, String> getStatistics(
+        final ListBuilder builder)
+        throws URISyntaxException, InterruptedException,
+        ExecutionException, ServerResponseException {
+
+        String queryString = "?";
+
+        List<String> queries = new ArrayList<>();
+
+        queries.add("d=" + builder.dateVal);
+
+        if (builder.categoryVal != null) {
+            queries.add("c=" + builder.categoryVal);
+        }
+        queryString += String.join("&", queries);
+
+        HttpResponse<String> response =
+                this.get("/api/v1/entries/stats" + queryString);
+
+        JSONObject jsonObject = new JSONObject(response.body());
+
+        HashMap<String, String> responseHash = new HashMap<>();
+
+        for (String key : jsonObject.keySet()) {
+            responseHash.put(key, jsonObject.getString(key));
+        }
+
+        return responseHash;
+    }
+
+    public HashMap<String, String> getChartData(
+        final ListBuilder builder) 
+        throws URISyntaxException, InterruptedException,
+        ExecutionException, ServerResponseException {
+
+        String queryString = "?";
+
+        List<String> queries = new ArrayList<>();
+
+        queries.add("d=" + builder.dateVal);
+
+        queryString += String.join("&", queries);
+
+        HttpResponse<String> response =
+                this.get("/api/v1/entries/chart" + queryString);
+        
+        JSONObject jsonObject = new JSONObject(response.body());
+
+        HashMap<String, String> responseHash = new HashMap<>();
+
+        for (String key : jsonObject.keySet()) {
+            responseHash.put(key, jsonObject.getString(key));
+        }
+        return responseHash;
+    }
 
     /**
      * Adds a log entry on the server.
