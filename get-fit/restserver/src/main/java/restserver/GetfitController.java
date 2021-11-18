@@ -169,6 +169,12 @@ public class GetfitController {
         return returnJSON.toString();
     }
 
+    /**
+     * Gets statistics based on the date and the category.
+     * @param date the date to filter by.
+     * @param eCategory the category to filter by.
+     * @return statistics based on the filters.
+     */
     @GetMapping("/stats")
     @ResponseBody
     public String getStatisticsData(
