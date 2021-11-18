@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import core.EntryManager;
-import core.LogEntry;
+import core.ExerciseCategory;
 import core.LogEntry.EntryBuilder;
 import core.ExerciseCategory; 
 
@@ -25,7 +25,7 @@ public class TestStatistics {
     private EntryBuilder genValidEntryBuilder(
         Duration duration,
          Double distance,
-         ExerciseCategory exerciseCategory,
+          ExerciseCategory exerciseCategory,
            Integer feeling) {
         
         String title = "Test";
@@ -54,6 +54,32 @@ public class TestStatistics {
         Assertions.assertEquals(2, Statistics.getCount(manager,"RUNNING", date));
         manager.removeEntry(id);
         Assertions.assertEquals(1, Statistics.getCount(manager, "RUNNING", date));
+    }
+
+    @Test
+    public void testListFilteredByDates() {
+        EntryManager manager = genValidEntryManager();
+        EntryBuilder builder1 = genValidEntryBuilder(
+            Duration.ofSeconds(hour),
+             10.0, ExerciseCategory.RUNNING, 1);
+        
+        manager.addEntry(builder1.build());
+        Assertions.assertEquals(1, Statistics.getCount(manager,"RUNNING", date));
+        manager.addEntry(builder1.build());
+
+        Assertions.assertEquals(0, Statistics.getCount(
+            manager,"RUNNING",
+             LocalDate.now().toString() + "-" + LocalDate.now().toString()));
+
+        EntryBuilder builder2 = genValidEntryBuilder(
+            Duration.ofSeconds(hour),
+             10.0, ExerciseCategory.SWIMMING, 1);
+        manager.addEntry(builder2.build());
+
+        Assertions.assertEquals(0, Statistics.getCount(manager,"SWIMMING",
+         LocalDate.now().toString() + "-" + LocalDate.now().toString()));
+
+        Assertions.assertEquals(2, Statistics.getCount(manager,"RUNNING", date));
     }
 
     @Test

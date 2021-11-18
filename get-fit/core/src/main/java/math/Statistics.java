@@ -2,8 +2,8 @@ package math;
 
 import core.EntryManager;
 import core.LogEntry;
-import core.SortConfiguration;
 import core.ExerciseCategory;
+import core.SortConfiguration;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -175,7 +175,8 @@ public final class Statistics {
             final String category,
             final String date) {
 
-                SortConfiguration sortConfiguration = SortConfiguration.DATE;
+        SortConfiguration sortConfiguration =
+                SortConfiguration.DATE;
                 
 
         EntryManager.SortedIteratorBuilder iteratorBuilder =
