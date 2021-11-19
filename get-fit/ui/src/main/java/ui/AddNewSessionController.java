@@ -298,6 +298,7 @@ public class AddNewSessionController {
      *
      * @throws NumberFormatException if the input is too large
      */
+    @SuppressWarnings("checkstyle:MagicNumber")
     @FXML
     private void initialize() throws NumberFormatException {
         try {
