@@ -82,22 +82,7 @@ public class TestClient {
 
         String body = "{\"id\": \"0\"}";
         stubFor(post(urlEqualTo("/api/v1/entries/add"))
-                
-                 .withRequestBody(containing("title=Example title"))
-                 .withRequestBody(containing("comment=Example comment"))
-                 .withRequestBody(containing("date=2021-10-25"))
-                 .withRequestBody(containing("feeling=7"))
-                 .withRequestBody(containing("duration=3600"))
-                 .withRequestBody(containing("distance=3"))
-                 .withRequestBody(containing("maxHeartRate=150"))
-                 .withRequestBody(containing("exerciseCategory=STRENGTH"))
-                 .withRequestBody(containing("exerciseSubCategory=PULL"))
-                 
-                // \"title\": \"Example title\",\"comment\": \"Example comment\",\"date\":
-                // \"2021-10-25\",\"feeling\": \"7\",\"duration\": \"3600\",\"distance\":
-                // \"3\",\"maxHeartRate\": \"150\",\"exerciseCategory\":
-                // \"STRENGTH\",\"exerciseSubCategory\": \"PULL\"}
-                .willReturn(aResponse().withStatus(200).withHeader("Content-Type", "aplication/json").withBody(body)));
+        .willReturn(aResponse().withStatus(200).withHeader("Content-Type", "aplication/json").withBody(body)));
         try {
             logClient.addLogEntry(entryHash);
         } catch (URISyntaxException | InterruptedException | ExecutionException | ServerResponseException e) {
@@ -130,7 +115,7 @@ public class TestClient {
     @Test
     public void testGetStatistics() {
         String body = "{\"empty\": \"False\",\"count\": \"1\",\"totalDuration\": \"2.0\",\"averageDuration\": \"2.0\",\"averageSpeed\": \"7.0\",\"averageFeeling\": \"4.0\",\"maximumHr\": \"180\"}";
-        stubFor(get(urlEqualTo("/api/v1/entries/stats"))
+        stubFor(get(urlEqualTo("/api/v1/entries/stats?d="+(LocalDate.now().minusYears(1)).toString()+"-"+LocalDate.now().toString()))
                 .willReturn(aResponse().withStatus(200).withHeader("Content-Type", "aplication/json").withBody(body)));
 
         ListBuilder builder = new ListBuilder();
@@ -144,14 +129,39 @@ public class TestClient {
             assertEquals("2.0", entry.get("averageDuration"));
             assertEquals("7.0", entry.get("averageSpeed"));
             assertEquals("4.0", entry.get("averageFeeling"));
-            assertEquals("180", entry.get("maxHeartRate"));
+            assertEquals("180", entry.get("maximumHr"));
             
         } catch (URISyntaxException | InterruptedException | ExecutionException | ServerResponseException e) {
             e.printStackTrace();
             fail();
         }
+    }
+
+    @Test
+    public void testGetStatisticsChart(){
+        String body = "{\"swimming\": \"2\",\"running\": \"3\",\"strength\": \"0\",\"cycling\": \"2\"}";
+        stubFor(get(urlEqualTo("/api/v1/entries/chart?d="+(LocalDate.now().minusYears(1)).toString()+"-"+LocalDate.now().toString()))
+        .willReturn(aResponse().withStatus(200).withHeader("Content-Type", "aplication/json").withBody(body)));
+
+        ListBuilder builder = new ListBuilder();
+        builder.date(LocalDate.now().plusYears(-1).toString() + "-" + LocalDate.now().toString());
+
+        try {
+            HashMap<String, String> entry = logClient.getStatistics(builder);
+            assertEquals("2", entry.get("swimming"));
+            assertEquals("3", entry.get("running"));
+            assertEquals("0", entry.get("strength"));
+            assertEquals("2", entry.get("cycling"));
+
+        }catch(URISyntaxException| InterruptedException|
+        ExecutionException| ServerResponseException e){
+            e.printStackTrace();
+            
+        }
 
     }
+
+
 
     @Test
     public void testDeleteLogEntry() {
