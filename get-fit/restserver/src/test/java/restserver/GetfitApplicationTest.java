@@ -53,7 +53,7 @@ public class GetfitApplicationTest {
 
     @BeforeEach
     public void deleteFile() {
-        File f = new File("SavedData.json");
+        File f = new File(EntrySaverJson.SYSTEM_SAVE_LOCATION);
         f.delete();
     }
 
@@ -184,7 +184,7 @@ public class GetfitApplicationTest {
 
     @AfterAll
     public static void teardown() {
-        File f = new File("SavedData.json");
+        File f = new File(EntrySaverJson.SYSTEM_SAVE_LOCATION);
         f.delete();
     }
 
