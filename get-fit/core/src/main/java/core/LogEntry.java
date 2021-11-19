@@ -169,7 +169,7 @@ public final class LogEntry {
             return new Validity(false, "Subcategory must be part of exercise category");
         }
 
-        if (builder.cdistance != null && (builder.cdistance < 1)) {
+        if (builder.cdistance != null && (builder.cdistance <= 0)) {
 
             return new Validity(false, "Distance must be positive");
         }
