@@ -150,7 +150,7 @@ public class GetfitController {
         return returnJSON.toString();
     }
 
-    @GetMapping("/stats")
+    @GetMapping(value= "/stats", produces = "application/json")
     @ResponseBody
     public String getStatisticsData(
             final @RequestParam(value = "d") String date,
