@@ -101,7 +101,6 @@ spotbugs:
 
 deploy:
   stage: deploy
-  needs: ["test"]
   script: cd get-fit && mvn install -DnoTestUI=true && cd ui && mvn compile javafx:jlink jpackage:jpackage
   allow_failure: false
   only:
