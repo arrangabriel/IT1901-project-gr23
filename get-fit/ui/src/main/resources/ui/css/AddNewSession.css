@@ -1,0 +1,23 @@
+.slider:focused .thumb,
+.slider .thumb {
+    -fx-background-color: -fx-dark;
+    -fx-border-color: transparent;
+    -fx-background-insets: 0, 1, 2;
+    -fx-background-radius: 0.5em;
+    -fx-padding: 0.583333em;
+}
+
+.slider .thumb:hover {
+    -fx-background-color: -fx-light;
+}
+
+.slider .track {
+    -fx-background-color: -fx-light;
+    -fx-background-insets: 1 0 -1 0, 0, 1;
+    -fx-padding: 0.208333em;
+}
+
+.slider .axis {
+    -fx-tick-label-font: 0.833333em System;
+    -fx-tick-label-fill: -fx-text-background-color;
+}
