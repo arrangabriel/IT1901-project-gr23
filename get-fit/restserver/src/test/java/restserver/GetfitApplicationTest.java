@@ -12,6 +12,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import java.io.File;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -150,6 +151,12 @@ public class GetfitApplicationTest {
             e.printStackTrace();
             fail(e.getMessage());
         }
+    }
+
+    @AfterAll
+    public static void teardown() {
+        File f = new File("SavedData.json");
+        f.delete();
     }
 
 }

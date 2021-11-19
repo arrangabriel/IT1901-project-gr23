@@ -1,4 +1,4 @@
-module name {
+module integration {
     requires ui;
     requires rest;
     

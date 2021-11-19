@@ -103,6 +103,11 @@ public class StatisticsController {
 
     @FXML
     public void onHandleData() {
+        this.getData();
+        this.createBarChart();
+    }
+
+    private void getData() {
         ListBuilder listBuilder = new ListBuilder();
         if ((exerciseType.getValue() != null) && (exerciseType.getValue() != "Any")) {
             listBuilder.category(exerciseType.getValue().toUpperCase());
@@ -222,5 +227,5 @@ public class StatisticsController {
         statisticsChart.setAnimated(false);
 		
 		statisticsChart.getData().setAll(chart);
-    }   
+    }
 }
