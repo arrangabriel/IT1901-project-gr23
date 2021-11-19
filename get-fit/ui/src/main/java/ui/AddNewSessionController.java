@@ -212,13 +212,14 @@ public class AddNewSessionController {
             try {
                 duration = String.valueOf(
                         Duration.ofHours(Integer.parseInt(
-                                        hour.getText() != null ? hour.getText() : "0"))
+                                        hour.getText() != null ? hour.getText()
+                                                : "0"))
                                 .plusMinutes(Integer.parseInt(
-                                        min.getText() != null ? min.getText() :
-                                                "0"))
+                                        min.getText() != null ? min.getText()
+                                                : "0"))
                                 .getSeconds());
-                if (duration == "0") {
-                    throw new NumberFormatException(); // Equates to duration being nothing which is not a number.
+                if (duration.equals("0")) {
+                    throw new NumberFormatException();
                 }
             } catch (NumberFormatException e) {
                 throw new IllegalArgumentException("Duration must be set.");
@@ -482,8 +483,9 @@ public class AddNewSessionController {
         validateIntegerInput(min, MAX_MINUTES);
         validateFloatInput(distance, MAX_DISTANCE);
 
-        Timeline remove = new Timeline(new KeyFrame(javafx.util.Duration.seconds(5),
-                event -> errorLabel.setText("")));
+        Timeline remove =
+                new Timeline(new KeyFrame(javafx.util.Duration.seconds(5),
+                        event -> errorLabel.setText("")));
 
         errorLabel.textProperty().addListener((obs, oldValue, newValue) -> {
             if (!newValue.equals("")) {
