@@ -1,7 +1,6 @@
 package localpersistence;
 
 import core.EntryManager;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -19,7 +18,13 @@ import java.util.Scanner;
  */
 public final class EntrySaverJson {
 
-    public static final String SYSTEM_SAVE_LOCATION = System.getProperty("user.home")+System.getProperty("file.separator")+"getfit"+System.getProperty("file.separator")+"SavedData.json";
+    /**
+     * A static reference to Get-Fits save location.
+     */
+    public static final String SYSTEM_SAVE_LOCATION =
+            System.getProperty("user.home")
+                    + System.getProperty("file.separator") + "getfit"
+                    + System.getProperty("file.separator") + "SavedData.json";
 
     /**
      * Hidden constructor.
@@ -28,28 +33,31 @@ public final class EntrySaverJson {
     }
 
     /**
-     * Iterates over every entry in the provided EntryManager and adds their data as
-     * a string to a hashmap. Saves the hashmap to SavedData.json.
+     * Iterates over every entry in the provided EntryManager
+     * and adds their data as a string to a hashmap.
+     * Saves the hashmap to SavedData.json.
      *
      * @param entryManager the EntryManager instance to be saved.
      * @throws IOException              if there was an issue during write.
      * @throws IllegalArgumentException if entryManager is null.
      */
-    public static void save(final EntryManager entryManager) throws IOException, IllegalArgumentException {
-
+    public static void save(final EntryManager entryManager)
+            throws IOException, IllegalArgumentException {
         save(entryManager, SYSTEM_SAVE_LOCATION);
     }
 
     /**
-     * Iterates over every entry in the provided EntryManager and adds their data as
-     * a string to a hashmap. Saves the hashmap to the specified JSON file.
+     * Iterates over every entry in the provided EntryManager
+     * and adds their data as a string to a hashmap.
+     * Saves the hashmap to the specified JSON file.
      *
      * @param entryManager the EntryManager instance to be saved.
      * @param saveFile     path to the file being written to.
      * @throws IOException              if there was an issue during write.
      * @throws IllegalArgumentException if entryManager or saveFile is null.
      */
-    public static void save(final EntryManager entryManager, final String saveFile)
+    public static void save(final EntryManager entryManager,
+                            final String saveFile)
             throws IOException, IllegalArgumentException {
         System.out.println();
 
@@ -64,10 +72,10 @@ public final class EntrySaverJson {
             json.put(entryId, map.get(entryId));
         }
 
-        //String folderName = saveFile.split(System.getProperty("file.separator"))[0];
         String[] split = saveFile.split(System.getProperty("file.separator"));
-        String folderPath = String.join(System.getProperty("file.separator"), Arrays.copyOfRange(split, 0, split.length - 1));
-        
+        String folderPath = String.join(System.getProperty("file.separator"),
+                Arrays.copyOfRange(split, 0, split.length - 1));
+
         File folder = new File(folderPath);
 
         if (!folder.exists()) {
@@ -96,21 +104,23 @@ public final class EntrySaverJson {
      * @throws IOException              if SavedData.JSON could not be found.
      * @throws IllegalArgumentException if entryManager is null.
      */
-    public static void load(final EntryManager entryManager) throws IOException, IllegalArgumentException {
+    public static void load(final EntryManager entryManager)
+            throws IOException, IllegalArgumentException {
 
         load(entryManager, SYSTEM_SAVE_LOCATION);
     }
 
     /**
-     * Loads a specified JSON file and constructs LogEntries which it appends to the
-     * provided EntryManager.
+     * Loads a specified JSON file and constructs LogEntries,
+     * which it appends to the provided EntryManager.
      *
      * @param entryManager the EntryManager to load data into.
      * @param saveFile     the path of the JSON file to load from.
-     * @throws IOException              if the specified path could not be found.
+     * @throws IOException             if the specified path could not be found.
      * @throws IllegalArgumentException if the entryManager or saveFile is null.
      */
-    public static void load(final EntryManager entryManager, final String saveFile)
+    public static void load(final EntryManager entryManager,
+                            final String saveFile)
             throws IOException, IllegalArgumentException {
 
         if (entryManager == null || saveFile == null) {
@@ -137,15 +147,25 @@ public final class EntrySaverJson {
             for (String key : jsonObject.keySet()) {
                 HashMap<String, String> entryHash = new HashMap<>();
 
-                entryHash.put("title", jsonObject.getJSONObject(key).getString("title"));
-                entryHash.put("comment", jsonObject.getJSONObject(key).getString("comment"));
-                entryHash.put("date", jsonObject.getJSONObject(key).getString("date"));
-                entryHash.put("feeling", jsonObject.getJSONObject(key).getString("feeling"));
-                entryHash.put("duration", jsonObject.getJSONObject(key).getString("duration"));
-                entryHash.put("distance", jsonObject.getJSONObject(key).getString("distance"));
-                entryHash.put("maxHeartRate", jsonObject.getJSONObject(key).getString("maxHeartRate"));
-                entryHash.put("exerciseCategory", jsonObject.getJSONObject(key).getString("exerciseCategory"));
-                entryHash.put("exerciseSubCategory", jsonObject.getJSONObject(key).getString("exerciseSubCategory"));
+                entryHash.put("title",
+                        jsonObject.getJSONObject(key).getString("title"));
+                entryHash.put("comment",
+                        jsonObject.getJSONObject(key).getString("comment"));
+                entryHash.put("date",
+                        jsonObject.getJSONObject(key).getString("date"));
+                entryHash.put("feeling",
+                        jsonObject.getJSONObject(key).getString("feeling"));
+                entryHash.put("duration",
+                        jsonObject.getJSONObject(key).getString("duration"));
+                entryHash.put("distance",
+                        jsonObject.getJSONObject(key).getString("distance"));
+                entryHash.put("maxHeartRate", jsonObject.getJSONObject(key)
+                        .getString("maxHeartRate"));
+                entryHash.put("exerciseCategory", jsonObject.getJSONObject(key)
+                        .getString("exerciseCategory"));
+                entryHash.put("exerciseSubCategory",
+                        jsonObject.getJSONObject(key)
+                                .getString("exerciseSubCategory"));
 
                 jsonHash.put(key, entryHash);
 
