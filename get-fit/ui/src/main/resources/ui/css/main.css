@@ -26,7 +26,6 @@ TextField, TextArea, DatePicker, ComboBox, Button {
 Button:hover {
     -fx-background-color: -fx-darkest;
     -fx-text-fill: -fx-dtext;
-    -fx-animated: true;
 }
 
 /*.button {*/
