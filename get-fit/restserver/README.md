@@ -1,4 +1,4 @@
-# Rest Server
+# Restserver
 
 This modules handles the Service layer (rest api). Its purpose is to transfer data to and from the service layer. The module provide access to the following classes:
 
