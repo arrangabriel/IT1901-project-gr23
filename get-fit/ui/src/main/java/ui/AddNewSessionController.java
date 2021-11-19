@@ -30,7 +30,6 @@ import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 
@@ -339,6 +338,7 @@ public class AddNewSessionController {
         String mainCategory =
                 exerciseType.getSelectionModel().getSelectedItem()
                         .toLowerCase();
+
         tags.setItems(this.getSubcategoryStringObservableList(mainCategory));
 
 
@@ -354,8 +354,13 @@ public class AddNewSessionController {
         distanceLabel.setVisible(isCardio);
     }
 
-    private String capitalize(final String s) {
-        return s.substring(0, 1).toUpperCase() + s.substring(1);
+    private String capitalize(final String string) {
+        if (string.length() > 0) {
+            return string.substring(0, 1).toUpperCase()
+                    + string.substring(1).toLowerCase();
+        } else {
+            return "";
+        }
     }
 
     private ObservableList<String> getSubcategoryStringObservableList(
@@ -460,10 +465,8 @@ public class AddNewSessionController {
             errorLabel.setText(e.getMessage());
         }
 
-        Set<String> exerciseCategories = this.categories.keySet();
-
         // generate an ObservableList of exercise category names.
-        ObservableList<String> exerciseCategoryNames = exerciseCategories
+        ObservableList<String> exerciseCategoryNames = this.categories.keySet()
                 .stream()
                 .map(this::capitalize)
                 .collect(Collectors
@@ -475,10 +478,9 @@ public class AddNewSessionController {
         tags.setItems(exerciseCategoryNames);
         setCardio(false);
         sessionDatePicker.setValue(LocalDate.now());
-
         handleTagsSelector();
 
-        // validation of fields when they are changed.
+        // Validation setup
         validateIntegerInput(hour, MAX_HOURS);
         validateIntegerInput(min, MAX_MINUTES);
         validateFloatInput(distance, MAX_DISTANCE);
