@@ -1,12 +1,32 @@
 /* color scheme */
-/*******************************************************************************
- *                                                                             *
- * Button                                                                      *
- *                                                                             *
- ******************************************************************************/
+
+* {
+    -fx-primary: #f9f9f9;
+    -fx-light: #ffffff;
+    -fx-dark: #c6c6c6;
+    -fx-darkest: #000000;
+    -fx-ptext: #000000;
+    -fx-dtext: #ffffff;
+}
+
+.root {
+    -fx-text-fill: -fx-ptext;
+}
+
+AnchorPane {
+    -fx-background-color: -fx-primary;
+}
+
 TextField, TextArea, DatePicker, ComboBox, Button {
-    -fx-border-color: black;
+    -fx-border-color: -fx-darkest;
     -fx-border-radius: 0px;
+    -fx-background-color: -fx-light;
+}
+
+Button:hover {
+    -fx-background-color: -fx-darkest;
+    -fx-text-fill: -fx-dtext;
+    -fx-animated: true;
 }
 
 /*.button {*/
