@@ -40,7 +40,7 @@ Handles controll over log creation page
 ## StatisticsController
 Handles controll over statistics page.
 
-##Methods
+## Methods
 
 - onReturn(ActionEvent) -> void: Switches the view to start page.
 
