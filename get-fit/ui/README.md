@@ -13,16 +13,15 @@ Handles controll over the start page
 
 - addSessionButtonPushed(ActionEvent) -> void: Switches the view to AddNewSession.
 
+- onStatisticsPage(ActionEvent) -> void: Switches the view to Statistics.
+
 - closeView(ActionEvent) -> void: Hides entry view.
 
 - sort(Event) -> void: Fill list with entries according to sort parameters. 
 
-- addIteratorToView(Iterator) -> void: Place an iterator of enteries in the view.
+- updateList() -> void: Updates the log entry list by querying the server using selected params from the dropdown menues.
 
 - replaceSubcategories(Event) -> void: Updates ui when main category is selected and updates the current sort.
-
-- reverse(ActionEvent) -> void: Updates ui sort with reversal
-
 
 
 
@@ -37,6 +36,17 @@ Handles controll over log creation page
 - backButtonPushed(ActionEvent) -> void: Switches the view back to startPage.
 
 - handleTagsSelector(ActionEvent) -> void: Changes ui according to the selected exercise category.
+
+## StatisticsController
+Handles controll over statistics page.
+
+##Methods
+
+- onReturn(ActionEvent) -> void: Switches the view to start page.
+
+- onHandleData -> void: Updates Handles data for the data coloumn and updates bar chart with data.
+
+
 
 
 
