@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.time.LocalDate;
 import java.util.HashMap;
+import java.util.Map.Entry;
 import java.util.concurrent.ExecutionException;
 
 import client.LogClient;
@@ -141,39 +142,39 @@ public class StatisticsController {
                 }
             }
 
-            for (String dataEntry : dataEntries.keySet()) {
-                switch (dataEntry) {
+            for (Entry<String,String> dataEntry : dataEntries.entrySet()) {
+                switch (dataEntry.getKey()) {
 
                     case "count" :
                         numberOfSessions.setText(
-                            dataEntries.get(dataEntry));
+                            dataEntry.getValue());
                         break;
                     case "totalDuration" :
                         totalDuration.setText(
-                            dataEntries.get(dataEntry));
+                            dataEntry.getValue());
                         break;
                     
                     case "averageDuration" :
                         averageDuration.setText(
-                            dataEntries.get(dataEntry));
+                            dataEntry.getValue());
                         break;
 
                     case "averageSpeed" :
                         averageSpeed.setText(
-                            dataEntries.get(dataEntry)
+                            dataEntry.getValue()
                             .substring(0, 3)
                             + "min/km");
                         break;
                     
                     case "averageFeeling" :
                         averageFeeling.setText(
-                            dataEntries.get(dataEntry)
+                            dataEntry.getValue()
                             .substring(0, 3));
                         break;
                     
                     case "maximumHr" :
                         maximumHr.setText(
-                            dataEntries.get(dataEntry));
+                            dataEntry.getValue());
                         break;
 
                     }
@@ -207,22 +208,22 @@ public class StatisticsController {
         try {
             dataEntries = this.client.getChartData(listBuilder);
 
-            for (String dataEntry : dataEntries.keySet()) {
-                switch (dataEntry) {
+            for (Entry<String,String> dataEntry : dataEntries.entrySet()) {
+                switch (dataEntry.getKey()) {
 
                     case "swimming" :
-                        swimming = Integer.parseInt(dataEntries.get(dataEntry));
+                        swimming = Integer.parseInt(dataEntry.getValue());
                         break;
                     case "running" :
-                        running = Integer.parseInt(dataEntries.get(dataEntry));
+                        running = Integer.parseInt(dataEntry.getValue());
                         break;
                     
                     case "strength" :
-                        strength = Integer.parseInt(dataEntries.get(dataEntry));
+                        strength = Integer.parseInt(dataEntry.getValue());
                         break;
 
                     case "cycling" :
-                        cycling = Integer.parseInt(dataEntries.get(dataEntry));
+                        cycling = Integer.parseInt(dataEntry.getValue());
                         break;
                 }
             }

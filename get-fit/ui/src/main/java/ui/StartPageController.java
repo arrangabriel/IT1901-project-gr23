@@ -3,6 +3,7 @@ package ui;
 import client.LogClient;
 import client.LogClient.ListBuilder;
 import client.ServerResponseException;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -146,7 +147,7 @@ public class StartPageController {
             }
             errorLabel.setText("");
         } else {
-            System.exit(0);
+            Platform.exit();
         }
     }
 

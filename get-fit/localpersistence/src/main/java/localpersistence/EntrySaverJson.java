@@ -12,6 +12,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Scanner;
+import java.util.Map.Entry;
 
 
 /**
@@ -60,8 +61,8 @@ public final class EntrySaverJson {
         JSONObject json = new JSONObject();
 
         HashMap<String, HashMap<String, String>> map = entryManager.toHashMap();
-        for (String entryId : map.keySet()) {
-            json.put(entryId, map.get(entryId));
+        for (Entry<String, HashMap<String, String>> entry : map.entrySet()) {
+            json.put(entry.getKey(), entry.getValue());
         }
 
         //String folderName = saveFile.split(System.getProperty("file.separator"))[0];
@@ -71,7 +72,8 @@ public final class EntrySaverJson {
         File folder = new File(folderPath);
 
         if (!folder.exists()) {
-            folder.mkdirs();
+            boolean ignored = folder.mkdirs();
+            assert ignored;
         }
 
         File file = new File(saveFile);

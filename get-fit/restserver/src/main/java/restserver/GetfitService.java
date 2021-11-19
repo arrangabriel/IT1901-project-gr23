@@ -56,7 +56,7 @@ public class GetfitService {
      * @return an the EntryManager from this GetfitService
      */
     public EntryManager getEntryManager() {
-        return this.entryManager;
+        return new EntryManager(this.entryManager);
     }
 
     //Change to just hours.

@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Map.Entry;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -18,7 +19,7 @@ public final class EntryManager implements Iterable<LogEntry> {
     /**
      * Hashmap of LogEntries.
      */
-    private final HashMap<String, LogEntry> entryMap = new HashMap<>();
+    private final HashMap<String, LogEntry> entryMap;
 
     /**
      * Current id hash position.
@@ -30,6 +31,19 @@ public final class EntryManager implements Iterable<LogEntry> {
      * Functions as the API interface for the core-module.
      */
     public EntryManager() {
+        this.entryMap = new HashMap<String, LogEntry>();
+    }
+
+    public EntryManager(EntryManager entryManager) {
+        this.entryMap = entryManager.getEntryMap();
+        this.idHashPosition = entryManager.getIdHashPosition();
+    }
+
+    private HashMap<String, LogEntry> getEntryMap() {
+        return new HashMap<String, LogEntry>(this.entryMap);
+    }
+    private int getIdHashPosition() {
+        return this.idHashPosition;
     }
 
     /**
@@ -43,11 +57,11 @@ public final class EntryManager implements Iterable<LogEntry> {
             final HashMap<String, HashMap<String, String>> map,
             final EntryManager entryManager) {
 
-        for (String entryId : map.keySet()) {
+        for (Entry<String, HashMap<String, String>> entryEntry: map.entrySet()) {
             entryManager.updateHashPosition(
-                    Integer.parseInt(entryId));
-            LogEntry entry = LogEntry.fromHash(map.get(entryId));
-            entryManager.addEntry(entryId, entry);
+                    Integer.parseInt(entryEntry.getKey()));
+            LogEntry entry = LogEntry.fromHash(entryEntry.getValue());
+            entryManager.addEntry(entryEntry.getKey(), entry);
         }
 
     }
