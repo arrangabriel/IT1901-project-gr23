@@ -25,7 +25,7 @@
     <Separator layoutX="371.0" layoutY="86.0" orientation="VERTICAL" prefHeight="264.0" prefWidth="15.0"/>
     <Label layoutX="404.0" layoutY="219.0" prefHeight="17.0" prefWidth="90.0" text="Average feeling"/>
     <Label layoutX="404.0" layoutY="249.0" prefHeight="17.0" prefWidth="113.0" text="Maximum heart rate"/>
-    <Label fx:id="speed" layoutX="403.0" layoutY="278.0" prefHeight="17.0" prefWidth="111.0" text="Average speed"/>
+    <Label layoutX="403.0" layoutY="278.0" prefHeight="17.0" prefWidth="111.0" text="Average speed"/>
     <Label layoutX="406.0" layoutY="187.0" text="Number of sessions"/>
     <Label fx:id="numberOfSessions" layoutX="521.0" layoutY="155.0" prefHeight="17.0" prefWidth="64.0"/>
     <Label fx:id="totalDuration" layoutX="521.0" layoutY="123.0" prefHeight="17.0" prefWidth="66.0"/>
