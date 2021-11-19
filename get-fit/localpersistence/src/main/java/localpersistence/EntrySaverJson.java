@@ -81,7 +81,7 @@ public final class EntrySaverJson {
 
         if (!folder.exists()) {
             boolean ignored = folder.mkdirs();
-            assert ignored;
+            ignored = !ignored;
         }
 
         File file = new File(saveFile);
