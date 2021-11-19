@@ -174,7 +174,7 @@ public final class Statistics {
         return maxHr;
     }
 
-    @SuppressWarnings("checkstyle:MagicNumber")
+    @SuppressWarnings("checkstyle:magicnumber")
     private static List<LogEntry> listFilteredByDates(
             final EntryManager entryManager,
             final String category,
