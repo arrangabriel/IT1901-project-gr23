@@ -159,7 +159,7 @@
                     <vendor>it1901</vendor>
                     <destination>target/dist</destination>
                     <module>ui/ui.App</module>
-                    <runtimeImage>target</runtimeImage>
+                    <runtimeImage>target/getfit</runtimeImage>
                     <javaOptions>
                         <option>-Dfile.encoding=UTF-8</option>
                     </javaOptions>
