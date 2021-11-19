@@ -6,4 +6,5 @@ module ui {
     requires org.json;
 
     opens ui to javafx.graphics, javafx.fxml;
+    exports ui;
 }
