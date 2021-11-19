@@ -35,7 +35,7 @@ public class StatisticsController {
      * Labels for different statistics.
      */
     @FXML
-    private Label totalDuration, speed, numberOfSessions,
+    private Label totalDuration, speedLabel, numberOfSessions,
     averageFeeling, averageSpeed, maximumHr, averageDuration, errorLabel;
    
     /**
@@ -107,9 +107,24 @@ public class StatisticsController {
         this.createBarChart();
     }
 
+
     private void getData() {
+
+        speedLabel.setVisible(true);
+        averageSpeed.setVisible(true);
+
+        if (exerciseType.getValue() != null 
+        && exerciseType.getValue().toString().equals("Strength")
+        && !(exerciseType.getValue().toString().equals("Any"))) {
+            
+            speedLabel.setVisible(false);
+            averageSpeed.setVisible(false);
+        }
+
         ListBuilder listBuilder = new ListBuilder();
-        if ((exerciseType.getValue() != null) && (exerciseType.getValue() != "Any")) {
+        if ((exerciseType.getValue() != null) 
+        && !(exerciseType.getValue().toString().equals("Any"))) {
+
             listBuilder.category(exerciseType.getValue().toUpperCase());
         }
 
@@ -145,12 +160,15 @@ public class StatisticsController {
 
                     case "averageSpeed" :
                         averageSpeed.setText(
-                            dataEntries.get(dataEntry));
+                            dataEntries.get(dataEntry)
+                            .substring(0, 3)
+                            + "min/km");
                         break;
                     
                     case "averageFeeling" :
                         averageFeeling.setText(
-                            dataEntries.get(dataEntry));
+                            dataEntries.get(dataEntry)
+                            .substring(0, 3));
                         break;
                     
                     case "maximumHr" :

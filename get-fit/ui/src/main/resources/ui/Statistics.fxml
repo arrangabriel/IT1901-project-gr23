@@ -19,17 +19,17 @@
                 <Font size="36.0" />
             </font>
         </Label>
-        <Label layoutX="405.0" layoutY="123.0" prefHeight="17.0" prefWidth="85.0" text="Total duration" />
+        <Label layoutX="391.0" layoutY="123.0" prefHeight="17.0" prefWidth="85.0" text="Total duration" />
         <Separator layoutX="371.0" layoutY="91.0" orientation="VERTICAL" prefHeight="251.0" prefWidth="15.0" />
-        <Label layoutX="403.0" layoutY="187.0" prefHeight="17.0" prefWidth="90.0" text="Average feeling" />
-        <Label layoutX="403.0" layoutY="217.0" prefHeight="17.0" prefWidth="113.0" text="Maximum heart rate" />
-        <Label fx:id="speed" layoutX="402.0" layoutY="246.0" prefHeight="17.0" prefWidth="111.0" text="Average speed" />
-        <Label layoutX="405.0" layoutY="155.0" text="Number of sessions" />
-        <Label fx:id="numberOfSessions" layoutX="521.0" layoutY="155.0" prefHeight="17.0" prefWidth="64.0" />
-        <Label fx:id="totalDuration" layoutX="521.0" layoutY="123.0" prefHeight="17.0" prefWidth="66.0" />
-        <Label fx:id="averageFeeling" layoutX="521.0" layoutY="188.0" prefHeight="17.0" prefWidth="64.0" />
-        <Label fx:id="maximumHr" layoutX="521.0" layoutY="217.0" prefHeight="17.0" prefWidth="72.0" />
-        <Label fx:id="averageSpeed" layoutX="521.0" layoutY="245.0" prefHeight="17.0" prefWidth="73.0" />
+        <Label layoutX="389.0" layoutY="187.0" prefHeight="17.0" prefWidth="90.0" text="Average feeling" />
+        <Label layoutX="389.0" layoutY="217.0" prefHeight="17.0" prefWidth="113.0" text="Maximum heart rate" />
+        <Label fx:id="speedLabel" layoutX="393.0" layoutY="279.0" prefHeight="17.0" prefWidth="111.0" text="Average speed" />
+        <Label layoutX="391.0" layoutY="155.0" text="Number of sessions" />
+        <Label fx:id="numberOfSessions" layoutX="507.0" layoutY="155.0" prefHeight="17.0" prefWidth="64.0" />
+        <Label fx:id="totalDuration" layoutX="507.0" layoutY="123.0" prefHeight="17.0" prefWidth="66.0" />
+        <Label fx:id="averageFeeling" layoutX="507.0" layoutY="188.0" prefHeight="17.0" prefWidth="64.0" />
+        <Label fx:id="maximumHr" layoutX="507.0" layoutY="217.0" prefHeight="17.0" prefWidth="72.0" />
+        <Label fx:id="averageSpeed" layoutX="507.0" layoutY="278.0" prefHeight="17.0" prefWidth="73.0" />
         <Label layoutX="451.0" layoutY="36.0" text="Data">
             <font>
                 <Font size="24.0" />
@@ -41,12 +41,12 @@
         <Label layoutX="57.0" layoutY="62.0" text="Start" />
         <Label layoutX="184.0" layoutY="61.0" text="End" />
       <Button layoutX="394.0" layoutY="346.0" mnemonicParsing="false" onAction="#onHandleData" prefHeight="33.0" prefWidth="82.0" text="Enter" />
-      <Label fx:id="errorLabel" layoutX="401.0" layoutY="50.0" prefHeight="17.0" prefWidth="184.0" textFill="#eb0b0b">
+      <Label fx:id="errorLabel" layoutX="219.0" layoutY="28.0" prefHeight="17.0" prefWidth="184.0" textFill="#eb0b0b">
          <font>
             <Font size="10.0" />
          </font></Label>
-      <Label layoutX="402.0" layoutY="274.0" text="Average Duration" />
-      <Label fx:id="averageDuration" layoutX="521.0" layoutY="276.0" prefHeight="17.0" prefWidth="75.0" />
+      <Label layoutX="391.0" layoutY="248.0" text="Average Duration" />
+      <Label fx:id="averageDuration" layoutX="507.0" layoutY="247.0" prefHeight="17.0" prefWidth="75.0" />
       <BarChart fx:id="statisticsChart" layoutX="12.0" layoutY="112.0" prefHeight="264.0" prefWidth="357.0" title="Number of Sessions">
         <xAxis>
           <CategoryAxis label="Category" prefHeight="57.0" prefWidth="279.0" side="BOTTOM" fx:id="xAxis" />
