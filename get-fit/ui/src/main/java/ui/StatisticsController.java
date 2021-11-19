@@ -1,5 +1,8 @@
 package ui;
 
+import client.LogClient;
+import client.LogClient.ListBuilder;
+import client.ServerResponseException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -11,7 +14,6 @@ import javafx.scene.Scene;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.chart.XYChart.Series;
-import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
@@ -24,62 +26,98 @@ import java.util.HashMap;
 import java.util.Map.Entry;
 import java.util.concurrent.ExecutionException;
 
-import client.LogClient;
-import client.ServerResponseException;
-import client.LogClient.ListBuilder;
-
-
 public class StatisticsController {
 
+    /**
+     * x-axis for the bar chart.
+     */
+    private final LogClient client = new LogClient("http://localhost", 8080);
 
     /**
-     * Labels for different statistics.
+     * Selector values.
      */
-    @FXML
-    private Label totalDuration, speedLabel, numberOfSessions,
-    averageFeeling, averageSpeed, maximumHr, averageDuration, errorLabel;
-   
+    private final ObservableList<String> exerciseTypeSelector =
+            FXCollections.observableArrayList("Any", "Running", "Swimming",
+                    "Strength", "Cycling");
     /**
-     * Button to press for returning to start page.
+     * Duration field.
      */
     @FXML
-    private Button showData;
+    private Label totalDuration;
+
+    /**
+     * Speed field.
+     */
+    @FXML
+    private Label speedLabel;
+
+    /**
+     * Number of sessions field.
+     */
+    @FXML
+    private Label numberOfSessions;
+
+    /**
+     * Average feeling field.
+     */
+    @FXML
+    private Label averageFeeling;
+
+    /**
+     * Average speed field.
+     */
+    @FXML
+    private Label averageSpeed;
+
+    /**
+     * Maximum heart rate field.
+     */
+    @FXML
+    private Label maximumHr;
+
+    /**
+     * Average duration field.
+     */
+    @FXML
+    private Label averageDuration;
+
+    /**
+     * Error message field.
+     */
+    @FXML
+    private Label errorLabel;
 
     /**
      * Choosing which exercise type to display.
      */
     @FXML
     private ComboBox<String> exerciseType;
-    
+
     /**
      * The bar chart.
      */
     @FXML
     private BarChart<String, Number> statisticsChart;
-    
 
-    @FXML
-    private DatePicker start, end;
     /**
-     * x-axis for the bar chart.
+     * Start date picker.
      */
+    @FXML
+    private DatePicker start;
 
-
-    
-    private final LogClient client = new LogClient("http://localhost", 8080);
-
-    private ObservableList<String> exerciseTypeSelecter =
-            FXCollections.observableArrayList("Any", "Running", "Swimming",
-                    "Strength", "Cycling");
+    /**
+     * End date picker.
+     */
+    @FXML
+    private DatePicker end;
 
     @FXML
     private void initialize() {
-        exerciseType.setItems(exerciseTypeSelecter);
+        exerciseType.setItems(exerciseTypeSelector);
 
         //Default values for dates are today and one year from now.
         start.setValue(LocalDate.now().plusYears(-1));
         end.setValue(LocalDate.now());
-
     }
 
     /**
@@ -102,102 +140,89 @@ public class StatisticsController {
         window.show();
     }
 
+    /**
+     * Fires when data-button is pressed.
+     */
     @FXML
     public void onHandleData() {
         this.getData();
         this.createBarChart();
     }
 
-
+    @SuppressWarnings("checkstyle:MagicNumber")
     private void getData() {
-
         speedLabel.setVisible(true);
         averageSpeed.setVisible(true);
 
-        if (exerciseType.getValue() != null 
-        && exerciseType.getValue().toString().equals("Strength")
-        && !(exerciseType.getValue().toString().equals("Any"))) {
-            
+        if (exerciseType.getValue() != null
+                && exerciseType.getValue().equals("Strength")
+                && !(exerciseType.getValue().equals("Any"))) {
             speedLabel.setVisible(false);
             averageSpeed.setVisible(false);
         }
 
         ListBuilder listBuilder = new ListBuilder();
-        if ((exerciseType.getValue() != null) 
-        && !(exerciseType.getValue().toString().equals("Any"))) {
-
+        if ((exerciseType.getValue() != null)
+                && !(exerciseType.getValue().equals("Any"))) {
             listBuilder.category(exerciseType.getValue().toUpperCase());
         }
 
-        listBuilder.date(start.getValue().toString() + "-" + end.getValue().toString());
+        listBuilder.date(
+                start.getValue().toString() + "-" + end.getValue().toString());
         HashMap<String, String> dataEntries;
 
         try {
             dataEntries = this.client.getStatistics(listBuilder);
 
             if (dataEntries.containsKey("empty")) {
-                if(dataEntries.get("empty").equals("True")) {
-                throw new IllegalStateException(
-                    "There are no entries");
+                if (dataEntries.get("empty").equals("True")) {
+                    throw new IllegalStateException(
+                            "There are no entries");
                 }
             }
 
-            for (Entry<String,String> dataEntry : dataEntries.entrySet()) {
+            dataEntries.entrySet().forEach(dataEntry -> {
                 switch (dataEntry.getKey()) {
-
-                    case "count" :
-                        numberOfSessions.setText(
+                    case "count" -> numberOfSessions.setText(
                             dataEntry.getValue());
-                        break;
-                    case "totalDuration" :
-                        totalDuration.setText(
+                    case "totalDuration" -> totalDuration.setText(
                             dataEntry.getValue());
-                        break;
-                    
-                    case "averageDuration" :
-                        averageDuration.setText(
+                    case "averageDuration" -> averageDuration.setText(
                             dataEntry.getValue());
-                        break;
-
-                    case "averageSpeed" :
-                        averageSpeed.setText(
+                    case "averageSpeed" -> averageSpeed.setText(
                             dataEntry.getValue()
-                            .substring(0, 3)
-                            + "min/km");
-                        break;
-                    
-                    case "averageFeeling" :
-                        averageFeeling.setText(
+                                    .substring(0, 3)
+                                    + "min/km");
+                    case "averageFeeling" -> averageFeeling.setText(
                             dataEntry.getValue()
-                            .substring(0, 3));
-                        break;
-                    
-                    case "maximumHr" :
-                        maximumHr.setText(
+                                    .substring(0, 3));
+                    case "maximumHr" -> maximumHr.setText(
                             dataEntry.getValue());
-                        break;
-
+                    default -> {
                     }
                 }
-            } catch (URISyntaxException | InterruptedException | ExecutionException e) {
-                errorLabel.setText("Could not connect to server");
-                e.printStackTrace();
-            } catch (ServerResponseException e) {
-                errorLabel.setText(e.getMessage());
-            } catch (IllegalStateException eae) {
-                errorLabel.setText("There are no sessions saved");
+            });
+        } catch (URISyntaxException
+                | InterruptedException
+                | ExecutionException e) {
+            errorLabel.setText("Could not connect to server");
+            e.printStackTrace();
+        } catch (ServerResponseException e) {
+            errorLabel.setText(e.getMessage());
+        } catch (IllegalStateException eae) {
+            errorLabel.setText("There are no sessions saved");
         }
 
         this.createBarChart();
     }
 
 
-
-    @SuppressWarnings("Unchecked")
+    //@SuppressWarnings("Unchecked")
     private void createBarChart() {
-       
+
         ListBuilder listBuilder = new ListBuilder();
-        listBuilder.date(start.getValue().toString() + "-" + end.getValue().toString());
+        listBuilder.date(
+                start.getValue().toString() + "-" + end.getValue().toString());
         HashMap<String, String> dataEntries;
 
         int swimming = 0;
@@ -208,26 +233,31 @@ public class StatisticsController {
         try {
             dataEntries = this.client.getChartData(listBuilder);
 
-            for (Entry<String,String> dataEntry : dataEntries.entrySet()) {
+            for (Entry<String, String> dataEntry : dataEntries.entrySet()) {
                 switch (dataEntry.getKey()) {
-
-                    case "swimming" :
-                        swimming = Integer.parseInt(dataEntry.getValue());
-                        break;
-                    case "running" :
-                        running = Integer.parseInt(dataEntry.getValue());
-                        break;
-                    
-                    case "strength" :
-                        strength = Integer.parseInt(dataEntry.getValue());
-                        break;
-
-                    case "cycling" :
-                        cycling = Integer.parseInt(dataEntry.getValue());
-                        break;
+                    case "swimming" -> {
+                        swimming =
+                                Integer.parseInt(dataEntry.getValue());
+                    }
+                    case "running" -> {
+                        running =
+                                Integer.parseInt(dataEntry.getValue());
+                    }
+                    case "strength" -> {
+                        strength =
+                                Integer.parseInt(dataEntry.getValue());
+                    }
+                    case "cycling" -> {
+                        cycling =
+                                Integer.parseInt(dataEntry.getValue());
+                    }
+                    default -> {
+                    }
                 }
             }
-        } catch (URISyntaxException | InterruptedException | ExecutionException e) {
+        } catch (URISyntaxException
+                | InterruptedException
+                | ExecutionException e) {
             errorLabel.setText("Could not connect to server");
             e.printStackTrace();
         } catch (ServerResponseException e) {
@@ -237,14 +267,14 @@ public class StatisticsController {
         }
 
         Series<String, Number> chart = new XYChart.Series<>();
-		
-		chart.getData().add(new XYChart.Data<>("Swimming", swimming));
-		chart.getData().add(new XYChart.Data<>("Running", running));
-		chart.getData().add(new XYChart.Data<>("Strength", strength));
-		chart.getData().add(new XYChart.Data<>("Cycling", cycling));
+
+        chart.getData().add(new XYChart.Data<>("Swimming", swimming));
+        chart.getData().add(new XYChart.Data<>("Running", running));
+        chart.getData().add(new XYChart.Data<>("Strength", strength));
+        chart.getData().add(new XYChart.Data<>("Cycling", cycling));
 
         statisticsChart.setAnimated(false);
-		
-		statisticsChart.getData().setAll(chart);
+
+        statisticsChart.getData().setAll(chart);
     }
 }

@@ -1,8 +1,8 @@
 package math;
 
 import core.EntryManager;
-import core.LogEntry;
 import core.ExerciseCategory;
+import core.LogEntry;
 import core.SortConfiguration;
 
 import java.time.LocalDate;
@@ -15,19 +15,18 @@ import java.util.List;
  */
 public final class Statistics {
 
-    //Update javadoc
-
     /**
      * Hidden constructor.
      */
     private Statistics() {
     }
 
-
     /**
      * Returns the count of entries in the entryManager.
      *
      * @param entryManager the entry manager to count over.
+     * @param category     the category to filter by.
+     * @param date         the date interval to filter by.
      * @return the count of entries.
      */
     public static int getCount(
@@ -35,7 +34,8 @@ public final class Statistics {
             final String category,
             final String date) {
 
-        List<LogEntry> entries = listFilteredByDates(entryManager, category, date);
+        List<LogEntry> entries =
+                listFilteredByDates(entryManager, category, date);
 
         return entries.size();
     }
@@ -44,6 +44,8 @@ public final class Statistics {
      * Returns the total duration of all LogEntries in the EntryManager.
      *
      * @param entryManager the entryManager to total.
+     * @param category     the category to filter by.
+     * @param date         the date interval to filter by.
      * @return the total duration.
      */
     public static double getTotalDuration(
@@ -52,7 +54,7 @@ public final class Statistics {
             final String date) {
 
         List<LogEntry> entries = listFilteredByDates(
-            entryManager, category, date);
+                entryManager, category, date);
 
         double sum = 0;
         for (LogEntry logEntry : entries) {
@@ -66,6 +68,8 @@ public final class Statistics {
      * Returns the average duration across all LogEntries in the EntryManager.
      *
      * @param entryManager the entryManager to average.
+     * @param category     the category to filter by.
+     * @param date         the date interval to filter by.
      * @return the average duration.
      */
     public static double getAverageDuration(
@@ -74,12 +78,11 @@ public final class Statistics {
             final String date) {
 
         List<LogEntry> entries = listFilteredByDates(
-            entryManager, category, date);
+                entryManager, category, date);
 
         double sum = getTotalDuration(entryManager, category, date);
-        double average = sum / entries.size();
 
-        return average;
+        return sum / entries.size();
     }
 
     /**
@@ -100,9 +103,9 @@ public final class Statistics {
         }
 
         List<LogEntry> entries = listFilteredByDates(
-        entryManager,
-        category,
-        date);
+                entryManager,
+                category,
+                date);
 
         double time = 0.0;
         double distance = 0.0;
@@ -125,42 +128,44 @@ public final class Statistics {
      * Returns the average feeling of all LogEntries in the EntryManager.
      *
      * @param entryManager the entryManager to calculate average feeling from.
+     * @param category     the exercise category to sort average speed from.
+     * @param date         the date to filter by
      * @return the average feeling.
      */
     public static double getAverageFeeling(final EntryManager entryManager,
-                                            final String category, 
-                                            final String date) {
+                                           final String category,
+                                           final String date) {
 
         List<LogEntry> entries = listFilteredByDates(
-            entryManager, category, date);
+                entryManager, category, date);
 
         double sum = 0;
 
         for (LogEntry logEntry : entries) {
             sum += logEntry.getFeeling();
         }
-        double average = sum / entryManager.entryCount();
-        return average;
+        return sum / entryManager.entryCount();
     }
 
     /**
      * Returns the maximum heart rate across all LogEntries in the EntryManager.
      *
      * @param entryManager the entryManager to get the maximum heart rate from.
-     * @param date         the date to filter by.
+     * @param category     the exercise category to sort average speed from.
+     * @param date         the date to filter by
      * @return the maximum heart rate.
      */
     public static double getMaximumHr(
             final EntryManager entryManager,
-            final String category, 
+            final String category,
             final String date) {
-        
+
         List<LogEntry> entries = listFilteredByDates(
-            entryManager, category, date);
+                entryManager, category, date);
 
         double maxHr = 0;
         for (LogEntry logEntry : entries) {
-            if (logEntry.getMaxHeartRate() != null){
+            if (logEntry.getMaxHeartRate() != null) {
                 if (logEntry.getMaxHeartRate() > maxHr) {
                     maxHr = logEntry.getMaxHeartRate();
                 }
@@ -169,7 +174,7 @@ public final class Statistics {
         return maxHr;
     }
 
-
+    @SuppressWarnings("checkstyle:MagicNumber")
     private static List<LogEntry> listFilteredByDates(
             final EntryManager entryManager,
             final String category,
@@ -177,20 +182,20 @@ public final class Statistics {
 
         SortConfiguration sortConfiguration =
                 SortConfiguration.DATE;
-                
+
 
         EntryManager.SortedIteratorBuilder iteratorBuilder =
                 new EntryManager.SortedIteratorBuilder(
                         entryManager, sortConfiguration);
-        
-        
+
+
         if (category != null) {
             Iterator<LogEntry> iterator = iteratorBuilder.filterTimeInterval(
-            LocalDate.parse(date.substring(0, 10)),
-            LocalDate.parse(date.substring(11))).
-            filterExerciseCategory(
-            ExerciseCategory.valueOf(category)).
-            iterator(false);
+                            LocalDate.parse(date.substring(0, 10)),
+                            LocalDate.parse(date.substring(11))).
+                    filterExerciseCategory(
+                            ExerciseCategory.valueOf(category)).
+                    iterator(false);
 
             List<LogEntry> entries = new ArrayList<>();
             iterator.forEachRemaining(entries::add);
@@ -199,9 +204,9 @@ public final class Statistics {
         }
 
         Iterator<LogEntry> iterator = iteratorBuilder.filterTimeInterval(
-        LocalDate.parse(date.substring(0, 10)),
-        LocalDate.parse(date.substring(11))).
-        iterator(false);
+                        LocalDate.parse(date.substring(0, 10)),
+                        LocalDate.parse(date.substring(11))).
+                iterator(false);
 
 
         List<LogEntry> entries = new ArrayList<>();
