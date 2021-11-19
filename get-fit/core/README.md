@@ -28,7 +28,7 @@ Handles a hashMap of log entries. Every log entry is stored in the hashmap with 
 
 - addEntry(LogEntry) -> String: Adds a new LogEntry to the hashmap. The parameter is the LogEntry that is added. It generates a string based on the size on the hashmap. This will give the added LogEntry the number of n-1 elements as the key in the hashmap as a String. The function returns the String. It throws an IllegalArgumentException if the input is invalid.
 
-- addEntry(String, LogEntry): Adds a new log entry to the hashmap. If the hashMap contains the same String as the String parameter it throws an IllegalArgumentException.
+- addEntry(String, LogEntry) -> void: Adds a new log entry to the hashmap. If the hashMap contains the same String as the String parameter it throws an IllegalArgumentException.
  
 - getEntry(String) -> LogEntry: Returns the object with the same key as the String parameter. 
 If the String is null or if the key does not exist it throws an IllegalArgumentException. 
@@ -39,14 +39,14 @@ If the String is null or if the key does not exist it throws an IllegalArgumentE
 
 - entryIds() -> Set<String>: Returns the Set<String> of all the keys in the hashMap.
 
-- swapEntry(String, LogEntry): Removes a LogEntry with the specified id, and replaces it with the provided entry. The String parameter is the specified id, and the LogEntry is the entry being swapped into the hashMap.
+- swapEntry(String, LogEntry) -> void: Removes a LogEntry with the specified id, and replaces it with the provided entry. The String parameter is the specified id, and the LogEntry is the entry being swapped into the hashMap.
 
 - Iterator() -> Iterator<LogEntry> : Returns an iterator for the LogEntries in an arbitrary order. 
 
 **class SortedIteratorBuilder**
 
 Is a builder for LogEntry iterator. It has an internally modifiable stream of LogEntries.
-- SortedIteratorBuilder(EntryManager, LogEntry.SORTCONFIGURATIONS): The SortedIteratorBuilder constructor. It sorts the LogEntries in the given EntryManager based on the given LogEntry.SORTCONFIGURATIONS, which can be by date, duration or title. It throws an IllegalArgumentException if the sortconfigurations is null. 
+- SortedIteratorBuilder(EntryManager, LogEntry.SORTCONFIGURATIONS) -> void: The SortedIteratorBuilder constructor. It sorts the LogEntries in the given EntryManager based on the given LogEntry.SORTCONFIGURATIONS, which can be by date, duration or title. It throws an IllegalArgumentException if the sortconfigurations is null. 
 
 - filterExerciseCategory(LogEntry.EXERCISECATEGORY) -> SortedIteratorBuilder: It filters the entries in the Stream based on the given exercisecategory. It returns itself. It throws an IllegalArgumentException if the LogEntry.EXERCISECATEGORY is null.
 
@@ -64,7 +64,7 @@ Represents a log entry. It contains a String, LocalDate, Duration, EXERCISECATEG
 
 - interface SubCategory: Methods: getValueOf(String) -> Subcategory: Used to get the subcategory value of a String.
 
-- LogEntry(EntryBuilder): The constructor of LogEntry. Validates the EntryBuilder with the validate(EntryBuilder) method by creating a Validity object. If the validity object is valid it sets the internal variables. If it is not valid it throws an IllegalArgumentException.
+- LogEntry(EntryBuilder) -> void: The constructor of LogEntry. Validates the EntryBuilder with the validate(EntryBuilder) method by creating a Validity object. If the validity object is valid it sets the internal variables. If it is not valid it throws an IllegalArgumentException.
 
 - validate(EntryBuilder) -> Validity: Validate the EntryBuilder by checking the validity of the variables in the builder. It returns a Validity object.
 
@@ -92,7 +92,7 @@ Represents a log entry. It contains a String, LocalDate, Duration, EXERCISECATEG
 
 The builder class for the LogEntry. Consist of the required fields of type String, LocalDate, Duration, EXERCISECATEGORY, int. It also consist of the optional fields String, Subcategory, Double, Integer.
 
-- EntryBuilder(String, LocalDate, Duration, EXERCISECATEGORY, int): Sets the internal variables based on the inputs. Throws an IllegalArgumentException if any of the inputs are illegal. 
+- EntryBuilder(String, LocalDate, Duration, EXERCISECATEGORY, int) -> void: Sets the internal variables based on the inputs. Throws an IllegalArgumentException if any of the inputs are illegal. 
 
 - comment(String) -> EntryBuilder: Sets the comment for the builder. Throws an IllegalArgumentException if the String is illegal.
 
@@ -108,7 +108,7 @@ The builder class for the LogEntry. Consist of the required fields of type Strin
 Consist of a boolean and String field.
 
 ### Methods
-- Validity(boolean, String): Representing the validity of an EntryBuilder.
+- Validity(boolean, String) -> void: Representing the validity of an EntryBuilder.
 
 - valid() -> boolean: Returns wether the builder is valid.
 
