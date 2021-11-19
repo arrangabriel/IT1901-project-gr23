@@ -1,10 +1,12 @@
 package client;
 
 import java.net.URISyntaxException;
+import java.time.LocalDate;
 import java.util.concurrent.ExecutionException;
 import java.util.HashMap;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import com.github.tomakehurst.wiremock.WireMockServer;
 import com.github.tomakehurst.wiremock.client.WireMock;
@@ -58,6 +60,7 @@ public class TestClient {
             
         } catch (URISyntaxException | InterruptedException | ExecutionException | ServerResponseException e) {
             e.printStackTrace();
+            fail();
         }
 
     }
@@ -99,6 +102,7 @@ public class TestClient {
             logClient.addLogEntry(entryHash);
         } catch (URISyntaxException | InterruptedException | ExecutionException | ServerResponseException e) {
             e.printStackTrace();
+            fail();
         }
 
     }
@@ -118,6 +122,33 @@ public class TestClient {
             logClient.getExerciseCategories();
         } catch (URISyntaxException | InterruptedException | ExecutionException | ServerResponseException e) {
             e.printStackTrace();
+            fail();
+        }
+
+    }
+
+    @Test
+    public void testGetStatistics() {
+        String body = "{\"empty\": \"False\",\"count\": \"1\",\"totalDuration\": \"2.0\",\"averageDuration\": \"2.0\",\"averageSpeed\": \"7.0\",\"averageFeeling\": \"4.0\",\"maximumHr\": \"180\"}";
+        stubFor(get(urlEqualTo("/api/v1/entries/stats"))
+                .willReturn(aResponse().withStatus(200).withHeader("Content-Type", "aplication/json").withBody(body)));
+
+        ListBuilder builder = new ListBuilder();
+        builder.date(LocalDate.now().plusYears(-1).toString() + "-" + LocalDate.now().toString());
+
+        try {
+            HashMap<String, String> entry = logClient.getStatistics(builder);
+            assertEquals("False", entry.get("empty"));
+            assertEquals("1", entry.get("count"));
+            assertEquals("2.0", entry.get("totalDuration"));
+            assertEquals("2.0", entry.get("averageDuration"));
+            assertEquals("7.0", entry.get("averageSpeed"));
+            assertEquals("4.0", entry.get("averageFeeling"));
+            assertEquals("180", entry.get("maxHeartRate"));
+            
+        } catch (URISyntaxException | InterruptedException | ExecutionException | ServerResponseException e) {
+            e.printStackTrace();
+            fail();
         }
 
     }
@@ -131,6 +162,7 @@ public class TestClient {
             logClient.deleteLogEntry("0");
         } catch (URISyntaxException | InterruptedException | ExecutionException | ServerResponseException e) {
             e.printStackTrace();
+            fail();
         }
 
     }
@@ -149,6 +181,7 @@ public class TestClient {
             logClient.getLogEntryList(listBuilder);
         } catch (URISyntaxException | InterruptedException | ExecutionException | ServerResponseException e) {
             e.printStackTrace();
+            fail();
         }
     }
 

@@ -171,6 +171,26 @@ public class StartPageController {
     }
 
     /**
+     * Switches the view to Statics.
+     *
+     * @param event event data from pushed button.
+     * @throws IOException if .FXML file could not be found.
+     */
+    @FXML
+    public void onStatisticsPage(final ActionEvent event)
+        throws IOException {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource("Statistics.fxml"));
+            Parent p = loader.load();
+            Scene s = new Scene(p);
+            Stage window =
+                    (Stage) ((Node) event.getSource()).getScene().getWindow();
+            window.setTitle("Statistics");
+            window.setScene(s);
+            window.show();
+    }
+
+    /**
      * Hides entry view.
      *
      * @param event ignored.
@@ -230,6 +250,8 @@ public class StartPageController {
 
     }
 
+
+    @SuppressWarnings("checkstyle:MagicNumber")
     private VBox createListEntry(final HashMap<String, String> entry) {
 
         errorLabel.setText("");
@@ -253,14 +275,28 @@ public class StartPageController {
         open.setOnAction(event -> {
             titleView.setText(entry.get("title"));
             dateView.setText(entry.get("date"));
-            categoryView.setText(capitalize(entry.get("exerciseCategory")));
-            setOptionalField(entry.get("exerciseSubCategory"), subcategoryView,
+            categoryView.setText(
+                    capitalize(entry.get("exerciseCategory")));
+
+            String subCategory = entry.get("exerciseSubCategory");
+            if (!subCategory.equals("null")) {
+                subCategory = capitalize(subCategory);
+            }
+            setOptionalField(subCategory,
+                    subcategoryView,
                     subcategoryLabel);
+
             durationView.setText(durationToHours(
                     Duration.ofSeconds(Long.parseLong(entry.get("duration")))));
             feelingView.setText(String.valueOf(entry.get("feeling")));
-            setOptionalField(entry.get("distance"), distanceView,
+
+            String distance = entry.get("distance");
+            if (!distance.equals("null")) {
+                distance = distance.concat("km");
+            }
+            setOptionalField(distance, distanceView,
                     distanceLabel);
+
             setOptionalField(entry.get("maxHeartRate"), heartRateView,
                     heartRateLabel);
 
@@ -351,14 +387,20 @@ public class StartPageController {
         updateList();
     }
 
+    @SuppressWarnings("checkstyle:MagicNumber")
     private String durationToHours(final Duration duration) {
-        double hours = (double) duration.toHours();
-        double minutes = (double) duration.toMinutes() / 60;
-        return (double) Math.round((hours + minutes) * 10) / 10 + "h";
+        double sec = (double) duration.toSeconds();
+        double h = (double) Math.round((sec/3600) * 10);
+        return String.valueOf(h/10) + "h";
     }
 
     private String capitalize(final String string) {
-        return string.substring(0, 1).toUpperCase() + string.substring(1);
+        if (string.length() > 0) {
+            return string.substring(0, 1).toUpperCase()
+                    + string.substring(1).toLowerCase();
+        } else {
+            return "";
+        }
     }
 
     private void bindVisibility(final Node node) {

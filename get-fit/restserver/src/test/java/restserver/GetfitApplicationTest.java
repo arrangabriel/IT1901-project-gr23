@@ -10,8 +10,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.io.File;
+import java.time.LocalDate;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +39,7 @@ public class GetfitApplicationTest {
 {"date":"2021-10-25","duration":"3600","distance":"3.0","exerciseSubCategory":"PULL","comment":"Example comment",%s"feeling":"7","title":"Example title","exerciseCategory":"STRENGTH","maxHeartRate":"150"}
 """.strip();
 
+
     @Autowired
     private MockMvc mMvc;
 
@@ -45,9 +48,12 @@ public class GetfitApplicationTest {
 
     private final static String path = "/api/v1/entries";
 
+    private final static String date = LocalDate.now().minusYears(-1).toString()
+    + "-" + LocalDate.now().toString();
+
     @BeforeEach
     public void deleteFile() {
-        File f = new File("SavedData.json");
+        File f = new File(EntrySaverJson.SYSTEM_SAVE_LOCATION);
         f.delete();
     }
 
@@ -129,7 +135,31 @@ public class GetfitApplicationTest {
             e.printStackTrace();
             fail(e.getMessage());
         }
+    }
 
+    //These tests need improvements. More coverage in getfit controller.
+    @Test
+    public void testGetStatisticsData() {
+        try {
+            this.mMvc.perform(get(path + "/stats?d=" + date)).andDo(print()).andExpect(status().isOk()).andReturn();
+            this.mMvc.perform(get(path + "/stats?d=" + date + "&c=running")).andExpect(status().isOk()).andReturn();
+            MvcResult result = this.mMvc.perform(MockMvcRequestBuilders.post(path + "/stats?d=" + date + "&c=running").content(String.format(mockEntryAsString, ""))).andReturn();
+            
+        } catch(Exception e) {
+            e.printStackTrace();
+            fail(e.getMessage());
+        }
+    }
+    //Covered by the one over.
+    @Test
+    public void testChartData() {
+        try {
+            this.mMvc.perform(get(path + "/chart?d=" + date)).andDo(print()).andExpect(status().isOk()).andReturn();
+
+        } catch(Exception e) {
+            e.printStackTrace();
+            fail(e.getMessage());
+        }
     }
 
     @Test
@@ -150,6 +180,12 @@ public class GetfitApplicationTest {
             e.printStackTrace();
             fail(e.getMessage());
         }
+    }
+
+    @AfterAll
+    public static void teardown() {
+        File f = new File(EntrySaverJson.SYSTEM_SAVE_LOCATION);
+        f.delete();
     }
 
 }

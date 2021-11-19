@@ -62,8 +62,8 @@ public final class EntryManager implements Iterable<LogEntry> {
     public String addEntry(final LogEntry entry)
             throws IllegalArgumentException {
 
-        String id = String.valueOf(this.idHashPosition);
         this.idHashPosition++;
+        String id = String.valueOf(this.idHashPosition);
 
         addEntry(id, entry);
 
