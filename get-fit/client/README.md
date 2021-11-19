@@ -18,11 +18,14 @@ Representation of a connection to a get-fit server. Attributes are a String for 
 
 - getLogEntryList(ListBuilder) -> List<HashMap<String, String>>: Gets a list of log entries from the server. The method returns a list of log entries from the server represented as a hash map. It throws an URISyntaxException if the id ruins the URI syntax, an InterruptedException if the request was interrupted before retreiving the http response, an ExecutionException if the request completed exceptionally or a ServerResponseException.
 
-- addLogEntry(entry): Adds a log entry on the server. The parameter is the HashMap representing the log entry to add. It throws an URISyntaxException if the id ruins the URI syntax, an InterruptedException if the request was interrupted before retreiving the http response, an ExecutionException if the request completed exceptionally or a ServerResponseException.
+- addLogEntry(entry) -> void: Adds a log entry on the server. The parameter is the HashMap representing the log entry to add. It throws an URISyntaxException if the id ruins the URI syntax, an InterruptedException if the request was interrupted before retreiving the http response, an ExecutionException if the request completed exceptionally or a ServerResponseException.
 
 - updateLogEntry(String, HashMap<String, String>) -> String: Updates a log entry on the server. The parameters are the id and the entry HashMap representing the log entry to update. The id of the updateed log entry. It throws an URISyntaxException if the id ruins the URI syntax, an InterruptedException if the request was interrupted before retreiving the http response, an ExecutionException if the request completed exceptionally or a ServerResponseException.
 
 - getExerciseCategories() -> HashMap<String, List<String>>: Retrieves a list of exercise categories from the server. It returns a list of exercise categories from the server represented as a hash map. It throws an URISyntaxException if the id ruins the URI syntax, an InterruptedException if the request was interrupted before retreiving the http response, an ExecutionException if the request completed exceptionally or a ServerResponseException.
+
+- deleteLogEntry(String) -> void: Deletes a log entry from the server. The param is the id of the log entry to delete. It throws an URISyntaxException if the id ruins the URI syntax, an InterruptedException if the request was interrupted before retreiving the http response, an ExecutionException if the request completed exceptionally or a ServerResponseException.
+
 
 **ListBuilder class**
 
