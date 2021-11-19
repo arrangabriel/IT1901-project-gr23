@@ -147,15 +147,17 @@ public class TestClient {
         builder.date(LocalDate.now().plusYears(-1).toString() + "-" + LocalDate.now().toString());
 
         try {
-            HashMap<String, String> entry = logClient.getStatistics(builder);
+            HashMap<String, String> entry = logClient.getChartData(builder);
             assertEquals("2", entry.get("swimming"));
             assertEquals("3", entry.get("running"));
             assertEquals("0", entry.get("strength"));
             assertEquals("2", entry.get("cycling"));
+            
 
         }catch(URISyntaxException| InterruptedException|
         ExecutionException| ServerResponseException e){
             e.printStackTrace();
+            fail();
             
         }
 
