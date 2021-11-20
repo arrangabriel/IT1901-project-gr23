@@ -421,7 +421,7 @@ public class GetFitIntegrationTest {
             Assertions.assertEquals("1.5h", statistics.get("averageDuration"));
             Assertions.assertEquals("8.75", statistics.get("averageFeeling"));
             Assertions.assertEquals("230.0", statistics.get("maximumHr"));
-            Assertions.assertEquals("0.0", statistics.get("averageSpeed")); // TODO: find out why this is zero
+            Assertions.assertEquals("0.0", statistics.get("averageSpeed"));
         } catch (URISyntaxException | InterruptedException | ExecutionException | ServerResponseException e1) {
             Assertions.fail();
         }
