@@ -118,6 +118,8 @@ public class StatisticsController {
         //Default values for dates are today and one year from now.
         start.setValue(LocalDate.now().plusYears(-1));
         end.setValue(LocalDate.now());
+        speedLabel.setVisible(false);
+        averageSpeed.setVisible(false);
     }
 
     /**
@@ -151,14 +153,19 @@ public class StatisticsController {
 
     @SuppressWarnings("checkstyle:MagicNumber")
     private void getData() {
-        speedLabel.setVisible(true);
-        averageSpeed.setVisible(true);
 
-        if (exerciseType.getValue() != null
-                && exerciseType.getValue().equals("Strength")
-                && !(exerciseType.getValue().equals("Any"))) {
-            speedLabel.setVisible(false);
-            averageSpeed.setVisible(false);
+        speedLabel.setVisible(false);
+        averageSpeed.setVisible(false);
+
+
+        if (exerciseType.getValue() != null) {
+            if ((exerciseType.getValue().equals("Swimming") ||
+                (exerciseType.getValue().equals("Running")) ||
+                (exerciseType.getValue().equals("Cycling")))) {
+
+                    speedLabel.setVisible(true);
+                    averageSpeed.setVisible(true);
+            }
         }
 
         SortArgWrapper sortArgWrapper = new SortArgWrapper();
