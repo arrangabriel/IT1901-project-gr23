@@ -104,7 +104,8 @@ dist:
   script: cd get-fit && mvn install -DnoTestUI=true && cd ui && mvn compile javafx:jlink jpackage:jpackage
   allow_failure: false
   rules:
-    if: ($CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH)
+    - if: ($CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH)
+      when: always
   artifacts:
     paths:
       - get-fit/ui/target/dist/*
