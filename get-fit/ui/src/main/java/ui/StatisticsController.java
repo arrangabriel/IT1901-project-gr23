@@ -181,23 +181,24 @@ public class StatisticsController {
                 }
             }
 
-            dataEntries.entrySet().forEach(dataEntry -> {
-                switch (dataEntry.getKey()) {
+            dataEntries.forEach((key, value) -> {
+                final int rounding = 3;
+                switch (key) {
                     case "count" -> numberOfSessions.setText(
-                            dataEntry.getValue());
+                            value);
                     case "totalDuration" -> totalDuration.setText(
-                            dataEntry.getValue());
+                            value);
                     case "averageDuration" -> averageDuration.setText(
-                            dataEntry.getValue());
+                            value);
                     case "averageSpeed" -> averageSpeed.setText(
-                            dataEntry.getValue()
-                                    .substring(0, 3)
+                            value
+                                    .substring(0, rounding)
                                     + "min/km");
                     case "averageFeeling" -> averageFeeling.setText(
-                            dataEntry.getValue()
-                                    .substring(0, 3));
+                            value
+                                    .substring(0, rounding));
                     case "maximumHr" -> maximumHr.setText(
-                            dataEntry.getValue());
+                            value);
                     default -> {
                     }
                 }

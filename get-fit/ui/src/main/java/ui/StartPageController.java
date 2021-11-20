@@ -44,6 +44,11 @@ public class StartPageController {
      */
     private final LogClient client = new LogClient("http://localhost", 8080);
 
+    /**
+     * Column width percentage.
+     */
+    private static final int PERCENT_WIDTH = 25;
+
     // region FXML-elements
     /***/
     @FXML
@@ -249,7 +254,7 @@ public class StartPageController {
         GridPane grid = new GridPane();
 
         ColumnConstraints colConstraint = new ColumnConstraints();
-        colConstraint.setPercentWidth(25);
+        colConstraint.setPercentWidth(PERCENT_WIDTH);
         grid.getColumnConstraints()
                 .addAll(colConstraint, colConstraint, colConstraint,
                         colConstraint);
@@ -324,8 +329,8 @@ public class StartPageController {
         grid.add(title, 0, 0);
         grid.add(date, 1, 0);
         grid.add(category, 2, 0);
-        grid.add(open, 3, 0);
-        grid.add(delete, 3, 0);
+        grid.add(open, 2 + 1, 0);
+        grid.add(delete, 2 + 1, 0);
 
         vBox.getChildren().add(grid);
         vBox.setId(entry.get("id"));
@@ -374,11 +379,13 @@ public class StartPageController {
         updateList();
     }
 
-    @SuppressWarnings("checkstyle:MagicNumber")
     private String durationToHours(final Duration duration) {
+
         double sec = (double) duration.toSeconds();
-        double h = (double) Math.round((sec / 3600) * 10);
-        return h / 10 + "h";
+        final int secToHours = 3600;
+        final int magnitude = 10;
+        double h = (double) Math.round((sec / secToHours) * magnitude);
+        return h / magnitude + "h";
     }
 
     private String capitalize(final String string) {

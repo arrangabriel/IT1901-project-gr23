@@ -57,6 +57,24 @@ public class AddNewSessionController {
      */
     private static final int MIN_HEART_RATE = 20;
 
+    /*
+     * These constants appease checkstyle.
+     */
+    /**
+     * How many seconds error label should be visible for.
+     */
+    private static final int TIMEOUT_DURATION = 5;
+
+    /**
+     * How long should input float values be.
+     */
+    private static final int MAX_FLOAT_LENGTH = 4;
+
+    /**
+     * How long should input int values be.
+     */
+    public static final int INT_LENGTH = 3;
+
     /**
      * Session log client.
      */
@@ -335,7 +353,8 @@ public class AddNewSessionController {
 
         // error label animation
         Timeline remove =
-                new Timeline(new KeyFrame(javafx.util.Duration.seconds(5),
+                new Timeline(new KeyFrame(javafx.util.Duration.seconds(
+                        TIMEOUT_DURATION),
                         event -> errorLabel.setText("")));
 
         errorLabel.textProperty().addListener((obs, oldValue, newValue) -> {
@@ -366,7 +385,7 @@ public class AddNewSessionController {
                             distance.setText("0");
                         }
                         // Make sure value fits in field.
-                        if (newValue.length() > 4) {
+                        if (newValue.length() > MAX_FLOAT_LENGTH) {
                             distance.setText(oldValue);
                         }
                     } catch (NumberFormatException e) {
@@ -379,7 +398,7 @@ public class AddNewSessionController {
         heartRate.textProperty().addListener((obs, oldVal, newVal) -> {
             if (!newVal.isEmpty()) {
                 try {
-                    if (newVal.length() > 3) {
+                    if (newVal.length() > INT_LENGTH) {
                         throw new NumberFormatException();
                     }
                     int value = Integer.parseInt(newVal);

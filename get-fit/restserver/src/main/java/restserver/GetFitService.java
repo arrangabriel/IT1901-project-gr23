@@ -33,10 +33,11 @@ public class GetFitService {
      * @param sec seconds.
      * @return seconds as hours.
      */
-    @SuppressWarnings("checkstyle:MagicNumber")
     public static String convertFromSecondsToHours(final double sec) {
-        double h = (double) Math.round((sec / 3600) * 10);
-        return h / 10 + "h";
+        final int secToHours = 3600;
+        final int magnitude = 10;
+        double h = (double) Math.round((sec / secToHours) * magnitude);
+        return h / magnitude + "h";
     }
 
     /**

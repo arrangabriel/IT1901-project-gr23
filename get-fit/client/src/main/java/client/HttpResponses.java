@@ -2,8 +2,7 @@ package client;
 
 import java.util.Map;
 
-@SuppressWarnings("checkstyle:HideUtilityClassConstructor")
-public class HttpResponses {
+public final class HttpResponses {
 
     /**
      * All possible responses.
@@ -15,6 +14,9 @@ public class HttpResponses {
             500, "Internal Server Error"
     );
 
+    private HttpResponses() {
+    }
+
     /**
      * Converts code to response.
      *
@@ -24,5 +26,4 @@ public class HttpResponses {
     public static String getResponseText(final int code) {
         return RESPONSES.get(code);
     }
-
 }

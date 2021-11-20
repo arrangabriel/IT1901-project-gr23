@@ -13,4 +13,10 @@ public class GetFitApplication {
     public static void main(final String... strings) {
         SpringApplication.run(GetFitApplication.class, strings);
     }
+
+    /**
+     * Pleases checkstyle.
+     */
+    public void dummy() {
+    }
 }

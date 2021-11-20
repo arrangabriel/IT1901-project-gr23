@@ -21,6 +21,11 @@ import java.util.concurrent.ExecutionException;
 public class LogClient {
 
     /**
+     * OK response value.
+     */
+    private static final int OK_CODE = 200;
+
+    /**
      * URL to remote server.
      */
     private final String url;
@@ -48,7 +53,7 @@ public class LogClient {
      * @return The LogEntry represented by a hash map.
      * @throws URISyntaxException      If the id ruins the URI syntax.
      * @throws InterruptedException
-     * If the request was interrupted before retreiving the http response.
+     * If the request was interrupted before retrieving the http response.
      * @throws ExecutionException      If the request completed exceptionally.
      * @throws ServerResponseException
      * If there was an error with the server response.
@@ -78,7 +83,7 @@ public class LogClient {
      * @throws URISyntaxException
      * If the query entries ruin the query string syntax.
      * @throws InterruptedException
-     * If the request was interrupted before retreiving the http response.
+     * If the request was interrupted before retrieving the http response.
      * @throws ExecutionException      If the request completed exceptionally.
      * @throws ServerResponseException
      * If there was an error with the server response.
@@ -140,7 +145,7 @@ public class LogClient {
      * @throws URISyntaxException      If the query entries ruin
      *                                 the query string syntax.
      * @throws InterruptedException    If the request was interrupted
-     *                                 before retreiving the http response.
+     *                                 before retrieving the http response.
      * @throws ExecutionException      If the request completed exceptionally.
      * @throws ServerResponseException
      * If there was an error with the server response.
@@ -163,15 +168,7 @@ public class LogClient {
         HttpResponse<String> response =
                 this.get("/api/v1/entries/stats" + queryString);
 
-        JSONObject jsonObject = new JSONObject(response.body());
-
-        HashMap<String, String> responseHash = new HashMap<>();
-
-        for (String key : jsonObject.keySet()) {
-            responseHash.put(key, jsonObject.getString(key));
-        }
-
-        return responseHash;
+        return getResponseHashMap(response);
     }
 
     /**
@@ -182,7 +179,7 @@ public class LogClient {
      * @throws URISyntaxException      If the query entries ruin
      *                                 the query string syntax.
      * @throws InterruptedException    If the request was interrupted
-     *                                 before retreiving the http response.
+     *                                 before retrieving the http response.
      * @throws ExecutionException      If the request completed exceptionally.
      * @throws ServerResponseException
      * If there was an error with the server response.
@@ -203,6 +200,11 @@ public class LogClient {
         HttpResponse<String> response =
                 this.get("/api/v1/entries/chart" + queryString);
 
+        return getResponseHashMap(response);
+    }
+
+    private HashMap<String, String> getResponseHashMap(
+            final HttpResponse<String> response) {
         JSONObject jsonObject = new JSONObject(response.body());
 
         HashMap<String, String> responseHash = new HashMap<>();
@@ -220,7 +222,7 @@ public class LogClient {
      * @throws URISyntaxException      If the query entries ruin
      *                                 the query string syntax.
      * @throws InterruptedException    If the request was interrupted
-     *                                 before retreiving the http response.
+     *                                 before retrieving the http response.
      * @throws ExecutionException      If the request completed exceptionally.
      * @throws ServerResponseException
      * If there was an error with the server response.
@@ -233,14 +235,14 @@ public class LogClient {
     }
 
     /**
-     * Retreives a list of exercise categories from the server.
+     * Retrieves a list of exercise categories from the server.
      *
      * @return A list of exercise categories from the server
      * represented as a hash map.
      * @throws URISyntaxException      If the query entries ruin
      *                                 the query string syntax.
      * @throws InterruptedException    If the request was interrupted
-     *                                 before retreiving the http response.
+     *                                 before retrieving the http response.
      * @throws ExecutionException      If the request completed exceptionally.
      * @throws ServerResponseException
      * If there was an error with the server response.
@@ -275,7 +277,7 @@ public class LogClient {
      * @throws URISyntaxException      If the query entries ruin
      *                                 the query string syntax.
      * @throws InterruptedException    If the request was interrupted
-     *                                 before retreiving the http response.
+     *                                 before retrieving the http response.
      * @throws ExecutionException      If the request completed exceptionally.
      * @throws ServerResponseException
      * If there was an error with the server response.
@@ -317,7 +319,7 @@ public class LogClient {
      * @throws URISyntaxException      If the query entries ruin
      *                                 the query string syntax.
      * @throws InterruptedException    If the request was interrupted
-     *                                 before retreiving the http response.
+     *                                 before retrieving the http response.
      * @throws ExecutionException      If the request completed exceptionally.
      * @throws ServerResponseException
      * If there was an error with the server response.
@@ -327,7 +329,7 @@ public class LogClient {
             ExecutionException, ServerResponseException {
 
         HttpResponse<String> response = this.getAsync(endpoint).get();
-        if (response.statusCode() != 200) {
+        if (response.statusCode() != OK_CODE) {
             throw new ServerResponseException(
                     HttpResponses.getResponseText(response.statusCode()),
                     response.statusCode());
@@ -367,7 +369,7 @@ public class LogClient {
      * @param payload What to send to the server.
      * @throws URISyntaxException If the URI syntax is incorrect.
      * @throws InterruptedException
-     * If the underlying asynchronous request was interrupted before retreival.
+     * If the underlying asynchronous request was interrupted before retrieval.
      * @throws ExecutionException
      * If the underlying asynchronous request completed exceptionally.
      * @throws ServerResponseException
@@ -380,7 +382,7 @@ public class LogClient {
             ExecutionException, ServerResponseException {
 
         HttpResponse<String> response = this.postAsync(endpoint, payload).get();
-        if (response.statusCode() != 200) {
+        if (response.statusCode() != OK_CODE) {
             throw new ServerResponseException(
                     HttpResponses.getResponseText(response.statusCode()),
                     response.statusCode());
@@ -393,7 +395,7 @@ public class LogClient {
     public static class ListBuilder {
 
         /**
-         * Wether the sorting should be reversed.
+         * Whether the sorting should be reversed.
          */
         private Boolean reverseVal = false;
 

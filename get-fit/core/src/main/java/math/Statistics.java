@@ -16,6 +16,11 @@ import java.util.List;
 public final class Statistics {
 
     /**
+     * Date format length.
+     */
+    private static final int DATE_LENGTH = 10;
+
+    /**
      * Hidden constructor.
      */
     private Statistics() {
@@ -76,7 +81,6 @@ public final class Statistics {
             final EntryManager entryManager,
             final String category,
             final String date) {
-
         List<LogEntry> entries = listFilteredByDates(
                 entryManager, category, date);
 
@@ -97,7 +101,6 @@ public final class Statistics {
             final EntryManager entryManager,
             final String category,
             final String date) {
-
         if (category == null) {
             return 0.0;
         }
@@ -135,7 +138,6 @@ public final class Statistics {
     public static double getAverageFeeling(final EntryManager entryManager,
                                            final String category,
                                            final String date) {
-
         List<LogEntry> entries = listFilteredByDates(
                 entryManager, category, date);
 
@@ -159,7 +161,6 @@ public final class Statistics {
             final EntryManager entryManager,
             final String category,
             final String date) {
-
         List<LogEntry> entries = listFilteredByDates(
                 entryManager, category, date);
 
@@ -174,25 +175,21 @@ public final class Statistics {
         return maxHr;
     }
 
-    @SuppressWarnings("checkstyle:magicnumber")
     private static List<LogEntry> listFilteredByDates(
             final EntryManager entryManager,
             final String category,
             final String date) {
-
         SortConfiguration sortConfiguration =
                 SortConfiguration.DATE;
-
 
         EntryManager.SortedIteratorBuilder iteratorBuilder =
                 new EntryManager.SortedIteratorBuilder(
                         entryManager, sortConfiguration);
 
-
         if (category != null) {
             Iterator<LogEntry> iterator = iteratorBuilder.filterTimeInterval(
-                            LocalDate.parse(date.substring(0, 10)),
-                            LocalDate.parse(date.substring(11))).
+                            LocalDate.parse(date.substring(0, DATE_LENGTH)),
+                            LocalDate.parse(date.substring(DATE_LENGTH + 1))).
                     filterExerciseCategory(
                             ExerciseCategory.valueOf(category)).
                     iterator(false);
@@ -204,8 +201,8 @@ public final class Statistics {
         }
 
         Iterator<LogEntry> iterator = iteratorBuilder.filterTimeInterval(
-                        LocalDate.parse(date.substring(0, 10)),
-                        LocalDate.parse(date.substring(11))).
+                        LocalDate.parse(date.substring(0, DATE_LENGTH)),
+                        LocalDate.parse(date.substring(DATE_LENGTH + 1))).
                 iterator(false);
 
 
@@ -214,6 +211,4 @@ public final class Statistics {
 
         return entries;
     }
-
 }
-

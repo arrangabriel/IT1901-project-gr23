@@ -33,13 +33,19 @@ import java.util.NoSuchElementException;
 @RestController
 @RequestMapping("/api/v1/entries")
 public class GetFitController {
+
     /**
-     * Core accesser.
+     * Length of one piece of date format.
+     */
+    private static final int DATE_FORMAT_LENGTH = 10;
+
+    /**
+     * Core accessor.
      */
     private final GetFitService getfitService = new GetFitService();
 
     /**
-     * Gives an entry by it's id.
+     * Gives an entry by its id.
      *
      * @param id an integer.
      * @return a HTTP request.
@@ -126,14 +132,13 @@ public class GetFitController {
                 Subcategory subcategories;
 
                 if (subCategory != null) {
-                    switch (category) {
-                        case "STRENGTH" -> subcategories =
-                                StrengthSubCategory.valueOf(
-                                        subCategory);
-                        case "SWIMMING", "CYCLING", "RUNNING" -> subcategories =
+                    subcategories = switch (category) {
+                        case "STRENGTH" ->
+                                StrengthSubCategory.valueOf(subCategory);
+                        case "SWIMMING", "CYCLING", "RUNNING" ->
                                 CardioSubCategory.valueOf(subCategory);
-                        default -> subcategories = null;
-                    }
+                        default -> null;
+                    };
                     iteratorBuilder =
                             iteratorBuilder.filterSubCategory(subcategories);
                 }
@@ -143,8 +148,10 @@ public class GetFitController {
             try {
                 if (date != null) {
                     iteratorBuilder = iteratorBuilder.filterTimeInterval(
-                            LocalDate.parse(date.substring(0, 10)),
-                            LocalDate.parse(date.substring(11)));
+                            LocalDate.parse(date.substring(0,
+                                    DATE_FORMAT_LENGTH)),
+                            LocalDate.parse(
+                                    date.substring(DATE_FORMAT_LENGTH + 1)));
                 }
             } catch (IllegalArgumentException ignored) {
             }
@@ -179,10 +186,11 @@ public class GetFitController {
     public String getStatisticsData(
             final @RequestParam(value = "d") String date,
             @RequestParam(value = "c", required = false)
-                    String eCategory) {
+            final String eCategory) {
 
-        if (eCategory != null) {
-            eCategory = eCategory.toUpperCase();
+        String requestCategory = eCategory;
+        if (requestCategory != null) {
+            requestCategory = requestCategory.toUpperCase();
         }
         HashMap<String, String> map = new HashMap<>();
 
@@ -194,36 +202,36 @@ public class GetFitController {
 
         map.put("count", Integer.toString(Statistics.getCount(
                 getfitService.getEntryManager(),
-                eCategory,
+                requestCategory,
                 date)));
 
         map.put("totalDuration", GetFitService.convertFromSecondsToHours(
                 Statistics.getTotalDuration(
                         getfitService.getEntryManager(),
-                        eCategory,
+                        requestCategory,
                         date)));
 
         map.put("averageDuration", GetFitService.convertFromSecondsToHours(
                 Statistics.getAverageDuration(
                         getfitService.getEntryManager(),
-                        eCategory,
+                        requestCategory,
                         date)));
 
 
         map.put("averageFeeling", Double.toString(Statistics.getAverageFeeling(
                 getfitService.getEntryManager(),
-                eCategory,
+                requestCategory,
                 date)));
 
         double speed = Statistics.getAverageSpeed(
                 getfitService.getEntryManager(),
-                eCategory, date);
+                requestCategory, date);
 
         map.put("averageSpeed", Double.toString(speed));
 
         map.put("maximumHr", Double.toString(Statistics.getMaximumHr(
                 getfitService.getEntryManager(),
-                eCategory,
+                requestCategory,
                 date)));
 
         JSONObject jsonReturn = new JSONObject(map);
@@ -310,6 +318,7 @@ public class GetFitController {
 
     /**
      * Handles IllegalAccessExceptions.
+     *
      * @param ia the exception.
      * @return the exception message.
      */
@@ -323,6 +332,7 @@ public class GetFitController {
 
     /**
      * Handles IOExceptions.
+     *
      * @param io the exception.
      * @return the exception message.
      */
@@ -335,6 +345,7 @@ public class GetFitController {
 
     /**
      * Handles NoSuchElementException.
+     *
      * @param rse the exception.
      * @return the exception message.
      */
