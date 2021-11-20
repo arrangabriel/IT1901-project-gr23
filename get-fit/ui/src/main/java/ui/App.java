@@ -36,6 +36,7 @@ public class App extends Application {
                             getClass().getResource("StartPage.fxml")));
             stage.setTitle("Get fit");
             stage.setScene(new Scene(parent));
+            stage.setResizable(false);
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();

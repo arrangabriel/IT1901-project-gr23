@@ -13,7 +13,8 @@
 }
 
 .check-box:selected > .mark {
-    -fx-background-color: -fx-dtext;
+    -fx-text-fill: -fx-dtext;
+    -fx-background-color: -fx-light;
 }
 
 .list-view {
