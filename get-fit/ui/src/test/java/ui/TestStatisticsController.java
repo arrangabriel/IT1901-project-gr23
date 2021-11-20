@@ -75,10 +75,6 @@ public class TestStatisticsController extends ApplicationTest{
         
     }
 
-    @BeforeEach
-    public void timeOut(){
-        sleep(1000);
-    }
 
     private void click(String... labels) {
         for (var label : labels) {
