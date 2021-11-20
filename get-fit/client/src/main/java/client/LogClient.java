@@ -89,7 +89,7 @@ public class LogClient {
      * If there was an error with the server response.
      */
     public List<HashMap<String, String>> getLogEntryList(
-            final ListBuilder builder)
+            final SortArgWrapper builder)
             throws URISyntaxException, InterruptedException,
             ExecutionException, ServerResponseException {
         String queryString = "?";
@@ -151,7 +151,7 @@ public class LogClient {
      * If there was an error with the server response.
      */
     public HashMap<String, String> getStatistics(
-            final ListBuilder builder)
+            final SortArgWrapper builder)
             throws URISyntaxException, InterruptedException,
             ExecutionException, ServerResponseException {
         String queryString = "?";
@@ -185,7 +185,7 @@ public class LogClient {
      * If there was an error with the server response.
      */
     public HashMap<String, String> getChartData(
-            final ListBuilder builder)
+            final SortArgWrapper builder)
             throws URISyntaxException, InterruptedException,
             ExecutionException, ServerResponseException {
 
@@ -390,9 +390,9 @@ public class LogClient {
     }
 
     /**
-     * Builder for filtering and sorting the list of log entries.
+     * Utility class to ease filtering and sorting the list of log entries.
      */
-    public static class ListBuilder {
+    public static class SortArgWrapper {
 
         /**
          * Whether the sorting should be reversed.
@@ -424,7 +424,7 @@ public class LogClient {
          *
          * @return a ListBuilder instance.
          */
-        public ListBuilder reverse() {
+        public SortArgWrapper reverse() {
             this.reverseVal = !this.reverseVal;
             return this;
         }
@@ -435,7 +435,7 @@ public class LogClient {
          * @param sort sorting configuration.
          * @return a ListBuilder instance.
          */
-        public ListBuilder sort(final String sort) {
+        public SortArgWrapper sort(final String sort) {
             this.sortVal = sort;
             return this;
         }
@@ -446,7 +446,7 @@ public class LogClient {
          * @param category category to filter by.
          * @return a ListBuilder instance.
          */
-        public ListBuilder category(final String category) {
+        public SortArgWrapper category(final String category) {
             this.categoryVal = category;
             return this;
         }
@@ -457,7 +457,7 @@ public class LogClient {
          * @param subCategory sub category to filter by.
          * @return a ListBuilder instance.
          */
-        public ListBuilder subCategory(final String subCategory) {
+        public SortArgWrapper subCategory(final String subCategory) {
             this.subCategoryVal = subCategory;
             return this;
         }
@@ -469,7 +469,7 @@ public class LogClient {
          *             (format: yyyy-mm-dd-yyyy-mm-dd).
          * @return a ListBuilder instance.
          */
-        public ListBuilder date(final String date) {
+        public SortArgWrapper date(final String date) {
             this.dateVal = date;
             return this;
         }

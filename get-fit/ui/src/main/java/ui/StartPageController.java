@@ -1,7 +1,7 @@
 package ui;
 
 import client.LogClient;
-import client.LogClient.ListBuilder;
+import client.LogClient.SortArgWrapper;
 import client.ServerResponseException;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -218,8 +218,8 @@ public class StartPageController {
             subFilter = subFilter.toLowerCase();
         }
 
-        ListBuilder builder =
-                new ListBuilder().sort(sort).category(categoryFilter)
+        SortArgWrapper builder =
+                new SortArgWrapper().sort(sort).category(categoryFilter)
                         .subCategory(subFilter);
 
         if (reverseBox.isSelected()) {

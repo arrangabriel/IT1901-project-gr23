@@ -1,7 +1,7 @@
 package ui;
 
 import client.LogClient;
-import client.LogClient.ListBuilder;
+import client.LogClient.SortArgWrapper;
 import client.ServerResponseException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -161,18 +161,18 @@ public class StatisticsController {
             averageSpeed.setVisible(false);
         }
 
-        ListBuilder listBuilder = new ListBuilder();
+        SortArgWrapper sortArgWrapper = new SortArgWrapper();
         if ((exerciseType.getValue() != null)
                 && !(exerciseType.getValue().equals("Any"))) {
-            listBuilder.category(exerciseType.getValue().toUpperCase());
+            sortArgWrapper.category(exerciseType.getValue().toUpperCase());
         }
 
-        listBuilder.date(
+        sortArgWrapper.date(
                 start.getValue().toString() + "-" + end.getValue().toString());
         HashMap<String, String> dataEntries;
 
         try {
-            dataEntries = this.client.getStatistics(listBuilder);
+            dataEntries = this.client.getStatistics(sortArgWrapper);
 
             if (dataEntries.containsKey("empty")) {
                 if (dataEntries.get("empty").equals("True")) {
@@ -221,8 +221,8 @@ public class StatisticsController {
     //@SuppressWarnings("Unchecked")
     private void createBarChart() {
 
-        ListBuilder listBuilder = new ListBuilder();
-        listBuilder.date(
+        SortArgWrapper sortArgWrapper = new SortArgWrapper();
+        sortArgWrapper.date(
                 start.getValue().toString() + "-" + end.getValue().toString());
         HashMap<String, String> dataEntries;
 
@@ -232,7 +232,7 @@ public class StatisticsController {
         int cycling = 0;
 
         try {
-            dataEntries = this.client.getChartData(listBuilder);
+            dataEntries = this.client.getChartData(sortArgWrapper);
 
             for (Entry<String, String> dataEntry : dataEntries.entrySet()) {
                 switch (dataEntry.getKey()) {

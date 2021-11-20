@@ -21,11 +21,11 @@ public final class LogEntry {
     /**
      * The max heart rate of a human being.
      */
-    public static final int MAXHEARTRATEHUMAN = 480; // World record
+    public static final int MAXHEARTRATEHUMAN = 300;
     /**
      * The min heart rate of a human being.
      */
-    public static final int MINHEARTRATEHUMAN = 40;
+    public static final int MINHEARTRATEHUMAN = 20;
     /**
      * Title of LogEntry.
      */
@@ -188,7 +188,7 @@ public final class LogEntry {
                 builder.cmaxHeartRate < LogEntry.MINHEARTRATEHUMAN)) {
 
             return new Validity(false,
-                    String.format("Heart rate must be between %i and %i",
+                    String.format("Heart rate must be between %d and %d",
                             LogEntry.MAXHEARTRATEHUMAN,
                             LogEntry.MINHEARTRATEHUMAN));
         }

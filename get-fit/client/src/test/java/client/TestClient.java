@@ -1,6 +1,6 @@
 package client;
 
-import client.LogClient.ListBuilder;
+import client.LogClient.SortArgWrapper;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import com.github.tomakehurst.wiremock.client.WireMock;
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
@@ -122,7 +122,7 @@ public class TestClient {
                         .withHeader("Content-Type", "application/json")
                         .withBody(body)));
 
-        ListBuilder builder = new ListBuilder();
+        SortArgWrapper builder = new SortArgWrapper();
         builder.date(LocalDate.now().plusYears(-1) + "-" +
                 LocalDate.now());
 
@@ -153,7 +153,7 @@ public class TestClient {
                         .withHeader("Content-Type", "application/json")
                         .withBody(body)));
 
-        ListBuilder builder = new ListBuilder();
+        SortArgWrapper builder = new SortArgWrapper();
         builder.date(LocalDate.now().plusYears(-1) + "-" +
                 LocalDate.now());
 
@@ -192,8 +192,8 @@ public class TestClient {
 
     @Test
     public void testListBuilder() {
-        ListBuilder listBuilder =
-                new ListBuilder().reverse().sort("date").category("running")
+        SortArgWrapper sortArgWrapper =
+                new SortArgWrapper().reverse().sort("date").category("running")
                         .subCategory("short")
                         .date("2021-01-01-2021-09-09");
 
@@ -207,7 +207,7 @@ public class TestClient {
                         .withBody(body)));
 
         try {
-            logClient.getLogEntryList(listBuilder);
+            logClient.getLogEntryList(sortArgWrapper);
         } catch (URISyntaxException | InterruptedException | ExecutionException | ServerResponseException e) {
             e.printStackTrace();
             fail();
