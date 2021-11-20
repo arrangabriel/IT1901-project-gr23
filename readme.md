@@ -2,7 +2,7 @@
 
 # Get Fit - group 2123 project 
 
-This is the coding project to group 2123 in the course IT1901. The project is git modified and it will open in gitpod when you push the lable above this README-file 
+This is the project made by group 2123 in IT1901. The project is git podified and it will open in gitpod when you press the button above.
 
 ## Running, building and testing the project 
 
