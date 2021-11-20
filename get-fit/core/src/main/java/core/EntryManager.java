@@ -259,6 +259,7 @@ public final class EntryManager implements Iterable<LogEntry> {
                         Subcategory entrySubcategory =
                                 entry.getExerciseSubCategory();
                         if (entrySubcategory != null) {
+                            System.out.println(subcategory);
                             return entrySubcategory.equals(subcategory);
                         } else {
                             return false;

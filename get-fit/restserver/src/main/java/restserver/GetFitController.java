@@ -96,7 +96,6 @@ public class GetFitController {
      * @param date        the date interval to filter by.
      * @return a HTTP request.
      */
-    @SuppressWarnings({"checkstyle:InnerAssignment", "checkstyle:MagicNumber"})
     @GetMapping(value = "/list", produces = "application/json")
     @ResponseBody
     public String getListOfLogEntries(
@@ -105,9 +104,10 @@ public class GetFitController {
             final @RequestParam(value = "r", defaultValue = "false")
                     String reverse,
             @RequestParam(value = "c", required = false) final String category,
-            final @RequestParam(value = "subCategory", required = false)
+            final @RequestParam(value = "sc", required = false)
                     String subCategory,
-            final @RequestParam(value = "d", required = false) String date) {
+            final @RequestParam(value = "d", required = false) String date)
+            throws IllegalAccessException {
 
         SortConfiguration sortConfiguration = null;
 
@@ -132,13 +132,15 @@ public class GetFitController {
                 Subcategory subcategories;
 
                 if (subCategory != null) {
-                    subcategories = switch (category) {
-                        case "STRENGTH" ->
-                                StrengthSubCategory.valueOf(subCategory);
+                    subcategories = switch (categoryUpper) {
+                        case "STRENGTH" -> StrengthSubCategory.valueOf(
+                                subCategory.toUpperCase());
                         case "SWIMMING", "CYCLING", "RUNNING" ->
-                                CardioSubCategory.valueOf(subCategory);
+                                CardioSubCategory.valueOf(
+                                subCategory.toUpperCase());
                         default -> null;
                     };
+
                     iteratorBuilder =
                             iteratorBuilder.filterSubCategory(subcategories);
                 }
@@ -154,6 +156,10 @@ public class GetFitController {
                                     date.substring(DATE_FORMAT_LENGTH + 1)));
                 }
             } catch (IllegalArgumentException ignored) {
+            }
+        } else {
+            if (subCategory != null) {
+                throw new IllegalAccessException();
             }
         }
 
