@@ -239,15 +239,12 @@ public class StartPageController {
             errorLabel.setText("Could not connect to server");
             e.printStackTrace();
         } catch (ServerResponseException e) {
-            errorLabel.setText(e.getMessage());
+            errorLabel.setText(
+                    "Uh oh, there was an issue with your request.");
         }
-
     }
 
-
-    @SuppressWarnings("checkstyle:MagicNumber")
     private VBox createListEntry(final HashMap<String, String> entry) {
-
         errorLabel.setText("");
 
         VBox vBox = new VBox();
@@ -450,7 +447,8 @@ public class StartPageController {
         } catch (URISyntaxException | InterruptedException e) {
             e.printStackTrace();
         } catch (ServerResponseException e) {
-            this.errorLabel.setText(e.getMessage());
+            this.errorLabel.setText(
+                    "Uh oh, there was an issue with your request.");
         }
 
         bindVisibility(heartRateLabel);

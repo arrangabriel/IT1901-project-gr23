@@ -37,6 +37,10 @@ public class AddNewSessionController {
 
     // region Constants
     /**
+     * How long should input int values be.
+     */
+    public static final int INT_LENGTH = 3;
+    /**
      * Slightly arbitrary maximum hour limit for duration.
      */
     private static final int MAX_HOURS = 99;
@@ -52,29 +56,22 @@ public class AddNewSessionController {
      * Maximum heart rate limit.
      */
     private static final int MAX_HEART_RATE = 300;
-    /**
-     * Minimum heart rate limit.
-     */
-    private static final int MIN_HEART_RATE = 20;
 
     /*
      * These constants appease checkstyle.
      */
     /**
+     * Minimum heart rate limit.
+     */
+    private static final int MIN_HEART_RATE = 20;
+    /**
      * How many seconds error label should be visible for.
      */
     private static final int TIMEOUT_DURATION = 5;
-
     /**
      * How long should input float values be.
      */
     private static final int MAX_FLOAT_LENGTH = 4;
-
-    /**
-     * How long should input int values be.
-     */
-    public static final int INT_LENGTH = 3;
-
     /**
      * Session log client.
      */
@@ -268,7 +265,8 @@ public class AddNewSessionController {
                     Platform.exit();
                 }
             } catch (ServerResponseException e) {
-                errorLabel.setText(e.getMessage());
+                errorLabel.setText(
+                        "Oh no, there was an issue with your request.");
             }
 
 
@@ -317,7 +315,6 @@ public class AddNewSessionController {
      *
      * @throws NumberFormatException if the input is too large
      */
-    @SuppressWarnings("checkstyle:MagicNumber")
     @FXML
     private void initialize() throws NumberFormatException {
         try {
@@ -329,7 +326,8 @@ public class AddNewSessionController {
             // Can't really happen
             e.printStackTrace();
         } catch (ServerResponseException e) {
-            errorLabel.setText(e.getMessage());
+            errorLabel.setText(
+                    "Oh no, there was an issue with your request.");
         }
 
         // generate an ObservableList of exercise category names.

@@ -209,7 +209,7 @@ public class StatisticsController {
             errorLabel.setText("Could not connect to server");
             e.printStackTrace();
         } catch (ServerResponseException e) {
-            errorLabel.setText(e.getMessage());
+            errorLabel.setText("Uh oh, there was an issue with your request.");
         } catch (IllegalStateException eae) {
             errorLabel.setText("There are no sessions saved");
         }
@@ -262,7 +262,7 @@ public class StatisticsController {
             errorLabel.setText("Could not connect to server");
             e.printStackTrace();
         } catch (ServerResponseException e) {
-            errorLabel.setText(e.getMessage());
+            errorLabel.setText("Uh oh, there was an issue with your request.");
         } catch (IllegalStateException eae) {
             errorLabel.setText("There are no sessions saved");
         }
