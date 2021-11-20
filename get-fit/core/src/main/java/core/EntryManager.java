@@ -44,7 +44,8 @@ public final class EntryManager implements Iterable<LogEntry> {
             final HashMap<String, HashMap<String, String>> map,
             final EntryManager entryManager) {
 
-        for (Entry<String, HashMap<String, String>> entryEntry: map.entrySet()) {
+        for (Entry<String, HashMap<String, String>> entryEntry
+                : map.entrySet()) {
             entryManager.updateHashPosition(
                     Integer.parseInt(entryEntry.getKey()));
             LogEntry entry = LogEntry.fromHash(entryEntry.getValue());
