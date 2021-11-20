@@ -1,6 +1,5 @@
 package integration;
 
-import java.io.IOException;
 import java.util.HashMap;
 
 import org.junit.jupiter.api.Assertions;
@@ -10,14 +9,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.testfx.framework.junit5.ApplicationTest;
 
 import client.LogClient;
 import client.ServerResponseException;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.stage.Stage;
 
 import restserver.GetfitController;
 import restserver.GetfitApplication;
@@ -26,9 +20,6 @@ import restserver.GetfitService;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 @ContextConfiguration(classes = {GetfitController.class, GetfitApplication.class, GetfitService.class})
 public class GetfitIntegrationTest {
-
-    private Parent root;
-    private Stage stageRef;
 
     @LocalServerPort
     int port = 8080;
@@ -41,7 +32,7 @@ public class GetfitIntegrationTest {
 
     @BeforeEach
     public void startClient() throws InterruptedException {
-        this.logClient = new LogClient("http://localhost", 8080);
+        this.logClient = new LogClient("http://localhost", port);
     }
 
     @Test
@@ -54,11 +45,11 @@ public class GetfitIntegrationTest {
         HashMap<String, String> entry = new HashMap<>();
 
         entry.put("title", "Example title");
-        entry.put("content", "Example content");
+        entry.put("comment", "Example content");
         entry.put("date", "2020-01-01");
         entry.put("feeling", "7");
         entry.put("duration", "3600");
-        entry.put("distance", "3");
+        entry.put("distance", "3.0");
         entry.put("maxHeartRate", "150");
         entry.put("exerciseCategory", "STRENGTH");
         entry.put("exerciseSubCategory", "PULL");
@@ -85,7 +76,7 @@ public class GetfitIntegrationTest {
         HashMap<String, String> entry = new HashMap<>();
 
         entry.put("title", title);
-        entry.put("content", comment);
+        entry.put("comment", comment);
         entry.put("date", date);
         entry.put("feeling", feeling);
         entry.put("duration", duration);
@@ -110,7 +101,7 @@ public class GetfitIntegrationTest {
                 "2020-01-01",
                 "7",
                 "3600",
-                "3",
+                "3.0",
                 "150",
                 "STRENGTH",
                 "PULL"
@@ -139,7 +130,7 @@ public class GetfitIntegrationTest {
         originalEntry.put("date", "2020-01-01");
         originalEntry.put("feeling", "7");
         originalEntry.put("duration", "3600");
-        originalEntry.put("distance", "3");
+        originalEntry.put("distance", "3.0");
         originalEntry.put("maxHeartRate", "150");
         originalEntry.put("exerciseCategory", "STRENGTH");
         originalEntry.put("exerciseSubCategory", "PULL");
@@ -157,7 +148,9 @@ public class GetfitIntegrationTest {
         );
         try {
             HashMap<String, String> retreivedEntry = this.logClient.getLogEntry(id);
-            Assertions.assertEquals(originalEntry, retreivedEntry);
+            for (String key : originalEntry.keySet()) {
+                Assertions.assertEquals(originalEntry.get(key), retreivedEntry.get(key));
+            }
         } catch (Exception e) {
             Assertions.fail();
         }
