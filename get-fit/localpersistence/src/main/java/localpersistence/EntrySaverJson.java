@@ -10,8 +10,8 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Scanner;
 import java.util.Map.Entry;
+import java.util.Scanner;
 
 
 /**
@@ -23,9 +23,10 @@ public final class EntrySaverJson {
      * A static reference to Get-Fits save location.
      */
     public static final String SYSTEM_SAVE_LOCATION =
-            System.getProperty("user.home")
+            (System.getProperty("user.home")
                     + System.getProperty("file.separator") + "getfit"
-                    + System.getProperty("file.separator") + "SavedData.json";
+                    + System.getProperty("file.separator")
+                    + "SavedData.json");
 
     /**
      * Hidden constructor.
@@ -72,7 +73,8 @@ public final class EntrySaverJson {
             json.put(entry.getKey(), entry.getValue());
         }
 
-        String[] split = saveFile.split(System.getProperty("file.separator"));
+        String[] split = saveFile.split(
+                System.getProperty("file.separator").replace("\\", "\\\\"));
         String folderPath = String.join(System.getProperty("file.separator"),
                 Arrays.copyOfRange(split, 0, split.length - 1));
 
@@ -80,7 +82,6 @@ public final class EntrySaverJson {
 
         if (!folder.exists()) {
             boolean ignored = folder.mkdirs();
-            ignored = !ignored;
         }
 
         File file = new File(saveFile);
@@ -117,7 +118,8 @@ public final class EntrySaverJson {
      *
      * @param entryManager the EntryManager to load data into.
      * @param saveFile     the path of the JSON file to load from.
-     * @throws IOException             if the specified path could not be found.
+     * @throws IOException
+     * if the specified path could not be found.
      * @throws IllegalArgumentException if the entryManager or saveFile is null.
      */
     public static void load(final EntryManager entryManager,
