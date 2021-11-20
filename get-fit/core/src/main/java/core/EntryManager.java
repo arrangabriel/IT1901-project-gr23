@@ -18,7 +18,7 @@ public final class EntryManager implements Iterable<LogEntry> {
     /**
      * Hashmap of LogEntries.
      */
-    private final HashMap<String, LogEntry> entryMap;
+    private final HashMap<String, LogEntry> entryMap = new HashMap<>();
 
     /**
      * Current id hash position.
@@ -30,20 +30,8 @@ public final class EntryManager implements Iterable<LogEntry> {
      * Functions as the API interface for the core-module.
      */
     public EntryManager() {
-        this.entryMap = new HashMap<String, LogEntry>();
     }
 
-    public EntryManager(EntryManager entryManager) {
-        this.entryMap = entryManager.getEntryMap();
-        this.idHashPosition = entryManager.getIdHashPosition();
-    }
-
-    private HashMap<String, LogEntry> getEntryMap() {
-        return new HashMap<String, LogEntry>(this.entryMap);
-    }
-    private int getIdHashPosition() {
-        return this.idHashPosition;
-    }
 
     /**
      * Updates a provided EntryManager with the LogEntries represented
