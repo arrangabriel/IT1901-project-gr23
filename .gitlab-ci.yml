@@ -103,8 +103,8 @@ deploy:
   stage: deploy
   script: cd get-fit && mvn install -DnoTestUI=true && cd ui && mvn compile javafx:jlink jpackage:jpackage
   allow_failure: false
-  only:
-    master
+  rules:
+    if: ($CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH)
   artifacts:
     paths:
       - get-fit/ui/target/dist/*
