@@ -1,5 +1,5 @@
 module integration {
-    requires ui;
+    requires client;
     requires rest;
     
     requires javafx.controls;
