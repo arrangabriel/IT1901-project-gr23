@@ -226,12 +226,14 @@ public class LogClient {
      * @throws ExecutionException      If the request completed exceptionally.
      * @throws ServerResponseException
      * If there was an error with the server response.
+     * @return the entry id.
      */
     public String addLogEntry(final HashMap<String, String> entry)
             throws URISyntaxException, InterruptedException,
             ExecutionException, ServerResponseException {
         JSONObject payload = new JSONObject(entry);
-        HttpResponse<String> response = this.post("/api/v1/entries/add", payload.toString());
+        HttpResponse<String> response = this.post(
+                "/api/v1/entries/add", payload.toString());
 
         return new JSONObject(response.body()).getString("id");
     }
@@ -376,6 +378,7 @@ public class LogClient {
      * If the underlying asynchronous request completed exceptionally.
      * @throws ServerResponseException
      * If there was an error with the server response.
+     * @return the entry id.
      */
     private HttpResponse<String> post(
             final String endpoint,
