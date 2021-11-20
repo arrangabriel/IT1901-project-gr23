@@ -377,7 +377,7 @@ public class LogClient {
      * @throws ServerResponseException
      * If there was an error with the server response.
      */
-    private void post(
+    private HttpResponse<String> post(
             final String endpoint,
             final String payload)
             throws URISyntaxException, InterruptedException,
@@ -389,6 +389,7 @@ public class LogClient {
                     HttpResponses.getResponseText(response.statusCode()),
                     response.statusCode());
         }
+        return response;
     }
 
     /**

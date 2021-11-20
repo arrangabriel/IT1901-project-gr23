@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.concurrent.ExecutionException;
 
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -21,20 +22,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import client.LogClient;
 import client.ServerResponseException;
 import localpersistence.EntrySaverJson;
-import restserver.GetfitController;
-import restserver.GetfitApplication;
-import restserver.GetfitService;
+import restserver.GetFitController;
+import restserver.GetFitApplication;
+import restserver.GetFitService;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
-@ContextConfiguration(classes = {GetfitController.class, GetfitApplication.class, GetfitService.class})
-public class GetfitIntegrationTest {
+@ContextConfiguration(classes = {GetFitController.class, GetFitApplication.class, GetFitService.class})
+public class GetFitIntegrationTest {
 
     @LocalServerPort
     int port = 8080;
     
 
     @Autowired
-    public GetfitController controller;
+    public GetFitController controller;
 
     private LogClient logClient;
 
@@ -44,6 +45,7 @@ public class GetfitIntegrationTest {
         clearServerList();
     }
 
+    @AfterAll
     @BeforeEach
     public void clearSaveData() {
         File f = new File(EntrySaverJson.SYSTEM_SAVE_LOCATION);
@@ -56,7 +58,7 @@ public class GetfitIntegrationTest {
     private void clearServerList() {
         List<HashMap<String, String>> ids = null;
         try {
-            ids = this.logClient.getLogEntryList();
+            ids = this.logClient.getLogEntryList(new LogClient.ListBuilder());
         } catch (Exception e) {
             Assertions.fail();
         }
@@ -268,7 +270,7 @@ public class GetfitIntegrationTest {
         }
 
         try {
-            List<HashMap<String, String>> entries = this.logClient.getLogEntryList();
+            List<HashMap<String, String>> entries = this.logClient.getLogEntryList(new LogClient.ListBuilder());
             Assertions.assertEquals(4, entries.size());
         } catch (Exception e) {
             Assertions.fail();
@@ -288,6 +290,12 @@ public class GetfitIntegrationTest {
             Assertions.fail();
         }
         
+        try {
+            Assertions.assertThrows(ServerResponseException.class, () -> logClient.getLogEntryList(new LogClient.ListBuilder().category("STRENGTH").subCategory("PUSH")));
+        } catch (Exception e) {
+            Assertions.fail();
+        }
+
         try {
             List<HashMap<String, String>> entries = this.logClient.getLogEntryList(new LogClient.ListBuilder().date("2020-01-03-2020-01-04"));
             Assertions.assertEquals(2, entries.size());
@@ -320,6 +328,83 @@ public class GetfitIntegrationTest {
         } catch (URISyntaxException | InterruptedException | ExecutionException |ServerResponseException e) {
             Assertions.fail();
         }
+    }
+
+    /**
+     * Test that requesting statistics from the server returns numbers that are in accord with the data that was added to the server.
+     */
+    @Test
+    public void testFetchStatistics() {
+
+        HashMap<String, String> entry1 = new HashMap<>();
+        entry1.put("title", "Cool title");
+        entry1.put("comment", "Example content");
+        entry1.put("date", "2020-01-01");
+        entry1.put("feeling", "7");
+        entry1.put("duration", "3600");
+        entry1.put("distance", "3.0");
+        entry1.put("maxHeartRate", "150");
+        entry1.put("exerciseCategory", "STRENGTH");
+        entry1.put("exerciseSubCategory", "PULL");
+
+        try {
+            this.logClient.addLogEntry(entry1);
+        } catch (URISyntaxException | InterruptedException | ExecutionException | ServerResponseException e) {
+            Assertions.fail("Failed to add log entry");
+        }
+
+        HashMap<String, String> entry2 = new HashMap<>();
+        entry2.put("title", "Another cool title");
+        entry2.put("comment", "This exercise was even cooler");
+        entry2.put("date", "2020-01-02");
+        entry2.put("feeling", "8");
+        entry2.put("duration", "3600");
+        entry2.put("distance", "4.2");
+        entry2.put("maxHeartRate", "180");
+        entry2.put("exerciseCategory", "STRENGTH");
+        entry2.put("exerciseSubCategory", "LEGS");
+
+        try {
+            this.logClient.addLogEntry(entry2);
+        } catch (URISyntaxException | InterruptedException | ExecutionException | ServerResponseException e) {
+            Assertions.fail("Failed to add log entry");
+        }
+
+        HashMap<String, String> entry3 = new HashMap<>();
+        entry3.put("title", "Coolest title");
+        entry3.put("comment", "This was hands down the best exercise I have ever had");
+        entry3.put("date", "2020-01-03");
+        entry3.put("feeling", "10");
+        entry3.put("duration", "10800");
+        entry3.put("distance", "6.9");
+        entry3.put("maxHeartRate", "230");
+        entry3.put("exerciseCategory", "STRENGTH");
+        entry3.put("exerciseSubCategory", "PUSH");
+
+        try {
+            this.logClient.addLogEntry(entry3);
+        } catch (URISyntaxException | InterruptedException | ExecutionException | ServerResponseException e) {
+            Assertions.fail("Failed to add log entry");
+        }
+
+        HashMap<String, String> entry4 = new HashMap<>();
+        entry4.put("title", "Swimming");
+        entry4.put("comment", "This was a very wet exercise");
+        entry4.put("date", "2020-01-05");
+        entry4.put("feeling", "10");
+        entry4.put("duration", "3600");
+        entry4.put("distance", "10");
+        entry4.put("maxHeartRate", "200");
+        entry4.put("exerciseCategory", "SWIMMING");
+        entry4.put("exerciseSubCategory", "LONG");
+        
+        try {
+            this.logClient.addLogEntry(entry4);
+        } catch (URISyntaxException | InterruptedException | ExecutionException | ServerResponseException e) {
+            Assertions.fail("Failed to add log entry");
+        }
+
+
     }
 
 }
