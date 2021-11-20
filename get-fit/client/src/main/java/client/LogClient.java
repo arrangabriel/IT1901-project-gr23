@@ -223,11 +223,13 @@ public class LogClient {
      * @throws URISyntaxException
      * @throws ServerResponseException
      */
-    public void addLogEntry(final HashMap<String, String> entry)
+    public String addLogEntry(final HashMap<String, String> entry)
             throws URISyntaxException, InterruptedException,
             ExecutionException, ServerResponseException {
         JSONObject payload = new JSONObject(entry);
-        this.post("/api/v1/entries/add", payload.toString());
+        HttpResponse<String> response = this.post("/api/v1/entries/add", payload.toString());
+
+        return new JSONObject(response.body()).getString("id");
     }
 
     /**
