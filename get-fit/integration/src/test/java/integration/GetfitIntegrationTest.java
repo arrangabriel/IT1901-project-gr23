@@ -7,6 +7,8 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.web.server.LocalServerPort;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.testfx.framework.junit5.ApplicationTest;
 
@@ -21,11 +23,15 @@ import restserver.GetfitController;
 import restserver.GetfitApplication;
 import restserver.GetfitService;
 
-@SpringBootTest(classes = GetfitController.class)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
+@ContextConfiguration(classes = {GetfitController.class, GetfitApplication.class, GetfitService.class})
 public class GetfitIntegrationTest {
 
     private Parent root;
     private Stage stageRef;
+
+    @LocalServerPort
+    int port = 8080;
     
 
     @Autowired
