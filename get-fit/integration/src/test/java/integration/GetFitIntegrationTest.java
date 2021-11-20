@@ -58,7 +58,7 @@ public class GetFitIntegrationTest {
     private void clearServerList() {
         List<HashMap<String, String>> ids = null;
         try {
-            ids = this.logClient.getLogEntryList(new LogClient.ListBuilder());
+            ids = this.logClient.getLogEntryList(new LogClient.SortArgWrapper());
         } catch (Exception e) {
             Assertions.fail();
         }
@@ -270,42 +270,42 @@ public class GetFitIntegrationTest {
         }
 
         try {
-            List<HashMap<String, String>> entries = this.logClient.getLogEntryList(new LogClient.ListBuilder());
+            List<HashMap<String, String>> entries = this.logClient.getLogEntryList(new LogClient.SortArgWrapper());
             Assertions.assertEquals(4, entries.size());
         } catch (Exception e) {
             Assertions.fail();
         }
         
         try {
-            List<HashMap<String, String>> entries = this.logClient.getLogEntryList(new LogClient.ListBuilder().category("STRENGTH"));
+            List<HashMap<String, String>> entries = this.logClient.getLogEntryList(new LogClient.SortArgWrapper().category("STRENGTH"));
             Assertions.assertEquals(3, entries.size());
         } catch (Exception e) {
             Assertions.fail();
         }
 
         try {
-            List<HashMap<String, String>> entries = this.logClient.getLogEntryList(new LogClient.ListBuilder().category("STRENGTH").subCategory("PUSH"));
+            List<HashMap<String, String>> entries = this.logClient.getLogEntryList(new LogClient.SortArgWrapper().category("STRENGTH").subCategory("PUSH"));
             Assertions.assertEquals(1, entries.size());
         } catch (Exception e) {
             Assertions.fail();
         }
         
         try {
-            Assertions.assertThrows(ServerResponseException.class, () -> logClient.getLogEntryList(new LogClient.ListBuilder().subCategory("PUSH")));
+            Assertions.assertThrows(ServerResponseException.class, () -> logClient.getLogEntryList(new LogClient.SortArgWrapper().subCategory("PUSH")));
         } catch (Exception e) {
             Assertions.fail();
         }
 
         try {
-            List<HashMap<String, String>> entries = this.logClient.getLogEntryList(new LogClient.ListBuilder().date("2020-01-03-2020-01-04"));
+            List<HashMap<String, String>> entries = this.logClient.getLogEntryList(new LogClient.SortArgWrapper().date("2020-01-03-2020-01-04"));
             Assertions.assertEquals(1, entries.size());
         } catch (Exception e) {
             Assertions.fail();
         }
 
         try {
-            List<HashMap<String, String>> entries = this.logClient.getLogEntryList(new LogClient.ListBuilder());
-            List<HashMap<String, String>> entriesReversed = this.logClient.getLogEntryList(new LogClient.ListBuilder().reverse());
+            List<HashMap<String, String>> entries = this.logClient.getLogEntryList(new LogClient.SortArgWrapper());
+            List<HashMap<String, String>> entriesReversed = this.logClient.getLogEntryList(new LogClient.SortArgWrapper().reverse());
             Collections.reverse(entriesReversed);
             Assertions.assertEquals((Collection<HashMap<String, String>>) entriesReversed, entries);
         } catch (Exception e) {
@@ -313,7 +313,7 @@ public class GetFitIntegrationTest {
         }
 
         try {
-            List<HashMap<String, String>> entries = this.logClient.getLogEntryList(new LogClient.ListBuilder().sort("date"));
+            List<HashMap<String, String>> entries = this.logClient.getLogEntryList(new LogClient.SortArgWrapper().sort("date"));
             List<HashMap<String, String>> expected = Arrays.asList(entry1, entry2, entry3);
 
             ListIterator<HashMap<String, String>> iterator = expected.listIterator();
@@ -336,10 +336,10 @@ public class GetFitIntegrationTest {
     @Test
     public void testFetchStatistics() {
 
-        Assertions.assertThrows(ServerResponseException.class, () -> this.logClient.getStatistics(new LogClient.ListBuilder()));
+        Assertions.assertThrows(ServerResponseException.class, () -> this.logClient.getStatistics(new LogClient.SortArgWrapper()));
         
         try {
-            HashMap<String, String> statistics = this.logClient.getStatistics(new LogClient.ListBuilder().date("2020-01-01-2020-01-02"));
+            HashMap<String, String> statistics = this.logClient.getStatistics(new LogClient.SortArgWrapper().date("2020-01-01-2020-01-02"));
             Assertions.assertEquals("True", statistics.get("empty"));
         } catch (ServerResponseException | URISyntaxException | InterruptedException | ExecutionException e) {
             Assertions.fail("Failed to get statistics");
@@ -414,7 +414,7 @@ public class GetFitIntegrationTest {
         }
 
         try {
-            HashMap<String, String> statistics = this.logClient.getStatistics(new LogClient.ListBuilder().date("2020-01-01-2020-01-05"));
+            HashMap<String, String> statistics = this.logClient.getStatistics(new LogClient.SortArgWrapper().date("2020-01-01-2020-01-05"));
             Assertions.assertEquals("False", statistics.get("empty"));
             Assertions.assertEquals("4", statistics.get("count"));
             Assertions.assertEquals("6.0h", statistics.get("totalDuration"));
