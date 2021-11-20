@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.concurrent.ExecutionException;
 
-import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -45,7 +45,7 @@ public class GetFitIntegrationTest {
         clearServerList();
     }
 
-    @AfterAll
+    @AfterEach
     @BeforeEach
     public void clearSaveData() {
         File f = new File(EntrySaverJson.SYSTEM_SAVE_LOCATION);
@@ -291,14 +291,14 @@ public class GetFitIntegrationTest {
         }
         
         try {
-            Assertions.assertThrows(ServerResponseException.class, () -> logClient.getLogEntryList(new LogClient.ListBuilder().category("STRENGTH").subCategory("PUSH")));
+            Assertions.assertThrows(ServerResponseException.class, () -> logClient.getLogEntryList(new LogClient.ListBuilder().subCategory("PUSH")));
         } catch (Exception e) {
             Assertions.fail();
         }
 
         try {
             List<HashMap<String, String>> entries = this.logClient.getLogEntryList(new LogClient.ListBuilder().date("2020-01-03-2020-01-04"));
-            Assertions.assertEquals(2, entries.size());
+            Assertions.assertEquals(1, entries.size());
         } catch (Exception e) {
             Assertions.fail();
         }
@@ -336,13 +336,22 @@ public class GetFitIntegrationTest {
     @Test
     public void testFetchStatistics() {
 
+        Assertions.assertThrows(ServerResponseException.class, () -> this.logClient.getStatistics(new LogClient.ListBuilder()));
+        
+        try {
+            HashMap<String, String> statistics = this.logClient.getStatistics(new LogClient.ListBuilder().date("2020-01-01-2020-01-02"));
+            Assertions.assertEquals("True", statistics.get("empty"));
+        } catch (ServerResponseException | URISyntaxException | InterruptedException | ExecutionException e) {
+            Assertions.fail("Failed to get statistics");
+        }
+
         HashMap<String, String> entry1 = new HashMap<>();
         entry1.put("title", "Cool title");
         entry1.put("comment", "Example content");
         entry1.put("date", "2020-01-01");
         entry1.put("feeling", "7");
         entry1.put("duration", "3600");
-        entry1.put("distance", "3.0");
+        entry1.put("distance", "null");
         entry1.put("maxHeartRate", "150");
         entry1.put("exerciseCategory", "STRENGTH");
         entry1.put("exerciseSubCategory", "PULL");
@@ -376,7 +385,7 @@ public class GetFitIntegrationTest {
         entry3.put("date", "2020-01-03");
         entry3.put("feeling", "10");
         entry3.put("duration", "10800");
-        entry3.put("distance", "6.9");
+        entry3.put("distance", "null");
         entry3.put("maxHeartRate", "230");
         entry3.put("exerciseCategory", "STRENGTH");
         entry3.put("exerciseSubCategory", "PUSH");
@@ -402,6 +411,19 @@ public class GetFitIntegrationTest {
             this.logClient.addLogEntry(entry4);
         } catch (URISyntaxException | InterruptedException | ExecutionException | ServerResponseException e) {
             Assertions.fail("Failed to add log entry");
+        }
+
+        try {
+            HashMap<String, String> statistics = this.logClient.getStatistics(new LogClient.ListBuilder().date("2020-01-01-2020-01-05"));
+            Assertions.assertEquals("False", statistics.get("empty"));
+            Assertions.assertEquals("4", statistics.get("count"));
+            Assertions.assertEquals("6.0h", statistics.get("totalDuration"));
+            Assertions.assertEquals("1.5h", statistics.get("averageDuration"));
+            Assertions.assertEquals("8.75", statistics.get("averageFeeling"));
+            Assertions.assertEquals("230.0", statistics.get("maximumHr"));
+            Assertions.assertEquals("0.0", statistics.get("averageSpeed")); // TODO: find out why this is zero
+        } catch (URISyntaxException | InterruptedException | ExecutionException | ServerResponseException e1) {
+            Assertions.fail();
         }
 
 
