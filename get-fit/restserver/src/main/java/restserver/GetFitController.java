@@ -146,21 +146,22 @@ public class GetFitController {
                 }
             } catch (IllegalArgumentException ignored) {
             }
-
-            try {
-                if (date != null) {
-                    iteratorBuilder = iteratorBuilder.filterTimeInterval(
-                            LocalDate.parse(date.substring(0,
-                                    DATE_FORMAT_LENGTH)),
-                            LocalDate.parse(
-                                    date.substring(DATE_FORMAT_LENGTH + 1)));
-                }
-            } catch (IllegalArgumentException ignored) {
-            }
+            
         } else {
             if (subCategory != null) {
                 throw new IllegalAccessException();
             }
+        }
+
+        try {
+            if (date != null) {
+                iteratorBuilder = iteratorBuilder.filterTimeInterval(
+                        LocalDate.parse(date.substring(0,
+                                DATE_FORMAT_LENGTH)),
+                        LocalDate.parse(
+                                date.substring(DATE_FORMAT_LENGTH + 1)));
+            }
+        } catch (IllegalArgumentException ignored) {
         }
 
         List<LogEntry> returnList = new ArrayList<>();

@@ -169,5 +169,6 @@
         <module>localpersistence</module>
         <module>restserver</module>
         <module>client</module>
+        <module>integration</module>
     </modules>
 </project>
