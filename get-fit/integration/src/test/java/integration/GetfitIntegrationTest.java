@@ -19,7 +19,7 @@ import restserver.GetfitApplication;
 import restserver.GetfitService;
 
 @SpringBootTest(classes = GetfitController.class)
-public class GetfitIT extends ApplicationTest {
+public class GetfitIntegrationTest extends ApplicationTest {
 
     private Parent root;
     private Stage stageRef;
