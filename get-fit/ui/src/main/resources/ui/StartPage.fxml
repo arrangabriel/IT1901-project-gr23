@@ -1,84 +1,119 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
-
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 <?import java.net.URL?>
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.StartPageController">
-    <Label layoutX="22.0" layoutY="14.0" prefHeight="58.0" prefWidth="129.0" text="Get Fit">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0"
+            prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="ui.StartPageController">
+    <Label layoutX="20.0" layoutY="15.0" prefHeight="39.0" prefWidth="130.0" text="Get Fit">
         <font>
-            <Font size="40.0" />
+            <Font size="40.0"/>
         </font>
     </Label>
 
     <HBox alignment="CENTER" layoutX="28.0" layoutY="75.0" prefHeight="39.0" prefWidth="542.0">
-        <ComboBox fx:id="sortConfig" onHidden="#sort" prefHeight="26.0" prefWidth="130.0" promptText="Sort by" />
-        <ComboBox fx:id="sortCategory" layoutX="177.0" layoutY="17.0" onHidden="#replaceSubcategories" prefHeight="26.0" prefWidth="130.0" promptText="Category" />
-        <ComboBox fx:id="sortSubcategory" layoutX="252.0" layoutY="17.0" onHidden="#sort" prefHeight="26.0" prefWidth="130.0" promptText="Subcategory" />
+        <ComboBox fx:id="sortConfig" onHidden="#sort" prefHeight="26.0" prefWidth="130.0" promptText="Sort by"/>
+        <ComboBox fx:id="sortCategory" layoutX="177.0" layoutY="17.0" onHidden="#replaceSubcategories" prefHeight="26.0"
+                  prefWidth="130.0" promptText="Category"/>
+        <ComboBox fx:id="sortSubcategory" layoutX="252.0" layoutY="17.0" onHidden="#sort" prefHeight="26.0"
+                  prefWidth="130.0" promptText="Subcategory"/>
         <CheckBox fx:id="reverseBox" mnemonicParsing="false" onAction="#sort" text="Reverse">
             <padding>
-                <Insets left="10.0" />
+                <Insets left="10.0"/>
             </padding>
         </CheckBox>
     </HBox>
 
     <Pane layoutX="28.0" layoutY="116.0" prefHeight="211.0" prefWidth="542.0">
-        <ListView fx:id="listOfEntries" prefHeight="211.0" prefWidth="542.0" />
+        <ListView fx:id="listOfEntries" prefHeight="211.0" prefWidth="542.0"/>
     </Pane>
 
-    <Button fx:id="addSession" layoutX="464.0" layoutY="345.0" mnemonicParsing="false" onAction="#addSessionButtonPushed" prefHeight="39.0" prefWidth="111.0" text="Add workout" />
+    <Button fx:id="addSession" layoutX="464.0" layoutY="345.0" mnemonicParsing="false"
+            onAction="#addSessionButtonPushed" prefHeight="39.0" prefWidth="111.0" text="Add workout"/>
 
     <!--<Button fx:id="goToStatistics" layoutX="22.0" layoutY="345.0" mnemonicParsing="false" onAction="#handleGoToStatistics" prefHeight="39.0" prefWidth="111.0" text="View  statistics" />-->
 
-    <Separator layoutX="22.0" layoutY="69.0" prefHeight="6.0" prefWidth="428.0" />
+    <Separator layoutX="20.0" layoutY="69.0" prefHeight="1.0" prefWidth="560.0"/>
 
-    <Label fx:id="errorLabel" layoutX="174.0" layoutY="356.0" prefHeight="17.0" prefWidth="275.0" textFill="#b50c0c" />
+    <Label fx:id="errorLabel" layoutX="174.0" layoutY="356.0" prefHeight="17.0" prefWidth="275.0" textFill="#b50c0c"/>
 
     <!-- The pane containing singular entry-view -->
-    <AnchorPane fx:id="entryView" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: white;" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
-        <Button fx:id="hideView" layoutX="544.0" layoutY="12.0" mnemonicParsing="false" onAction="#closeView" text="x" />
-        <Separator layoutX="14.0" layoutY="62.0" prefHeight="6.0" prefWidth="551.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" />
+    <AnchorPane fx:id="entryView" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: white;"
+                visible="false" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0"
+                AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
+        <Button fx:id="hideView" layoutX="544.0" layoutY="12.0" mnemonicParsing="false" onAction="#closeView" text="x"/>
+        <Separator layoutX="14.0" layoutY="62.0" prefHeight="6.0" prefWidth="551.0" AnchorPane.leftAnchor="10.0"
+                   AnchorPane.rightAnchor="10.0"/>
 
-        <Text fx:id="titleView" layoutX="15.0" layoutY="35.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Title" wrappingWidth="450.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="115.0">
+        <Text fx:id="titleView" layoutX="15.0" layoutY="35.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Title"
+              wrappingWidth="450.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="115.0">
             <font>
-                <Font size="24.0" />
+                <Font size="24.0"/>
             </font>
         </Text>
-        <Text fx:id="dateView" layoutX="13.0" layoutY="53.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Date" wrappingWidth="450.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="200.0">
+        <Text fx:id="dateView" layoutX="13.0" layoutY="53.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Date"
+              wrappingWidth="450.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="200.0">
             <font>
-                <Font name="System Italic" size="16.0" />
+                <Font name="System Italic" size="16.0"/>
             </font>
         </Text>
-        <GridPane alignment="CENTER" layoutX="28.0" layoutY="80.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="251.0" prefWidth="275.0" AnchorPane.leftAnchor="20.0">
+        <GridPane alignment="CENTER" layoutX="28.0" layoutY="80.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="251.0"
+                  prefWidth="275.0" AnchorPane.leftAnchor="20.0">
             <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
             </columnConstraints>
             <rowConstraints>
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
             </rowConstraints>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Duration:" />
-            <Text fx:id="durationView" strokeType="OUTSIDE" strokeWidth="0.0" text="duration" GridPane.columnIndex="1" />
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Difficulty:" GridPane.rowIndex="1" />
-            <Text fx:id="feelingView" strokeType="OUTSIDE" strokeWidth="0.0" text="feeling" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Exercise type:" GridPane.rowIndex="2" />
-            <Text fx:id="categoryView" strokeType="OUTSIDE" strokeWidth="0.0" text="category" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-            <Text fx:id="subcategoryLabel" strokeType="OUTSIDE" strokeWidth="0.0" text="Subcategory:" GridPane.rowIndex="3" />
-            <Text fx:id="subcategoryView" strokeType="OUTSIDE" strokeWidth="0.0" text="subcategory" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-            <Text fx:id="heartRateLabel" strokeType="OUTSIDE" strokeWidth="0.0" text="Max heart rate:" GridPane.rowIndex="4" />
-            <Text fx:id="heartRateView" strokeType="OUTSIDE" strokeWidth="0.0" text="maxHeartRate" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-            <Text fx:id="distanceLabel" strokeType="OUTSIDE" strokeWidth="0.0" text="Distance:" GridPane.rowIndex="5" />
-            <Text fx:id="distanceView" strokeType="OUTSIDE" strokeWidth="0.0" text="distance" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Duration:"/>
+            <Text fx:id="durationView" strokeType="OUTSIDE" strokeWidth="0.0" text="duration" GridPane.columnIndex="1"/>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Difficulty:" GridPane.rowIndex="1"/>
+            <Text fx:id="feelingView" strokeType="OUTSIDE" strokeWidth="0.0" text="feeling" GridPane.columnIndex="1"
+                  GridPane.rowIndex="1"/>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Exercise type:" GridPane.rowIndex="2"/>
+            <Text fx:id="categoryView" strokeType="OUTSIDE" strokeWidth="0.0" text="category" GridPane.columnIndex="1"
+                  GridPane.rowIndex="2"/>
+            <Text fx:id="subcategoryLabel" strokeType="OUTSIDE" strokeWidth="0.0" text="Subcategory:"
+                  GridPane.rowIndex="3"/>
+            <Text fx:id="subcategoryView" strokeType="OUTSIDE" strokeWidth="0.0" text="subcategory"
+                  GridPane.columnIndex="1" GridPane.rowIndex="3"/>
+            <Text fx:id="heartRateLabel" strokeType="OUTSIDE" strokeWidth="0.0" text="Max heart rate:"
+                  GridPane.rowIndex="4"/>
+            <Text fx:id="heartRateView" strokeType="OUTSIDE" strokeWidth="0.0" text="maxHeartRate"
+                  GridPane.columnIndex="1" GridPane.rowIndex="4"/>
+            <Text fx:id="distanceLabel" strokeType="OUTSIDE" strokeWidth="0.0" text="Distance:" GridPane.rowIndex="5"/>
+            <Text fx:id="distanceView" strokeType="OUTSIDE" strokeWidth="0.0" text="distance" GridPane.columnIndex="1"
+                  GridPane.rowIndex="5"/>
         </GridPane>
-        <TextArea fx:id="commentView" editable="false" focusTraversable="false" layoutX="312.0" layoutY="80.0" prefHeight="251.0" prefWidth="232.0" AnchorPane.rightAnchor="20.0" />
-        <Separator layoutX="309.0" layoutY="80.0" orientation="VERTICAL" prefHeight="251.0" prefWidth="6.0" />
+        <TextArea fx:id="commentView" editable="false" focusTraversable="false" layoutX="312.0" layoutY="80.0"
+                  prefHeight="251.0" prefWidth="232.0" AnchorPane.rightAnchor="20.0"/>
+        <Separator layoutX="309.0" layoutY="80.0" orientation="VERTICAL" prefHeight="251.0" prefWidth="6.0"/>
     </AnchorPane>
-   <Button layoutX="31.0" layoutY="345.0" mnemonicParsing="false" onAction="#onStatisticsPage" prefHeight="39.0" prefWidth="111.0" text="Statistics" />
+    <Button layoutX="31.0" layoutY="345.0" mnemonicParsing="false" onAction="#onStatisticsPage" prefHeight="39.0"
+            prefWidth="111.0" text="Statistics"/>
+    <stylesheets>
+        <URL value="@css/main.css"/>
+        <URL value="@css/StartPage.css"/>
+    </stylesheets>
 </AnchorPane>

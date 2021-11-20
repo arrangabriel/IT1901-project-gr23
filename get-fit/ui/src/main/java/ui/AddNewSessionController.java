@@ -4,6 +4,7 @@ import client.LogClient;
 import client.ServerResponseException;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -13,7 +14,6 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
@@ -30,7 +30,6 @@ import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 
@@ -52,11 +51,11 @@ public class AddNewSessionController {
     /**
      * Maximum heart rate limit.
      */
-    private static final int MAX_HEARTRATE = 300;
+    private static final int MAX_HEART_RATE = 300;
     /**
      * Minimum heart rate limit.
      */
-    private static final int MIN_HEARTRATE = 20;
+    private static final int MIN_HEART_RATE = 20;
 
     /**
      * Session log client.
@@ -66,70 +65,20 @@ public class AddNewSessionController {
 
     //region JavaFX elements
     /**
-     * Label for duration input.
-     */
-    @FXML
-    private Label durationLabel;
-    /**
-     * Label for exercise type selector.
-     */
-    @FXML
-    private Label exerciseTypeLabel;
-    /**
-     * Back-button.
-     */
-    @FXML
-    private Button back;
-    /**
-     * Label for feeling slider.
-     */
-    @FXML
-    private Label feelingLabel;
-    /**
-     * Label for heart rate input.
-     */
-    @FXML
-    private Label maxHeartRateLabel;
-    /**
      * Heart rate input field.
      */
     @FXML
     private TextField heartRate;
-    /**
-     * Main header.
-     */
-    @FXML
-    private Label titleLabel;
-    /**
-     * Label for time fields.
-     */
-    @FXML
-    private Label timeLabel;
-    /**
-     * Label for date field.
-     */
-    @FXML
-    private Label dateLabel;
     /**
      * Label for distance field.
      */
     @FXML
     private Label distanceLabel;
     /**
-     * Label for comment field.
-     */
-    @FXML
-    private Label commentLabel;
-    /**
      * Label for error message.
      */
     @FXML
     private Label errorLabel;
-    /**
-     * Label for tags-selector.
-     */
-    @FXML
-    private Label tagsLabel;
     /**
      * Title input-field.
      */
@@ -175,11 +124,6 @@ public class AddNewSessionController {
      */
     @FXML
     private ComboBox<String> tags;
-    /**
-     * Create session button.
-     */
-    @FXML
-    private Button createSession;
     //endregion
 
     /**
@@ -199,12 +143,12 @@ public class AddNewSessionController {
 
         String title = titleField.getText();
         String date = sessionDatePicker.getValue().toString();
-        String duration = "null";
+        String duration;
         String category = exerciseType.getValue().toUpperCase();
         String feeling = String.valueOf((int) (feelingSlider.getValue()));
-        String maxHeartRate = "null";
-        String subCategory = "null";
-        String distanceValue = "null";
+        String maxHeartRate;
+        String subCategory;
+        String distanceValue;
         String comment = commentField.getText();
 
         try {
@@ -212,13 +156,16 @@ public class AddNewSessionController {
             try {
                 duration = String.valueOf(
                         Duration.ofHours(Integer.parseInt(
-                                        hour.getText() != null ? hour.getText() : "0"))
+                                        !hour.getText().equals("")
+                                                ? hour.getText()
+                                                : "0"))
                                 .plusMinutes(Integer.parseInt(
-                                        min.getText() != null ? min.getText() :
-                                                "0"))
+                                        !min.getText().equals("")
+                                                ? min.getText()
+                                                : "0"))
                                 .getSeconds());
-                if (duration == "0") {
-                    throw new NumberFormatException(); // Equates to duration being nothing which is not a number.
+                if (duration.equals("0")) {
+                    throw new NumberFormatException();
                 }
             } catch (NumberFormatException e) {
                 throw new IllegalArgumentException("Duration must be set.");
@@ -228,14 +175,14 @@ public class AddNewSessionController {
             try {
                 maxHeartRate = (heartRate.getText());
                 int intMaxHeartRate = Integer.parseInt(maxHeartRate);
-                if (intMaxHeartRate < MIN_HEARTRATE) {
+                if (intMaxHeartRate < MIN_HEART_RATE) {
                     throw new IllegalArgumentException(
                             "Heart rate must be more than "
-                                    + MIN_HEARTRATE);
-                } else if (intMaxHeartRate > MAX_HEARTRATE) {
+                                    + MIN_HEART_RATE);
+                } else if (intMaxHeartRate > MAX_HEART_RATE) {
                     throw new IllegalArgumentException(
                             "Heart rate must be less than "
-                                    + MAX_HEARTRATE);
+                                    + MAX_HEART_RATE);
                 }
             } catch (NumberFormatException ignored) {
                 maxHeartRate = "null";
@@ -300,7 +247,7 @@ public class AddNewSessionController {
                     this.createSessionButtonPushed(null);
                     errorLabel.setText("");
                 } else {
-                    System.exit(0);
+                    Platform.exit();
                 }
             } catch (ServerResponseException e) {
                 errorLabel.setText(e.getMessage());
@@ -334,10 +281,10 @@ public class AddNewSessionController {
      */
     @FXML
     public void handleTagsSelector() {
-
         String mainCategory =
                 exerciseType.getSelectionModel().getSelectedItem()
                         .toLowerCase();
+
         tags.setItems(this.getSubcategoryStringObservableList(mainCategory));
 
 
@@ -347,14 +294,126 @@ public class AddNewSessionController {
         }
     }
 
+    /**
+     * Initializes the controller.
+     *
+     * @throws NumberFormatException if the input is too large
+     */
+    @SuppressWarnings("checkstyle:MagicNumber")
+    @FXML
+    private void initialize() throws NumberFormatException {
+        try {
+            this.categories = client.getExerciseCategories();
+        } catch (ExecutionException e) {
+            errorLabel.setText("Could not connect to server.");
+            return;
+        } catch (URISyntaxException | InterruptedException e) {
+            // Can't really happen
+            e.printStackTrace();
+        } catch (ServerResponseException e) {
+            errorLabel.setText(e.getMessage());
+        }
+
+        // generate an ObservableList of exercise category names.
+        ObservableList<String> exerciseCategoryNames = this.categories.keySet()
+                .stream()
+                .map(this::capitalize)
+                .collect(Collectors
+                        .toCollection(FXCollections::observableArrayList));
+
+        // set initial values.
+        exerciseType.setItems(exerciseCategoryNames);
+        exerciseType.getSelectionModel().selectFirst();
+        tags.setItems(exerciseCategoryNames);
+        setCardio(false);
+        sessionDatePicker.setValue(LocalDate.now());
+        handleTagsSelector();
+
+        // Validation setup
+        validateIntegerInput(hour, MAX_HOURS);
+        validateIntegerInput(min, MAX_MINUTES);
+
+        // error label animation
+        Timeline remove =
+                new Timeline(new KeyFrame(javafx.util.Duration.seconds(5),
+                        event -> errorLabel.setText("")));
+
+        errorLabel.textProperty().addListener((obs, oldValue, newValue) -> {
+            if (!newValue.equals("")) {
+                remove.play();
+            }
+        });
+
+        distance.textProperty().addListener((obs, oldValue, newValue) -> {
+            if (!newValue.isEmpty()) {
+                if (newValue.charAt(newValue.length() - 1) == '.') {
+                    if ((oldValue.contains(".")
+                            && oldValue.length() < newValue.length())
+                            || oldValue.isEmpty()) {
+                        distance.setText(oldValue);
+                    }
+                } else {
+                    try {
+                        double value = Double.parseDouble(newValue);
+                        if (value < 0 || value > MAX_DISTANCE) {
+                            throw new NumberFormatException(
+                                    "Input out of allowed range.");
+                        }
+                        // Check if input is multiple zeros.
+                        if (value == 0) {
+                            // This is slightly suboptimal,
+                            // will auto-format 0.0 to 0.
+                            distance.setText("0");
+                        }
+                        // Make sure value fits in field.
+                        if (newValue.length() > 4) {
+                            distance.setText(oldValue);
+                        }
+                    } catch (NumberFormatException e) {
+                        distance.setText(oldValue);
+                    }
+                }
+            }
+        });
+
+        heartRate.textProperty().addListener((obs, oldVal, newVal) -> {
+            if (!newVal.isEmpty()) {
+                try {
+                    if (newVal.length() > 3) {
+                        throw new NumberFormatException();
+                    }
+                    int value = Integer.parseInt(newVal);
+                    if (value < MIN_HEART_RATE || value > MAX_HEART_RATE) {
+                        heartRate.setStyle("-fx-border-color: red");
+                        errorLabel.setText(
+                                "Heart rate must be between 20 and 300.");
+                    } else {
+                        heartRate.setStyle("-fx-border-color: green");
+                        errorLabel.setText("");
+                    }
+                } catch (NumberFormatException ignored) {
+                    heartRate.setText(oldVal);
+                }
+            } else {
+                heartRate.setStyle("-fx-border-color: black");
+                errorLabel.setText("");
+            }
+        });
+    }
+
     //region Helper functions
     private void setCardio(final boolean isCardio) {
         distance.setVisible(isCardio);
         distanceLabel.setVisible(isCardio);
     }
 
-    private String capitalize(final String s) {
-        return s.substring(0, 1).toUpperCase() + s.substring(1);
+    private String capitalize(final String string) {
+        if (string.length() > 0) {
+            return string.substring(0, 1).toUpperCase()
+                    + string.substring(1).toLowerCase();
+        } else {
+            return "";
+        }
     }
 
     private ObservableList<String> getSubcategoryStringObservableList(
@@ -389,43 +448,6 @@ public class AddNewSessionController {
         });
     }
 
-    // Makes sure a field can only accept doubles in a certain range.
-    @SuppressWarnings("checkstyle:MagicNumber")
-    private void validateFloatInput(final TextField field,
-                                    final double maxValue) {
-        field.textProperty().addListener((obs, oldValue, newValue) -> {
-            if (!newValue.isEmpty()) {
-                if (newValue.charAt(newValue.length() - 1) == '.') {
-                    if ((oldValue.contains(".")
-                            && oldValue.length() < newValue.length())
-                            || oldValue.isEmpty()) {
-                        field.setText(oldValue);
-                    }
-                } else {
-                    try {
-                        double value = Double.parseDouble(newValue);
-                        if (value < 0 || value > maxValue) {
-                            throw new NumberFormatException(
-                                    "Input out of allowed range.");
-                        }
-                        // Check if input is multiple zeros.
-                        if (value == 0) {
-                            // This is slightly suboptimal,
-                            // will auto-format 0.0 to 0.
-                            field.setText("0");
-                        }
-                        // Make sure value fits in field.
-                        if (newValue.length() > 4) {
-                            field.setText(oldValue);
-                        }
-                    } catch (NumberFormatException e) {
-                        field.setText(oldValue);
-                    }
-                }
-            }
-        });
-    }
-
     // Sends ui to start page.
     private void goToStartPage(final ActionEvent event) throws IOException {
         FXMLLoader loader = new FXMLLoader();
@@ -439,80 +461,4 @@ public class AddNewSessionController {
         window.show();
     }
     //endregion
-
-    /**
-     * Initializes the controller.
-     *
-     * @throws NumberFormatException if the input is too large
-     */
-    @FXML
-    private void initialize() throws NumberFormatException {
-        try {
-            this.categories = client.getExerciseCategories();
-        } catch (ExecutionException e) {
-            errorLabel.setText("Could not connect to server.");
-            return;
-        } catch (URISyntaxException | InterruptedException e) {
-            // Can't really happen
-            e.printStackTrace();
-        } catch (ServerResponseException e) {
-            errorLabel.setText(e.getMessage());
-        }
-
-        Set<String> exerciseCategories = this.categories.keySet();
-
-        // generate an ObservableList of exercise category names.
-        ObservableList<String> exerciseCategoryNames = exerciseCategories
-                .stream()
-                .map(this::capitalize)
-                .collect(Collectors
-                        .toCollection(FXCollections::observableArrayList));
-
-        // set initial values.
-        exerciseType.setItems(exerciseCategoryNames);
-        exerciseType.getSelectionModel().selectFirst();
-        tags.setItems(exerciseCategoryNames);
-        setCardio(false);
-        sessionDatePicker.setValue(LocalDate.now());
-
-        handleTagsSelector();
-
-        // validation of fields when they are changed.
-        validateIntegerInput(hour, MAX_HOURS);
-        validateIntegerInput(min, MAX_MINUTES);
-        validateFloatInput(distance, MAX_DISTANCE);
-
-        Timeline remove = new Timeline(new KeyFrame(javafx.util.Duration.seconds(5),
-                event -> errorLabel.setText("")));
-
-        errorLabel.textProperty().addListener((obs, oldValue, newValue) -> {
-            if (!newValue.equals("")) {
-                remove.play();
-            }
-        });
-
-        heartRate.textProperty().addListener((obs, oldVal, newVal) -> {
-            if (!newVal.isEmpty()) {
-                try {
-                    if (newVal.length() > 3) {
-                        throw new NumberFormatException();
-                    }
-                    int value = Integer.parseInt(newVal);
-                    if (value < MIN_HEARTRATE || value > MAX_HEARTRATE) {
-                        heartRate.setStyle("-fx-border-color: red");
-                        errorLabel.setText(
-                                "Heart rate must be between 20 and 300.");
-                    } else {
-                        heartRate.setStyle("-fx-border-color: green");
-                        errorLabel.setText("");
-                    }
-                } catch (NumberFormatException ignored) {
-                    heartRate.setText(oldVal);
-                }
-            } else {
-                heartRate.setStyle("-fx-border-color: black");
-                errorLabel.setText("");
-            }
-        });
-    }
 }
