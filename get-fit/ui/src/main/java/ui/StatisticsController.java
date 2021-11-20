@@ -101,6 +101,10 @@ public class StatisticsController {
         window.show();
     }
 
+    /**
+     * Handles data for the data coloumn and updates the
+     * bar chart with data.
+     */
     @FXML
     public void onHandleData() {
         this.getData();
