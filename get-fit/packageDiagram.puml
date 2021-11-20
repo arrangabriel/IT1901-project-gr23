@@ -1,0 +1,55 @@
+@startuml Get Fit Architecture
+allowmixing
+component core {
+    package core.core
+    package core.math
+}
+
+component localpersistence {
+    package localpersistence.localpersistence
+}
+
+component ui {
+    package ui.ui
+}
+
+component javafx {
+	component fxml {
+	}	
+}
+
+ui ..> javafx
+ui ..> fxml
+
+localpersistence.localpersistence ..> core.core
+
+component client {
+    package client.client
+}
+
+component java.net.http {
+}
+
+component org.json {
+}
+
+client ..> java.net.http
+client ..> org.json
+localpersistence.localpersistence ..> org.json
+
+
+ui.ui ..> client.client
+
+component restserver {
+    package restserver.restserver
+}
+
+restserver.restserver ..> core 
+restserver.restserver ..> localpersistence
+restserver ..> org.json
+restserver ..> spring
+
+component spring {
+}
+
+@enduml
