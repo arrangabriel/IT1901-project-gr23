@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.testfx.framework.junit5.ApplicationTest;
 
 import client.LogClient;
+import client.ServerResponseException;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -82,6 +83,26 @@ public class GetfitIntegrationTest {
         entry.put("exerciseSubCategory", exerciseSubCategory);
 
         return logClient.addLogEntry(entry);
+    }
+
+    @Test
+    private void testEntryDeletion() {
+        String id = createEntry(
+                "Example title", 
+                "Example content",
+                "2020-01-01",
+                "7",
+                "3600",
+                "3",
+                "150",
+                "STRENGTH",
+                "PULL"
+        );
+        this.logClient.getLogEntry(id);
+        this.logClient.deleteLogEntry(id);
+        Assertions.assertThrows(ServerResponseException.class, () -> {
+            this.logClient.getLogEntry(id);
+        });
     }
 
 }
