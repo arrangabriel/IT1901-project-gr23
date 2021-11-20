@@ -51,7 +51,6 @@ public final class EntrySaverJson {
      */
     public static void save(final EntryManager entryManager, final String saveFile)
             throws IOException, IllegalArgumentException {
-        System.out.println();
 
         if (entryManager == null || saveFile == null) {
             throw new IllegalArgumentException("Arguments cannot be null");
