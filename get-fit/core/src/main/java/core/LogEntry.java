@@ -196,8 +196,6 @@ public final class LogEntry {
         return new Validity(true, "ok");
     }
 
-    // expand these in the future
-
     /**
      * Converts a string representation of a subcategory into a subcategory.
      *
