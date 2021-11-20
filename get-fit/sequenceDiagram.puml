@@ -1,0 +1,22 @@
+@startuml
+Client -> Restserver: POST/api/v1/entries/add
+Restserver --> Client: id : 0
+
+Client -> Restserver: POST/api/v1/entries/add
+Restserver --> Client: id : 1
+
+Client -> Restserver: GET/api/v1/entries/list?&r=false&s=title&c=any
+Restserver --> Client: "logEntries with id = 0 and id = 1"
+
+Client -> Restserver: GET/api/v1/entries/list?&r=false&s=title&c=running
+Restserver --> Client: "logEntries with id = 0"
+
+
+Client -> Restserver: GET/api/v1/entries//api/v1/entries/stats?d=2020-10-05-2021-10-05&c=running
+Restserver --> Client: statistics fro LogEntry with id = 0 
+
+
+Client -> Restserver: GET/api/v1/entries/chart?d=2020-10-05-2021-10-05
+Restserver --> Client: swimming: 1, running: 1, strength: 0, cycling: 0
+
+@enduml
