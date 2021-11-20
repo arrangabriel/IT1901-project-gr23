@@ -107,7 +107,7 @@ public class TestStatisticsController extends ApplicationTest{
         click("Enter");
 
         mockServer.verify(1, getRequestedFor((urlEqualTo("/api/v1/entries/stats?d="+(LocalDate.now().minusYears(1)).toString()+"-"+LocalDate.now().toString()+"&c=RUNNING")))); 
-        mockServer.verify(1, getRequestedFor((urlEqualTo("/api/v1/entries/chart?d="+(LocalDate.now().minusYears(1)).toString()+"-"+LocalDate.now().toString())))); 
+        mockServer.verify(2, getRequestedFor((urlEqualTo("/api/v1/entries/chart?d="+(LocalDate.now().minusYears(1)).toString()+"-"+LocalDate.now().toString())))); 
     }
 
     @Test

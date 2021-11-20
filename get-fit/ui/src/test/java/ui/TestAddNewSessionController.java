@@ -99,8 +99,8 @@ public class TestAddNewSessionController extends ApplicationTest{
       private void addEntryClicking(String title, String comment, String hour,
                                   String min, String type, String hr,
                                   String sub, String distance) throws IOException {
-        updateRoot();                              
-        click("Add workout");
+        updateRoot();                  
+        clickOn("#addSession");
         clickOn("#titleField");
         write(title);
         clickOn("#hour");
@@ -121,15 +121,15 @@ public class TestAddNewSessionController extends ApplicationTest{
         write(comment);
 
 
-
         click("Create session");
+        sleep(1000);
 
     }
     @Test
     public void testCreateButton() throws IOException {
         updateRoot();
 
-        click("Add workout");
+        clickOn("#addSession");
         clickOn("#titleField");
         write("New new Session");
         clickOn("#sessionDatePicker");
@@ -157,7 +157,7 @@ public class TestAddNewSessionController extends ApplicationTest{
     }
 
     @Test
-    public void varietyCreation() throws IOException {
+    public void strengthCreation() throws IOException {
 
         UrlPattern externalUrl = urlPathMatching("/api/v1/entries/add");
         stubFor(post(externalUrl));
@@ -165,13 +165,35 @@ public class TestAddNewSessionController extends ApplicationTest{
 
         addEntryClicking("Gainzz", "I did bench presses as well as some push-ups",
         "1", "45", "Strength", "90", "Push", null);
+        
+        mockServer.verify(1, postRequestedFor(externalUrl));
+    }
+
+    @Test
+    public void cardioCreation() throws IOException {
+
+        UrlPattern externalUrl = urlPathMatching("/api/v1/entries/add");
+        stubFor(post(externalUrl));
+
         addEntryClicking("Cardio", "I ran a while",
         "3", "30", "Running", "200", "Long", "6");
+        
+        mockServer.verify(1, postRequestedFor(externalUrl));
+    }
+
+    @Test
+    public void swimingCreation() throws IOException {
+
+        UrlPattern externalUrl = urlPathMatching("/api/v1/entries/add");
+        stubFor(post(externalUrl));
+
         addEntryClicking("Laps", "Did a couple of laps",
         "1", "00", "Swimming", "220", "Highintensity", "10");
         
-        mockServer.verify(3, postRequestedFor(externalUrl));
+        mockServer.verify(1, postRequestedFor(externalUrl));
     }
+
+    
 
     @Test
     public void testReturn() {
@@ -200,6 +222,7 @@ public class TestAddNewSessionController extends ApplicationTest{
 
     @Test
     public void testValidation(){
+        sleep(1000);
         click("Add workout");
         Assertions.assertEquals("Add new session", this.stageRef.getTitle());
         click("Create session");
