@@ -71,7 +71,7 @@ public class GetFitService {
      *
      * @return the EntryManager from this GetFitService
      */
-    public EntryManager getEntryManager() {
+    protected EntryManager getEntryManager() {
         return this.entryManager;
     }
 }
