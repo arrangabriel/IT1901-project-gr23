@@ -25,7 +25,7 @@ public class GetfitIntegrationTest {
     private Stage stageRef;
 
     @Autowired
-    private GetfitController controller;
+    public GetfitController controller;
 
     @Test
     public void testCompilation() {
