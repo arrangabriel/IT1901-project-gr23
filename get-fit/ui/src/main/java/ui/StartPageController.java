@@ -3,10 +3,10 @@ package ui;
 import client.LogClient;
 import client.LogClient.ListBuilder;
 import client.ServerResponseException;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.HPos;
@@ -44,6 +44,11 @@ public class StartPageController {
      */
     private final LogClient client = new LogClient("http://localhost", 8080);
 
+    /**
+     * Column width percentage.
+     */
+    private static final int PERCENT_WIDTH = 25;
+
     // region FXML-elements
     /***/
     @FXML
@@ -60,9 +65,6 @@ public class StartPageController {
     /***/
     @FXML
     private AnchorPane entryView;
-    /***/
-    @FXML
-    private Button hideView;
     /***/
     @FXML
     private Text titleView;
@@ -101,12 +103,6 @@ public class StartPageController {
     private ComboBox<String> sortSubcategory;
     /***/
     @FXML
-    private Button goToStatistics;
-    /***/
-    @FXML
-    private Button addSession;
-    /***/
-    @FXML
     private ListView<VBox> listOfEntries;
     /***/
     @FXML
@@ -132,7 +128,7 @@ public class StartPageController {
                 Press Cancel to quit""");
         errorLabel.setText("Could not connect to server");
         Optional<ButtonType> result = alert.showAndWait();
-        if (result.get() == ButtonType.OK) {
+        if (result.isPresent() && (result.get() == ButtonType.OK)) {
             switch (func) {
                 case "initialize" -> this.initialize();
                 case "updateList" -> this.updateList();
@@ -146,7 +142,7 @@ public class StartPageController {
             }
             errorLabel.setText("");
         } else {
-            System.exit(0);
+            Platform.exit();
         }
     }
 
@@ -178,25 +174,23 @@ public class StartPageController {
      */
     @FXML
     public void onStatisticsPage(final ActionEvent event)
-        throws IOException {
-            FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(getClass().getResource("Statistics.fxml"));
-            Parent p = loader.load();
-            Scene s = new Scene(p);
-            Stage window =
-                    (Stage) ((Node) event.getSource()).getScene().getWindow();
-            window.setTitle("Statistics");
-            window.setScene(s);
-            window.show();
+            throws IOException {
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("Statistics.fxml"));
+        Parent p = loader.load();
+        Scene s = new Scene(p);
+        Stage window =
+                (Stage) ((Node) event.getSource()).getScene().getWindow();
+        window.setTitle("Statistics");
+        window.setScene(s);
+        window.show();
     }
 
     /**
      * Hides entry view.
-     *
-     * @param event ignored.
      */
     @FXML
-    public void closeView(final ActionEvent event) {
+    public void closeView() {
         entryView.setVisible(false);
     }
 
@@ -245,22 +239,19 @@ public class StartPageController {
             errorLabel.setText("Could not connect to server");
             e.printStackTrace();
         } catch (ServerResponseException e) {
-            errorLabel.setText(e.getMessage());
+            errorLabel.setText(
+                    "Uh oh, there was an issue with your request.");
         }
-
     }
 
-
-    @SuppressWarnings("checkstyle:MagicNumber")
     private VBox createListEntry(final HashMap<String, String> entry) {
-
         errorLabel.setText("");
 
         VBox vBox = new VBox();
         GridPane grid = new GridPane();
 
         ColumnConstraints colConstraint = new ColumnConstraints();
-        colConstraint.setPercentWidth(25);
+        colConstraint.setPercentWidth(PERCENT_WIDTH);
         grid.getColumnConstraints()
                 .addAll(colConstraint, colConstraint, colConstraint,
                         colConstraint);
@@ -335,8 +326,8 @@ public class StartPageController {
         grid.add(title, 0, 0);
         grid.add(date, 1, 0);
         grid.add(category, 2, 0);
-        grid.add(open, 3, 0);
-        grid.add(delete, 3, 0);
+        grid.add(open, 2 + 1, 0);
+        grid.add(delete, 2 + 1, 0);
 
         vBox.getChildren().add(grid);
         vBox.setId(entry.get("id"));
@@ -359,11 +350,9 @@ public class StartPageController {
 
     /**
      * Updates ui when main category is selected. Also updates the current sort.
-     *
-     * @param event a JavaFX event.
      */
     @FXML
-    public void replaceSubcategories(final Event event) {
+    public void replaceSubcategories() {
         // hide and clear subcategories when there should be none.
         if (sortCategory.getValue().equals("Any")) {
             sortSubcategory.setItems(FXCollections.observableArrayList());
@@ -387,11 +376,13 @@ public class StartPageController {
         updateList();
     }
 
-    @SuppressWarnings("checkstyle:MagicNumber")
     private String durationToHours(final Duration duration) {
+
         double sec = (double) duration.toSeconds();
-        double h = (double) Math.round((sec/3600) * 10);
-        return String.valueOf(h/10) + "h";
+        final int secToHours = 3600;
+        final int magnitude = 10;
+        double h = (double) Math.round((sec / secToHours) * magnitude);
+        return h / magnitude + "h";
     }
 
     private String capitalize(final String string) {
@@ -456,7 +447,8 @@ public class StartPageController {
         } catch (URISyntaxException | InterruptedException e) {
             e.printStackTrace();
         } catch (ServerResponseException e) {
-            this.errorLabel.setText(e.getMessage());
+            this.errorLabel.setText(
+                    "Uh oh, there was an issue with your request.");
         }
 
         bindVisibility(heartRateLabel);

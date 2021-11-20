@@ -121,7 +121,7 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <mainClass>restserver.GetfitApplication</mainClass>
+                    <mainClass>restserver.GetFitApplication</mainClass>
                 </configuration>
             </plugin>
         </plugins>

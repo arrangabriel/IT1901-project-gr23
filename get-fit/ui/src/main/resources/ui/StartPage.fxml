@@ -1,24 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.CheckBox?>
-<?import javafx.scene.control.ComboBox?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ListView?>
-<?import javafx.scene.control.Separator?>
-<?import javafx.scene.control.TextArea?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Pane?>
-<?import javafx.scene.layout.RowConstraints?>
-<?import javafx.scene.text.Font?>
-<?import javafx.scene.text.Text?>
+<?import java.net.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.StartPageController">
-    <Label layoutX="22.0" layoutY="14.0" prefHeight="58.0" prefWidth="129.0" text="Get Fit">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.StartPageController">
+    <Label layoutX="20.0" layoutY="15.0" prefHeight="39.0" prefWidth="130.0" text="Get Fit">
         <font>
             <Font size="40.0" />
         </font>
@@ -43,12 +32,13 @@
 
     <!--<Button fx:id="goToStatistics" layoutX="22.0" layoutY="345.0" mnemonicParsing="false" onAction="#handleGoToStatistics" prefHeight="39.0" prefWidth="111.0" text="View  statistics" />-->
 
-    <Separator layoutX="22.0" layoutY="69.0" prefHeight="6.0" prefWidth="428.0" />
+    <Separator layoutX="20.0" layoutY="69.0" prefHeight="1.0" prefWidth="560.0" />
 
     <Label fx:id="errorLabel" layoutX="174.0" layoutY="356.0" prefHeight="17.0" prefWidth="275.0" textFill="#b50c0c" />
+    <Button layoutX="31.0" layoutY="345.0" mnemonicParsing="false" onAction="#onStatisticsPage" prefHeight="39.0" prefWidth="111.0" text="Statistics" />
 
     <!-- The pane containing singular entry-view -->
-    <AnchorPane fx:id="entryView" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: white;" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
+    <AnchorPane fx:id="entryView" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: white;" visible="false" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
         <Button fx:id="hideView" layoutX="544.0" layoutY="12.0" mnemonicParsing="false" onAction="#closeView" text="x" />
         <Separator layoutX="14.0" layoutY="62.0" prefHeight="6.0" prefWidth="551.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" />
 
@@ -91,5 +81,8 @@
         <TextArea fx:id="commentView" editable="false" focusTraversable="false" layoutX="312.0" layoutY="80.0" prefHeight="251.0" prefWidth="232.0" AnchorPane.rightAnchor="20.0" />
         <Separator layoutX="309.0" layoutY="80.0" orientation="VERTICAL" prefHeight="251.0" prefWidth="6.0" />
     </AnchorPane>
-   <Button layoutX="31.0" layoutY="345.0" mnemonicParsing="false" onAction="#onStatisticsPage" prefHeight="39.0" prefWidth="111.0" text="Statistics" />
+    <stylesheets>
+        <URL value="@css/main.css" />
+        <URL value="@css/StartPage.css" />
+    </stylesheets>
 </AnchorPane>

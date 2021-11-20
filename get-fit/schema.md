@@ -132,8 +132,8 @@ Response:
 {
     "empty": "False"
     "count": "5"
-    "totalDuration": "20h:10min"
-    "averageDuration": "2h:10min"
+    "totalDuration": "2.6"
+    "averageDuration": "0.5"
     "averageSpeed": "7.0"
     "averageFeeling": "3.3"
     "maximumHr": "180"
