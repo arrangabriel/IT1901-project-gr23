@@ -26,7 +26,7 @@ When you are happy with your description of the workout press the button “Crea
 
 Above the list will you find three different dropdown menus. These menus let you choose different ways to sort and filter your workout sessions. The first menu let you sort on title, date and duration and the second menu filters on exercise type. 
 
-<img width="350" src = "/uploads/feb7d44e7570840529bbc4d339a9a1b6/Getfit4.png)">
+<img width="350" src = "/uploads/feb7d44e7570840529bbc4d339a9a1b6/Getfit4.png">
 
 After choosing an exercise type can you use the third menu to filter on tags. 
 
@@ -34,7 +34,7 @@ After choosing an exercise type can you use the third menu to filter on tags.
 
 You can also choose to reverse the list of workouts by checking the reverse checkbox.
 
-<img width="350" src = "/uploads/22b6594604611974a5d01d2a878dfc01/getfit6.png)"> 
+<img width="350" src = "/uploads/22b6594604611974a5d01d2a878dfc01/getfit6.png"> 
 
 If you push the “create workout” by mistake, use the return button to get back to the start page. This application will also give you statistics based on your logged workouts. If you want to view the statistics press the button “Statistics” and you will be sent to the statistics page. 
  
