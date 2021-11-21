@@ -181,6 +181,10 @@ public final class Statistics {
             final EntryManager entryManager,
             final String category,
             final String date) {
+        if (date.equals("null")) {
+            throw new IllegalArgumentException();
+        }
+
         SortConfiguration sortConfiguration =
                 SortConfiguration.DATE;
 

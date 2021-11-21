@@ -128,6 +128,9 @@ public final class EntrySaverJson {
         }
 
         File file = new File(saveFile);
+        if (!file.exists()) {
+            return;
+        }
         Scanner reader = new Scanner(file, StandardCharsets.UTF_8);
         String dataString;
         StringBuilder buffer = new StringBuilder();

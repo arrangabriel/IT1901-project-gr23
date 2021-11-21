@@ -107,7 +107,7 @@ public class GetFitController {
                     String subCategory,
             final @RequestParam(value = "d", required = false)
                     String date)
-            throws IllegalAccessException {
+            throws IllegalArgumentException {
         SortConfiguration sortConfiguration = null;
 
         sortConfiguration = SortConfiguration.valueOf(sortType.toUpperCase());
@@ -144,7 +144,7 @@ public class GetFitController {
 
         } else {
             if (subCategory != null) {
-                throw new IllegalAccessException();
+                throw new IllegalArgumentException();
             }
         }
 
@@ -326,7 +326,7 @@ public class GetFitController {
     }
 
     /**
-     * Handles IllegalAccessExceptions.
+     * Handles IllegalArgumentException.
      *
      * @param ia the exception.
      * @return the exception message.
@@ -334,8 +334,8 @@ public class GetFitController {
     @ExceptionHandler(IllegalArgumentException.class)
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
     @ResponseBody
-    public String handleIllegalAccessException(
-            final IllegalAccessException ia) {
+    public String handleIllegalArgumentException(
+            final IllegalArgumentException ia) {
         return ia.getMessage();
     }
 
