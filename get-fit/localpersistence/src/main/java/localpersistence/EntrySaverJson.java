@@ -66,7 +66,7 @@ public final class EntrySaverJson {
         JSONObject json = new JSONObject();
 
         HashMap<String, HashMap<String, String>> map = entryManager.toHashMap();
-        map.entrySet().stream().forEach(x -> json.put(x.getKey(), x.getValue()));
+        map.entrySet().forEach(x -> json.put(x.getKey(), x.getValue()));
 
         String[] split = saveFile.split(
                 System.getProperty("file.separator").replace("\\", "\\\\"));

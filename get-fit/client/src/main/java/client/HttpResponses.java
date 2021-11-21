@@ -3,7 +3,6 @@ package client;
 import java.util.Map;
 
 public final class HttpResponses {
-
     /**
      * All possible responses.
      */
@@ -14,8 +13,7 @@ public final class HttpResponses {
             500, "Internal Server Error"
     );
 
-    private HttpResponses() {
-    }
+    private HttpResponses() {}
 
     /**
      * Converts code to response.
