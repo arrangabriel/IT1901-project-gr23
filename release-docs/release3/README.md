@@ -54,4 +54,5 @@ allowing for easier 'full-stack' work.
 
 ## Expanded Project Architecture
 
-Link to the planUML diagrams.
+Project architecture for release 3 is documented in
+[**project-architecture**](/design-documentation/project-architecture).
