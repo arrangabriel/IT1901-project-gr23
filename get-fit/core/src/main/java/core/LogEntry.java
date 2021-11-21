@@ -95,10 +95,6 @@ public final class LogEntry {
 
     /**
      * Validates a EntryBuilder. Requirements:<br>
-     * <br>
-     * <b>id</b> must not be null and have a positive length. <br>
-     * <br>
-     *
      * <b>title</b> must not be null and have a positive length. <br>
      * <br>
      *
@@ -135,12 +131,14 @@ public final class LogEntry {
         /* Required fields. */
         if (builder.ctitle == null || builder.ctitle.length() < 1) {
 
-            return new Validity(false, "Title cannot be empty or null");
+            return new Validity(false,
+                    "Title cannot be empty or null");
         }
 
         if (builder.cdate == null || builder.cdate.isAfter(LocalDate.now())) {
 
-            return new Validity(false, "Date cannot be after now or null");
+            return new Validity(false,
+                    "Date cannot be after now or null");
         }
 
         if (builder.cduration == null || builder.cduration.isNegative()
@@ -155,12 +153,14 @@ public final class LogEntry {
 
             return new Validity(false,
                     String.format("Feeling must be between %i and %i",
-                            LogEntry.MAXFEELING, LogEntry.MINFEELING));
+                            LogEntry.MAXFEELING,
+                            LogEntry.MINFEELING));
         }
 
         if (builder.cexerciseCategory == null) {
 
-            return new Validity(false, "Exercise category cannot be null");
+            return new Validity(false,
+                    "Exercise category cannot be null");
         }
 
         /* Optional fields. */
@@ -180,7 +180,8 @@ public final class LogEntry {
 
         if (builder.cdistance != null && (builder.cdistance <= 0)) {
 
-            return new Validity(false, "Distance must be positive");
+            return new Validity(false,
+                    "Distance must be positive");
         }
 
         if (builder.cmaxHeartRate != null
