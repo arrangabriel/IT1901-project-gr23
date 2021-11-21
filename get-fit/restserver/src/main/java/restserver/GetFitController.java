@@ -33,12 +33,10 @@ import java.util.NoSuchElementException;
 @RestController
 @RequestMapping("/api/v1/entries")
 public class GetFitController {
-
     /**
      * Length of one piece of date format.
      */
     private static final int DATE_FORMAT_LENGTH = 10;
-
     /**
      * Core accessor.
      */
@@ -55,10 +53,10 @@ public class GetFitController {
         JSONObject returnObject;
         try {
             returnObject = new JSONObject(
-                    getfitService.getEntryManager().getEntry(id).toHash());
+                getfitService.getEntryManager().getEntry(id).toHash());
         } catch (IllegalArgumentException e) {
             throw new NoSuchElementException(
-                    HttpStatus.NOT_FOUND + "Entry not found" + e);
+                HttpStatus.NOT_FOUND + "Entry not found" + e);
         }
         return returnObject.toString();
     }
@@ -79,9 +77,9 @@ public class GetFitController {
             for (core.Subcategory subcategory : category.getSubcategories()) {
                 subCategories.put(subcategory.toString().toLowerCase());
             }
-            categories.put(category.toString().toLowerCase(),
-                    subCategories);
+            categories.put(category.toString().toLowerCase(), subCategories);
         }
+
         filters.put("categories", categories);
         return filters.toString();
     }
@@ -103,19 +101,19 @@ public class GetFitController {
                     String sortType,
             final @RequestParam(value = "r", defaultValue = "false")
                     String reverse,
-            @RequestParam(value = "c", required = false) final String category,
+            final @RequestParam(value = "c", required = false) 
+                    String category,
             final @RequestParam(value = "sc", required = false)
                     String subCategory,
-            final @RequestParam(value = "d", required = false) String date)
+            final @RequestParam(value = "d", required = false)
+                    String date)
             throws IllegalAccessException {
-
         SortConfiguration sortConfiguration = null;
 
         try {
             sortConfiguration =
                     SortConfiguration.valueOf(sortType.toUpperCase());
-        } catch (IllegalArgumentException ignored) {
-        }
+        } catch (IllegalArgumentException ignored) {}
 
         EntryManager.SortedIteratorBuilder iteratorBuilder =
                 new EntryManager.SortedIteratorBuilder(

@@ -12,12 +12,10 @@ import java.io.IOException;
  */
 @Service
 public class GetFitService {
-
     /**
      * The session's entryManager.
      */
     private final EntryManager entryManager;
-
     /**
      * Create a new EntryManager object on initialization
      * and loads data from local-persistence.
@@ -47,8 +45,8 @@ public class GetFitService {
     public void load() {
         try {
             EntrySaverJson.load(this.entryManager);
-        } catch (IllegalArgumentException
-                | IOException ignored) {
+        } catch (IllegalArgumentException | IOException e) {
+            e.printStackTrace();
         }
     }
 
@@ -59,8 +57,7 @@ public class GetFitService {
     public void save() {
         try {
             EntrySaverJson.save(this.entryManager);
-        } catch (IllegalArgumentException
-                | IOException e) {
+        } catch (IllegalArgumentException | IOException e) {
             e.printStackTrace();
         }
     }

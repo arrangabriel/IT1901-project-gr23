@@ -17,6 +17,5 @@ public class GetFitApplication {
     /**
      * Pleases checkstyle.
      */
-    public void dummy() {
-    }
+    public void dummy() {}
 }
