@@ -19,17 +19,14 @@ import java.util.concurrent.ExecutionException;
  * Representation of a connection to a get-fit server.
  */
 public class LogClient {
-
     /**
      * OK response value.
      */
     private static final int OK_CODE = 200;
-
     /**
      * URL to remote server.
      */
     private final String url;
-
     /**
      * Port to the remote server.
      */
@@ -65,12 +62,10 @@ public class LogClient {
         String jsonString = response.body();
 
         JSONObject jsonObject = new JSONObject(jsonString);
-
         HashMap<String, String> responseHash = new HashMap<>();
 
-        for (String key : jsonObject.keySet()) {
-            responseHash.put(key, jsonObject.getString(key));
-        }
+        jsonObject.keySet().forEach(x -> responseHash.put(x, jsonObject.getString(x)));
+        
         return responseHash;
     }
 
@@ -93,7 +88,6 @@ public class LogClient {
             throws URISyntaxException, InterruptedException,
             ExecutionException, ServerResponseException {
         String queryString = "?";
-
         List<String> queries = new ArrayList<>();
 
         queries.add("r=" + builder.reverseVal);
@@ -114,23 +108,23 @@ public class LogClient {
         queryString += String.join("&", queries);
 
         HttpResponse<String> response =
-                this.get("/api/v1/entries/list" + queryString);
+            this.get("/api/v1/entries/list" + queryString);
 
         JSONObject jsonObject = new JSONObject(response.body());
 
         List<HashMap<String, String>> responseList =
-                new ArrayList<>();
+            new ArrayList<>();
 
         JSONArray array = jsonObject.getJSONArray("entries");
-        for (int i = 0; i < array.length(); i++) {
-            HashMap<String, String> innerMap = new HashMap<>();
 
-            for (String field : array.getJSONObject(i).keySet()) {
-                innerMap.put(field, array.getJSONObject(i).getString(field));
-            }
+        array.forEach(x -> {
+            JSONObject entry = (JSONObject) x;
+            HashMap<String, String> entryHash = new HashMap<>();
 
-            responseList.add(innerMap);
-        }
+            entry.keySet().forEach(y -> entryHash.put(y, entry.getString(y)));
+
+            responseList.add(entryHash);
+        });
 
         return responseList;
 
@@ -155,7 +149,6 @@ public class LogClient {
             throws URISyntaxException, InterruptedException,
             ExecutionException, ServerResponseException {
         String queryString = "?";
-
         List<String> queries = new ArrayList<>();
 
         queries.add("d=" + builder.dateVal);
@@ -163,10 +156,11 @@ public class LogClient {
         if (builder.categoryVal != null) {
             queries.add("c=" + builder.categoryVal);
         }
+
         queryString += String.join("&", queries);
 
         HttpResponse<String> response =
-                this.get("/api/v1/entries/stats" + queryString);
+            this.get("/api/v1/entries/stats" + queryString);
 
         return getResponseHashMap(response);
     }
@@ -188,7 +182,6 @@ public class LogClient {
             final SortArgWrapper builder)
             throws URISyntaxException, InterruptedException,
             ExecutionException, ServerResponseException {
-
         String queryString = "?";
 
         List<String> queries = new ArrayList<>();
@@ -198,7 +191,7 @@ public class LogClient {
         queryString += String.join("&", queries);
 
         HttpResponse<String> response =
-                this.get("/api/v1/entries/chart" + queryString);
+            this.get("/api/v1/entries/chart" + queryString);
 
         return getResponseHashMap(response);
     }
@@ -208,10 +201,8 @@ public class LogClient {
         JSONObject jsonObject = new JSONObject(response.body());
 
         HashMap<String, String> responseHash = new HashMap<>();
+        jsonObject.keySet().forEach(x -> responseHash.put(x, jsonObject.getString(x)));
 
-        for (String key : jsonObject.keySet()) {
-            responseHash.put(key, jsonObject.getString(key));
-        }
         return responseHash;
     }
 
@@ -233,7 +224,7 @@ public class LogClient {
             ExecutionException, ServerResponseException {
         JSONObject payload = new JSONObject(entry);
         HttpResponse<String> response = this.post(
-                "/api/v1/entries/add", payload.toString());
+            "/api/v1/entries/add", payload.toString());
 
         return new JSONObject(response.body()).getString("id");
     }
@@ -256,20 +247,17 @@ public class LogClient {
             ExecutionException, ServerResponseException {
         HttpResponse<String> response = this.get("/api/v1/entries/filters");
 
-        JSONObject jsonObject = new JSONObject(response.body());
-        jsonObject = jsonObject.getJSONObject("categories");
-        HashMap<String, List<String>> categories =
-                new HashMap<>();
+        JSONObject jsonObject = new JSONObject(response.body()).getJSONObject("categories");
+        HashMap<String, List<String>> categories = new HashMap<>();
 
-        for (String category : jsonObject.keySet()) {
-            JSONArray array = jsonObject.getJSONArray(category);
-            List<String> subCategories = new ArrayList<>();
+        jsonObject.keySet().forEach(x -> {
+            JSONArray array = jsonObject.getJSONArray(x);
+            List<String> list = new ArrayList<>();
 
-            for (int i = 0; i < array.length(); i++) {
-                subCategories.add(array.getString(i));
-            }
-            categories.put(category, subCategories);
-        }
+            array.forEach(y -> list.add(y.toString()));
+
+            categories.put(x, list);
+        });
 
         return categories;
     }
@@ -302,17 +290,15 @@ public class LogClient {
     private CompletableFuture<HttpResponse<String>> getAsync(
             final String endpoint)
             throws URISyntaxException {
-
         HttpClient client = HttpClient.newBuilder()
-                .build();
+            .build();
 
         HttpRequest request = HttpRequest.newBuilder()
-                .GET()
-                .uri(new URI(this.url + ":" + this.port + endpoint))
-                .build();
+            .GET()
+            .uri(new URI(this.url + ":" + this.port + endpoint))
+            .build();
 
         return client.sendAsync(request, BodyHandlers.ofString());
-
     }
 
     /**
@@ -331,13 +317,14 @@ public class LogClient {
     private HttpResponse<String> get(final String endpoint)
             throws URISyntaxException, InterruptedException,
             ExecutionException, ServerResponseException {
-
         HttpResponse<String> response = this.getAsync(endpoint).get();
+
         if (response.statusCode() != OK_CODE) {
             throw new ServerResponseException(
-                    HttpResponses.getResponseText(response.statusCode()),
-                    response.statusCode());
+                HttpResponses.getResponseText(response.statusCode()),
+                response.statusCode());
         }
+
         return response;
     }
 
@@ -353,16 +340,13 @@ public class LogClient {
             final String endpoint,
             final String payload)
             throws URISyntaxException {
-
         HttpClient client = HttpClient.newBuilder()
-                .build();
+            .build();
 
         HttpRequest request = HttpRequest.newBuilder()
-                .POST(HttpRequest.BodyPublishers.ofString(payload))
-                .uri(
-                        new URI(this.url + ":" + this.port + endpoint)
-                )
-                .build();
+            .POST(HttpRequest.BodyPublishers.ofString(payload))
+            .uri(new URI(this.url + ":" + this.port + endpoint))
+            .build();
 
         return client.sendAsync(request, BodyHandlers.ofString());
     }
@@ -385,8 +369,8 @@ public class LogClient {
             final String payload)
             throws URISyntaxException, InterruptedException,
             ExecutionException, ServerResponseException {
-
         HttpResponse<String> response = this.postAsync(endpoint, payload).get();
+
         if (response.statusCode() != OK_CODE) {
             throw new ServerResponseException(
                     HttpResponses.getResponseText(response.statusCode()),
@@ -399,7 +383,6 @@ public class LogClient {
      * Utility class to ease filtering and sorting the list of log entries.
      */
     public static class SortArgWrapper {
-
         /**
          * Whether the sorting should be reversed.
          */

@@ -10,7 +10,6 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Map.Entry;
 import java.util.Scanner;
 
 
@@ -18,21 +17,20 @@ import java.util.Scanner;
  * Class for saving and loading entryManagers to and from JSON files.
  */
 public final class EntrySaverJson {
-
     /**
      * A static reference to Get-Fits save location.
      */
     public static final String SYSTEM_SAVE_LOCATION =
-            (System.getProperty("user.home")
-                    + System.getProperty("file.separator") + "getfit"
-                    + System.getProperty("file.separator")
-                    + "SavedData.json");
+        (System.getProperty("user.home")
+        + System.getProperty("file.separator")
+        + "getfit"
+        + System.getProperty("file.separator")
+        + "SavedData.json");
 
     /**
-     * Hidden constructor.
+     * Hidden constructor to simulate static class.
      */
-    private EntrySaverJson() {
-    }
+    private EntrySaverJson() {}
 
     /**
      * Iterates over every entry in the provided EntryManager
@@ -61,7 +59,6 @@ public final class EntrySaverJson {
     public static void save(final EntryManager entryManager,
                             final String saveFile)
             throws IOException, IllegalArgumentException {
-
         if (entryManager == null || saveFile == null) {
             throw new IllegalArgumentException("Arguments cannot be null");
         }
@@ -69,9 +66,7 @@ public final class EntrySaverJson {
         JSONObject json = new JSONObject();
 
         HashMap<String, HashMap<String, String>> map = entryManager.toHashMap();
-        for (Entry<String, HashMap<String, String>> entry : map.entrySet()) {
-            json.put(entry.getKey(), entry.getValue());
-        }
+        map.entrySet().forEach(x -> json.put(x.getKey(), x.getValue()));
 
         String[] split = saveFile.split(
                 System.getProperty("file.separator").replace("\\", "\\\\"));
@@ -80,22 +75,26 @@ public final class EntrySaverJson {
 
         File folder = new File(folderPath);
 
+        // Ignored return value from folder and file creation
+        boolean created = false;
+
         if (!folder.exists()) {
-            boolean ignored = folder.mkdirs();
+            created = folder.mkdirs();
         }
 
         File file = new File(saveFile);
 
         if (!file.exists() || !file.isFile()) {
-            boolean created = file.createNewFile();
-            assert created;
+            created = file.createNewFile();
         }
+
+        // Flip created to avoid unused variable warning.
+        created = !created;
 
         try (FileWriter writer = new FileWriter(file, StandardCharsets.UTF_8)) {
             writer.write(json.toString());
             writer.flush();
-        } catch (IOException ignored) {
-        }
+        } catch (IOException ignored) {}
     }
 
     /**
@@ -108,7 +107,6 @@ public final class EntrySaverJson {
      */
     public static void load(final EntryManager entryManager)
             throws IOException, IllegalArgumentException {
-
         load(entryManager, SYSTEM_SAVE_LOCATION);
     }
 
@@ -125,7 +123,6 @@ public final class EntrySaverJson {
     public static void load(final EntryManager entryManager,
                             final String saveFile)
             throws IOException, IllegalArgumentException {
-
         if (entryManager == null || saveFile == null) {
             throw new IllegalArgumentException("Arguments cannot be null");
         }

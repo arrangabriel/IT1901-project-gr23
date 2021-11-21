@@ -151,18 +151,14 @@ public class StatisticsController {
         this.createBarChart();
     }
 
-    @SuppressWarnings("checkstyle:MagicNumber")
     private void getData() {
-
         speedLabel.setVisible(false);
         averageSpeed.setVisible(false);
-
 
         if (exerciseType.getValue() != null) {
             if ((exerciseType.getValue().equals("Swimming")
                 || (exerciseType.getValue().equals("Running"))
                 || (exerciseType.getValue().equals("Cycling")))) {
-
                     speedLabel.setVisible(true);
                     averageSpeed.setVisible(true);
             }
@@ -183,29 +179,22 @@ public class StatisticsController {
 
             if (dataEntries.containsKey("empty")) {
                 if (dataEntries.get("empty").equals("True")) {
-                    throw new IllegalStateException(
-                            "There are no entries");
+                    throw new IllegalStateException("There are no entries");
                 }
             }
 
             dataEntries.forEach((key, value) -> {
                 final int rounding = 3;
                 switch (key) {
-                    case "count" -> numberOfSessions.setText(
-                            value);
-                    case "totalDuration" -> totalDuration.setText(
-                            value);
-                    case "averageDuration" -> averageDuration.setText(
-                            value);
+                    case "count" -> numberOfSessions.setText(value);
+                    case "totalDuration" -> totalDuration.setText(value);
+                    case "averageDuration" -> averageDuration.setText(value);
                     case "averageSpeed" -> averageSpeed.setText(
-                            value
-                                    .substring(0, rounding)
-                                    + "min/km");
+                            value.substring(0, rounding)
+                            + "min/km");
                     case "averageFeeling" -> averageFeeling.setText(
-                            value
-                                    .substring(0, rounding));
-                    case "maximumHr" -> maximumHr.setText(
-                            value);
+                            value.substring(0, rounding));
+                    case "maximumHr" -> maximumHr.setText(value);
                     default -> {
                     }
                 }
@@ -227,20 +216,18 @@ public class StatisticsController {
 
     //@SuppressWarnings("Unchecked")
     private void createBarChart() {
-
         SortArgWrapper sortArgWrapper = new SortArgWrapper();
-        sortArgWrapper.date(
-                start.getValue().toString() + "-" + end.getValue().toString());
         HashMap<String, String> dataEntries;
-
         int swimming = 0;
         int running = 0;
         int strength = 0;
         int cycling = 0;
 
+        sortArgWrapper.date(
+                start.getValue().toString() + "-" + end.getValue().toString());
+
         try {
             dataEntries = this.client.getChartData(sortArgWrapper);
-
             for (Entry<String, String> dataEntry : dataEntries.entrySet()) {
                 switch (dataEntry.getKey()) {
                     case "swimming" -> {

@@ -34,7 +34,6 @@ import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 
 public class AddNewSessionController {
-
     // region Constants
     /**
      * How long should input int values be.
@@ -155,7 +154,6 @@ public class AddNewSessionController {
     @FXML
     public void createSessionButtonPushed(final ActionEvent event)
             throws IOException {
-
         String title = titleField.getText();
         String date = sessionDatePicker.getValue().toString();
         String duration;
@@ -163,22 +161,22 @@ public class AddNewSessionController {
         String feeling = String.valueOf((int) (feelingSlider.getValue()));
         String maxHeartRate;
         String subCategory;
-        String distanceValue;
+        String distanceString;
         String comment = commentField.getText();
 
         try {
             // checks if duration fields have values.
             try {
                 duration = String.valueOf(
-                        Duration.ofHours(Integer.parseInt(
-                                        !hour.getText().equals("")
-                                                ? hour.getText()
-                                                : "0"))
-                                .plusMinutes(Integer.parseInt(
-                                        !min.getText().equals("")
-                                                ? min.getText()
-                                                : "0"))
-                                .getSeconds());
+                    Duration.ofHours(
+                    Integer.parseInt(
+                        !hour.getText().equals("") ? hour.getText() : "0")
+                    )
+                    .plusMinutes(
+                    Integer.parseInt(
+                        !min.getText().equals("") ? min.getText() : "0")
+                    )
+                    .getSeconds());
                 if (duration.equals("0")) {
                     throw new NumberFormatException();
                 }
@@ -186,29 +184,26 @@ public class AddNewSessionController {
                 throw new IllegalArgumentException("Duration must be set.");
             }
 
-            // adds maxHeartRate if value is present.
             try {
                 maxHeartRate = (heartRate.getText());
                 int intMaxHeartRate = Integer.parseInt(maxHeartRate);
                 if (intMaxHeartRate < MIN_HEART_RATE) {
                     throw new IllegalArgumentException(
-                            "Heart rate must be more than "
-                                    + MIN_HEART_RATE);
+                        "Heart rate must be more than "
+                        + MIN_HEART_RATE);
                 } else if (intMaxHeartRate > MAX_HEART_RATE) {
                     throw new IllegalArgumentException(
-                            "Heart rate must be less than "
-                                    + MAX_HEART_RATE);
+                        "Heart rate must be less than "
+                        + MAX_HEART_RATE);
                 }
-            } catch (NumberFormatException ignored) {
+            } catch (NumberFormatException e) {
                 maxHeartRate = "null";
             }
 
-            // adds comment if value is present.
             if (comment.isEmpty()) {
                 comment = "null";
             }
 
-            // returns null if nothing is selected.
             String subCategoryString = tags.getValue();
             if (subCategoryString == null) {
                 subCategory = "null";
@@ -216,17 +211,9 @@ public class AddNewSessionController {
                 subCategory = subCategoryString.toUpperCase();
             }
 
-            String distanceString = distance.getText();
+            distanceString = distance.getText();
             if (distanceString.isEmpty()) {
-                distanceValue = "null";
-            } else {
-                try {
-                    Double.parseDouble(distanceString);
-                    distanceValue = distanceString;
-                } catch (NumberFormatException e) {
-                    throw new IllegalArgumentException(
-                            "Malformed distance value.");
-                }
+                distanceString = "null";
             }
 
             HashMap<String, String> entryMap = new HashMap<>();
@@ -238,7 +225,7 @@ public class AddNewSessionController {
             entryMap.put("feeling", feeling);
             entryMap.put("maxHeartRate", maxHeartRate);
             entryMap.put("exerciseSubCategory", subCategory);
-            entryMap.put("distance", distanceValue);
+            entryMap.put("distance", distanceString);
             entryMap.put("comment", comment);
 
             // add and save newly created LogEntry.
@@ -252,10 +239,12 @@ public class AddNewSessionController {
                 alert.setTitle("Connection error");
                 alert.setHeaderText("Could not connect to server");
                 alert.setContentText(
-                        """
-                                Could not establish a connection to the server.
-                                Press OK to retry.
-                                Press Cancel to quit""");
+                    """
+                        Could not establish a connection to the server.
+                        Press OK to retry.
+                        Press Cancel to quit
+                    """
+                );
                 errorLabel.setText("Could not connect to server");
                 Optional<ButtonType> result = alert.showAndWait();
                 if (result.isPresent() && (result.get() == ButtonType.OK)) {
@@ -266,7 +255,7 @@ public class AddNewSessionController {
                 }
             } catch (ServerResponseException e) {
                 errorLabel.setText(
-                        "Oh no, there was an issue with your request.");
+                    "Oh no, there was an issue with your request.");
             }
 
 
@@ -297,12 +286,12 @@ public class AddNewSessionController {
      */
     @FXML
     public void handleTagsSelector() {
-        String mainCategory =
-                exerciseType.getSelectionModel().getSelectedItem()
-                        .toLowerCase();
+        String mainCategory = exerciseType
+                .getSelectionModel()
+                .getSelectedItem()
+                .toLowerCase();
 
         tags.setItems(this.getSubcategoryStringObservableList(mainCategory));
-
 
         switch (mainCategory) {
             case "running", "swimming", "cycling" -> setCardio(true);
@@ -331,11 +320,12 @@ public class AddNewSessionController {
         }
 
         // generate an ObservableList of exercise category names.
-        ObservableList<String> exerciseCategoryNames = this.categories.keySet()
+        ObservableList<String> exerciseCategoryNames = this.categories
+                .keySet()
                 .stream()
                 .map(this::capitalize)
                 .collect(Collectors
-                        .toCollection(FXCollections::observableArrayList));
+                    .toCollection(FXCollections::observableArrayList));
 
         // set initial values.
         exerciseType.setItems(exerciseCategoryNames);
@@ -350,10 +340,10 @@ public class AddNewSessionController {
         validateIntegerInput(min, MAX_MINUTES);
 
         // error label animation
-        Timeline remove =
-                new Timeline(new KeyFrame(javafx.util.Duration.seconds(
-                        TIMEOUT_DURATION),
-                        event -> errorLabel.setText("")));
+        Timeline remove = new Timeline(
+                new KeyFrame(javafx.util.Duration.seconds(
+                    TIMEOUT_DURATION),
+                    event -> errorLabel.setText("")));
 
         errorLabel.textProperty().addListener((obs, oldValue, newValue) -> {
             if (!newValue.equals("")) {
@@ -365,8 +355,8 @@ public class AddNewSessionController {
             if (!newValue.isEmpty()) {
                 if (newValue.charAt(newValue.length() - 1) == '.') {
                     if ((oldValue.contains(".")
-                            && oldValue.length() < newValue.length())
-                            || oldValue.isEmpty()) {
+                        && oldValue.length() < newValue.length())
+                        || oldValue.isEmpty()) {
                         distance.setText(oldValue);
                     }
                 } else {
@@ -374,7 +364,7 @@ public class AddNewSessionController {
                         double value = Double.parseDouble(newValue);
                         if (value < 0 || value > MAX_DISTANCE) {
                             throw new NumberFormatException(
-                                    "Input out of allowed range.");
+                                "Input out of allowed range.");
                         }
                         // Check if input is multiple zeros.
                         if (value == 0) {
@@ -382,7 +372,6 @@ public class AddNewSessionController {
                             // will auto-format 0.0 to 0.
                             distance.setText("0");
                         }
-                        // Make sure value fits in field.
                         if (newValue.length() > MAX_FLOAT_LENGTH) {
                             distance.setText(oldValue);
                         }
@@ -403,7 +392,7 @@ public class AddNewSessionController {
                     if (value < MIN_HEART_RATE || value > MAX_HEART_RATE) {
                         heartRate.setStyle("-fx-border-color: red");
                         errorLabel.setText(
-                                "Heart rate must be between 20 and 300.");
+                            "Heart rate must be between 20 and 300.");
                     } else {
                         heartRate.setStyle("-fx-border-color: green");
                         errorLabel.setText("");
@@ -465,7 +454,6 @@ public class AddNewSessionController {
         });
     }
 
-    // Sends ui to start page.
     private void goToStartPage(final ActionEvent event) throws IOException {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("StartPage.fxml"));

@@ -4,12 +4,10 @@ package core;
  * Validity of a EntryBuilder.
  */
 public class Validity {
-
     /**
      * Whether the builder is valid.
      */
     private final boolean isValid;
-
     /**
      * The reason for the validity of the builder.
      */

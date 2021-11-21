@@ -6,10 +6,12 @@ import java.util.Arrays;
 import java.util.HashMap;
 
 /**
- * Representation of a workout or exercise.
+ * A logEntry instance represents a single workout-entry internally.
+ * Has fields for the elements of a workout-entry,
+ * getters for them, and methods for de/serialization and validation.
+ * It is mostly immutable, save for the id, which can be set exactly once.
  */
 public final class LogEntry {
-
     /**
      * The top end of the feeling scale.
      */
@@ -70,13 +72,13 @@ public final class LogEntry {
     /**
      * A logEntry instance represents a single workout-entry internally.
      * Has fields for the elements of a workout-entry,
-     * getters for them, and setters for those that should be mutable.
+     * getters for them, and methods for de/serialization and validation.
+     * It is mostly immutable, save for the id, which can be set exactly once.
      *
      * @param builder the EntryBuilder used to build this LogEntry.
      */
     public LogEntry(final EntryBuilder builder)
             throws IllegalArgumentException {
-
         this.title = builder.ctitle;
         this.comment = builder.ccomment;
         this.date = builder.cdate;
@@ -86,18 +88,10 @@ public final class LogEntry {
         this.maxHeartRate = builder.cmaxHeartRate;
         this.exerciseCategory = builder.cexerciseCategory;
         this.exerciseSubCategory = builder.cexerciseSubCategory;
-
     }
-
-    // It will become evident if this is needed later
-    // public interface Category {}
 
     /**
      * Validates a EntryBuilder. Requirements:<br>
-     * <br>
-     * <b>id</b> must not be null and have a positive length. <br>
-     * <br>
-     *
      * <b>title</b> must not be null and have a positive length. <br>
      * <br>
      *
@@ -134,12 +128,14 @@ public final class LogEntry {
         /* Required fields. */
         if (builder.ctitle == null || builder.ctitle.length() < 1) {
 
-            return new Validity(false, "Title cannot be empty or null");
+            return new Validity(false,
+                    "Title cannot be empty or null");
         }
 
         if (builder.cdate == null || builder.cdate.isAfter(LocalDate.now())) {
 
-            return new Validity(false, "Date cannot be after now or null");
+            return new Validity(false,
+                    "Date cannot be after now or null");
         }
 
         if (builder.cduration == null || builder.cduration.isNegative()
@@ -154,12 +150,14 @@ public final class LogEntry {
 
             return new Validity(false,
                     String.format("Feeling must be between %i and %i",
-                            LogEntry.MAXFEELING, LogEntry.MINFEELING));
+                            LogEntry.MAXFEELING,
+                            LogEntry.MINFEELING));
         }
 
         if (builder.cexerciseCategory == null) {
 
-            return new Validity(false, "Exercise category cannot be null");
+            return new Validity(false,
+                    "Exercise category cannot be null");
         }
 
         /* Optional fields. */
@@ -179,7 +177,8 @@ public final class LogEntry {
 
         if (builder.cdistance != null && (builder.cdistance <= 0)) {
 
-            return new Validity(false, "Distance must be positive");
+            return new Validity(false,
+                    "Distance must be positive");
         }
 
         if (builder.cmaxHeartRate != null
@@ -203,8 +202,8 @@ public final class LogEntry {
      * @return The actual subcategory or null if no match.
      */
     public static Subcategory stringToSubcategory(final String category) {
-
         Subcategory subCategory = null;
+
         outerLoop:
         for (ExerciseCategory exCategory : ExerciseCategory.values()) {
             for (Subcategory sub : exCategory.getSubcategories()) {
@@ -232,6 +231,7 @@ public final class LogEntry {
         String comment = null;
         Double distance = null;
         Integer maxHeartRate = null;
+
         int feeling = Integer.parseInt(map.get("feeling"));
 
         if (!map.get("distance").equals("null")) {
@@ -253,10 +253,12 @@ public final class LogEntry {
         Subcategory subCategory =
                 stringToSubcategory(map.get("exerciseSubCategory"));
 
-        return new EntryBuilder(title, date, duration, category,
-                feeling).comment(comment).distance(distance)
-                .exerciseSubCategory(subCategory).maxHeartRate(maxHeartRate)
-                .build();
+        return new EntryBuilder(title, date, duration, category, feeling)
+                    .comment(comment)
+                    .distance(distance)
+                    .exerciseSubCategory(subCategory)
+                    .maxHeartRate(maxHeartRate)
+                    .build();
     }
 
     /**
@@ -275,6 +277,7 @@ public final class LogEntry {
      * @throws IllegalStateException if the id has already been set.
      */
     public void setId(final String setId) throws IllegalStateException {
+
         if (this.id == null) {
             this.id = setId;
         } else {
@@ -288,7 +291,6 @@ public final class LogEntry {
      * @return The hashMap representing this LogEntry.
      */
     public HashMap<String, String> toHash() {
-
         HashMap<String, String> map = new HashMap<>();
 
         map.put("title", this.getTitle());
@@ -485,13 +487,11 @@ public final class LogEntry {
                             final Duration duration,
                             final ExerciseCategory exerciseCategory,
                             final int feeling) throws IllegalArgumentException {
-
             this.ctitle = title;
             this.cdate = date;
             this.cduration = duration;
             this.cexerciseCategory = exerciseCategory;
             this.cfeeling = feeling;
-
         }
 
         /**
@@ -501,8 +501,8 @@ public final class LogEntry {
          * @return this builder.
          */
         public EntryBuilder comment(final String comment) {
-
             this.ccomment = comment;
+
             return this;
         }
 
@@ -514,8 +514,8 @@ public final class LogEntry {
          */
         public EntryBuilder exerciseSubCategory(
                 final Subcategory exerciseSubCategory) {
-
             this.cexerciseSubCategory = exerciseSubCategory;
+
             return this;
         }
 
@@ -526,8 +526,8 @@ public final class LogEntry {
          * @return this builder.
          */
         public EntryBuilder distance(final Double distance) {
-
             this.cdistance = distance;
+
             return this;
         }
 
@@ -538,8 +538,8 @@ public final class LogEntry {
          * @return this builder.
          */
         public EntryBuilder maxHeartRate(final Integer maxHeartRate) {
-
             this.cmaxHeartRate = maxHeartRate;
+
             return this;
         }
 
@@ -552,6 +552,7 @@ public final class LogEntry {
          */
         public LogEntry build() throws IllegalArgumentException {
             Validity valid = validate(this);
+            
             if (valid.invalid()) {
                 throw new IllegalArgumentException(valid.reason());
             } else {

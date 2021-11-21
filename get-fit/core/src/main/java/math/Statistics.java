@@ -14,17 +14,15 @@ import java.util.List;
  * Statistics class.
  */
 public final class Statistics {
-
     /**
      * Date format length.
      */
     private static final int DATE_LENGTH = 10;
 
     /**
-     * Hidden constructor.
+     * Hidden constructor to simulate static class.
      */
-    private Statistics() {
-    }
+    private Statistics() {}
 
     /**
      * Returns the count of entries in the entryManager.
@@ -38,7 +36,6 @@ public final class Statistics {
             final EntryManager entryManager,
             final String category,
             final String date) {
-
         List<LogEntry> entries =
                 listFilteredByDates(entryManager, category, date);
 
@@ -57,7 +54,6 @@ public final class Statistics {
             final EntryManager entryManager,
             final String category,
             final String date) {
-
         List<LogEntry> entries = listFilteredByDates(
                 entryManager, category, date);
 
@@ -135,9 +131,10 @@ public final class Statistics {
      * @param date         the date to filter by
      * @return the average feeling.
      */
-    public static double getAverageFeeling(final EntryManager entryManager,
-                                           final String category,
-                                           final String date) {
+    public static double getAverageFeeling(
+            final EntryManager entryManager,
+            final String category,
+            final String date) {
         List<LogEntry> entries = listFilteredByDates(
                 entryManager, category, date);
 
@@ -146,6 +143,7 @@ public final class Statistics {
         for (LogEntry logEntry : entries) {
             sum += logEntry.getFeeling();
         }
+
         return sum / entryManager.entryCount();
     }
 
@@ -164,15 +162,7 @@ public final class Statistics {
         List<LogEntry> entries = listFilteredByDates(
                 entryManager, category, date);
 
-        double maxHr = 0;
-        for (LogEntry logEntry : entries) {
-            if (logEntry.getMaxHeartRate() != null) {
-                if (logEntry.getMaxHeartRate() > maxHr) {
-                    maxHr = logEntry.getMaxHeartRate();
-                }
-            }
-        }
-        return maxHr;
+        return entries.stream().map(LogEntry::getMaxHeartRate).max(Integer::compare).orElse(0);
     }
 
     private static List<LogEntry> listFilteredByDates(
@@ -187,12 +177,13 @@ public final class Statistics {
                         entryManager, sortConfiguration);
 
         if (category != null) {
-            Iterator<LogEntry> iterator = iteratorBuilder.filterTimeInterval(
-                            LocalDate.parse(date.substring(0, DATE_LENGTH)),
-                            LocalDate.parse(date.substring(DATE_LENGTH + 1))).
-                    filterExerciseCategory(
-                            ExerciseCategory.valueOf(category)).
-                    iterator(false);
+            Iterator<LogEntry> iterator = iteratorBuilder
+                .filterTimeInterval(
+                    LocalDate.parse(date.substring(0, DATE_LENGTH)),
+                    LocalDate.parse(date.substring(DATE_LENGTH + 1)))
+                .filterExerciseCategory(
+                    ExerciseCategory.valueOf(category))
+                .iterator(false);
 
             List<LogEntry> entries = new ArrayList<>();
             iterator.forEachRemaining(entries::add);
@@ -200,11 +191,11 @@ public final class Statistics {
             return entries;
         }
 
-        Iterator<LogEntry> iterator = iteratorBuilder.filterTimeInterval(
-                        LocalDate.parse(date.substring(0, DATE_LENGTH)),
-                        LocalDate.parse(date.substring(DATE_LENGTH + 1))).
-                iterator(false);
-
+        Iterator<LogEntry> iterator = iteratorBuilder
+            .filterTimeInterval(
+                LocalDate.parse(date.substring(0, DATE_LENGTH)),
+                LocalDate.parse(date.substring(DATE_LENGTH + 1)))
+            .iterator(false);
 
         List<LogEntry> entries = new ArrayList<>();
         iterator.forEachRemaining(entries::add);

@@ -1,7 +1,6 @@
 package client;
 
 public class ServerResponseException extends Exception {
-
     /**
      * Response code.
      */
