@@ -9,7 +9,7 @@ Module for handling frontend. Provides access to the following classes:
 
 ## StartPageController
 
-Handles controll over the start page
+Handles control of the start page
 
 ### Methods
 
@@ -21,7 +21,7 @@ Handles controll over the start page
 
 - sort(Event) -> void: Fill list with entries according to sort parameters. 
 
-- updateList() -> void: Updates the log entry list by querying the server using selected params from the dropdown menues.
+- updateList() -> void: Updates the log entry list by querying the server using selected params from the dropdown menus.
 
 - replaceSubcategories(Event) -> void: Updates ui when main category is selected and updates the current sort.
 
@@ -29,7 +29,7 @@ Handles controll over the start page
 
 ## AddNewSessionController
 
-Handles controll over log creation page
+Handles control over log creation page
 
 ### Methods
 
@@ -40,13 +40,13 @@ Handles controll over log creation page
 - handleTagsSelector(ActionEvent) -> void: Changes ui according to the selected exercise category.
 
 ## StatisticsController
-Handles controll over statistics page.
+Handles control over statistics page.
 
 ### Methods
 
 - onReturn(ActionEvent) -> void: Switches the view to start page.
 
-- onHandleData -> void: Updates Handles data for the data coloumn and updates bar chart with data.
+- onHandleData -> void: Updates Handles data for the data column and updates bar chart with data.
 
 ## App
 Class for starting the application. It extends Application.

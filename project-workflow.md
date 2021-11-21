@@ -14,9 +14,9 @@ Noting this, the process is as follows:
 - Write tests and ensure minimum code coverage
 - Merge into dev through a merge request where tests and code coverage analysis is automatically performed
 - Once enough features have accumulated and are of good quality and polish merge dev into master through another merge
-  request with aditional testing
+  request with additional testing
 
-Extensive use of branches redices the risk of merge conflicts during development, and keeps the project more structured.
+Extensive use of branches reduces the risk of merge conflicts during development, and keeps the project more structured.
 When multiple members are actively working on the same feature secondary branches are often created to leverage the
 aforementioned benefits.
 
@@ -31,16 +31,16 @@ branches. This further prompts the team to discuss the feedback given by checkst
 
 # Workflow
 
-We use the SCRUM framework for efficently producing and delivering high quality code. The issues related to the
+We use the SCRUM framework for efficiently producing and delivering high quality code. The issues related to the
 milestone are used to divide different tasks between us. We use the milestones for grouping issues with releases, as we
-have been instructed to. The issues are labeled to easily sort and distinguish them from eachother. Pair programing is
+have been instructed to. The issues are labeled to easily sort and distinguish them from each other. Pair programing is
 something we practice a lot, even though we divide the issues to individual members of the group. The group is divided
-into pairs, and those pairs tackle different challenges and take turn programming. By doing this all of the group
+into pairs, and those pairs tackle different challenges and take turn programming. By doing this the group
 members can learn from each other. It also makes us less vulnerable to typos and other errors, and it is easier to solve
-complex problems in pairs. Even though we use pair programming a lot, we do some of the easier work indiviually and make
-the other team members review the work. This is to make the development process more efficent.
+complex problems in pairs. Even though we use pair programming a lot, we do some of the easier work individually and make
+the other team members review the work. This is to make the development process more efficient.
 
-The group has as a goal to commit more, rather than less. This makes revertion, cherrypicking, and finding breaking
+The group has as a goal to commit more, rather than less. This makes reverting, cherry-picking, and finding breaking
 changes easier. Smaller commits also enable the use of more specific commit messages, which serve as a comment or
 explanation on what was done, and why it was done. Everyone in the group also has tools to view these comments inline
 while coding, which facilitates teamwork even when two members aren't working directly together. This practice also
@@ -50,8 +50,8 @@ commits with the issue(s) they relate to. This is yet another workflow tool to h
 
 Though we made use of pair-programming a large bulk of the work was done working on individual machines, always with
 open communication. Be it through online platforms such as discord, or, as was the case for most of the project,
-physically being together. Working in this way made it possible to dynamically transition between working on indivdual
-tasks and pair/group programming. Another perk was a constant discussion of feature implementatios, keeping the whole team up
+physically being together. Working in this way made it possible to dynamically transition between working on individual
+tasks and pair/group programming. Another perk was a constant discussion of feature implementations, keeping the whole team up
 to date on the current state of the code base.
 
 # Issues and Milestones
@@ -65,7 +65,7 @@ Issues are also created spontaneously if a bug or error is encountered. That way
 even if it is not addressed immediately, it will be solved whenever a member of the team completes their current
 assignment, or otherwise has some time on their hands.
 
-Lastly the progressbar on milestones, and to some degree the amount of isses, work as indicators for how much is left to
+Lastly the progressbar on milestones, and to some degree the amount of issues, work as indicators for how much is left to
 be done for an upcoming release.
 
 # Jobs
@@ -85,24 +85,24 @@ The jobs run an assortment of maven goals and will give feedback if something go
     - `test-coverage-80` Runs jacoco to test for more (80%) code coverage. Failure will raise a warning, but not block
       the merge request.
 - `quality`
-    - `checkstyle` runs checkstyle to ensure propper code formatting. Failure will raise a warning, but not block the
+    - `checkstyle` runs checkstyle to ensure proper code formatting. Failure will raise a warning, but not block the
       merge request.
 - `bugs`
     - `spotbugs` runs spotbugs to catch possibly bug-inducing mistakes. Failure will raise a warning, but not block the
       merge request.
 
 These jobs ensure that breaking code does not get merged into the dev or master branches. So far it has been a great
-success, pointing out errors in our code. However checkstyle and spotbugs can at times be overly sensitive. The main
+success, pointing out errors in our code. However, checkstyle and spotbugs can at times be overly sensitive. The main
 problem here is that if decide to ignore some of the output from checkstyle or spotbugs they will always fail. This in
 turn desensitizes us to seeing them fail. We have attempted to provide custom rules, but without luck. Still we go
-looking into the output of the jobs to evaluate wether some of the errors are something we care about.
+looking into the output of the jobs to evaluate whether some of the errors are something we care about.
 
 An attempt has been made in making the jobs more efficient, by reusing compilation and test results in the later jobs,
 but gitlab does not provide great support for this, meaning that a job using the verify goal will have to re-compile and
-re-test the entire project even though it was allready done by a different job.
+re-test the entire project even though it was already done by a different job.
 
-Aditionally we have a job for compiling the app to an executable, though because it happens on a Linux machine windows,
-macOs, and even users of differing Linux distributions will have to compile from source, or have someone else do it and
+Additionally, we have a job for compiling the app to an executable, though because it happens on a Linux machine windows,
+macOS, and even users of differing Linux distributions will have to compile from source, or have someone else do it and
 distribute that binary.
 
 # Planning
