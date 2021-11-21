@@ -110,40 +110,37 @@ public class GetFitController {
             throws IllegalAccessException {
         SortConfiguration sortConfiguration = null;
 
-        try {
-            sortConfiguration =
-                    SortConfiguration.valueOf(sortType.toUpperCase());
-        } catch (IllegalArgumentException ignored) {}
+        sortConfiguration = SortConfiguration.valueOf(sortType.toUpperCase());
 
         EntryManager.SortedIteratorBuilder iteratorBuilder =
-                new EntryManager.SortedIteratorBuilder(
-                        getfitService.getEntryManager(),
-                        sortConfiguration);
+            new EntryManager.SortedIteratorBuilder(
+                getfitService.getEntryManager(),
+                sortConfiguration);
+
         if (category != null) {
             String categoryUpper = category.toUpperCase();
             try {
                 ExerciseCategory categories =
-                        ExerciseCategory.valueOf(categoryUpper);
+                    ExerciseCategory.valueOf(categoryUpper);
                 iteratorBuilder =
-                        iteratorBuilder.filterExerciseCategory(categories);
+                    iteratorBuilder.filterExerciseCategory(categories);
 
                 Subcategory subcategories;
 
                 if (subCategory != null) {
                     subcategories = switch (categoryUpper) {
                         case "STRENGTH" -> StrengthSubCategory.valueOf(
-                                subCategory.toUpperCase());
+                            subCategory.toUpperCase());
                         case "SWIMMING", "CYCLING", "RUNNING" ->
-                                CardioSubCategory.valueOf(
-                                subCategory.toUpperCase());
+                            CardioSubCategory.valueOf(
+                            subCategory.toUpperCase());
                         default -> null;
                     };
 
-                    iteratorBuilder =
-                            iteratorBuilder.filterSubCategory(subcategories);
+                    iteratorBuilder = iteratorBuilder
+                        .filterSubCategory(subcategories);
                 }
-            } catch (IllegalArgumentException ignored) {
-            }
+            } catch (IllegalArgumentException ignored) {}
 
         } else {
             if (subCategory != null) {
@@ -154,17 +151,16 @@ public class GetFitController {
         try {
             if (date != null) {
                 iteratorBuilder = iteratorBuilder.filterTimeInterval(
-                        LocalDate.parse(date.substring(0,
-                                DATE_FORMAT_LENGTH)),
-                        LocalDate.parse(
-                                date.substring(DATE_FORMAT_LENGTH + 1)));
+                    LocalDate.parse(date.substring(0,
+                        DATE_FORMAT_LENGTH)),
+                    LocalDate.parse(
+                        date.substring(DATE_FORMAT_LENGTH + 1)));
             }
-        } catch (IllegalArgumentException ignored) {
-        }
+        } catch (IllegalArgumentException ignored) {}
 
         List<LogEntry> returnList = new ArrayList<>();
         iteratorBuilder.iterator(Boolean.parseBoolean(reverse))
-                .forEachRemaining(returnList::add);
+            .forEachRemaining(returnList::add);
 
         JSONObject returnJSON = new JSONObject();
         JSONArray entryArray = new JSONArray();
@@ -189,14 +185,16 @@ public class GetFitController {
     @GetMapping(value = "/stats", produces = "application/json")
     @ResponseBody
     public String getStatisticsData(
-            final @RequestParam(value = "d") String date,
-            @RequestParam(value = "c", required = false)
-            final String eCategory) {
+            final @RequestParam(value = "d")
+                String date,
+            final @RequestParam(value = "c", required = false)
+                String eCategory) {
 
         String requestCategory = eCategory;
         if (requestCategory != null) {
             requestCategory = requestCategory.toUpperCase();
         }
+
         HashMap<String, String> map = new HashMap<>();
 
         if (getfitService.getEntryManager().entryCount() == 0) {
@@ -205,42 +203,44 @@ public class GetFitController {
             map.put("empty", "False");
         }
 
-        map.put("count", Integer.toString(Statistics.getCount(
+        map.put("count", Integer.toString(
+            Statistics.getCount(
                 getfitService.getEntryManager(),
                 requestCategory,
                 date)));
 
         map.put("totalDuration", GetFitService.convertFromSecondsToHours(
-                Statistics.getTotalDuration(
-                        getfitService.getEntryManager(),
-                        requestCategory,
-                        date)));
-
-        map.put("averageDuration", GetFitService.convertFromSecondsToHours(
-                Statistics.getAverageDuration(
-                        getfitService.getEntryManager(),
-                        requestCategory,
-                        date)));
-
-
-        map.put("averageFeeling", Double.toString(Statistics.getAverageFeeling(
+            Statistics.getTotalDuration(
                 getfitService.getEntryManager(),
                 requestCategory,
                 date)));
 
-        double speed = Statistics.getAverageSpeed(
+        map.put("averageDuration", GetFitService.convertFromSecondsToHours(
+            Statistics.getAverageDuration(
                 getfitService.getEntryManager(),
-                requestCategory, date);
+                requestCategory,
+                date)));
 
-        map.put("averageSpeed", Double.toString(speed));
 
-        map.put("maximumHr", Double.toString(Statistics.getMaximumHr(
+        map.put("averageFeeling", Double.toString(
+            Statistics.getAverageFeeling(
+                getfitService.getEntryManager(),
+                requestCategory,
+                date)));
+
+        map.put("averageSpeed", Double.toString(
+            Statistics.getAverageSpeed(
+                getfitService.getEntryManager(),
+                requestCategory, date)
+        ));
+
+        map.put("maximumHr", Double.toString(
+            Statistics.getMaximumHr(
                 getfitService.getEntryManager(),
                 requestCategory,
                 date)));
 
         JSONObject jsonReturn = new JSONObject(map);
-
 
         return jsonReturn.toString();
     }
@@ -255,18 +255,17 @@ public class GetFitController {
     @ResponseBody
     public String getChartData(
             final @RequestParam(value = "d") String date) {
-
         List<String> categorylist = Arrays.asList(
                 "swimming", "running", "strength", "cycling");
 
         HashMap<String, String> map = new HashMap<>();
 
-        for (String category : categorylist) {
-            map.put(category, Integer.toString(Statistics.getCount(
-                    getfitService.getEntryManager(),
-                    category.toUpperCase(),
-                    date)));
-        }
+        categorylist.forEach(category -> map.put(category, Integer.toString(
+            Statistics.getCount(
+                getfitService.getEntryManager(),
+                category.toUpperCase(),
+                date))));
+
         JSONObject jsonReturn = new JSONObject(map);
 
         return jsonReturn.toString();
@@ -280,9 +279,10 @@ public class GetFitController {
      */
     @PostMapping(value = "/add", produces = "application/json")
     public String addLogEntry(final @RequestBody String logEntry) {
+        String id = getfitService
+            .getEntryManager()
+            .addEntry(stringToEntry(logEntry));
 
-        String id = getfitService.getEntryManager()
-                .addEntry(stringToEntry(logEntry));
         getfitService.save();
         return "{\"id\":\"" + id + "\" }";
     }
@@ -298,12 +298,11 @@ public class GetFitController {
             getfitService.save();
         } else {
             throw new NoSuchElementException(
-                    HttpStatus.NOT_FOUND + "Entry not found");
+                HttpStatus.NOT_FOUND + "Entry not found");
         }
     }
 
     private LogEntry stringToEntry(final String logEntry) {
-
         JSONObject jsonObject = new JSONObject(logEntry);
         HashMap<String, String> entryHash = new HashMap<>();
 
@@ -318,6 +317,7 @@ public class GetFitController {
                 jsonObject.getString("exerciseCategory"));
         entryHash.put("exerciseSubCategory",
                 jsonObject.getString("exerciseSubCategory"));
+
         return LogEntry.fromHash(entryHash);
     }
 
