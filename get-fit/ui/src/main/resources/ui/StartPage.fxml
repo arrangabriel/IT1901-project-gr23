@@ -37,7 +37,7 @@
 
     <Label fx:id="errorLabel" layoutX="174.0" layoutY="356.0" prefHeight="17.0" prefWidth="275.0" textFill="#b50c0c" />
     <Button layoutX="31.0" layoutY="345.0" mnemonicParsing="false" onAction="#onStatisticsPage" prefHeight="39.0" prefWidth="111.0" text="Statistics" />
-   <ImageView fitHeight="86.0" fitWidth="125.0" layoutX="451.0" layoutY="-11.0" pickOnBounds="true" preserveRatio="true">
+   <ImageView fitHeight="78.0" fitWidth="111.0" layoutX="462.0" layoutY="-3.0" pickOnBounds="true" preserveRatio="true">
       <image>
          <Image url="@images/logo.png" />
       </image></ImageView>
