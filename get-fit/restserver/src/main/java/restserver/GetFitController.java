@@ -96,7 +96,7 @@ public class GetFitController {
      */
     @GetMapping(value = "/list", produces = "application/json")
     @ResponseBody
-    public String getListOfLogEntries(
+    public String getListOfLogEntries (
             final @RequestParam(value = "s", defaultValue = "date")
                     String sortType,
             final @RequestParam(value = "r", defaultValue = "false")

@@ -162,7 +162,7 @@ public final class Statistics {
         List<LogEntry> entries = listFilteredByDates(
                 entryManager, category, date);
 
-        return entries.stream().map(LogEntry::getMaxHeartRate).max(Integer::compare).get();
+        return entries.stream().map(LogEntry::getMaxHeartRate).max(Integer::compare).orElse(0);
     }
 
     private static List<LogEntry> listFilteredByDates(
