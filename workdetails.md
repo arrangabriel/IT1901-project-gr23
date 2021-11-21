@@ -20,6 +20,14 @@ We use the SCRUM framework for efficently producing and delivering high quality 
 
 The group has as a goal to commit more, rather than less. This makes revertion, cherrypicking, and finding breaking changes easier. Smaller commits also enable the use of more specific commit messages, which serve as a comment or explanation on what was done, and why it was done. Everyone in the group also has tools to view these comments inline while coding, which facilitates teamwork even when two members aren't working directly together. This practice also makes it easy to track down who worked on a specific part of the code, letting a different member ask them for help if they are going to make changes in that area of the codebase.
 
+# Issues and Milestones
+
+The project employs heavy use of issues and milestones on gitlab. The issues are used to divide the work between the team adn to provide an overview of what needs to be done for the upcoming release. The milestones are used to group related issues into larger development points. This combination allows for both a bigger-picture view of everything that needs to be done, and a more specific list of what needs to be written.
+
+Issues are also created spontaneously if a bug or error is encountered. That way the team won't forget about it, and even if it is not addressed immediately, it will be solved whenever a member of the team completes their current assignment, or otherwise has some time on their hands.
+
+Lastly the progressbar on milestones, and to some degree the amount of isses, work as indicators for how much is left to be done for an upcoming release.
+
 # Jobs
 
 The repository employs a multitude of jobs in order to ensure only valid code is merged into the branches dev and main. The jobs run an assortment of maven goals and will give feedback if something goes wrong. The following jobs are run:
