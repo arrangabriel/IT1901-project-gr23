@@ -6,7 +6,10 @@ import java.util.Arrays;
 import java.util.HashMap;
 
 /**
- * Representation of a workout or exercise.
+ * A logEntry instance represents a single workout-entry internally.
+ * Has fields for the elements of a workout-entry,
+ * getters for them, and methods for de/serialization and validation.
+ * It is mostly immutable, save for the id, which can be set exactly once.
  */
 public final class LogEntry {
 
@@ -70,7 +73,8 @@ public final class LogEntry {
     /**
      * A logEntry instance represents a single workout-entry internally.
      * Has fields for the elements of a workout-entry,
-     * getters for them, and setters for those that should be mutable.
+     * getters for them, and methods for de/serialization and validation.
+     * It is mostly immutable, save for the id, which can be set exactly once.
      *
      * @param builder the EntryBuilder used to build this LogEntry.
      */
