@@ -1,0 +1,49 @@
+* {
+    -fx-primary: #f9f9f9;
+    -fx-light: #ffffff;
+    -fx-dark: #c6c6c6;
+    -fx-darkest: #000000;
+    -fx-ptext: #000000;
+    -fx-dtext: #ffffff;
+}
+
+.root {
+    -fx-text-fill: -fx-ptext;
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
+}
+
+AnchorPane {
+    -fx-background-color: -fx-primary;
+}
+
+TextField, TextArea, DatePicker, ComboBox, Button {
+    -fx-border-color: -fx-darkest;
+    -fx-border-radius: 0px;
+    -fx-background-color: -fx-light;
+}
+
+Button:hover {
+    -fx-background-color: -fx-darkest;
+    -fx-text-fill: -fx-dtext;
+}
+
+.date-picker > .arrow-button {
+    -fx-background-color: -fx-light;
+    -fx-border-radius: 0;
+}
+
+.date-picker > .arrow-button:hover {
+    -fx-background-color: -fx-darkest;
+    -fx-text-fill: -fx-dtext;
+}
+
+.date-picker > .arrow-button:hover > * {
+    -fx-background-color: -fx-light;
+}
+
+.combo-box-popup > .list-view > .virtual-flow > .clipped-container > .sheet > .list-cell:filled:hover,
+.combo-box-popup > .list-view > .virtual-flow > .clipped-container > .sheet > .list-cell:filled:selected,
+.combo-box-popup > .list-view > .virtual-flow > .clipped-container > .sheet > .list-cell:filled:selected:hover {
+    -fx-background-color: -fx-darkest;
+}

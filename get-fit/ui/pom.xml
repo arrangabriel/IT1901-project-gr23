@@ -13,7 +13,7 @@
 
         <dependency>
             <groupId>gr2123</groupId>
-            <artifactId>modules-core</artifactId>
+            <artifactId>modules-client</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
 
@@ -68,6 +68,17 @@
             <version>0.0.1-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
+         <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <version>4.0.0</version>
+        </dependency>
+         <dependency>
+            <groupId>com.github.tomakehurst</groupId>
+            <artifactId>wiremock-jre8</artifactId>
+            <version>2.27.2</version>
+            <scope>test</scope>
+        </dependency>
 
     </dependencies>
 
@@ -96,6 +107,16 @@
                 <configuration>
                     <!-- syntax: module-name/full-app-class-name -->
                     <mainClass>ui.App</mainClass>
+
+                    <!-- rest of options are for jlink -->
+                    <compress>2</compress>
+                    <noHeaderFiles>true</noHeaderFiles>
+                    <stripDebug>true</stripDebug>
+                    <noManPages>true</noManPages>
+                    <launcher>getfit</launcher>
+                    <jlinkImageName>getfit</jlinkImageName>
+                    <jlinkZipName>getfit</jlinkZipName>
+
                 </configuration>
             </plugin>
             <plugin>
@@ -121,6 +142,39 @@
                     </execution>
                 </executions>
             </plugin>
+            <!--<plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>3.2.4</version>
+            </plugin>-->
+
+            <!-- config above and below taken from https://dev.to/cherrychain/javafx-jlink-and-jpackage-h9 -->
+            <plugin>
+                <groupId>org.panteleyev</groupId>
+                <artifactId>jpackage-maven-plugin</artifactId>
+                <version>1.4.0</version>
+                <configuration>
+                    <name>GetFit</name>
+                    <appVersion>1.0.0</appVersion>
+                    <vendor>it1901</vendor>
+                    <destination>target/dist</destination>
+                    <module>ui/ui.App</module>
+                    <runtimeImage>target/getfit</runtimeImage>
+                    <javaOptions>
+                        <option>-Dfile.encoding=UTF-8</option>
+                    </javaOptions>
+                    <!-- linux options --> 
+                    <linuxShortcut>true</linuxShortcut>
+                    <linuxMenuGroup>GetFit</linuxMenuGroup>
+
+                    <!-- windows options --> 
+                    <winDirChooser>true</winDirChooser>
+                    <winShortcut>true</winShortcut>
+                    <winMenu>true</winMenu>
+                    <winMenuGroup>GetFit</winMenuGroup>
+                </configuration>
+            </plugin>
+
         </plugins>
     </build>
     <profiles>

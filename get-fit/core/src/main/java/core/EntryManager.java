@@ -6,8 +6,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Set;
+import java.util.Map.Entry;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -15,7 +14,6 @@ import java.util.stream.Stream;
  * Provides management for EntryLogs.
  */
 public final class EntryManager implements Iterable<LogEntry> {
-
     /**
      * Hashmap of LogEntries.
      */
@@ -33,6 +31,26 @@ public final class EntryManager implements Iterable<LogEntry> {
     public EntryManager() {
     }
 
+
+    /**
+     * Updates a provided EntryManager with the LogEntries represented
+     * in the HashMap.
+     *
+     * @param map          The map representing the LogEntries to add.
+     * @param entryManager The EntryManager to update.
+     */
+    public static void fromHash(
+            final HashMap<String, HashMap<String, String>> map,
+            final EntryManager entryManager) {
+        for (Entry<String, HashMap<String, String>> entryEntry
+                : map.entrySet()) {
+            entryManager.updateHashPosition(
+                    Integer.parseInt(entryEntry.getKey()));
+            LogEntry entry = LogEntry.fromHash(entryEntry.getValue());
+            entryManager.addEntry(entryEntry.getKey(), entry);
+        }
+    }
+
     /**
      * Adds a fresh entry to this EntryManager. Generates an id internally.
      *
@@ -42,9 +60,8 @@ public final class EntryManager implements Iterable<LogEntry> {
      */
     public String addEntry(final LogEntry entry)
             throws IllegalArgumentException {
-
-        String id = String.valueOf(this.idHashPosition);
         this.idHashPosition++;
+        String id = String.valueOf(this.idHashPosition);
 
         addEntry(id, entry);
 
@@ -65,14 +82,13 @@ public final class EntryManager implements Iterable<LogEntry> {
             final String id,
             final LogEntry entry)
             throws IllegalArgumentException, IllegalStateException {
-
         if (entryMap.containsKey(id)) {
             throw new IllegalArgumentException("Entry already exists");
         }
 
         entry.setId(id);
-
-        entryMap.put(id, entry);
+        this.entryMap.put(id, entry);
+        updateHashPosition(Integer.parseInt(id));
     }
 
     /**
@@ -130,30 +146,18 @@ public final class EntryManager implements Iterable<LogEntry> {
     }
 
     /**
-     * Returns a set of all ids in the entry manager.
+     * Represents this EntryManager as a HashMap with LogEntries,
+     * also represented as HashMaps.
      *
-     * @return the set of ids.
+     * @return The HashMap representing this EntryManager.
+     * @see LogEntry#toHash()
      */
-    public Set<String> entryIds() {
-        return this.entryMap.keySet();
-    }
+    public HashMap<String, HashMap<String, String>> toHashMap() {
+        HashMap<String, HashMap<String, String>> map = new HashMap<>();
 
-    /**
-     * Removes a LogEntry with the specified id,
-     * and replaces it with the provided entry.
-     *
-     * @param id    the id of the LogEntry to swap.
-     * @param entry the entry to put in place.
-     * @throws NoSuchElementException if the id doesn't exist in the manager.
-     */
-    public void swapEntry(
-            final String id,
-            final LogEntry entry)
-            throws NoSuchElementException {
+        this.forEach((entry) -> map.put(entry.getId(), entry.toHash()));
 
-        removeEntry(id);
-        addEntry(id, entry);
-
+        return map;
     }
 
     /**
@@ -186,9 +190,8 @@ public final class EntryManager implements Iterable<LogEntry> {
          */
         public SortedIteratorBuilder(
                 final EntryManager entryManager,
-                final LogEntry.SORTCONFIGURATIONS sortConfiguration)
+                final SortConfiguration sortConfiguration)
                 throws IllegalArgumentException {
-
             if (sortConfiguration == null) {
                 throw new IllegalArgumentException(
                         "Sort configuration cannot be null.");
@@ -214,9 +217,8 @@ public final class EntryManager implements Iterable<LogEntry> {
          * @throws IllegalArgumentException if category is null.
          */
         public SortedIteratorBuilder filterExerciseCategory(
-                final LogEntry.EXERCISECATEGORY category)
+                final ExerciseCategory category)
                 throws IllegalArgumentException {
-
             if (category == null) {
                 throw new IllegalArgumentException("Category cannot be null.");
             }
@@ -236,24 +238,23 @@ public final class EntryManager implements Iterable<LogEntry> {
          * @throws IllegalArgumentException if Subcategory is null.
          */
         public SortedIteratorBuilder filterSubCategory(
-                final LogEntry.Subcategory subcategory)
+                final Subcategory subcategory)
                 throws IllegalArgumentException {
-
             if (subcategory == null) {
                 throw new IllegalArgumentException(
                         "Subcategory cannot be null.");
             }
 
-            this.logEntryStream = this.logEntryStream
-                    .filter((entry) -> {
-                        LogEntry.Subcategory entrySubcategory =
-                                entry.getExerciseSubCategory();
-                        if (entrySubcategory != null) {
-                            return entrySubcategory.equals(subcategory);
-                        } else {
-                            return false;
-                        }
-                    });
+            this.logEntryStream = this.logEntryStream.filter(
+                (entry) -> {
+                Subcategory entrySubcategory =
+                        entry.getExerciseSubCategory();
+                if (entrySubcategory != null) {
+                    return entrySubcategory.equals(subcategory);
+                } else {
+                    return false;
+                }
+            });
             return this;
         }
 
@@ -268,20 +269,20 @@ public final class EntryManager implements Iterable<LogEntry> {
         public SortedIteratorBuilder filterTimeInterval(
                 final LocalDate firstDate, final LocalDate lastDate)
                 throws IllegalArgumentException {
-
             if (firstDate == null || lastDate == null) {
                 throw new IllegalArgumentException("Dates cannot be null.");
             }
 
-            this.logEntryStream = this.logEntryStream
-                    .filter((entry) -> {
-                        LocalDate entryDate = entry.getDate();
-                        // Check that date is in the interval (inclusive)
-                        return (entryDate.isAfter(firstDate)
-                                || entryDate.isEqual(firstDate))
-                                && (entryDate.isBefore(lastDate)
-                                || entryDate.isEqual(lastDate));
-                    });
+            this.logEntryStream = this.logEntryStream.filter(
+                (entry) -> {
+                    LocalDate entryDate = entry.getDate();
+                    // Check that date is in the interval (inclusive)
+                    return (entryDate.isAfter(firstDate)
+                            || entryDate.isEqual(firstDate))
+                            && (entryDate.isBefore(lastDate)
+                            || entryDate.isEqual(lastDate));
+                }
+            );
 
             return this;
         }
@@ -293,9 +294,9 @@ public final class EntryManager implements Iterable<LogEntry> {
          * @return an iterator of LogEntries.
          */
         public Iterator<LogEntry> iterator(final boolean reverse) {
-
             List<LogEntry> entryList = this.logEntryStream
                     .collect(Collectors.toList());
+
             if (reverse) {
                 Collections.reverse(entryList);
             }

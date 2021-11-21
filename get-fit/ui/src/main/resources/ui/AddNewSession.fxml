@@ -11,54 +11,57 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
+<?import java.net.URL?>
+
 <AnchorPane maxHeight="400.0" maxWidth="600.0" minHeight="400.0" minWidth="600.0" prefHeight="400.0" prefWidth="600.0"
             xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="ui.AddNewSessionController">
-    <Label layoutX="27.0" layoutY="9.0" prefHeight="60.0" prefWidth="232.0" text="Add new session ">
+    <Separator layoutX="20.0" layoutY="69.0" prefWidth="560.0"/>
+    <Label layoutX="20.0" layoutY="15.0" prefHeight="60.0" prefWidth="333.0" text="Add new session">
         <font>
-            <Font size="30.0"/>
+            <Font size="40.0"/>
         </font>
     </Label>
-    <Pane layoutX="23.0" layoutY="55.0" prefHeight="325.0" prefWidth="553.0">
-        <Label fx:id="titleLabel" layoutX="20.0" layoutY="12.0" prefHeight="19.0" prefWidth="105.0" text="Title"/>
+    <Pane layoutX="23.0" layoutY="62.0" prefHeight="325.0" prefWidth="553.0">
+        <Label layoutX="20.0" layoutY="12.0" prefHeight="19.0" prefWidth="105.0" text="Title"/>
         <TextField fx:id="titleField" layoutX="19.0" layoutY="29.0" prefHeight="27.0" prefWidth="169.0"/>
 
-        <Label fx:id="dateLabel" layoutX="20.0" layoutY="65.0" text="Date"/>
+        <Label layoutX="20.0" layoutY="65.0" text="Date"/>
         <DatePicker fx:id="sessionDatePicker" editable="false" layoutX="20.0" layoutY="81.0" prefHeight="27.0"
                     prefWidth="169.0" promptText="dd:mm:yyyy"/>
 
-        <Label fx:id="durationLabel" layoutX="19.0" layoutY="121.0" prefHeight="17.0" prefWidth="51.0" text="Duration"/>
+        <Label layoutX="19.0" layoutY="121.0" prefHeight="17.0" prefWidth="51.0" text="Duration"/>
         <TextField fx:id="hour" alignment="CENTER" layoutX="19.0" layoutY="139.0" prefHeight="22.0" prefWidth="36.0"
                    promptText="hh"/>
         <TextField fx:id="min" alignment="CENTER" layoutX="60.0" layoutY="139.0" prefHeight="22.0" prefWidth="36.0"
                    promptText="mm"/>
 
-        <Label fx:id="exerciseTypeLabel" layoutX="19.0" layoutY="177.0" prefHeight="17.0" prefWidth="90.0"
-               text="Excercise Type"/>
+        <Label layoutX="19.0" layoutY="177.0" prefHeight="17.0" prefWidth="90.0"
+               text="Exercise Type"/>
         <ComboBox fx:id="exerciseType" layoutX="19.0" layoutY="194.0" onAction="#handleTagsSelector" prefWidth="150.0"/>
 
-        <Label fx:id="tagsLabel" layoutX="18.0" layoutY="234.0" prefHeight="17.0" prefWidth="90.0" text="Tag"/>
+        <Label layoutX="18.0" layoutY="234.0" prefHeight="17.0" prefWidth="90.0" text="Tag"/>
         <ComboBox fx:id="tags" layoutX="19.0" layoutY="250.0" onAction="#handleTagsSelector" prefHeight="17.0"
                   prefWidth="150.0"/>
 
-        <Label fx:id="maxHeartRateLabel" layoutX="300.0" layoutY="10.0" prefHeight="19.0" prefWidth="117.0"
+        <Label layoutX="300.0" layoutY="12.0" prefHeight="19.0" prefWidth="117.0"
                text="Maximum heart rate"/>
-        <TextField fx:id="heartRate" alignment="CENTER" layoutX="302.0" layoutY="29.0" prefHeight="27.0"
+        <TextField fx:id="heartRate" alignment="CENTER" layoutX="300.0" layoutY="29.0" prefHeight="27.0"
                    prefWidth="43.0" promptText="hr"/>
 
-        <Label fx:id="feelingLabel" layoutX="301.0" layoutY="64.0" prefHeight="19.0" prefWidth="200"
+        <Label layoutX="300.0" layoutY="68.0" prefHeight="19.0" prefWidth="200"
                text="How difficult was this workout?"/>
-        <Slider fx:id="feelingSlider" blockIncrement="1.0" layoutX="301.0" layoutY="86.0" majorTickUnit="1.0" max="10.0"
+        <Slider fx:id="feelingSlider" blockIncrement="1.0" layoutX="300.0" layoutY="90.0" majorTickUnit="1.0" max="10.0"
                 min="1.0" minorTickCount="0" prefHeight="15.0" prefWidth="152.0" showTickLabels="true"
                 showTickMarks="true" snapToTicks="true"/>
 
-        <Label fx:id="distanceLabel" layoutX="304.0" layoutY="128.0" prefHeight="17.0" prefWidth="55.0"
+        <Label fx:id="distanceLabel" layoutX="300.0" layoutY="132.0" prefHeight="17.0" prefWidth="55.0"
                text="Distance"/>
-        <TextField fx:id="distance" alignment="CENTER" layoutX="304.0" layoutY="146.0" prefHeight="22.0"
-                   prefWidth="36.0" promptText="km"/>
+        <TextField fx:id="distance" alignment="CENTER" layoutX="300.0" layoutY="150.0" prefHeight="22.0"
+                   prefWidth="45.0" promptText="km"/>
 
-        <Label fx:id="commentLabel" layoutX="307.0" layoutY="182.0" prefHeight="24.0" prefWidth="105.0" text="Comment"/>
-        <TextArea fx:id="commentField" layoutX="308.0" layoutY="205.0" prefHeight="76.0" prefWidth="232.0"
+        <Label layoutX="300.0" layoutY="182.0" prefHeight="24.0" prefWidth="105.0" text="Comment"/>
+        <TextArea fx:id="commentField" layoutX="300.0" layoutY="205.0" prefHeight="76.0" prefWidth="232.0"
                   wrapText="true"/>
 
         <Separator layoutX="254.0" layoutY="26.0" orientation="VERTICAL" prefHeight="256.0" prefWidth="5.0"/>
@@ -66,9 +69,13 @@
         <Label fx:id="errorLabel" layoutX="128.0" layoutY="301.0" prefHeight="17.0" prefWidth="285.0"
                textFill="#b50c0c"/>
 
-        <Button fx:id="back" layoutX="19.0" layoutY="297.0" mnemonicParsing="false" onAction="#backButtonPushed"
+        <Button layoutX="19.0" layoutY="297.0" mnemonicParsing="false" onAction="#backButtonPushed"
                 prefHeight="27.0" prefWidth="83.0" text="Return"/>
-        <Button fx:id="createSession" layoutX="440.0" layoutY="296.0" mnemonicParsing="false"
+        <Button layoutX="439.0" layoutY="296.0" mnemonicParsing="false"
                 onAction="#createSessionButtonPushed" text="Create session"/>
     </Pane>
+    <stylesheets>
+        <URL value="@css/main.css"/>
+        <URL value="@css/AddNewSession.css"/>
+    </stylesheets>
 </AnchorPane>
