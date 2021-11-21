@@ -419,7 +419,6 @@ public final class LogEntry {
      * Builder class for LogEntry.
      */
     public static class EntryBuilder {
-
         /*
          * Required fields.
          */

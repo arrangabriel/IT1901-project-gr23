@@ -28,8 +28,7 @@ public final class EntryManager implements Iterable<LogEntry> {
      * An entry manager instance is a wrapper for a list of logEntries.
      * Functions as the API interface for the core-module.
      */
-    public EntryManager() {
-    }
+    public EntryManager() { }
 
 
     /**

@@ -15,7 +15,7 @@ public class GetFitApplication {
     }
 
     /**
-     * Pleases checkstyle.
+     * Needed for checkstyle to pass. Alternative breaks springboot.
      */
     public void dummy() { }
 }

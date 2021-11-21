@@ -55,14 +55,14 @@ public class AddNewSessionController {
      * Maximum heart rate limit.
      */
     private static final int MAX_HEART_RATE = 300;
-
-    /*
-     * These constants appease checkstyle.
-     */
     /**
      * Minimum heart rate limit.
      */
     private static final int MIN_HEART_RATE = 20;
+
+    /*
+     * These constants appease checkstyle.
+     */
     /**
      * How many seconds error label should be visible for.
      */
@@ -71,10 +71,6 @@ public class AddNewSessionController {
      * How long should input float values be.
      */
     private static final int MAX_FLOAT_LENGTH = 4;
-    /**
-     * Session log client.
-     */
-    private final LogClient client = new LogClient("http://localhost", 8080);
     //endregion
 
     //region JavaFX elements
@@ -140,6 +136,10 @@ public class AddNewSessionController {
     private ComboBox<String> tags;
     //endregion
 
+    /**
+     * Session log client.
+     */
+    private final LogClient client = new LogClient("http://localhost", 8080);
     /**
      * Exercise categories and subcategories.
      */
@@ -315,8 +315,12 @@ public class AddNewSessionController {
             // Can't really happen
             e.printStackTrace();
         } catch (ServerResponseException e) {
+            // Rare or impossible error as the UI
+            // validates the user input before sending.
+            // However, it may occur if for example the
+            // server shuts down after the app has started.
             errorLabel.setText(
-                    "Oh no, there was an issue with your request.");
+                    "Uh oh, there was an issue with your request.");
         }
 
         // generate an ObservableList of exercise category names.
@@ -408,11 +412,20 @@ public class AddNewSessionController {
     }
 
     //region Helper functions
+    /**
+     * Hides and shows the distance information.
+     * @param isCardio Wether the distance should be shown.
+     */
     private void setCardio(final boolean isCardio) {
         distance.setVisible(isCardio);
         distanceLabel.setVisible(isCardio);
     }
 
+    /**
+     * Capitalizes strings.
+     * @param string The string that should be capitalized.
+     * @return The capitalized string
+     */
     private String capitalize(final String string) {
         if (string.length() > 0) {
             return string.substring(0, 1).toUpperCase()
@@ -422,6 +435,13 @@ public class AddNewSessionController {
         }
     }
 
+    /**
+     * Get an ObservableList of subcategories based
+     * on the exercise category.
+     * @param mainCategory The main category for which
+     * subcategories should be gathered.
+     * @return The ObservableList of subcategories.
+     */
     private ObservableList<String> getSubcategoryStringObservableList(
             final String mainCategory) {
         return categories.get(mainCategory).stream()
@@ -430,7 +450,11 @@ public class AddNewSessionController {
                         .toCollection(FXCollections::observableArrayList));
     }
 
-    // Makes sure a field can only accept integers in a certain range.
+    /**
+     * Checks wether a text field has a valid integer value.
+     * @param field The field to check.
+     * @param maxValue The maximum value to check against.
+     */
     private void validateIntegerInput(final TextField field,
                                       final int maxValue) {
         field.textProperty().addListener((obs, oldValue, newValue) -> {
@@ -454,6 +478,11 @@ public class AddNewSessionController {
         });
     }
 
+    /**
+     * Navigates to the application starting page.
+     * @param event
+     * @throws IOException
+     */
     private void goToStartPage(final ActionEvent event) throws IOException {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("StartPage.fxml"));
