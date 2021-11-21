@@ -31,6 +31,6 @@ The user interface is created with JavaFx an FXML. The FXML directory is located
 **[integration-module](/get-fit/integration)** only exists to house the integration tests. Thus enabling us to test everything together without the front-end and back-end tepending directly on each other.
 
 ## PlantUML diagram
-This PlantUML diagram that illustrates the architecture of the Get Fit application. It shows how the components and packages relate to each other. The PlantUML code can be found her: [Get Fit PlantUML architecture file](/get-fit/packageDiagram.puml)
+This PlantUML diagram that illustrates the architecture of the Get Fit application. It shows how the components and packages relate to each other. The PlantUML code can be found her: [Get Fit PlantUML architecture file](/get-fit/project-architecture/PUML-diagrams/packageDiagram.puml)
 
 ![Design documentation](/design-documentation/project-architecture/PUML-diagrams/packageDiagram.png)

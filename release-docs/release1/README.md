@@ -7,7 +7,7 @@ For release one we intend to create a MVP of the project.
 We intend for the project to be an exercise/activity tracker. We have created a figma model for release 1, which is meant to illustrate our goal for this first release. 
 
 The figma model can be found here: 
-[Figma model for release 1](/docs/release1/Figma_ui_model_release1.pdf)
+[Figma model for release 1](/release-docs/release1/Figma_ui_model_release1.pdf)
 
 
 ### Log a workout
