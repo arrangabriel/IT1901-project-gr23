@@ -5,5 +5,5 @@ package integration;
  * Integration needs to be exported for spring to run the tests.
  */
 public class Dummy {
-    
+
 }

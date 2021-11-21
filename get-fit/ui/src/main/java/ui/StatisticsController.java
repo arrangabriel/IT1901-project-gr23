@@ -159,9 +159,9 @@ public class StatisticsController {
 
 
         if (exerciseType.getValue() != null) {
-            if ((exerciseType.getValue().equals("Swimming") ||
-                (exerciseType.getValue().equals("Running")) ||
-                (exerciseType.getValue().equals("Cycling")))) {
+            if ((exerciseType.getValue().equals("Swimming")
+                || (exerciseType.getValue().equals("Running"))
+                || (exerciseType.getValue().equals("Cycling")))) {
 
                     speedLabel.setVisible(true);
                     averageSpeed.setVisible(true);

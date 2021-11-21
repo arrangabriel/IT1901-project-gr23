@@ -146,7 +146,7 @@ public class GetFitController {
                 }
             } catch (IllegalArgumentException ignored) {
             }
-            
+
         } else {
             if (subCategory != null) {
                 throw new IllegalAccessException();
