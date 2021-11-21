@@ -1,0 +1,85 @@
+@startuml clientDiagram
+
+class StartPageController {
+- @FXML components
+- ObservableList<String> sortStrenghtSubcategories
+- ObservableList<String> sortCardioSubcategories
+- LogClient client
+
+- void retry(String, String)
++ void addSessionButtonPushed(ActionEvent)
++ void closeView()
++ void onStatisticsPage(ActionEvent)
++ void replaceSubcategories()
++ void sort()
++ void updateList()
+- VBox createListEntry(HashMap<String, String>)
+- void setOptionalField (String, Text, Text)
+- String durationToHours(Duration)
+- void initialize()
+}
+
+class AddNewSessionController {
+- @FXML components
+- LogClient client
+- HashMap<String, List<String>> categories
++ void createSessionButtonPushed(ActionEvent)
++ void backButtonPushed(ActionEvent)
++ void handleTagsSelector()
+- void initialize()
+- void setCardio(boolean)
+- String capitalize(String)
+- ObservableList<String> getSubcategoryStringObservableList(String)
+- void validateIntegerInput(TextField, int)
+- goToStartPage(ActionEvent)
+}
+
+class StatisticsController {
+- @FXML components
+- ObservableList<String> exerciseTypeSelector
+- LogClient client
+- void initialize()
++ void onReturn(ActionEvent)
++ void onHandleData()
+- void getData()
+- void createBarChart()
+
+}
+
+class LogClient {
+- int OK_CODE = 200
+- String url
+- int port
++ HashMap<String, String> getLogEntry(String id)
++ List<HashMao<String, String>> getLogEntryList(SortArgWrapper builder)
++ void addLogEntry(HashMap<String, String>)
++ void deleteLogEntry(String)
++ HashMap<String, String> getChartData(ListBuilder)
++ HashMap<String, String> getStatistics(ListBuilder)
++ HashMap<String, List<String>> getExerciseCategories()
+- CompletableFuture<HttpResponse<String>> getAsync(String)
+- HttpResponse<String> get(String)
+- CompletableFuture<HttpResponse<String>> postAsync(String, String)
+- HttpResponse<String> post()
+}
+
+LogClient +-- "Nested class" SortArgWrapper
+
+class SortArgWrapper {
+- Boolean reversval
+- String sortVal
+- String categoryVal
+- String subCategoryVal
+- String dateVal
++ SortArgWrapper reverse()
++ SortArgWrapper sort(String)
++ SortArgWrapper category(String)
++ SortArgWrapper subCategory(String)
++ SortArgWrapper date(String)
+}
+
+StartPageController -->"logclient: 1" LogClient
+StatisticsController -->"logclient: 1" LogClient
+AddNewSessionController -->"logclient: 1" LogClient
+
+@enduml
