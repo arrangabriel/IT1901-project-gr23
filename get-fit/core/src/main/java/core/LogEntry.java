@@ -93,9 +93,6 @@ public final class LogEntry {
 
     }
 
-    // It will become evident if this is needed later
-    // public interface Category {}
-
     /**
      * Validates a EntryBuilder. Requirements:<br>
      * <br>
