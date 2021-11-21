@@ -1,3 +1,3 @@
 # Project Architecture 
 
-This directory contains pdf renders of the plant.UML diagrams. The source code for these diagrams can be found inside the get-fit directory.
+This directory contains pdf renders and source code for the plantUML diagrams.
