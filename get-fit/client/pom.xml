@@ -12,9 +12,9 @@
 
     <dependencies>
         <dependency>
-            <groupId>org.json</groupId>
+            <groupId>com.guicedee.services</groupId>
             <artifactId>json</artifactId>
-            <version>20210307</version>
+            <version>1.2.0.2-jre16</version>
         </dependency>
 
         <!-- junit testing with jupiter -->

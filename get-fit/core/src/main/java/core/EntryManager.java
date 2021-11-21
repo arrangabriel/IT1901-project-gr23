@@ -6,7 +6,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.NoSuchElementException;
+import java.util.Map.Entry;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -32,6 +32,7 @@ public final class EntryManager implements Iterable<LogEntry> {
     public EntryManager() {
     }
 
+
     /**
      * Updates a provided EntryManager with the LogEntries represented
      * in the HashMap.
@@ -43,11 +44,12 @@ public final class EntryManager implements Iterable<LogEntry> {
             final HashMap<String, HashMap<String, String>> map,
             final EntryManager entryManager) {
 
-        for (String entryId : map.keySet()) {
+        for (Entry<String, HashMap<String, String>> entryEntry
+                : map.entrySet()) {
             entryManager.updateHashPosition(
-                    Integer.parseInt(entryId));
-            LogEntry entry = LogEntry.fromHash(map.get(entryId));
-            entryManager.addEntry(entryId, entry);
+                    Integer.parseInt(entryEntry.getKey()));
+            LogEntry entry = LogEntry.fromHash(entryEntry.getValue());
+            entryManager.addEntry(entryEntry.getKey(), entry);
         }
 
     }
@@ -146,24 +148,6 @@ public final class EntryManager implements Iterable<LogEntry> {
      */
     public int entryCount() {
         return this.entryMap.size();
-    }
-
-    /**
-     * Removes a LogEntry with the specified id,
-     * and replaces it with the provided entry.
-     *
-     * @param id    the id of the LogEntry to swap.
-     * @param entry the entry to put in place.
-     * @throws NoSuchElementException if the id doesn't exist in the manager.
-     */
-    public void swapEntry(
-            final String id,
-            final LogEntry entry)
-            throws NoSuchElementException {
-
-        removeEntry(id);
-        addEntry(id, entry);
-
     }
 
     /**
@@ -275,6 +259,7 @@ public final class EntryManager implements Iterable<LogEntry> {
                         Subcategory entrySubcategory =
                                 entry.getExerciseSubCategory();
                         if (entrySubcategory != null) {
+                            System.out.println(subcategory);
                             return entrySubcategory.equals(subcategory);
                         } else {
                             return false;

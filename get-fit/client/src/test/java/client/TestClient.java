@@ -1,37 +1,36 @@
 package client;
 
-import java.net.URISyntaxException;
-import java.util.concurrent.ExecutionException;
-import java.util.HashMap;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
+import client.LogClient.SortArgWrapper;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import com.github.tomakehurst.wiremock.client.WireMock;
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
-import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
-import static com.github.tomakehurst.wiremock.client.WireMock.get;
-import static com.github.tomakehurst.wiremock.client.WireMock.post;
-import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
-import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
-import static com.github.tomakehurst.wiremock.client.WireMock.containing;
-
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import client.LogClient.ListBuilder;
+import java.net.URISyntaxException;
+import java.time.LocalDate;
+import java.util.HashMap;
+import java.util.concurrent.ExecutionException;
+
+import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
+import static com.github.tomakehurst.wiremock.client.WireMock.get;
+import static com.github.tomakehurst.wiremock.client.WireMock.post;
+import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
+import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 
 public class TestClient {
 
-    private WireMockConfiguration mockConfig;
     private WireMockServer mockServer;
 
     private LogClient logClient;
 
     @BeforeEach
-    public void startWireMockServer() throws URISyntaxException {
-        mockConfig = WireMockConfiguration.wireMockConfig().port(8080);
+    public void startWireMockServer() {
+        WireMockConfiguration mockConfig =
+                WireMockConfiguration.wireMockConfig().port(8080);
         mockServer = new WireMockServer(mockConfig.portNumber());
         mockServer.start();
         WireMock.configureFor("localhost", mockConfig.portNumber());
@@ -41,9 +40,12 @@ public class TestClient {
     @Test
     public void testLogClient() {
 
-        String body = "{\"title\": \"Example title\",\"comment\": \"Example comment\",\"date\": \"2021-10-25\",\"feeling\": \"7\",\"duration\": \"3600\",\"distance\": \"3\",\"maxHeartRate\": \"150\",\"exerciseCategory\": \"STRENGTH\",\"exerciseSubCategory\": \"PULL\"}";
+        String body =
+                "{\"title\": \"Example title\",\"comment\": \"Example comment\",\"date\": \"2021-10-25\",\"feeling\": \"7\",\"duration\": \"3600\",\"distance\": \"3\",\"maxHeartRate\": \"150\",\"exerciseCategory\": \"STRENGTH\",\"exerciseSubCategory\": \"PULL\"}";
         stubFor(get(urlEqualTo("/api/v1/entries/0"))
-                .willReturn(aResponse().withStatus(200).withHeader("Content-Type", "aplication/json").withBody(body)));
+                .willReturn(aResponse().withStatus(200)
+                        .withHeader("Content-Type", "application/json")
+                        .withBody(body)));
         try {
             HashMap<String, String> entry = logClient.getLogEntry("0");
             assertEquals("Example title", entry.get("title"));
@@ -55,9 +57,10 @@ public class TestClient {
             assertEquals("150", entry.get("maxHeartRate"));
             assertEquals("STRENGTH", entry.get("exerciseCategory"));
             assertEquals("PULL", entry.get("exerciseSubCategory"));
-            
+
         } catch (URISyntaxException | InterruptedException | ExecutionException | ServerResponseException e) {
             e.printStackTrace();
+            fail();
         }
 
     }
@@ -79,76 +82,135 @@ public class TestClient {
 
         String body = "{\"id\": \"0\"}";
         stubFor(post(urlEqualTo("/api/v1/entries/add"))
-                
-                 .withRequestBody(containing("title=Example title"))
-                 .withRequestBody(containing("comment=Example comment"))
-                 .withRequestBody(containing("date=2021-10-25"))
-                 .withRequestBody(containing("feeling=7"))
-                 .withRequestBody(containing("duration=3600"))
-                 .withRequestBody(containing("distance=3"))
-                 .withRequestBody(containing("maxHeartRate=150"))
-                 .withRequestBody(containing("exerciseCategory=STRENGTH"))
-                 .withRequestBody(containing("exerciseSubCategory=PULL"))
-                 
-                // \"title\": \"Example title\",\"comment\": \"Example comment\",\"date\":
-                // \"2021-10-25\",\"feeling\": \"7\",\"duration\": \"3600\",\"distance\":
-                // \"3\",\"maxHeartRate\": \"150\",\"exerciseCategory\":
-                // \"STRENGTH\",\"exerciseSubCategory\": \"PULL\"}
-                .willReturn(aResponse().withStatus(200).withHeader("Content-Type", "aplication/json").withBody(body)));
+                .willReturn(aResponse().withStatus(200)
+                        .withHeader("Content-Type", "application/json")
+                        .withBody(body)));
         try {
             logClient.addLogEntry(entryHash);
         } catch (URISyntaxException | InterruptedException | ExecutionException | ServerResponseException e) {
             e.printStackTrace();
+            fail();
         }
-
     }
-
-    // @Test
-    // public void testUpdateLogEntry() {
-
-    // }
 
     @Test
     public void testGetExerciseCategory() {
-        String body = "{\"categories\": {\"strength\": [\"push\",\"pull\"],\"running\": [\"short\",\"highintensity\"],\"cycling\": [\"short\",\"highintensity\"]}}";
+        String body =
+                "{\"categories\": {\"strength\": [\"push\",\"pull\"],\"running\": [\"short\",\"highintensity\"],\"cycling\": [\"short\",\"highintensity\"]}}";
 
         stubFor(get(urlEqualTo("/api/v1/entries/filters"))
-                .willReturn(aResponse().withStatus(200).withHeader("Content-Type", "aplication/json").withBody(body)));
+                .willReturn(aResponse().withStatus(200)
+                        .withHeader("Content-Type", "application/json")
+                        .withBody(body)));
         try {
             logClient.getExerciseCategories();
         } catch (URISyntaxException | InterruptedException | ExecutionException | ServerResponseException e) {
             e.printStackTrace();
+            fail();
         }
 
     }
+
+    @Test
+    public void testGetStatistics() {
+        String body =
+                "{\"empty\": \"False\",\"count\": \"1\",\"totalDuration\": \"2.0\",\"averageDuration\": \"2.0\",\"averageSpeed\": \"7.0\",\"averageFeeling\": \"4.0\",\"maximumHr\": \"180\"}";
+        stubFor(get(urlEqualTo("/api/v1/entries/stats?d=" +
+                (LocalDate.now().minusYears(1)) + "-" +
+                LocalDate.now()))
+                .willReturn(aResponse().withStatus(200)
+                        .withHeader("Content-Type", "application/json")
+                        .withBody(body)));
+
+        SortArgWrapper builder = new SortArgWrapper();
+        builder.date(LocalDate.now().plusYears(-1) + "-" +
+                LocalDate.now());
+
+        try {
+            HashMap<String, String> entry = logClient.getStatistics(builder);
+            assertEquals("False", entry.get("empty"));
+            assertEquals("1", entry.get("count"));
+            assertEquals("2.0", entry.get("totalDuration"));
+            assertEquals("2.0", entry.get("averageDuration"));
+            assertEquals("7.0", entry.get("averageSpeed"));
+            assertEquals("4.0", entry.get("averageFeeling"));
+            assertEquals("180", entry.get("maximumHr"));
+
+        } catch (URISyntaxException | InterruptedException | ExecutionException | ServerResponseException e) {
+            e.printStackTrace();
+            fail();
+        }
+    }
+
+    @Test
+    public void testGetStatisticsChart() {
+        String body =
+                "{\"swimming\": \"2\",\"running\": \"3\",\"strength\": \"0\",\"cycling\": \"2\"}";
+        stubFor(get(urlEqualTo("/api/v1/entries/chart?d=" +
+                (LocalDate.now().minusYears(1)) + "-" +
+                LocalDate.now()))
+                .willReturn(aResponse().withStatus(200)
+                        .withHeader("Content-Type", "application/json")
+                        .withBody(body)));
+
+        SortArgWrapper builder = new SortArgWrapper();
+        builder.date(LocalDate.now().plusYears(-1) + "-" +
+                LocalDate.now());
+
+        try {
+            HashMap<String, String> entry = logClient.getChartData(builder);
+            assertEquals("2", entry.get("swimming"));
+            assertEquals("3", entry.get("running"));
+            assertEquals("0", entry.get("strength"));
+            assertEquals("2", entry.get("cycling"));
+
+
+        } catch (URISyntaxException | InterruptedException |
+                ExecutionException | ServerResponseException e) {
+            e.printStackTrace();
+            fail();
+
+        }
+
+    }
+
 
     @Test
     public void testDeleteLogEntry() {
         stubFor(post(urlEqualTo("/api/v1/entries/remove/0"))
                 /* .withRequestBody(containing("id=0")) */
-                .willReturn(aResponse().withStatus(200).withHeader("Content-Type", "aplication/json")));
+                .willReturn(aResponse().withStatus(200)
+                        .withHeader("Content-Type", "application/json")));
         try {
             logClient.deleteLogEntry("0");
         } catch (URISyntaxException | InterruptedException | ExecutionException | ServerResponseException e) {
             e.printStackTrace();
+            fail();
         }
 
     }
 
     @Test
     public void testListBuilder() {
-        ListBuilder listBuilder = new ListBuilder().reverse().sort("date").category("running").subCategory("short")
-                .date("2021-01-01-2021-09-09");
+        SortArgWrapper sortArgWrapper =
+                new SortArgWrapper().reverse().sort("date").category("running")
+                        .subCategory("short")
+                        .date("2021-01-01-2021-09-09");
 
-        String body = "{\"entries\": [{\"id\": \"0\",\"title\": \"Example title\",\"comment\": \"Example comment\",\"date\": \"Example date\",\"feeling\": \"Example feeling\",\"duration\": \"Example duration\",\"distance\": \"Example distance\",\"maxHeartRate\": \"Example heart rate\",\"exerciseCategory\": \"Example category\",\"exerciseSubCategory\": \"Example subcategory\"},{\"id\": \"1\",\"title\": \"Example title\",\"comment\": \"Example comment\",\"date\": \"Example date\",\"feeling\": \"Example feeling\",\"duration\": \"Example duration\",\"distance\": \"Example distance\",\"maxHeartRate\": \"Example heart rate\",\"exerciseCategory\": \"Example category\",\"exerciseSubCategory\": \"Example subcategory\"},{\"id\": \"2\",\"title\": \"Example title\",\"comment\": \"Example comment\",\"date\": \"Example date\",\"feeling\": \"Example feeling\",\"duration\": \"Example duration\",\"distance\": \"Example distance\",\"maxHeartRate\": \"Example heart rate\",\"exerciseCategory\": \"Example category\",\"exerciseSubCategory\": \"Example subcategory\"},]}";
+        String body =
+                "{\"entries\": [{\"id\": \"0\",\"title\": \"Example title\",\"comment\": \"Example comment\",\"date\": \"Example date\",\"feeling\": \"Example feeling\",\"duration\": \"Example duration\",\"distance\": \"Example distance\",\"maxHeartRate\": \"Example heart rate\",\"exerciseCategory\": \"Example category\",\"exerciseSubCategory\": \"Example subcategory\"},{\"id\": \"1\",\"title\": \"Example title\",\"comment\": \"Example comment\",\"date\": \"Example date\",\"feeling\": \"Example feeling\",\"duration\": \"Example duration\",\"distance\": \"Example distance\",\"maxHeartRate\": \"Example heart rate\",\"exerciseCategory\": \"Example category\",\"exerciseSubCategory\": \"Example subcategory\"},{\"id\": \"2\",\"title\": \"Example title\",\"comment\": \"Example comment\",\"date\": \"Example date\",\"feeling\": \"Example feeling\",\"duration\": \"Example duration\",\"distance\": \"Example distance\",\"maxHeartRate\": \"Example heart rate\",\"exerciseCategory\": \"Example category\",\"exerciseSubCategory\": \"Example subcategory\"},]}";
 
-        stubFor(get(urlEqualTo("/api/v1/entries/list?r=true&s=date&c=running&sc=short&d=2021-01-01-2021-09-09"))
-                .willReturn(aResponse().withStatus(200).withHeader("Content-Type", "aplication/json").withBody(body)));
+        stubFor(get(urlEqualTo(
+                "/api/v1/entries/list?r=true&s=date&c=running&sc=short&d=2021-01-01-2021-09-09"))
+                .willReturn(aResponse().withStatus(200)
+                        .withHeader("Content-Type", "application/json")
+                        .withBody(body)));
 
         try {
-            logClient.getLogEntryList(listBuilder);
+            logClient.getLogEntryList(sortArgWrapper);
         } catch (URISyntaxException | InterruptedException | ExecutionException | ServerResponseException e) {
             e.printStackTrace();
+            fail();
         }
     }
 

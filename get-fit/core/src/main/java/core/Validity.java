@@ -19,7 +19,8 @@ public class Validity {
      * Object representing the validity of an EntryBuilder.
      *
      * @param valid  whether the builder is valid.
-     * @param reason "ok" if valid, otherwise the reason the builder is not valid.
+     * @param reason "ok" if valid,
+     *               otherwise the reason the builder is not valid.
      */
     public Validity(final boolean valid, final String reason) {
         this.isValid = valid;
