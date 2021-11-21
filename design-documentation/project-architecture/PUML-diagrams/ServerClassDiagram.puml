@@ -1,0 +1,148 @@
+@startuml Get Fit Server class diagram
+
+class Statistics {
+    -int DATA_LENGTH
+    --
+    +double getAverageDuration(EntryManager, String, String)
+    +double getAverageFeeling(EntryManager, String, String)
+    +int getCount(EntryManager, String, String)
+    +double getMaximumHr(EntryManager, String, String)
+    +double getTotaleDuration(EntryManager, String, String)
+    -List<LogEntry> listFilteredByDates(EntryManager ,String, String, SortConfiguration)
+}
+
+class LogEntry {
+    +int MAXFEELING
+    +int MINFEELING
+    +int MAXHEARTRATEHUMAN
+    +int MINHEARTRATEHUMAN
+    -String title
+    -String comment
+    -LocalDate date
+    -Duration duration
+    -ExerciseCategory exerciseCategory
+    -Subcategory exerciseSubCategory
+    -int feeling
+    -Double distance 
+    -Integer maxHeartRate
+    -String id
+    --
+    +SubCategory stringToSubcategory(String)
+    +LogEntry fromHash(hashMap<String, String>)
+    +HashMap<String, String> toHash()
+}
+
+class EntryBuilder {
+    +entryBuilder(String, localDate, duration, exercieCategory, int)
+    +EntryBuilder comment(String)
+    +EntryBuilder exerciseSubCategory()
+    +EntryBuilder distance(Double)
+    +EntryBuilder maxHeartRate(Integer)
+    +LogEntry build()
+}
+    
+class EntryManager {
+    -HashMap<String, LogEntry> entryMap
+    -int idHashPosition 
+    --
+    +void fromHash(Hashmap<String, Hashmap<String, String>>, EntryManager)
+    +string addEntry(LogEntry)
+    +void addEntry(String, LogEntry)
+    +void updateHashPosition(int)
+    +LogEntry getEntry(String)
+    +boolean removeEntry()
+    +int entryCount()
+    +HashMap <String, Hashmap<String, String>> toHashMap()
+    +Iterator<LogEntry> iterator()
+}
+
+class SortedIteratorBuilder {
+    +SortIteratorBuilder filterExerciseCategory
+    +SortedIteratorBuilder filterSubCategory
+    +SortedIteratorBuilder filterTimeInterval
+    +Iterator<LogEntry> iterator(boolean)
+}
+
+
+CardioSubCategory..|> SubCategory
+StrengthSubCategory..|> SubCategory
+ExerciseCategory "1" *--> SubCategory: Subcategories 
+LogEntry --> "1" ExerciseCategory : Categories
+Statistics .. GetFitController : Static call
+EntrySaverJson .. GetFitService : Static call
+EntryManager "1" *--> "*" LogEntry: LogEntries
+GetFitService "1" *--> "EntryManager" EntryManager
+GetFitController"1" *--> "Handle EntryManager" GetFitService
+
+EntryManager +-- SortedIteratorBuilder : Nested class
+LogEntry +--"Nested class" EntryBuilder
+
+class EntrySaverJson {
+    +String SYSTEM_SAVE_LOCATION
+    +void load(EntryManager)
+    +void load(EntryManager, String)
+    +void saver(EntryManager)
+    +void saver(EntryMangaer, String)
+}
+
+class GetFitController {
+    -int DATA_FORMAT_LENGTH
+    -GetFitService getfitService
+    --
+    +String getLogEntry(String)
+    +String getFilters()
+    +String getListOfLogEntries(String, String, String, String)
+    +String getStatisticsData(String, String)
+    +String getChartData(String)
+    +String addLogEntry(String)
+    +void removeLogEntry(String)
+    -LogEntry stringToEntry(String)
+    +String handleIOException(IOException)
+    +String handleIllegalAccessExeption(IllegalAccessExeption)
+    +String handleNoSuchElementException(NoSuchElementException)
+}
+
+class GetFitService {
+    -EntryManager entryManager
+    --
+    +String convertFromSecondsToHours(double)
+    +load()
+    +save()
+    #EntryManager getEntryManager()
+}
+
+enum ExerciseCategory {
+    STRENGTH
+    RUNNING
+    CYCLING
+    SWIMMING
+    -Subcategory[] subcategories
+    +SubCategory[] getValueOf(String)
+}
+
+enum SortConfiguration {
+    DATA
+    DURATION
+    TITLE
+}
+
+interface SubCategory {
+    SubCategory getValueOf(String)
+}
+
+enum StrengthSubCategory {
+    PUSH
+    PULL
+    LEGS
+    FULLBODY
+    +StengthSubCategory valueOf(String)
+}
+
+enum CardioSubCategory {
+    SHORT
+    LONG
+    HIGHINTENSITY
+    LOWINTENSITY
+    +CardioSubCategory valueOf(String)
+}
+@enduml

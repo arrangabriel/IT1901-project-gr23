@@ -1,22 +1,19 @@
 package ui;
 
-import core.EntryManager;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.Objects;
 
 /**
  * JavaFX App.
  */
 public class App extends Application {
-    /**
-     * EntryManager is the brains of the operation.
-     */
-    protected static final EntryManager entryManager = new EntryManager();
 
     /**
      * Starts the app.
@@ -36,11 +33,18 @@ public class App extends Application {
     public void start(final Stage stage) {
         try {
             Parent parent =
-                    FXMLLoader.load(getClass().getResource("StartPage.fxml"));
+                FXMLLoader.load(Objects.requireNonNull(
+                    getClass().getResource("StartPage.fxml")));
             stage.setTitle("Get fit");
             stage.setScene(new Scene(parent));
+            stage.setResizable(false);
+            stage.getIcons().add(new Image(
+                Objects.requireNonNull(
+                    App.class.getResourceAsStream("images/icon.png"))
+            ));
             stage.show();
         } catch (IOException e) {
+            e.printStackTrace();
             System.out.println("Missing StartPage.fxml file.");
         }
     }

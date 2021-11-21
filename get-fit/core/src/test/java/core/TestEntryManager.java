@@ -8,7 +8,6 @@ import java.time.Duration;
 import java.time.LocalDate;
 import java.util.Iterator;
 
-
 public class TestEntryManager {
 
     static int minute = 60;
@@ -18,10 +17,9 @@ public class TestEntryManager {
         return new EntryManager();
     }
 
-    private EntryBuilder genValidBuilder(LogEntry.EXERCISECATEGORY category,
-                                         LogEntry.Subcategory subCategory) {
-        String id = "0";
-        String title = "Tets";
+    private EntryBuilder genValidBuilder(ExerciseCategory category,
+                                         Subcategory subCategory) {
+        String title = "Test";
         String comment = "This is a test";
         LocalDate date = LocalDate.now().minusDays(1);
         Duration duration = Duration.ofSeconds(hour);
@@ -29,26 +27,24 @@ public class TestEntryManager {
         double distance = 1;
         Integer maxHeartRate = 80;
 
-        return new EntryBuilder(
-                title, date, duration, category, feeling)
-                .comment(comment)
-                .exerciseSubcategory(subCategory)
-                .distance(distance)
+        return new EntryBuilder(title, date, duration, category,
+                feeling).comment(comment)
+                .exerciseSubCategory(subCategory).distance(distance)
                 .maxHeartRate(maxHeartRate);
     }
 
     @Test
     public void testEntryManager() {
-        EntryManager manager = new EntryManager();
+        new EntryManager();
     }
 
     @Test
     public void testAddEntry() {
         EntryManager manager = genValidManager();
         Assertions.assertEquals(0, manager.entryCount());
-        EntryBuilder builder =
-                genValidBuilder(LogEntry.EXERCISECATEGORY.STRENGTH,
-                        LogEntry.STRENGTHSUBCATEGORIES.PUSH);
+        EntryBuilder builder = genValidBuilder(
+                ExerciseCategory.STRENGTH,
+                StrengthSubCategory.PUSH);
         String id = manager.addEntry(builder.build());
         Assertions.assertEquals(1, manager.entryCount());
         Assertions.assertThrows(IllegalArgumentException.class,
@@ -58,9 +54,9 @@ public class TestEntryManager {
     @Test
     public void testRemoveEntry() {
         EntryManager manager = genValidManager();
-        EntryBuilder builder =
-                genValidBuilder(LogEntry.EXERCISECATEGORY.STRENGTH,
-                        LogEntry.STRENGTHSUBCATEGORIES.PUSH);
+        EntryBuilder builder = genValidBuilder(
+                ExerciseCategory.STRENGTH,
+                StrengthSubCategory.PUSH);
         String id = manager.addEntry(builder.build());
         Assertions.assertEquals(1, manager.entryCount());
         boolean result1 = manager.removeEntry(id);
@@ -75,9 +71,9 @@ public class TestEntryManager {
     @Test
     public void testGetEntry() {
         EntryManager manager = genValidManager();
-        EntryBuilder builder =
-                genValidBuilder(LogEntry.EXERCISECATEGORY.STRENGTH,
-                        LogEntry.STRENGTHSUBCATEGORIES.PUSH);
+        EntryBuilder builder = genValidBuilder(
+                ExerciseCategory.STRENGTH,
+                StrengthSubCategory.PUSH);
         manager.addEntry("0", builder.build());
         Assertions.assertThrows(IllegalArgumentException.class,
                 () -> manager.getEntry("1"));
@@ -88,9 +84,9 @@ public class TestEntryManager {
     @Test
     public void testEntryCount() {
         EntryManager manager = genValidManager();
-        EntryBuilder builder =
-                genValidBuilder(LogEntry.EXERCISECATEGORY.STRENGTH,
-                        LogEntry.STRENGTHSUBCATEGORIES.PUSH);
+        EntryBuilder builder = genValidBuilder(
+                ExerciseCategory.STRENGTH,
+                StrengthSubCategory.PUSH);
         Assertions.assertEquals(0, manager.entryCount());
         manager.addEntry(builder.build());
         Assertions.assertEquals(1, manager.entryCount());
@@ -101,56 +97,65 @@ public class TestEntryManager {
         EntryManager manager = genValidManager();
         int entryAmount = manager.entryCount();
         int counter = 0;
-        for (LogEntry ignored : manager) {
+        for (LogEntry entry : manager) {
+            Assertions.assertNotEquals(null, entry);
             counter++;
         }
         Assertions.assertEquals(entryAmount, counter);
     }
 
-
     @Test
     public void testSortedIteratorBuilder() {
         EntryManager manager = genValidManager();
-        EntryBuilder builder1 =
-                genValidBuilder(LogEntry.EXERCISECATEGORY.STRENGTH,
-                        LogEntry.STRENGTHSUBCATEGORIES.PUSH);
-        EntryBuilder builder2 =
-                genValidBuilder(LogEntry.EXERCISECATEGORY.STRENGTH,
-                        LogEntry.STRENGTHSUBCATEGORIES.PUSH);
-        EntryBuilder builder3 =
-                genValidBuilder(LogEntry.EXERCISECATEGORY.CYCLING,
-                        LogEntry.CARDIOSUBCATEGORIES.HIGHINTENSITY);
+        EntryBuilder builder1 = genValidBuilder(
+                ExerciseCategory.STRENGTH,
+                StrengthSubCategory.PUSH);
+        EntryBuilder builder2 = genValidBuilder(
+                ExerciseCategory.STRENGTH,
+                StrengthSubCategory.PUSH);
+        EntryBuilder builder3 = genValidBuilder(
+                ExerciseCategory.CYCLING,
+                CardioSubCategory.HIGHINTENSITY);
+        EntryBuilder builder4 =
+                new EntryBuilder("Test", LocalDate.now().minusDays(3),
+                        Duration.ofSeconds(hour),
+                        ExerciseCategory.STRENGTH, 4);
 
         manager.addEntry(builder1.build());
         manager.addEntry(builder2.build());
         manager.addEntry(builder3.build());
+        manager.addEntry(builder4.build());
 
         int entryAmount = manager.entryCount();
-        int counter = 0;
 
         EntryManager.SortedIteratorBuilder itrbld1 =
                 new EntryManager.SortedIteratorBuilder(manager,
-                        LogEntry.SORTCONFIGURATIONS.DATE);
+                        SortConfiguration.DATE);
         EntryManager.SortedIteratorBuilder itrbld2 =
                 new EntryManager.SortedIteratorBuilder(manager,
-                        LogEntry.SORTCONFIGURATIONS.DURATION);
+                        SortConfiguration.DURATION);
         EntryManager.SortedIteratorBuilder itrbld3 =
                 new EntryManager.SortedIteratorBuilder(manager,
-                        LogEntry.SORTCONFIGURATIONS.TITLE);
+                        SortConfiguration.TITLE);
 
-        itrbld2.filterExerciseCategory(LogEntry.EXERCISECATEGORY.STRENGTH);
+        itrbld2.filterExerciseCategory(ExerciseCategory.STRENGTH);
         int c1 = 0;
         int c2 = 0;
+        int c3 = 0;
         for (Iterator<LogEntry> itr = itrbld1.iterator(false);
              itr.hasNext(); ) {
             itr.next();
             c1++;
         }
+
+        Assertions.assertEquals(entryAmount, c1);
+
         for (Iterator<LogEntry> itr = itrbld2.iterator(false);
              itr.hasNext(); ) {
-            itr.next();
-            c2++;
+             itr.next();
+             c2++;
         }
+
         Assertions.assertThrows(IllegalArgumentException.class,
                 () -> itrbld3.filterSubCategory(null));
         Assertions.assertThrows(IllegalArgumentException.class,
@@ -160,6 +165,13 @@ public class TestEntryManager {
                 LocalDate.now());
 
         Assertions.assertTrue(c1 > c2);
-        Iterator<LogEntry> itr3 = itrbld3.iterator(false);
+
+        for (Iterator<LogEntry> itr3 = itrbld3.iterator(false);
+             itr3.hasNext(); ) {
+             itr3.next();
+             c3++;
+        }
+
+        Assertions.assertTrue(c1 > c3);
     }
 }

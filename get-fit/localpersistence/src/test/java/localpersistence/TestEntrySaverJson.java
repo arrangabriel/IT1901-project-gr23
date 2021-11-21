@@ -1,28 +1,33 @@
 package localpersistence;
 
+import core.EntryManager;
+import core.ExerciseCategory;
+import core.LogEntry;
+import core.LogEntry.EntryBuilder;
+import core.StrengthSubCategory;
+import core.Subcategory;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.nio.channels.IllegalSelectorException;
 import java.time.Duration;
 import java.time.LocalDate;
 
-import org.junit.AfterClass;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.BeforeEach;
-
-import core.EntryManager;
-import core.LogEntry;
-import core.LogEntry.EntryBuilder;
-
 public class TestEntrySaverJson {
 
-    static int minute = 60;
-    static int hour = minute*60;
-
     private static final String saveFile = "SavedTestData.json";
+    static int minute = 60;
+    static int hour = minute * 60;
+
+    @AfterAll
+    public static void teardown() {
+        File f = new File(saveFile);
+        f.delete();
+    }
 
     private EntryBuilder genValidBuilder(String title, String comment) {
         LocalDate date = LocalDate.now().minusDays(1);
@@ -31,18 +36,14 @@ public class TestEntrySaverJson {
         double distance = 1;
         Integer maxHeartRate = 80;
 
-        LogEntry.EXERCISECATEGORY exerciseCategory = LogEntry.EXERCISECATEGORY.STRENGTH;
-        LogEntry.Subcategory subcategory = LogEntry.STRENGTHSUBCATEGORIES.PULL;
+        ExerciseCategory exerciseCategory = ExerciseCategory.STRENGTH;
+        Subcategory subcategory = StrengthSubCategory.PULL;
 
-        EntryBuilder builder = new EntryBuilder(
-            title, date, duration, exerciseCategory, feeling)
-            .comment(comment)
-            .exerciseSubcategory(subcategory)
-            .distance(distance)
-            .maxHeartRate(maxHeartRate);
-        return builder;
+        return new EntryBuilder(title, date, duration, exerciseCategory,
+                feeling).comment(comment)
+                .exerciseSubCategory(subcategory).distance(distance)
+                .maxHeartRate(maxHeartRate);
     }
- 
 
     private EntryManager genValidManager() {
         EntryManager manager = new EntryManager();
@@ -86,6 +87,28 @@ public class TestEntrySaverJson {
     }
 
     @Test
+    public void testAddAfterSaveAndLoad() {
+        EntryManager manager = genValidManager();
+        int len = manager.entryCount();
+        try {
+            EntrySaverJson.save(manager, saveFile);
+        } catch (IOException e) {
+            Assertions.fail();
+        }
+        EntryManager newManager = new EntryManager();
+        Assertions.assertEquals(0, newManager.entryCount());
+        try {
+            EntrySaverJson.load(newManager, saveFile);
+        } catch (IOException e) {
+            Assertions.fail();
+        }
+        Assertions.assertEquals(len, newManager.entryCount());
+        newManager.addEntry(
+                genValidBuilder("New Title", "New Comment").build());
+        Assertions.assertEquals(len + 1, newManager.entryCount());
+    }
+
+    @Test
     public void testBadFile() {
         EntryManager manager = genValidManager();
         File file = new File(saveFile);
@@ -95,25 +118,39 @@ public class TestEntrySaverJson {
             writer.write("Nonsense");
             writer.flush();
             writer.close();
-        } catch (IOException e) {
-
+        } catch (IOException ignored) {
         }
-        Assertions.assertThrows(IllegalStateException.class, () -> EntrySaverJson.load(manager, saveFile));
+        Assertions.assertThrows(IllegalStateException.class,
+                () -> EntrySaverJson.load(manager, saveFile));
     }
 
     @Test
     public void testBadArgs() {
         EntryManager manager = genValidManager();
-        Assertions.assertThrows(IllegalArgumentException.class, () -> EntrySaverJson.load(manager, null));
-        Assertions.assertThrows(IllegalArgumentException.class, () -> EntrySaverJson.load(null, saveFile));
-        Assertions.assertThrows(IllegalArgumentException.class, () -> EntrySaverJson.save(manager, null));
-        Assertions.assertThrows(IllegalArgumentException.class, () -> EntrySaverJson.save(null, saveFile));
+        Assertions.assertThrows(IllegalArgumentException.class,
+                () -> EntrySaverJson.load(manager, null));
+        Assertions.assertThrows(IllegalArgumentException.class,
+                () -> EntrySaverJson.load(null, saveFile));
+        Assertions.assertThrows(IllegalArgumentException.class,
+                () -> EntrySaverJson.save(manager, null));
+        Assertions.assertThrows(IllegalArgumentException.class,
+                () -> EntrySaverJson.save(null, saveFile));
     }
 
-    @AfterClass
-    public static void teardown() {
-        File f = new File(saveFile);
+    @Test
+    public void testAbsolutePathSaving() {
+        EntryManager manager = genValidManager();
+        try {
+            EntrySaverJson.save(manager);
+        } catch (IllegalArgumentException | IOException e) {
+            Assertions.fail("Failed to save data");
+        }
+        try {
+            EntrySaverJson.load(new EntryManager());
+        } catch (IllegalArgumentException | IOException e) {
+            Assertions.fail("Failed to load data");
+        }
+        File f = new File(EntrySaverJson.SYSTEM_SAVE_LOCATION);
         f.delete();
     }
-
 }

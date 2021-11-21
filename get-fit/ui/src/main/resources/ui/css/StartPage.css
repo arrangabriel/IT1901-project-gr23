@@ -1,0 +1,50 @@
+.check-box > .box {
+    -fx-border-color: -fx-darkest;
+    -fx-border-radius: 0;
+    -fx-background-color: -fx-light;
+}
+
+.check-box > .mark {
+    -fx-shape: "M1.73,12.91 8.1,19.28 22.79,4.59 22.79,1.59 8.1,16.28 1.73,9.91";
+}
+
+.check-box:selected > .box {
+    -fx-background-color: -fx-darkest;
+}
+
+.check-box:selected > .mark {
+    -fx-text-fill: -fx-dtext;
+    -fx-background-color: -fx-light;
+}
+
+.list-view {
+    -fx-focus-traversable: false;
+}
+
+.list-cell {
+    -fx-background-color: -fx-light;
+}
+
+.combo-box .list-cell {
+    -fx-background-color: transparent;
+}
+
+.list-view > .virtual-flow > .scroll-bar:vertical > .increment-button,
+.list-view > .virtual-flow > .scroll-bar:vertical > .decrement-button{
+    -fx-opacity: 0;
+}
+
+.list-view > .virtual-flow > .scroll-bar:vertical {
+    -fx-pref-width: 0.5em;
+}
+
+.scroll-bar > .thumb {
+    -fx-background-color: -fx-dark;
+    -fx-background-insets: 2, 3, 4;
+}
+.scroll-bar:vertical > .thumb {
+}
+
+.text-area .content {
+    -fx-cursor: DEFAULT;
+}

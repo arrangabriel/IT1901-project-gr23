@@ -1,0 +1,19 @@
+@startuml
+
+User -> StartPageController: Sort list on exercise type running
+
+StartPageController -> LogClient: getLogEntryList(sortArgWrapper)
+
+LogClient -> GetFitController: GET requests acording to Schema -> getListOfLofEntries(title, false, running) 
+
+GetFitController -> SortedIteratorBuilder: filterExerciseCategory(RUNNING)
+
+SortedIteratorBuilder -> GetFitController: sortedIteratorBuilder
+
+GetFitController --> LogClient: JSON String according to Schema 
+
+LogClient --> StartPageController: list of entries with exercise category running
+
+StartPageController --> User: displays list of entries
+
+@enduml

@@ -1,4 +1,5 @@
 target
+bin
 *.json
 
 # intelliJ
@@ -19,3 +20,9 @@ org.eclipse.*
 .DS_Store
 /git-fit/local-persistence/modules-local-persistence.iml
 /git-fit/localpersistence/modules-local-persistence.iml
+/get-fit/client/modules-client.iml
+/get-fit/rest/modules-rest.iml
+*.key
+/get-fit/restserver/modules-rest.iml
+get-fit/ui/dependency-reduced-pom.xml
+/get-fit/integration/modules-integration.iml
