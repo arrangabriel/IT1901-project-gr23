@@ -4,6 +4,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -37,6 +38,7 @@ public class App extends Application {
             stage.setTitle("Get fit");
             stage.setScene(new Scene(parent));
             stage.setResizable(false);
+            stage.getIcons().add(new Image(App.class.getResourceAsStream("images/icon.png")));
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();

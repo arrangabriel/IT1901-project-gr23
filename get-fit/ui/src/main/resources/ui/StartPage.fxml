@@ -3,6 +3,7 @@
 <?import java.net.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
@@ -32,10 +33,14 @@
 
     <!--<Button fx:id="goToStatistics" layoutX="22.0" layoutY="345.0" mnemonicParsing="false" onAction="#handleGoToStatistics" prefHeight="39.0" prefWidth="111.0" text="View  statistics" />-->
 
-    <Separator layoutX="20.0" layoutY="69.0" prefHeight="1.0" prefWidth="560.0" />
+    <Separator layoutX="20.0" layoutY="73.0" prefHeight="1.0" prefWidth="560.0" />
 
     <Label fx:id="errorLabel" layoutX="174.0" layoutY="356.0" prefHeight="17.0" prefWidth="275.0" textFill="#b50c0c" />
     <Button layoutX="31.0" layoutY="345.0" mnemonicParsing="false" onAction="#onStatisticsPage" prefHeight="39.0" prefWidth="111.0" text="Statistics" />
+   <ImageView fitHeight="86.0" fitWidth="125.0" layoutX="451.0" layoutY="-11.0" pickOnBounds="true" preserveRatio="true">
+      <image>
+         <Image url="@images/logo.png" />
+      </image></ImageView>
 
     <!-- The pane containing singular entry-view -->
     <AnchorPane fx:id="entryView" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: white;" visible="false" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
