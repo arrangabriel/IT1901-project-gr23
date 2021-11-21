@@ -50,7 +50,7 @@ allowing for easier 'full-stack' work.
 
 ## Test
 
-As in previous releases we use a tool called Jacoco, which determines how much of the projects source code is covered by testing. In addition to expand our tests to accomodate the extra features in this release we have also introduced integration testing. This comes now as the server architecture ruins some of the automatic verification that the Java compiler does. As such it became necessary to test wether the client and the server "spoke the same language" so to speak. Even if the server and client were consistent internally, and with the other Java classes they interacted directly with, there was no guarantee that they would cooperate.
+As in previous releases we use a tool called Jacoco, which determines how much of the projects source code is covered by testing. In addition to expand our tests to accomodate the extra features in this release we have also introduced integration testing. This comes now as the server architecture ruins some of the automatic verification that the Java compiler does. As such it became necessary to test wether the client and the server "spoke the same language" so to speak. Even if the server and client were consistent internally, and with the other Java classes they interacted directly with, there was no guarantee that they would cooperate with each other.
 
 We chose to place the integration tests in a separate module so that it could depend on both the client and the server, to test them, without having the server or client depending on each other. This is important mostly when considering what gets packaged when bundling the application.
 
