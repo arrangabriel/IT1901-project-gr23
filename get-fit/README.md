@@ -13,8 +13,8 @@ User stories, scenarios and design models can be found here:
 
 This JavaFX-application are designed for logging and viewing workouts. The first time you open the app you will get an empty list of workouts. 
 
-div align="center"
-img width="350" src = ![Getfit1](/uploads/8af34ce065d46e7cc2cd55cc4df4f6c7/Getfit1.png)
+<div align="center">
+<img width="350" src = ![Getfit1](/uploads/8af34ce065d46e7cc2cd55cc4df4f6c7/Getfit1.png)>
 
 You can create a new workout by pressing the “add workout” button. This button will take you to a new page where you can log your session. Your entry can include these elements: title, date, duration, exercise type, tag, maximum heartrate, feeling and comment. If you choose the exercise type “running”, “cycling” or “swimming” can you also add distance to your entry.  
 
