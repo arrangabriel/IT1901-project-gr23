@@ -26,9 +26,11 @@ Handles a hashMap of log entries. Every log entry is stored in the hashmap with 
 
 ### Methods
 
+- EntryManager(): An entry manager instance is a wrapper for a list of logEntries. Functions as the API interface for the core-module.
+
 - addEntry(LogEntry) -> String: Adds a new LogEntry to the hashmap. The parameter is the LogEntry that is added. It generates a string based on the size on the hashmap. This will give the added LogEntry the number of n-1 elements as the key in the hashmap as a String. The function returns the String. It throws an IllegalArgumentException if the input is invalid.
 
-- addEntry(String, LogEntry): Adds a new log entry to the hashmap. If the hashMap contains the same String as the String parameter it throws an IllegalArgumentException.
+- addEntry(String, LogEntry) -> void: Adds a new log entry to the hashmap. If the hashMap contains the same String as the String parameter it throws an IllegalArgumentException.
  
 - getEntry(String) -> LogEntry: Returns the object with the same key as the String parameter. 
 If the String is null or if the key does not exist it throws an IllegalArgumentException. 
@@ -39,7 +41,7 @@ If the String is null or if the key does not exist it throws an IllegalArgumentE
 
 - entryIds() -> Set<String>: Returns the Set<String> of all the keys in the hashMap.
 
-- swapEntry(String, LogEntry): Removes a LogEntry with the specified id, and replaces it with the provided entry. The String parameter is the specified id, and the LogEntry is the entry being swapped into the hashMap.
+- swapEntry(String, LogEntry) -> void: Removes a LogEntry with the specified id, and replaces it with the provided entry. The String parameter is the specified id, and the LogEntry is the entry being swapped into the hashMap.
 
 - Iterator() -> Iterator<LogEntry> : Returns an iterator for the LogEntries in an arbitrary order. 
 
@@ -108,7 +110,7 @@ The builder class for the LogEntry. Consist of the required fields of type Strin
 Consist of a boolean and String field.
 
 ### Methods
-- Validity(boolean, String): Representing the validity of an EntryBuilder.
+- Validity(boolean, String) -> void: Representing the validity of an EntryBuilder.
 
 - valid() -> boolean: Returns wether the builder is valid.
 

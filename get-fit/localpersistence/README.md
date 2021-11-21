@@ -16,8 +16,6 @@ Handles saving and loading to and from a json file
 
 - load(EntryManager) -> void: Loads SavedData.json and constructs LogEntries which it then appends to the provided EntryManager.
 
-- stringToSubcategory -> LogEntry.Subcategory: Converts a string representation of a subcategory into a subcategory. It returns the subcategory or null if there are no match.
-
 - load(EntryManager, String) -> void: Loads a specified JSON file and constructs LogEntries which it appends to the provided EntryManager.
 
 # Structure
