@@ -14,9 +14,11 @@ Representation of a connection to a get-fit server. Attributes are a String for 
 
 - getLogEntry(String) -> HashMap<String, String>: Gets a LogEntry from the server. It throws an URISyntaxException if the id ruins the URI syntax, an InterruptedException if the request was interrupted before retreiving the http response, an ExecutionException if the request completed exceptionally or a ServerResponseException.
 
-- getLogEntryList() -> List<HashMap<String, String>>: Get a list of log entries from the server without sorting or filtering. The method returns a list of log entries from the server represented as a hash map. It throws an URISyntaxException if the id ruins the URI syntax, an InterruptedException if the request was interrupted before retreiving the http response, an ExecutionException if the request completed exceptionally or a ServerResponseException.
+- getLogEntryList(SortArgWrapper) -> List<HashMap<String, String>>: Gets a list of log entries from the server. The method returns a list of log entries from the server represented as a hash map. It throws an URISyntaxException if the id ruins the URI syntax, an InterruptedException if the request was interrupted before retreiving the http response, an ExecutionException if the request completed exceptionally or a ServerResponseException.
 
-- getLogEntryList(ListBuilder) -> List<HashMap<String, String>>: Gets a list of log entries from the server. The method returns a list of log entries from the server represented as a hash map. It throws an URISyntaxException if the id ruins the URI syntax, an InterruptedException if the request was interrupted before retreiving the http response, an ExecutionException if the request completed exceptionally or a ServerResponseException.
+- getStatistics(SortArgWrapper) -> HashMap<String, String>: Gets a HashMap with statistics data from the server. It throws an URISyntaxException if the id ruins the URI syntax, an InterruptedException if the request was interrupted before retreiving the http response, an ExecutionException if the request completed exceptionally or a ServerResponseException.
+
+- getChartData(SortArgWrapper) -> HashMap<String, String>: Gets data to build a statistical chart. It throws an URISyntaxException if the id ruins the URI syntax, an InterruptedException if the request was interrupted before retreiving the http response, an ExecutionException if the request completed exceptionally or a ServerResponseException.
 
 - addLogEntry(entry) -> void: Adds a log entry on the server. The parameter is the HashMap representing the log entry to add. It throws an URISyntaxException if the id ruins the URI syntax, an InterruptedException if the request was interrupted before retreiving the http response, an ExecutionException if the request completed exceptionally or a ServerResponseException.
 
@@ -27,20 +29,20 @@ Representation of a connection to a get-fit server. Attributes are a String for 
 - deleteLogEntry(String) -> void: Deletes a log entry from the server. The param is the id of the log entry to delete. It throws an URISyntaxException if the id ruins the URI syntax, an InterruptedException if the request was interrupted before retreiving the http response, an ExecutionException if the request completed exceptionally or a ServerResponseException.
 
 
-**ListBuilder class**
+**SortArgWrapper class**
 
 Builder for filtering and sorting the list of log entries.
 
 **Methods**
-- reverse() -> ListBuilder: Set reverse. Returns a ListBuilder instance.
+- reverse() -> SortArgWrapper: Set reverse. Returns a SortArgWrapper instance.
 
-- sort(String) -> ListBuilder: Set sorting. Parameter is the sorting configuration. Returns a ListBuilder instance.
+- sort(String) -> SortArgWrapper: Set sorting. Parameter is the sorting configuration. Returns a SortArgWrapper instance.
 
-- category(String) -> ListBuilder: Set category filtering. The category to filter by. It returns a a ListBuilder instance.
+- category(String) -> SortArgWrapper: Set category filtering. The category to filter by. Returns a SortArgWrapper instance.
 
-- subCategory(String) -> ListBuilder: Set subCategory filtering. The parameter is subCategory. It returns a ListBuilder instance.
+- subCategory(String) -> SortArgWrapper: Set subCategory filtering. The parameter is subCategory. Returns a SortArgWrapper instance.
 
-- date(String) -> ListBuilder: Set date filtering. The parameter is date and it returns a ListBuilder instance.
+- date(String) -> SortArgWrapper: Set date filtering. The parameter is date and it returns a SortArgWrapper instance.
 
 ## HttpResponses
 Http responses. Consists of a Map<Integer, String> with responses: 200: ok, 400: Bad Request, 404: Not Found, 500: Internal Server Error.
