@@ -22,7 +22,7 @@ public final class Statistics {
     /**
      * Hidden constructor to simulate static class.
      */
-    private Statistics() {}
+    private Statistics() { }
 
     /**
      * Returns the count of entries in the entryManager.
@@ -162,7 +162,9 @@ public final class Statistics {
         List<LogEntry> entries = listFilteredByDates(
                 entryManager, category, date);
 
-        return entries.stream().map(LogEntry::getMaxHeartRate).max(Integer::compare).orElse(0);
+        return entries.stream()
+            .map(LogEntry::getMaxHeartRate)
+            .max(Integer::compare).orElse(0);
     }
 
     private static List<LogEntry> listFilteredByDates(
