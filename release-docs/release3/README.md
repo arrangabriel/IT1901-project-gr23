@@ -52,6 +52,13 @@ allowing for easier 'full-stack' work.
 
 ## Project plugins
 
+- Checkstyle:  
+  We are using version 3.1.2 of the maven-checkstyle plugin, running **sun-checks** on checkstyle version 9.1
+- Spotbugs:
+  We are using version 4.4.1 of the maven-spotbugs plugin, running with spotbugs version 4.4.2
+- JaCoCo:
+  We are using version 0.8.7 of the maven-jacoco plugin.
+
 ## Expanded Project Architecture
 
 Project architecture for release 3 is documented in
