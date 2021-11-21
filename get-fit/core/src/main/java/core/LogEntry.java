@@ -12,7 +12,6 @@ import java.util.HashMap;
  * It is mostly immutable, save for the id, which can be set exactly once.
  */
 public final class LogEntry {
-
     /**
      * The top end of the feeling scale.
      */

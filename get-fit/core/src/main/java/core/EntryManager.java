@@ -14,7 +14,6 @@ import java.util.stream.Stream;
  * Provides management for EntryLogs.
  */
 public final class EntryManager implements Iterable<LogEntry> {
-
     /**
      * Hashmap of LogEntries.
      */
