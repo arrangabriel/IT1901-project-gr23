@@ -80,7 +80,6 @@ public final class LogEntry {
      */
     public LogEntry(final EntryBuilder builder)
             throws IllegalArgumentException {
-
         this.title = builder.ctitle;
         this.comment = builder.ccomment;
         this.date = builder.cdate;
@@ -90,7 +89,6 @@ public final class LogEntry {
         this.maxHeartRate = builder.cmaxHeartRate;
         this.exerciseCategory = builder.cexerciseCategory;
         this.exerciseSubCategory = builder.cexerciseSubCategory;
-
     }
 
     /**
@@ -205,8 +203,8 @@ public final class LogEntry {
      * @return The actual subcategory or null if no match.
      */
     public static Subcategory stringToSubcategory(final String category) {
-
         Subcategory subCategory = null;
+
         outerLoop:
         for (ExerciseCategory exCategory : ExerciseCategory.values()) {
             for (Subcategory sub : exCategory.getSubcategories()) {
@@ -234,6 +232,7 @@ public final class LogEntry {
         String comment = null;
         Double distance = null;
         Integer maxHeartRate = null;
+
         int feeling = Integer.parseInt(map.get("feeling"));
 
         if (!map.get("distance").equals("null")) {
@@ -255,10 +254,12 @@ public final class LogEntry {
         Subcategory subCategory =
                 stringToSubcategory(map.get("exerciseSubCategory"));
 
-        return new EntryBuilder(title, date, duration, category,
-                feeling).comment(comment).distance(distance)
-                .exerciseSubCategory(subCategory).maxHeartRate(maxHeartRate)
-                .build();
+        return new EntryBuilder(title, date, duration, category, feeling)
+                    .comment(comment)
+                    .distance(distance)
+                    .exerciseSubCategory(subCategory)
+                    .maxHeartRate(maxHeartRate)
+                    .build();
     }
 
     /**
@@ -277,6 +278,7 @@ public final class LogEntry {
      * @throws IllegalStateException if the id has already been set.
      */
     public void setId(final String setId) throws IllegalStateException {
+
         if (this.id == null) {
             this.id = setId;
         } else {
@@ -290,7 +292,6 @@ public final class LogEntry {
      * @return The hashMap representing this LogEntry.
      */
     public HashMap<String, String> toHash() {
-
         HashMap<String, String> map = new HashMap<>();
 
         map.put("title", this.getTitle());
@@ -487,13 +488,11 @@ public final class LogEntry {
                             final Duration duration,
                             final ExerciseCategory exerciseCategory,
                             final int feeling) throws IllegalArgumentException {
-
             this.ctitle = title;
             this.cdate = date;
             this.cduration = duration;
             this.cexerciseCategory = exerciseCategory;
             this.cfeeling = feeling;
-
         }
 
         /**
@@ -503,8 +502,8 @@ public final class LogEntry {
          * @return this builder.
          */
         public EntryBuilder comment(final String comment) {
-
             this.ccomment = comment;
+
             return this;
         }
 
@@ -516,8 +515,8 @@ public final class LogEntry {
          */
         public EntryBuilder exerciseSubCategory(
                 final Subcategory exerciseSubCategory) {
-
             this.cexerciseSubCategory = exerciseSubCategory;
+
             return this;
         }
 
@@ -528,8 +527,8 @@ public final class LogEntry {
          * @return this builder.
          */
         public EntryBuilder distance(final Double distance) {
-
             this.cdistance = distance;
+
             return this;
         }
 
@@ -540,8 +539,8 @@ public final class LogEntry {
          * @return this builder.
          */
         public EntryBuilder maxHeartRate(final Integer maxHeartRate) {
-
             this.cmaxHeartRate = maxHeartRate;
+
             return this;
         }
 
@@ -554,6 +553,7 @@ public final class LogEntry {
          */
         public LogEntry build() throws IllegalArgumentException {
             Validity valid = validate(this);
+            
             if (valid.invalid()) {
                 throw new IllegalArgumentException(valid.reason());
             } else {
