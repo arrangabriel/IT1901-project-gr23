@@ -107,6 +107,6 @@ distribute that binary.
 
 # Planning
 
-## Structure of Project
-
 Immediately after deciding on what the project should be, and getting some user stories to get a better understanding of the needs that would have to be met, the group sat down to brainstorm how the project should be structured. This included the inclusion of a separate persistency module, and that it would be the persistency module that depended on the core module and not the other way around. These early discussions have shaped everything comming after, like the extensive use of strams and iterators, due to the nature of how we save the application state.
+
+Similarly during release 3, with the addition of the server-architecture came important decisions regarding the API schema as well as the aditional structure comming from the server architecture itself. This was done through a series of meetings where we discussed what would be needed to maintain the existing features, as well as the planned future features.
