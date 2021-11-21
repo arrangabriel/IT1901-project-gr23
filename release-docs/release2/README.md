@@ -18,7 +18,7 @@ We have also changed the way we switch scenes in the ui module. This is because 
 
 ## Test
 
-We used Jacoco to decide wether the code was thoroghly tested. If the test coverage of a class was under 60% it did not satisfy the criteria for release 2. If it over 60% but under 80% it would get a warning. Read more about the jobs here: [workdetails](/gr2123/workdetails.md). We have used testFX to test ui module. For this release we have written more tests for the backend and adapted the old tests to fit the new builder pattern of LogEntry. 
+We used Jacoco to decide wether the code was thoroghly tested. If the test coverage of a class was under 60% it did not satisfy the criteria for release 2. If it over 60% but under 80% it would get a warning. Read more about the jobs here: [workdetails](/gr2123/project-workflow.md). We have used testFX to test ui module. For this release we have written more tests for the backend and adapted the old tests to fit the new builder pattern of LogEntry. 
 
 
 
