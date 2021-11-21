@@ -12,10 +12,12 @@ Spring boot application class. It starts the server.
 ### Methods
 - main(String...): Main method for starting the application. It access the method run in SpringApplication with GetfitApplication.class and the given strings as arguments.
 
+- dummy() -> void: Has no function other than to pass checkstyle. Alternative breaks springboot.
+
 ## GetfitController
 Controller class for handling the get and post requests. It constists of a GetfitService.
 
-## Methods
+### Methods
 The payload, response and endpoints shown in **[Schema](/get-fit/schema.md/)**.
 The methods are divided into post, get and exception. The tags for the categories are simplified and they are not equal to the tags in the code. 
 
@@ -41,3 +43,17 @@ The methods are divided into post, get and exception. The tags for the categorie
 - handleIllegalArgumentException(IllegalAccessException) -> String: Returns the exception message as a String.
 - handleIOException(IOException) -> String: Returns the exception message as a String.
 - handleIllegalArgumentException(NoSuchElementException) -> String: Returns the exception message as a String.
+
+## GetfitService
+Gives the server access to methods from core and local-persistence. Contains an EntryManager.
+
+### Methods
+- GetFitService(): Create a new EntryManager object on initialization and loads data from local-persistence.
+
+- load() -> void: Use EntrySaverJson from local-persistence to load the content of the save file to the entryManager.
+
+- save() -> void: Use EntrySaverJson from local-persistence to save the state of the EntryManager to file.
+
+- getEntryManager() -> EntryManager: Allows other classes to access the EntryManager of this GitFitService. It returns the EntryManager from this GetFitService.
+
+
