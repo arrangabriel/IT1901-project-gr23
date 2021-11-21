@@ -14,17 +14,15 @@ import java.util.List;
  * Statistics class.
  */
 public final class Statistics {
-
     /**
      * Date format length.
      */
     private static final int DATE_LENGTH = 10;
 
     /**
-     * Hidden constructor.
+     * Hidden constructor to simulate static class.
      */
-    private Statistics() {
-    }
+    private Statistics() {}
 
     /**
      * Returns the count of entries in the entryManager.
