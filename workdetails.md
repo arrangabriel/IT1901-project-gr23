@@ -8,6 +8,10 @@ Through some trial and error we have arrived at the following workflow for branc
 - Merge into dev through a merge request where tests and code coverage analysis is automatically performed
 - Once enough features have accumulated and are of good quality and polish merge dev into master through another merge request with aditional testing
 
+Extensive use of branches redices the risk of merge conflicts during development, and keeps the project more structured. When multiple members are actively working on the same feature secondary branches are often created to leverage the aforementioned benefits.
+
+Sometimes a feature branch is so broad that it is under active development all the way through the SCRUM cycle. This is especially true when the feature is very complicated, with multiple parts, like the server architecture. Where adding the server doesn't make sense without modifying the App, and where modifying the App doesn't make sense without creating the server. For situations like these, offshoot branches are prevalent.
+
 # Workflow
 
 We use the SCRUM framework for efficently producing and delivering high quality code. The issues related to the milestone are used to divide different tasks between us. We use the milestones for grouping issues with releases, as we have been instructed to. The issues are labeled to easily sort and distinguish them from eachother. Pair programing is something we practice a lot, even though we divide the issues to individual members of the group. The group is divided into pairs, and those pairs tackle different challenges and take turn programming. By doing this all of the group members can learn from each other. It also makes us less vulnerable to typos and other errors, and it is easier to solve complex problems in pairs. Even though we use pair programming a lot, we do some of the easier work indiviually and make the other team members review the work. This is to make the development process more efficent.
