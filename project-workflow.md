@@ -35,10 +35,10 @@ We use the SCRUM framework for efficiently producing and delivering high quality
 milestone are used to divide different tasks between us. We use the milestones for grouping issues with releases, as we
 have been instructed to. The issues are labeled to easily sort and distinguish them from each other. Pair programing is
 something we practice a lot, even though we divide the issues to individual members of the group. The group is divided
-into pairs, and those pairs tackle different challenges and take turn programming. By doing this the group
-members can learn from each other. It also makes us less vulnerable to typos and other errors, and it is easier to solve
-complex problems in pairs. Even though we use pair programming a lot, we do some of the easier work individually and make
-the other team members review the work. This is to make the development process more efficient.
+into pairs, and those pairs tackle different challenges and take turn programming. By doing this the group members can
+learn from each other. It also makes us less vulnerable to typos and other errors, and it is easier to solve complex
+problems in pairs. Even though we use pair programming a lot, we do some of the easier work individually and make the
+other team members review the work. This is to make the development process more efficient.
 
 The group has as a goal to commit more, rather than less. This makes reverting, cherry-picking, and finding breaking
 changes easier. Smaller commits also enable the use of more specific commit messages, which serve as a comment or
@@ -51,8 +51,8 @@ commits with the issue(s) they relate to. This is yet another workflow tool to h
 Though we made use of pair-programming a large bulk of the work was done working on individual machines, always with
 open communication. Be it through online platforms such as discord, or, as was the case for most of the project,
 physically being together. Working in this way made it possible to dynamically transition between working on individual
-tasks and pair/group programming. Another perk was a constant discussion of feature implementations, keeping the whole team up
-to date on the current state of the code base.
+tasks and pair/group programming. Another perk was a constant discussion of feature implementations, keeping the whole
+team up to date on the current state of the code base.
 
 # Issues and Milestones
 
@@ -65,8 +65,8 @@ Issues are also created spontaneously if a bug or error is encountered. That way
 even if it is not addressed immediately, it will be solved whenever a member of the team completes their current
 assignment, or otherwise has some time on their hands.
 
-Lastly the progressbar on milestones, and to some degree the amount of issues, work as indicators for how much is left to
-be done for an upcoming release.
+Lastly the progressbar on milestones, and to some degree the amount of issues, work as indicators for how much is left
+to be done for an upcoming release.
 
 # Jobs
 
@@ -101,12 +101,19 @@ An attempt has been made in making the jobs more efficient, by reusing compilati
 but gitlab does not provide great support for this, meaning that a job using the verify goal will have to re-compile and
 re-test the entire project even though it was already done by a different job.
 
-Additionally, we have a job for compiling the app to an executable, though because it happens on a Linux machine windows,
-macOS, and even users of differing Linux distributions will have to compile from source, or have someone else do it and
-distribute that binary.
+Additionally, we have a job for compiling the app to an executable, though because it happens on a Linux machine
+windows, macOS, and even users of differing Linux distributions will have to compile from source, or have someone else
+do it and distribute that binary.
 
 # Planning
 
-Immediately after deciding on what the project should be, and getting some user stories to get a better understanding of the needs that would have to be met, the group sat down to brainstorm how the project should be structured. This included the inclusion of a separate persistency module, and that it would be the persistency module that depended on the core module and not the other way around. These early discussions have shaped everything comming after, like the extensive use of strams and iterators, due to the nature of how we save the application state.
+Immediately after deciding on what the project should be, and getting some user stories to get a better understanding of
+the needs that would have to be met, the group sat down to brainstorm how the project should be structured. This
+included the inclusion of a separate persistency module, and that it would be the persistency module that depended on
+the core module and not the other way around. These early discussions have shaped everything coming after, like the
+extensive use of streams and iterators, due to the nature of how we save the application state.
 
-Similarly during release 3, with the addition of the server-architecture came important decisions regarding the API schema as well as the aditional structure comming from the server architecture itself. This was done through a series of meetings where we discussed what would be needed to maintain the existing features, as well as the planned future features.
+Similarly, during release 3, with the addition of the server-architecture came important decisions regarding the API
+schema as well as the additional structure coming from the server architecture itself. This was done through a series of
+meetings where we discussed what would be needed to maintain the existing features, as well as the planned future
+features.
