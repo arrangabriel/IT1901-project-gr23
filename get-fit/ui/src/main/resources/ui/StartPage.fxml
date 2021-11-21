@@ -43,7 +43,7 @@
       </image></ImageView>
 
     <!-- The pane containing singular entry-view -->
-    <AnchorPane fx:id="entryView" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: white;" visible="false" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
+    <AnchorPane fx:id="entryView" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: white;" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
         <Button fx:id="hideView" layoutX="544.0" layoutY="12.0" mnemonicParsing="false" onAction="#closeView" text="x" />
         <Separator layoutX="14.0" layoutY="62.0" prefHeight="6.0" prefWidth="551.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" />
 
@@ -83,7 +83,7 @@
             <Text fx:id="distanceLabel" strokeType="OUTSIDE" strokeWidth="0.0" text="Distance:" GridPane.rowIndex="5" />
             <Text fx:id="distanceView" strokeType="OUTSIDE" strokeWidth="0.0" text="distance" GridPane.columnIndex="1" GridPane.rowIndex="5" />
         </GridPane>
-        <TextArea fx:id="commentView" editable="false" focusTraversable="false" layoutX="312.0" layoutY="80.0" prefHeight="251.0" prefWidth="232.0" AnchorPane.rightAnchor="20.0" />
+        <TextArea fx:id="commentView" editable="false" focusTraversable="false" layoutX="312.0" layoutY="80.0" prefHeight="251.0" prefWidth="232.0" wrapText="true" AnchorPane.rightAnchor="20.0" />
         <Separator layoutX="309.0" layoutY="80.0" orientation="VERTICAL" prefHeight="251.0" prefWidth="6.0" />
     </AnchorPane>
     <stylesheets>
