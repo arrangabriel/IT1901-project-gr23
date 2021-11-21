@@ -117,8 +117,7 @@ public class GetFitApplicationTest {
             fail(e.getMessage());
         }
         try {
-            MvcResult result =
-                    this.mMvc.perform(get(path + "20")).andDo(print())
+            this.mMvc.perform(get(path + "20")).andDo(print())
                             .andExpect(status().is(404)).andReturn();
         } catch (Exception e) {
             e.printStackTrace();
