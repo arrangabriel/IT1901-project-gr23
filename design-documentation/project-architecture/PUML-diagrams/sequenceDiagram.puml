@@ -1,22 +1,19 @@
 @startuml
-Client -> Restserver: POST/api/v1/entries/add
-Restserver --> Client: id : 0
 
-Client -> Restserver: POST/api/v1/entries/add
-Restserver --> Client: id : 1
+User -> StartPageController: Sort list on exercise type running
 
-Client -> Restserver: GET/api/v1/entries/list?&r=false&s=title&c=any
-Restserver --> Client: "logEntries with id = 0 and id = 1"
+StartPageController -> LogClient: getLogEntryList(sortArgWrapper)
 
-Client -> Restserver: GET/api/v1/entries/list?&r=false&s=title&c=running
-Restserver --> Client: "logEntries with id = 0"
+LogClient -> GetFitController: GET requests acording to Schema -> getListOfLofEntries(title, false, running) 
 
+GetFitController -> SortedIteratorBuilder: filterExerciseCategory(RUNNING)
 
-Client -> Restserver: GET/api/v1/entries//api/v1/entries/stats?d=2020-10-05-2021-10-05&c=running
-Restserver --> Client: statistics fro LogEntry with id = 0 
+SortedIteratorBuilder -> GetFitController: sortedIteratorBuilder
 
+GetFitController --> LogClient: JSON String according to Schema 
 
-Client -> Restserver: GET/api/v1/entries/chart?d=2020-10-05-2021-10-05
-Restserver --> Client: swimming: 1, running: 1, strength: 0, cycling: 0
+LogClient --> StartPageController: list of entries with exercise category running
+
+StartPageController --> User: displays list of entries
 
 @enduml
