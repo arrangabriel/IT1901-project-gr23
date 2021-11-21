@@ -22,15 +22,15 @@ The ui module also include a resource directory:
 The user interface is created with JavaFx an FXML. The FXML directory is located in **[ui-resources](/get-fit/ui/src/main/resources/ui)** All FXML files are connected to a controller.
 
 ### Client
-**[client-module](/get-fit/client)** contains one package, **[client](/get-fit/client/ui/src/main/java/client)**. This package makues up the transportation layer and transfers data between the server and the UI.   
+**[client-module](/get-fit/client)** contains one package, **[client](/get-fit/client/src/main/java/client)**. This package makues up the transportation layer and transfers data between the server and the UI.   
 
 ### Restserver
-**[restserver-module](/get-fit/restserver/)** contains one packages, **[restserver](/get-fit/restserver/src/main/java/restserver)**. This packages make up the service layer and handles requests from the UI. It is responsible for the logic and computation implemented in the [core-module](#Core) and the persistance implemented in the [localpersistance-module](#Local-Persistance).
+**[restserver-module](/get-fit/restserver/)** contains one packages, **[restserver](/get-fit/restserver/src/main/java/restserver)**. This packages make up the service layer and handles requests from the UI. It is responsible for the logic and computation implemented in the **[core-module](#Core)** and the persistance implemented in the **[localpersistance-module](#Local-Persistance)**.
 
 ### Integration 
 **[integration-module](/get-fit/integration)** only exists to house the integration tests. Thus enabling us to test everything together without the front-end and back-end tepending directly on each other.
 
-## PlantUML diagram
-This PlantUML diagram that illustrates the architecture of the Get Fit application. It shows how the components and packages relate to each other. The PlantUML code can be found her: [Get Fit PlantUML architecture file](/get-fit/design-documentation/project-architecture/PUML-diagrams/packageDiagram.puml)
+## PlantUML diagrams
+This package diagram illustrates the architecture of the Get Fit application. It shows how the components and packages relate to each other. The package diagram code can be found in the directory: **[PUML-diagrams](/design-documentation/project-architecture/PUML-diagrams)**. This directory also contains two class diagrams and one sequence diagram. The two class diagrams are **[server class diagram](/design-documentation/project-architecture/PUML-diagrams/ServerClassDiagram.png)** and **[client class diagram](/design-documentation/project-architecture/PUML-diagrams/clientClassDiagram.png)**. These diagrams show the most important parts of the system. The **[sequence diagram](/design-documentation/project-architecture/PUML-diagrams/SequenceDiagram.png)** illustrates how the client and server interact with eachother when a person adds workouts and view statistics.
 
 ![Design documentation](/design-documentation/project-architecture/PUML-diagrams/packageDiagram.png)
