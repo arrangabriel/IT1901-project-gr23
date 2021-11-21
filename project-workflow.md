@@ -7,6 +7,8 @@ Moving code into the master branch is therefore only possible through merge-requ
 Merge requests automatically validate code as described later in this document.
 This process certifies that only working, clean and safe code can ever be present in the master branch.
 
+Noting this, the process is as follows:
+
 - Create a feature branch
 - Develop feature on feature branch
 - Write tests and ensure minimum code coverage
