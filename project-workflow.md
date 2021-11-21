@@ -104,3 +104,9 @@ re-test the entire project even though it was allready done by a different job.
 Aditionally we have a job for compiling the app to an executable, though because it happens on a Linux machine windows,
 macOs, and even users of differing Linux distributions will have to compile from source, or have someone else do it and
 distribute that binary.
+
+# Planning
+
+## Structure of Project
+
+Immediately after deciding on what the project should be, and getting some user stories to get a better understanding of the needs that would have to be met, the group sat down to brainstorm how the project should be structured. This included the inclusion of a separate persistency module, and that it would be the persistency module that depended on the core module and not the other way around. These early discussions have shaped everything comming after, like the extensive use of strams and iterators, due to the nature of how we save the application state.
