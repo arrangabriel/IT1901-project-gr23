@@ -13,7 +13,7 @@ public final class HttpResponses {
             500, "Internal Server Error"
     );
 
-    private HttpResponses() {}
+    private HttpResponses() { }
 
     /**
      * Converts code to response.

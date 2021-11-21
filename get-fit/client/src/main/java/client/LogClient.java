@@ -64,8 +64,9 @@ public class LogClient {
         JSONObject jsonObject = new JSONObject(jsonString);
         HashMap<String, String> responseHash = new HashMap<>();
 
-        jsonObject.keySet().forEach(x -> responseHash.put(x, jsonObject.getString(x)));
-        
+        jsonObject.keySet().forEach(x ->
+            responseHash.put(x, jsonObject.getString(x)));
+
         return responseHash;
     }
 
@@ -200,8 +201,10 @@ public class LogClient {
             final HttpResponse<String> response) {
         JSONObject jsonObject = new JSONObject(response.body());
 
-        HashMap<String, String> responseHash = new HashMap<>();
-        jsonObject.keySet().forEach(x -> responseHash.put(x, jsonObject.getString(x)));
+        HashMap<String, String> responseHash =
+            new HashMap<>();
+        jsonObject.keySet().forEach(x ->
+            responseHash.put(x, jsonObject.getString(x)));
 
         return responseHash;
     }
@@ -245,9 +248,11 @@ public class LogClient {
     public HashMap<String, List<String>> getExerciseCategories()
             throws URISyntaxException, InterruptedException,
             ExecutionException, ServerResponseException {
-        HttpResponse<String> response = this.get("/api/v1/entries/filters");
+        HttpResponse<String> response =
+            this.get("/api/v1/entries/filters");
 
-        JSONObject jsonObject = new JSONObject(response.body()).getJSONObject("categories");
+        JSONObject jsonObject = new JSONObject(response.body())
+            .getJSONObject("categories");
         HashMap<String, List<String>> categories = new HashMap<>();
 
         jsonObject.keySet().forEach(x -> {
