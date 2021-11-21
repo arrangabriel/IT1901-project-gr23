@@ -83,7 +83,7 @@ Response:
             "maxHeartRate": "null",
             "exerciseCategory": "swimming",
             "exerciseSubCategory": "null"
-        },
+        }
     ]
     
 }
@@ -112,7 +112,6 @@ Response:
             "highintensity"
         ]
     }
-    
 }
 ```
 
@@ -130,14 +129,13 @@ Response:
 
 ```json
 {
-    "empty": "False"
-    "count": "5"
-    "totalDuration": "2.6"
-    "averageDuration": "0.5"
-    "averageSpeed": "7.0"
-    "averageFeeling": "3.3"
+    "empty": "False",
+    "count": "5",
+    "totalDuration": "2.6",
+    "averageDuration": "0.5",
+    "averageSpeed": "7.0",
+    "averageFeeling": "3.3",
     "maximumHr": "180"
-
 }
 ```
 
@@ -154,9 +152,9 @@ Response:
 
 ```json
 {
-    "swimming": "2"
-    "running": "3"
-    "strength": "0"
+    "swimming": "2",
+    "running": "3",
+    "strength": "0",
     "cycling": "2"
 }
 ```
@@ -191,29 +189,6 @@ Response:
 ```json
 {
     "id": "0"
-}
-```
-
-## Edit a LogEntry
-
-Type: <span style="color:#2e86c1">POST</span>
-
-Endpoint: `/api/v1/entries/edit/{entryId}`
-
-Payload:
-
-```json
-{
-    "title": "Example title 2",
-    "comment": "Example comment 2",
-    "date": "2021-10-25",
-    "feeling": "6",
-    "duration": "3600",
-    "distance": "3",
-    "maxHeartRate": "150",
-    "exerciseCategory": "STRENGTH",
-    "exerciseSubCategory": "PULL"
-
 }
 ```
 

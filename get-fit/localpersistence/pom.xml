@@ -8,7 +8,7 @@
     <parent>
         <artifactId>get-fit</artifactId>
         <groupId>gr2123</groupId>
-        <version>0.0.1-SNAPSHOT</version>
+        <version>1.0.0</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
@@ -27,7 +27,7 @@
         <dependency>
             <groupId>gr2123</groupId>
             <artifactId>modules-core</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
+            <version>1.0.0</version>
         </dependency>
 
         <!-- junit testing with jupiter -->

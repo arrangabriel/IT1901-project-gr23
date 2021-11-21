@@ -6,7 +6,7 @@
     <parent>
         <groupId>gr2123</groupId>
         <artifactId>get-fit</artifactId>
-        <version>0.0.1-SNAPSHOT</version>
+        <version>1.0.0</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
@@ -28,13 +28,13 @@
         <dependency>
             <groupId>gr2123</groupId>
             <artifactId>modules-local-persistence</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
+            <version>1.0.0</version>
         </dependency>
 
         <dependency>
             <groupId>gr2123</groupId>
             <artifactId>modules-core</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
+            <version>1.0.0</version>
         </dependency>
 
 

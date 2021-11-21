@@ -7,7 +7,7 @@ For release one we intend to create a MVP of the project.
 We intend for the project to be an exercise/activity tracker. We have created a figma model for release 1, which is meant to illustrate our goal for this first release. 
 
 The figma model can be found here: 
-[Figma model for release 1](/docs/release1/Figma_ui_model_release1.pdf)
+[Figma model for release 1](/release-docs/release1/Figma_ui_model_release1.pdf)
 
 
 ### Log a workout
@@ -23,7 +23,7 @@ There will be a workout log where all of the added workouts will appear as a lis
 
 The MVP is focused on solving the most basic user story, where the problem is to be able to store a workout with a comment. 
 This user story can be found here:
-[User story 1](/design-documentation/Scenario-us1.png)
+[User story 1](/design-documentation/user-story-scenarios/Scenario-us1.png)
 
 
 

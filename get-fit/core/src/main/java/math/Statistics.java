@@ -9,6 +9,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Statistics class.
@@ -164,13 +165,26 @@ public final class Statistics {
 
         return entries.stream()
             .map(LogEntry::getMaxHeartRate)
-            .max(Integer::compare).orElse(0);
+            .filter(Objects::nonNull)
+            .max(Integer::compare)
+            .orElse(0);
     }
 
+    /**
+     * Returns a list of entries filtered by date.
+     * @param entryManager The EntryManager to filter from
+     * @param category The category to filter by, can be null.
+     * @param date The date interval to filter by in yyyy-mm-dd-yy-mm-dd format.
+     * @return The filtered list containing LogEntries from the EntryManager
+     */
     private static List<LogEntry> listFilteredByDates(
             final EntryManager entryManager,
             final String category,
             final String date) {
+        if (date.equals("null")) {
+            throw new IllegalArgumentException();
+        }
+
         SortConfiguration sortConfiguration =
                 SortConfiguration.DATE;
 
@@ -178,25 +192,16 @@ public final class Statistics {
                 new EntryManager.SortedIteratorBuilder(
                         entryManager, sortConfiguration);
 
+        iteratorBuilder.filterTimeInterval(
+            LocalDate.parse(date.substring(0, DATE_LENGTH)),
+            LocalDate.parse(date.substring(DATE_LENGTH + 1)));
+
         if (category != null) {
-            Iterator<LogEntry> iterator = iteratorBuilder
-                .filterTimeInterval(
-                    LocalDate.parse(date.substring(0, DATE_LENGTH)),
-                    LocalDate.parse(date.substring(DATE_LENGTH + 1)))
-                .filterExerciseCategory(
-                    ExerciseCategory.valueOf(category))
-                .iterator(false);
-
-            List<LogEntry> entries = new ArrayList<>();
-            iterator.forEachRemaining(entries::add);
-
-            return entries;
+            iteratorBuilder.filterExerciseCategory(
+                ExerciseCategory.valueOf(category));
         }
 
         Iterator<LogEntry> iterator = iteratorBuilder
-            .filterTimeInterval(
-                LocalDate.parse(date.substring(0, DATE_LENGTH)),
-                LocalDate.parse(date.substring(DATE_LENGTH + 1)))
             .iterator(false);
 
         List<LogEntry> entries = new ArrayList<>();

@@ -1,5 +1,14 @@
 package ui;
 
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.time.Duration;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Optional;
+import java.util.concurrent.ExecutionException;
+import java.util.stream.Collectors;
+
 import client.LogClient;
 import client.LogClient.SortArgWrapper;
 import client.ServerResponseException;
@@ -28,22 +37,11 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-import java.io.IOException;
-import java.net.URISyntaxException;
-import java.time.Duration;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Optional;
-import java.util.concurrent.ExecutionException;
-import java.util.stream.Collectors;
-
 public class StartPageController {
-
     /**
      * Session log client.
      */
     private final LogClient client = new LogClient("http://localhost", 8080);
-
     /**
      * Column width percentage.
      */
@@ -156,6 +154,12 @@ public class StartPageController {
      */
     private ObservableList<String> sortCardioSubcategories;
 
+    /**
+     * Retry a method if they failed.
+     * Typically because the server could not be reached.
+     * @param func The name of the method to retry.
+     * @param args Necessary arguments for the method to retry.
+     */
     private void retry(final String func, final String... args) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Connection error");
@@ -286,6 +290,13 @@ public class StartPageController {
         }
     }
 
+    /**
+     * Creates a VBox with information regarding the log entry.
+     * Including a button to show details of the entry,
+     * as well as a button to delete the entry.
+     * @param entry A hasmap representing the log entry to list.
+     * @return The VBox representing the log entry.
+     */
     private VBox createListEntry(final HashMap<String, String> entry) {
         VBox vBox = new VBox();
         GridPane grid = new GridPane();
@@ -373,6 +384,13 @@ public class StartPageController {
         return vBox;
     }
 
+    /**
+     * Hides or shows a label with its field
+     * depending on wether the data passed is "null" or not.
+     * @param data The data to write, can be "null" to hide field.
+     * @param textField The field to write to.
+     * @param textLabel The accompanying label.
+     */
     private void setOptionalField(final String data, final Text textField,
                                   final Text textLabel) {
         if (!data.equals("null")) {
@@ -413,6 +431,13 @@ public class StartPageController {
         updateList();
     }
 
+    /**
+     * Converts a duration object to a string representation
+     * of the amount of hours in the duration.
+     * Appends an "h" to the end.
+     * @param duration The duration to convert.
+     * @return The hour representation.
+     */
     private String durationToHours(final Duration duration) {
         double sec = (double) duration.toSeconds();
         final int secToHours = 3600;
@@ -421,6 +446,11 @@ public class StartPageController {
         return h / magnitude + "h";
     }
 
+    /**
+     * Capitalizes a string.
+     * @param string The string to capitalize.
+     * @return The capitalized string.
+     */
     private String capitalize(final String string) {
         if (string.length() > 0) {
             return string.substring(0, 1).toUpperCase()
@@ -430,6 +460,10 @@ public class StartPageController {
         }
     }
 
+    /**
+     * Simplifies hiding of nodes.
+     * @param node The node to hide.
+     */
     private void bindVisibility(final Node node) {
         node.managedProperty().bind(node.visibleProperty());
     }
