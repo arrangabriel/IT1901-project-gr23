@@ -96,12 +96,12 @@ public class GetFitController {
      */
     @GetMapping(value = "/list", produces = "application/json")
     @ResponseBody
-    public String getListOfLogEntries (
+    public String getListOfLogEntries(
             final @RequestParam(value = "s", defaultValue = "date")
                     String sortType,
             final @RequestParam(value = "r", defaultValue = "false")
                     String reverse,
-            final @RequestParam(value = "c", required = false) 
+            final @RequestParam(value = "c", required = false)
                     String category,
             final @RequestParam(value = "sc", required = false)
                     String subCategory,
@@ -140,7 +140,7 @@ public class GetFitController {
                     iteratorBuilder = iteratorBuilder
                         .filterSubCategory(subcategories);
                 }
-            } catch (IllegalArgumentException ignored) {}
+            } catch (IllegalArgumentException ignored) { }
 
         } else {
             if (subCategory != null) {
@@ -156,7 +156,7 @@ public class GetFitController {
                     LocalDate.parse(
                         date.substring(DATE_FORMAT_LENGTH + 1)));
             }
-        } catch (IllegalArgumentException ignored) {}
+        } catch (IllegalArgumentException ignored) { }
 
         List<LogEntry> returnList = new ArrayList<>();
         iteratorBuilder.iterator(Boolean.parseBoolean(reverse))

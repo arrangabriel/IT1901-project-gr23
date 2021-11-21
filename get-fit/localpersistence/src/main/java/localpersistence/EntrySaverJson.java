@@ -30,7 +30,7 @@ public final class EntrySaverJson {
     /**
      * Hidden constructor to simulate static class.
      */
-    private EntrySaverJson() {}
+    private EntrySaverJson() { }
 
     /**
      * Iterates over every entry in the provided EntryManager
@@ -94,7 +94,7 @@ public final class EntrySaverJson {
         try (FileWriter writer = new FileWriter(file, StandardCharsets.UTF_8)) {
             writer.write(json.toString());
             writer.flush();
-        } catch (IOException ignored) {}
+        } catch (IOException ignored) { }
     }
 
     /**

@@ -552,7 +552,7 @@ public final class LogEntry {
          */
         public LogEntry build() throws IllegalArgumentException {
             Validity valid = validate(this);
-            
+
             if (valid.invalid()) {
                 throw new IllegalArgumentException(valid.reason());
             } else {
