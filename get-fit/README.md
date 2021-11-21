@@ -22,7 +22,7 @@ You can create a new workout by pressing the “add workout” button. This butt
 
 When you are happy with your description of the workout press the button “Create session” and the app takes you back to the start page. The newly created workout will be added to the workout list. 
 
-<img width="350" src = ![Getfit3](/uploads/f8ff43d0ad1482bd9d092ed69e71f5b6/Getfit3.png)>
+<img width="350" src = "/uploads/f8ff43d0ad1482bd9d092ed69e71f5b6/Getfit3.png">
 
 Above the list will you find three different dropdown menus. These menus let you choose different ways to sort and filter your workout sessions. The first menu let you sort on title, date and duration and the second menu filters on exercise type. 
 
