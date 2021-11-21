@@ -1,5 +1,12 @@
 package ui;
 
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.time.LocalDate;
+import java.util.HashMap;
+import java.util.Map.Entry;
+import java.util.concurrent.ExecutionException;
+
 import client.LogClient;
 import client.LogClient.SortArgWrapper;
 import client.ServerResponseException;
@@ -19,20 +26,11 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
 
-import java.io.IOException;
-import java.net.URISyntaxException;
-import java.time.LocalDate;
-import java.util.HashMap;
-import java.util.Map.Entry;
-import java.util.concurrent.ExecutionException;
-
 public class StatisticsController {
-
     /**
      * x-axis for the bar chart.
      */
     private final LogClient client = new LogClient("http://localhost", 8080);
-
     /**
      * Selector values.
      */
@@ -44,73 +42,65 @@ public class StatisticsController {
      */
     @FXML
     private Label totalDuration;
-
     /**
      * Speed field.
      */
     @FXML
     private Label speedLabel;
-
     /**
      * Number of sessions field.
      */
     @FXML
     private Label numberOfSessions;
-
     /**
      * Average feeling field.
      */
     @FXML
     private Label averageFeeling;
-
     /**
      * Average speed field.
      */
     @FXML
     private Label averageSpeed;
-
     /**
      * Maximum heart rate field.
      */
     @FXML
     private Label maximumHr;
-
     /**
      * Average duration field.
      */
     @FXML
     private Label averageDuration;
-
     /**
      * Error message field.
      */
     @FXML
     private Label errorLabel;
-
     /**
      * Choosing which exercise type to display.
      */
     @FXML
     private ComboBox<String> exerciseType;
-
     /**
      * The bar chart.
      */
     @FXML
     private BarChart<String, Number> statisticsChart;
-
     /**
      * Start date picker.
      */
     @FXML
     private DatePicker start;
-
     /**
      * End date picker.
      */
     @FXML
     private DatePicker end;
 
+    /**
+     * Sets starting values for necessary fields.
+     */
     @FXML
     private void initialize() {
         exerciseType.setItems(exerciseTypeSelector);
@@ -151,6 +141,9 @@ public class StatisticsController {
         this.createBarChart();
     }
 
+    /**
+     * Updates the view using options from the UI elements.
+     */
     private void getData() {
         speedLabel.setVisible(false);
         averageSpeed.setVisible(false);
@@ -213,8 +206,9 @@ public class StatisticsController {
         this.createBarChart();
     }
 
-
-    //@SuppressWarnings("Unchecked")
+    /**
+     * Creates and displays a bar chart.
+     */
     private void createBarChart() {
         SortArgWrapper sortArgWrapper = new SortArgWrapper();
         HashMap<String, String> dataEntries;
