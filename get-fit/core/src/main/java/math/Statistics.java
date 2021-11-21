@@ -9,6 +9,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Statistics class.
@@ -164,7 +165,9 @@ public final class Statistics {
 
         return entries.stream()
             .map(LogEntry::getMaxHeartRate)
-            .max(Integer::compare).orElse(0);
+            .filter(Objects::nonNull)
+            .max(Integer::compare)
+            .orElse(0);
     }
 
     private static List<LogEntry> listFilteredByDates(

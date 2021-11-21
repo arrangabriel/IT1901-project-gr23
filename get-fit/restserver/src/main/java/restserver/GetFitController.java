@@ -181,7 +181,6 @@ public class GetFitController {
      * @param eCategory the category to filter by.
      * @return a HTTP request.
      */
-    @SuppressWarnings("checkstyle:FinalParameters")
     @GetMapping(value = "/stats", produces = "application/json")
     @ResponseBody
     public String getStatisticsData(
