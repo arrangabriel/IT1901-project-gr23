@@ -72,10 +72,6 @@ public class TestStartPageController extends ApplicationTest{
         
     }
 
-    @BeforeEach
-    public void timeOut(){
-        //sleep(1000);
-    }
 
     private void click(String... labels) {
         for (var label : labels) {
@@ -208,24 +204,7 @@ public class TestStartPageController extends ApplicationTest{
         click("Strength");
 
         mockServer.verify(1, getRequestedFor(urlEqualTo("/api/v1/entries/list?r=false&s=duration&c=strength&sc=any")));
-
-        editStub(get(urlEqualTo("/api/v1/entries/list?r=false&s=duration&c=any"))
-        .withId(id)
-        .willReturn(aResponse().withStatus(200).withHeader("Content-Type", "aplication/json").withBody(body)));
-
-        click("Get Fit");
-        clickOn("#errorLabel");
-        click("Get Fit");
-        clickOn("#errorLabel");
-        click("Get Fit");
-
-        clickOn("#sortCategory");
-        click("Any");
-
-
-        mockServer.verify(2, getRequestedFor(urlEqualTo("/api/v1/entries/list?r=false&s=duration&c=any")));
-
-        
+    
     }
 
     @Test

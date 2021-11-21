@@ -25,3 +25,4 @@ org.eclipse.*
 *.key
 /get-fit/restserver/modules-rest.iml
 get-fit/ui/dependency-reduced-pom.xml
+/get-fit/integration/modules-integration.iml
