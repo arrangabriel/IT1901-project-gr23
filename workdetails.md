@@ -12,6 +12,8 @@ Extensive use of branches redices the risk of merge conflicts during development
 
 Sometimes a feature branch is so broad that it is under active development all the way through the SCRUM cycle. This is especially true when the feature is very complicated, with multiple parts, like the server architecture. Where adding the server doesn't make sense without modifying the App, and where modifying the App doesn't make sense without creating the server. For situations like these, offshoot branches are prevalent.
 
+Merge requests have proven exceptionally useful as it prompts the entire team to do a thorough check of the code, and discuss any issues that may arise. [Automatic Jobs](#Jobs) are run on any merge request going into the dev or master branches. This further prompts the team to discuss the feedback given by checkstyle or spotbugs.
+
 # Workflow
 
 We use the SCRUM framework for efficently producing and delivering high quality code. The issues related to the milestone are used to divide different tasks between us. We use the milestones for grouping issues with releases, as we have been instructed to. The issues are labeled to easily sort and distinguish them from eachother. Pair programing is something we practice a lot, even though we divide the issues to individual members of the group. The group is divided into pairs, and those pairs tackle different challenges and take turn programming. By doing this all of the group members can learn from each other. It also makes us less vulnerable to typos and other errors, and it is easier to solve complex problems in pairs. Even though we use pair programming a lot, we do some of the easier work indiviually and make the other team members review the work. This is to make the development process more efficent.
@@ -35,6 +37,8 @@ The repository employs a multitude of jobs in order to ensure only valid code is
 - `bugs`
     - `spotbugs` runs spotbugs to catch possibly bug-inducing mistakes. Failure will raise a warning, but not block the merge request.
 
-These jobs ensure that breaking code does not get merged into the dev or master branches. So far it has been a great success, pointing out errors in our code. However checkstyle and spotbugs can at times be overly sensitive. The main problem here is that if decide to ignore some of the output from checkstyle or spotbugs they will always fail. This in turn desensitizes us to seeing them fail. We have attempted to provide custom rules, but without luck. Still we go looking into the output of the jobs to evaluate wether some of the errors are something we care about. 
+These jobs ensure that breaking code does not get merged into the dev or master branches. So far it has been a great success, pointing out errors in our code. However checkstyle and spotbugs can at times be overly sensitive. The main problem here is that if decide to ignore some of the output from checkstyle or spotbugs they will always fail. This in turn desensitizes us to seeing them fail. We have attempted to provide custom rules, but without luck. Still we go looking into the output of the jobs to evaluate wether some of the errors are something we care about.
+
+An attempt has been made in making the jobs more efficient, by reusing compilation and test results in the later jobs, but gitlab does not provide great support for this, meaning that a job using the verify goal will have to re-compile and re-test the entire project even though it was allready done by a different job.
 
 Aditionally we have a job for compiling the app to an executable, though because it happens on a Linux machine windows, macOs, and even users of differing Linux distributions will have to compile from source, or have someone else do it and distribute that binary.
