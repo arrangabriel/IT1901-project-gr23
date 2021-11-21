@@ -22,10 +22,10 @@ The ui module also include a resource directory:
 The user interface is created with JavaFx an FXML. The FXML directory is located in **[ui-resources](/get-fit/ui/src/main/resources/ui)** All FXML files are connected to a controller.
 
 ### Client
-**[client-module](/get-fit/client)** contains one package, **[client](/get-fit/client/ui/src/main/java/client)**. This package makues up the transportation layer and transfers data between the server and the UI.   
+**[client-module](/get-fit/client)** contains one package, **[client](/get-fit/client/src/main/java/client)**. This package makues up the transportation layer and transfers data between the server and the UI.   
 
 ### Restserver
-**[restserver-module](/get-fit/restserver/)** contains one packages, **[restserver](/get-fit/restserver/src/main/java/restserver)**. This packages make up the service layer and handles requests from the UI. It is responsible for the logic and computation implemented in the [core-module](#Core) and the persistance implemented in the [localpersistance-module](#Local-Persistance).
+**[restserver-module](/get-fit/restserver/)** contains one packages, **[restserver](/get-fit/restserver/src/main/java/restserver)**. This packages make up the service layer and handles requests from the UI. It is responsible for the logic and computation implemented in the **[core-module](#Core)** and the persistance implemented in the **[localpersistance-module](#Local-Persistance)**.
 
 ### Integration 
 **[integration-module](/get-fit/integration)** only exists to house the integration tests. Thus enabling us to test everything together without the front-end and back-end tepending directly on each other.
