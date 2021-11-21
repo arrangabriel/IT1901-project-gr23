@@ -2,10 +2,10 @@
 
 Through some trial and error we have arrived at the following workflow for branches and merging:
 
-Most important is the principle that there exists a 'safe' branch, master, that cannot be pushed to.
-Moving code into the master branch is therefore only possible through merge-requests.
-Merge requests automatically validate code as described later in this document.
-This process certifies that only working, clean and safe code can ever be present in the master branch.
+Most important is the principle that there exists a 'safe' branch, master, that cannot be pushed to. Moving code into
+the master branch is therefore only possible through merge-requests. Merge requests automatically validate code as
+described later in this document. This process certifies that only working, clean and safe code can ever be present in
+the master branch.
 
 Noting this, the process is as follows:
 
@@ -45,7 +45,8 @@ changes easier. Smaller commits also enable the use of more specific commit mess
 explanation on what was done, and why it was done. Everyone in the group also has tools to view these comments inline
 while coding, which facilitates teamwork even when two members aren't working directly together. This practice also
 makes it easy to track down who worked on a specific part of the code, letting a different member ask them for help if
-they are going to make changes in that area of the codebase.
+they are going to make changes in that area of the codebase. Later on in the project lifecycle we decided to tag larger
+commits with the issue(s) they relate to. This is yet another workflow tool to help facilitate archival work.
 
 # Issues and Milestones
 
