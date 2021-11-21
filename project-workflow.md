@@ -107,7 +107,7 @@ do it and distribute that binary.
 
 # Planning
 
-Immediately after deciding on what the project should be, and getting some user stories to get a better understanding of
+Immediately after deciding on what the project should be, and creating some user stories to get a better understanding of
 the needs that would have to be met, the group sat down to brainstorm how the project should be structured. This
 included the inclusion of a separate persistency module, and that it would be the persistency module that depended on
 the core module and not the other way around. These early discussions have shaped everything coming after, like the
