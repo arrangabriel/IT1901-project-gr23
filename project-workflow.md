@@ -48,6 +48,12 @@ makes it easy to track down who worked on a specific part of the code, letting a
 they are going to make changes in that area of the codebase. Later on in the project lifecycle we decided to tag larger
 commits with the issue(s) they relate to. This is yet another workflow tool to help facilitate archival work.
 
+Though we made use of pair-programming a large bulk of the work was done working on individual machines, always with
+open communication. Be it through online platforms such as discord, or, as was the case for most of the project,
+physically being together. Working in this way made it possible to dynamically transition between working on indivdual
+tasks and pair/group programming. Another perk was a constant discussion of feature implementatios, keeping the whole team up
+to date on the current state of the code base.
+
 # Issues and Milestones
 
 The project employs heavy use of issues and milestones on gitlab. The issues are used to divide the work between the
