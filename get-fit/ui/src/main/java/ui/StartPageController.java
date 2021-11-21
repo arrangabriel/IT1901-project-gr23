@@ -50,61 +50,99 @@ public class StartPageController {
     private static final int PERCENT_WIDTH = 25;
 
     // region FXML-elements
-    /***/
+    /**
+     * Reverse sort checkbox.
+     */
     @FXML
     private CheckBox reverseBox;
-    /***/
+    /**
+     * Label for distance field.
+     */
     @FXML
     private Text distanceLabel;
-    /***/
+    /**
+     * Label for heart rate field.
+     */
     @FXML
     private Text heartRateLabel;
-    /***/
+    /**
+     * Label for sub category field.
+     */
     @FXML
     private Text subcategoryLabel;
-    /***/
+    /**
+     * Entry viewport.
+     */
     @FXML
     private AnchorPane entryView;
-    /***/
+    /**
+     * Title field.
+     */
     @FXML
     private Text titleView;
-    /***/
+    /**
+     * Date field.
+     */
     @FXML
     private Text dateView;
-    /***/
+    /**
+     * Comment field.
+     */
     @FXML
     private TextArea commentView;
-    /***/
+    /**
+     * Sub category field.
+     */
     @FXML
     private Text subcategoryView;
-    /***/
+    /**
+     * Heart rate field.
+     */
     @FXML
     private Text heartRateView;
-    /***/
+    /**
+     * Feeling field.
+     */
     @FXML
     private Text feelingView;
-    /***/
+    /**
+     * Distance field.
+     */
     @FXML
     private Text distanceView;
-    /***/
+    /**
+     * Category field.
+     */
     @FXML
     private Text categoryView;
-    /***/
+    /**
+     * Duration field.
+     */
     @FXML
     private Text durationView;
-    /***/
+    /**
+     * Sort configuration dropdown.
+     */
     @FXML
     private ComboBox<String> sortConfig;
-    /***/
+    /**
+     * Category filter dropdown.
+     */
     @FXML
     private ComboBox<String> sortCategory;
-    /***/
+    /**
+     * Sub category filter dropdown.
+     */
     @FXML
     private ComboBox<String> sortSubcategory;
-    /***/
+    /**
+     * Entry list viewport.
+     */
     @FXML
     private ListView<VBox> listOfEntries;
-    /***/
+    /**
+     * Error message field.
+     */
     @FXML
     private Label errorLabel;
     // endregion
@@ -122,10 +160,13 @@ public class StartPageController {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Connection error");
         alert.setHeaderText("Could not connect to server");
-        alert.setContentText("""
-                Could not establish a connection to the server.
-                Press OK to retry.
-                Press Cancel to quit""");
+        alert.setContentText(
+            """
+            Could not establish a connection to the server.
+            Press OK to retry.
+            Press Cancel to quit
+            """
+        );
         errorLabel.setText("Could not connect to server");
         Optional<ButtonType> result = alert.showAndWait();
         if (result.isPresent() && (result.get() == ButtonType.OK)) {
@@ -208,7 +249,6 @@ public class StartPageController {
      */
     public void updateList() {
         errorLabel.setText("");
-
         listOfEntries.getItems().clear();
         // Gather query information
         String sort = sortConfig.getValue().toLowerCase();
@@ -219,8 +259,10 @@ public class StartPageController {
         }
 
         SortArgWrapper builder =
-                new SortArgWrapper().sort(sort).category(categoryFilter)
-                        .subCategory(subFilter);
+            new SortArgWrapper()
+                .sort(sort)
+                .category(categoryFilter)
+                .subCategory(subFilter);
 
         if (reverseBox.isSelected()) {
             builder.reverse();
@@ -245,13 +287,12 @@ public class StartPageController {
     }
 
     private VBox createListEntry(final HashMap<String, String> entry) {
-        errorLabel.setText("");
-
         VBox vBox = new VBox();
         GridPane grid = new GridPane();
-
         ColumnConstraints colConstraint = new ColumnConstraints();
+
         colConstraint.setPercentWidth(PERCENT_WIDTH);
+        errorLabel.setText("");
         grid.getColumnConstraints()
                 .addAll(colConstraint, colConstraint, colConstraint,
                         colConstraint);
@@ -268,14 +309,11 @@ public class StartPageController {
             dateView.setText(entry.get("date"));
             categoryView.setText(
                     capitalize(entry.get("exerciseCategory")));
-
             String subCategory = entry.get("exerciseSubCategory");
             if (!subCategory.equals("null")) {
                 subCategory = capitalize(subCategory);
             }
-            setOptionalField(subCategory,
-                    subcategoryView,
-                    subcategoryLabel);
+            setOptionalField(subCategory, subcategoryView, subcategoryLabel);
 
             durationView.setText(durationToHours(
                     Duration.ofSeconds(Long.parseLong(entry.get("duration")))));
@@ -353,7 +391,6 @@ public class StartPageController {
      */
     @FXML
     public void replaceSubcategories() {
-        // hide and clear subcategories when there should be none.
         if (sortCategory.getValue().equals("Any")) {
             sortSubcategory.setItems(FXCollections.observableArrayList());
             sortSubcategory.setVisible(false);
@@ -377,7 +414,6 @@ public class StartPageController {
     }
 
     private String durationToHours(final Duration duration) {
-
         double sec = (double) duration.toSeconds();
         final int secToHours = 3600;
         final int magnitude = 10;
@@ -409,9 +445,9 @@ public class StartPageController {
         // populate sorting selectors
         ObservableList<String> sortConfigs =
                 FXCollections.observableArrayList();
-
         ObservableList<String> sortCategories =
                 FXCollections.observableArrayList();
+
         sortCategories.add("Any");
         sortStrengthSubcategories = FXCollections.observableArrayList();
         sortStrengthSubcategories.add("Any");
