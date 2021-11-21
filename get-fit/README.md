@@ -13,8 +13,7 @@ User stories, scenarios and design models can be found here:
 
 This JavaFX-application are designed for logging and viewing workouts. The first time you open the app you will get an empty list of workouts. 
 
-<div align="center">
-<img width="350" src = ![Getfit1](/uploads/8af34ce065d46e7cc2cd55cc4df4f6c7/Getfit1.png)>
+![gitfit1](/uploads/d226f6689c0493dc086964ed511d2bc5/gitfit1.png)
 
 You can create a new workout by pressing the “add workout” button. This button will take you to a new page where you can log your session. Your entry can include these elements: title, date, duration, exercise type, tag, maximum heartrate, feeling and comment. If you choose the exercise type “running”, “cycling” or “swimming” can you also add distance to your entry.  
 
@@ -22,11 +21,11 @@ You can create a new workout by pressing the “add workout” button. This butt
 
 When you are happy with your description of the workout press the button “Create session” and the app takes you back to the start page. The newly created workout will be added to the workout list. 
 
-![Getfit3](/uploads/66e7e7abf8cefd0c8c296d711e0240ed/Getfit3.png)
+![gitfit3](/uploads/4bfd9948d644e5bca883081d3aa86c3a/gitfit3.png)
 
 Above the list will you find three different dropdown menus. These menus let you choose different ways to sort and filter your workout sessions. The first menu let you sort on title, date and duration and the second menu filters on exercise type. 
 
-![Getfit4](/uploads/78d03c470389ffba32a4f8828dbfc726/Getfit4.png)
+![gitfit4](/uploads/dfbc9cee184e7e09a716bb4fdb03ce92/gitfit4.png)
 
 After choosing an exercise type can you use the third menu to filter on tags. 
 
