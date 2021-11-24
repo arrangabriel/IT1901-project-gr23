@@ -99,13 +99,13 @@ spotbugs:
     variables:
       - $CI_MERGE_REQUEST_TARGET_BRANCH_NAME != "master" && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME != "dev"
 
-dist:
-  stage: dist
-  script: cd get-fit && mvn install -DnoTestUI=true && cd ui && mvn compile javafx:jlink jpackage:jpackage
-  allow_failure: false
-  rules:
-    - if: ($CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH)
-      when: always
-  artifacts:
-    paths:
-      - get-fit/ui/target/dist/*
+# dist:
+#   stage: dist
+#   script: cd get-fit && mvn install -DnoTestUI=true && cd ui && mvn compile javafx:jlink jpackage:jpackage
+#   allow_failure: false
+#   rules:
+#     - if: ($CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH)
+#       when: always
+#   artifacts:
+#     paths:
+#       - get-fit/ui/target/dist/*

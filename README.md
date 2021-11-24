@@ -38,7 +38,7 @@ the [build](#Building) step first.
 Installing the application involves creating a binary executable, and then depending on your system adding that binary
 to your applications folder.
 
-Navigate to the **getfit-ui** directory and running `mvn compile javafx:jlink jpackage:jpackage`. After the command has
+Navigate to the **getfit/ui** directory and running `mvn compile javafx:jlink jpackage:jpackage`. After the command has
 completed the executable to the application may be found in the **get-fit/ui/target/dist** directory. The executable can
 then be moved about as you wish! Either add it to you applications folder, or keep it as an executable elsewhere. Exactly
 how to do the former varies from system to system, but is not specific to the project.
@@ -51,7 +51,7 @@ server could not be reached.
 
 The project architecture is documented
 in **[project architecture](/design-documentation/project-architecture/README.md)**. And how the team works on the
-project is detailed in the **[workflow](project-workflow.md)** file. The **design-documentation** directory contains
+project is detailed in the **[workflow](project-workflow.md)** file. The [design-documentation](/design-documentation/) directory contains
 many resources and explanations as to why things are done the way they are, and can be a worthwhile read if the project
-interests you. Lastly, the **docs** directory contains information regarding each release of the project and further
+interests you. Lastly, the [release-docs](/release-docs) directory contains information regarding each release of the project and further
 expands on the what and the why of the project.

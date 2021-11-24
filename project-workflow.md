@@ -3,9 +3,13 @@
 Through some trial and error we have arrived at the following workflow for branches and merging:
 
 Most important is the principle that there exists a 'safe' branch, master, that cannot be pushed to. Moving code into
-the master branch is therefore only possible through merge-requests. Merge requests automatically validate code as
+the master branch is therefore only possible through merge-requests. This is guaranteed by setting up branch-protection rules for the master branch in the gitlab repository settings. Merge requests automatically validate code as
 described later in this document. This process certifies that only working, clean and safe code can ever be present in
 the master branch.
+
+To expand on the safety of the master branch, a dev branch is also used. This, like the master branch, is a protected branch and cannot be directly pushed to. It also requires a merge request with automatic validation in order to incorporate changes. Although gitlab does not provide any tools for limiting what branches can be merged into a protected branch, the group has a general rule where changes to the master branch have to come from merge requests from the dev branch. This is because the validation, which is supposed to secure the integrity of the master branch, doesn't run against the result of a merge request, rather they run against the branch being merged in.
+
+Without the dev branch, two internally functioning branches could be merged with the master branch, only to reveal that they are not compatible with each other. Having the dev branch be the only branch that is allowed to be merged into the master branch ensures that it actually works as expected before any merge is allowed. Because any changes to the master branch come exclusively from the dev branch, it will always be possible to fast-forward the git merge. Essentially this means that since the branches are identical, besides the changes comming from the dev branch, the merge result will be identical to the dev branch. Thanks to the jobs verifying the integrity of the dev branch when trying to merge into the master branch, the group can be confident in the integrity of the master branch.
 
 Noting this, the process is as follows:
 
@@ -92,7 +96,7 @@ The jobs run an assortment of maven goals and will give feedback if something go
       merge request.
 
 These jobs ensure that breaking code does not get merged into the dev or master branches. So far it has been a great
-success, pointing out errors in our code. However, checkstyle and spotbugs can at times be overly sensitive. The main
+success, pointing out errors in our code. Unfortunately the group has not found a way to run the UI tests on the gitlab job-runners, as such those tests are omitted. However, checkstyle and spotbugs can at times be overly sensitive. The main
 problem here is that if decide to ignore some of the output from checkstyle or spotbugs they will always fail. This in
 turn desensitizes us to seeing them fail. We have attempted to provide custom rules, but without luck. Still we go
 looking into the output of the jobs to evaluate whether some of the errors are something we care about.
@@ -101,9 +105,9 @@ An attempt has been made in making the jobs more efficient, by reusing compilati
 but gitlab does not provide great support for this, meaning that a job using the verify goal will have to re-compile and
 re-test the entire project even though it was already done by a different job.
 
-Additionally, we have a job for compiling the app to an executable, though because it happens on a Linux machine
+Additionally, the group a job for compiling the app to an executable, though because of some external dependencies of jpackage we were unable to make it work. On top of this, because it happens on a Linux machine,
 windows, macOS, and even users of differing Linux distributions will have to compile from source, or have someone else
-do it and distribute that binary.
+do it and distribute that binary. These factors have led the team to remove the job, though it can still be found, commmented out, in the [.gitlab-ci.yml](/.gitlab-ci.yml) file.
 
 # Planning
 
